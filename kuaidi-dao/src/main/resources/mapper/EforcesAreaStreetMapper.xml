@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesAreaStreetMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesAreaStreet">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="areaId" jdbcType="VARCHAR" property="areaid" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.kuaidi.bean.domain.EforcesAreaStreet">
+    <result column="name" jdbcType="LONGVARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, areaId
+  </sql>
+  <sql id="Blob_Column_List">
+    name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_areastreet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_areastreet
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesAreaStreet">
+    insert into eforces_areastreet (id, code, areaId, 
+      name)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{areaid,jdbcType=VARCHAR}, 
+      #{name,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesAreaStreet">
+    insert into eforces_areastreet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="areaid != null">
+        areaId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="areaid != null">
+        #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesAreaStreet">
+    update eforces_areastreet
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="areaid != null">
+        areaId = #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.kuaidi.bean.domain.EforcesAreaStreet">
+    update eforces_areastreet
+    set code = #{code,jdbcType=VARCHAR},
+      areaId = #{areaid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesAreaStreet">
+    update eforces_areastreet
+    set code = #{code,jdbcType=VARCHAR},
+      areaId = #{areaid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

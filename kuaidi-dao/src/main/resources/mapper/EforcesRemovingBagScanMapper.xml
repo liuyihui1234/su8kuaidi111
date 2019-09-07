@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesRemovingBagScanMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="scantime" jdbcType="TIMESTAMP" property="scantime" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="Num" jdbcType="INTEGER" property="num" />
+    <result column="Baggingid" jdbcType="VARCHAR" property="baggingid" />
+    <result column="Baggingname" jdbcType="VARCHAR" property="baggingname" />
+    <result column="Createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="Createid" jdbcType="VARCHAR" property="createid" />
+    <result column="Createname" jdbcType="VARCHAR" property="createname" />
+    <result column="incid" jdbcType="VARCHAR" property="incid" />
+    <result column="incname" jdbcType="VARCHAR" property="incname" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    <result column="Numberlist" jdbcType="LONGVARCHAR" property="numberlist" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, scantime, code, Num, Baggingid, Baggingname, Createtime, Createid, Createname, 
+    incid, incname
+  </sql>
+  <sql id="Blob_Column_List">
+    Numberlist
+  </sql>
+  
+  <update id="updateIsDeleteById">
+  update
+  eforces_removingbagscan
+  set
+  isDelete=0
+  where
+  id
+  in
+  <foreach collection="array" index="index" item="id"
+  open="(" close=")" separator=",">
+  #{id}
+  </foreach>
+  </update>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+  select
+  *
+  from
+  eforces_removingbagscan
+  where
+  isDelete=1
+  <if test="_parameter!=null">
+  and incid like CONCAT(#{_parameter},'%')
+  </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_removingbagscan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+         insert into eforces_removingbagscan (scantime, code,
+			Num, Baggingid, Baggingname,
+			Createtime, Createid, Createname,
+			incid, incname, Numberlist
+			) values
+         <foreach collection="list" item="item" index="index" separator=",">
+             ( now(),
+				#{item.code,jdbcType=VARCHAR},
+				#{item.num,jdbcType=INTEGER}, #{item.baggingid,jdbcType=VARCHAR}, 
+				#{item.baggingname,jdbcType=VARCHAR},
+				now(), #{item.createid,jdbcType=VARCHAR},
+				#{item.createname,jdbcType=VARCHAR},
+				#{item.incid,jdbcType=VARCHAR}, #{item.incname,jdbcType=VARCHAR}, 
+				#{item.numberlist,jdbcType=LONGVARCHAR}
+		    )
+         </foreach>
+     </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_removingbagscan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    insert into eforces_removingbagscan (id, scantime, code, 
+      Num, Baggingid, Baggingname, 
+      Createtime, Createid, Createname, 
+      incid, incname, Numberlist
+      )
+    values (#{id,jdbcType=INTEGER}, now(), #{code,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{baggingid,jdbcType=VARCHAR}, #{baggingname,jdbcType=VARCHAR}, 
+     now(), #{createid,jdbcType=VARCHAR}, #{createname,jdbcType=VARCHAR}, 
+      #{incid,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR}, #{numberlist,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    insert into eforces_removingbagscan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+        scantime,
+      <if test="code != null">
+        code,
+      </if>
+      <if test="num != null">
+        Num,
+      </if>
+      <if test="baggingid != null">
+        Baggingid,
+      </if>
+      <if test="baggingname != null">
+        Baggingname,
+      </if>
+        Createtime,
+      <if test="createid != null">
+        Createid,
+      </if>
+      <if test="createname != null">
+        Createname,
+      </if>
+      <if test="incid != null">
+        incid,
+      </if>
+      <if test="incname != null">
+        incname,
+      </if>
+      <if test="numberlist != null">
+        Numberlist,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      now(),
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="baggingid != null">
+        #{baggingid,jdbcType=VARCHAR},
+      </if>
+      <if test="baggingname != null">
+        #{baggingname,jdbcType=VARCHAR},
+      </if>
+      now(),
+      <if test="createid != null">
+        #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="numberlist != null">
+        #{numberlist,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    update eforces_removingbagscan
+    <set>
+      <if test="scantime != null">
+        scantime = #{scantime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        Num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="baggingid != null">
+        Baggingid = #{baggingid,jdbcType=VARCHAR},
+      </if>
+      <if test="baggingname != null">
+        Baggingname = #{baggingname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        Createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createid != null">
+        Createid = #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createname != null">
+        Createname = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        incid = #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        incname = #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="numberlist != null">
+        Numberlist = #{numberlist,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    update eforces_removingbagscan
+    set scantime = #{scantime,jdbcType=TIMESTAMP},
+      code = #{code,jdbcType=VARCHAR},
+      Num = #{num,jdbcType=INTEGER},
+      Baggingid = #{baggingid,jdbcType=VARCHAR},
+      Baggingname = #{baggingname,jdbcType=VARCHAR},
+      Createtime = #{createtime,jdbcType=TIMESTAMP},
+      Createid = #{createid,jdbcType=VARCHAR},
+      Createname = #{createname,jdbcType=VARCHAR},
+      incid = #{incid,jdbcType=VARCHAR},
+      incname = #{incname,jdbcType=VARCHAR},
+      Numberlist = #{numberlist,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesRemovingBagScan">
+    update eforces_removingbagscan
+    set scantime = #{scantime,jdbcType=TIMESTAMP},
+      code = #{code,jdbcType=VARCHAR},
+      Num = #{num,jdbcType=INTEGER},
+      Baggingid = #{baggingid,jdbcType=VARCHAR},
+      Baggingname = #{baggingname,jdbcType=VARCHAR},
+      Createtime = #{createtime,jdbcType=TIMESTAMP},
+      Createid = #{createid,jdbcType=VARCHAR},
+      Createname = #{createname,jdbcType=VARCHAR},
+      incid = #{incid,jdbcType=VARCHAR},
+      incname = #{incname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

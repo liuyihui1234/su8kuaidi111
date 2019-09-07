@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesPostStationMapper">
+  <insert id="addPostStation" useGeneratedKeys="true" keyProperty="id"  parameterType="org.kuaidi.bean.domain.EforcesPostStation">
+  INSERT INTO  
+  eforces_postStation
+  (incNumber,name,address,
+  longtitude,latitude,
+  remark,crtTime,
+  contactsPeople,phoneNum)
+  VALUES
+   (#{incNumber},#{name},#{address},
+  #{longtitude},#{latitude},
+  #{remark},#{crtTime},
+  #{contactsPeople},#{phoneNum}) 
+  </insert>
+  
+  <select id="selectByincNumbers" resultType="org.kuaidi.bean.domain.EforcesPostStation">
+  select 
+  * 
+  from 
+  eforces_postStation
+  where  delFlage = 0  and 
+  incNumber
+  in
+  <foreach collection="list" item="incNumbers" index="index" open="(" close=")" separator=",">
+    #{incNumbers}
+  </foreach>
+  </select>
+  
+  <select id="selectPostStationByincNumbers" resultType="org.kuaidi.bean.domain.EforcesPostStation"
+  parameterType="java.util.Map" >
+  select 
+  * 
+  from 
+  eforces_postStation
+  where  delFlage = 0  and 
+  incNumber
+  in
+  <foreach collection="list" item="incNumbers" index="index" open="(" close=")" separator=",">
+    #{incNumbers}
+  </foreach>
+  order by  POWER(#{longtitude} - longtitude,2) + POWER(#{latitude} - latitude,2)   asc 
+  LIMIT 20
+  </select>
+  
+  
+</mapper>

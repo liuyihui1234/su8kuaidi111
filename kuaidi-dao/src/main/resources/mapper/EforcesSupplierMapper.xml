@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesSupplierMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.maintainance.EforcesSupplier">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="weburl" jdbcType="VARCHAR" property="weburl" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, number, tel, fax, weburl, email, nation
+  </sql>
+
+  <!-- 获取供应商列表信息 -->
+  <select id="getlistSupplier" parameterType="org.kuaidi.bean.maintainance.EforcesSupplier" resultMap="BaseResultMap">
+    select * from eforces_supplier where isDelete = 0
+    <if test="number != null">
+    and  number like concat('%',#{number},'%')
+    </if>
+    <if test="name != null">
+      and  name like concat('%',#{name},'%')
+    </if>
+  </select>
+
+<!-- 删除 -->
+  <update id="removeUpdate">
+    update
+    eforces_supplier
+    set
+    isDelete=1
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_supplier
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_supplier
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.maintainance.EforcesSupplier">
+    insert into eforces_supplier (id, name, number, 
+      tel, fax, weburl, email, 
+      nation)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{weburl,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{nation,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.maintainance.EforcesSupplier">
+    insert into eforces_supplier
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="weburl != null">
+        weburl,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="weburl != null">
+        #{weburl,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.maintainance.EforcesSupplier">
+    update eforces_supplier
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="weburl != null">
+        weburl = #{weburl,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.maintainance.EforcesSupplier">
+    update eforces_supplier
+    set name = #{name,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      weburl = #{weburl,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

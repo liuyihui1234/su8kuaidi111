@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesIncDefaultPriceMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesIncDefaultPrice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="inctypeName" jdbcType="VARCHAR" property="inctypename" />
+    <result column="joinprice" jdbcType="REAL" property="joinprice" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="checkRemark" jdbcType="VARCHAR" property="checkRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, inctypeName, joinprice, remark, checkRemark
+  </sql>
+  <!-- 查询所有 -->
+  <select id="getList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from eforces_incdefaultprice
+    <where>
+    1 = 1
+    <if test="id != null">
+    and id = #{id}
+    </if>
+    </where>
+  </select>
+  <!-- 修改 -->
+  <update id="updateIncDefalutPrice">
+    UPDATE eforces_incdefaultprice SET remark=#{remark},checkRemark=#{checkRemark},joinprice=#{joinprice} WHERE id =#{id}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_incdefaultprice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_incdefaultprice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesIncDefaultPrice">
+    insert into eforces_incdefaultprice (id, inctypeName, joinprice, 
+      remark, checkRemark)
+    values (#{id,jdbcType=INTEGER}, #{inctypename,jdbcType=VARCHAR}, #{joinprice,jdbcType=REAL}, 
+      #{remark,jdbcType=VARCHAR}, #{checkremark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesIncDefaultPrice">
+    insert into eforces_incdefaultprice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="inctypename != null">
+        inctypeName,
+      </if>
+      <if test="joinprice != null">
+        joinprice,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="checkremark != null">
+        checkRemark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="inctypename != null">
+        #{inctypename,jdbcType=VARCHAR},
+      </if>
+      <if test="joinprice != null">
+        #{joinprice,jdbcType=REAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkremark != null">
+        #{checkremark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesIncDefaultPrice">
+    update eforces_incdefaultprice
+    <set>
+      <if test="inctypename != null">
+        inctypeName = #{inctypename,jdbcType=VARCHAR},
+      </if>
+      <if test="joinprice != null">
+        joinprice = #{joinprice,jdbcType=REAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkremark != null">
+        checkRemark = #{checkremark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesIncDefaultPrice">
+    update eforces_incdefaultprice
+    set inctypeName = #{inctypename,jdbcType=VARCHAR},
+      joinprice = #{joinprice,jdbcType=REAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      checkRemark = #{checkremark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesFeedbackMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesFeedback">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="incNum" jdbcType="VARCHAR" property="incnum" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="allowCall" jdbcType="INTEGER" property="allowcall" />
+    <result column="crtTime" jdbcType="TIMESTAMP" property="crttime" />
+    <result column="imgPath1" jdbcType="VARCHAR" property="imgpath1" />
+    <result column="imgpath2" jdbcType="VARCHAR" property="imgpath2" />
+    <result column="imgpath3" jdbcType="VARCHAR" property="imgpath3" />
+    <result column="imgpath4" jdbcType="VARCHAR" property="imgpath4" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, userId, incNum, remark, phone, allowCall, crtTime, imgPath1, imgpath2, 
+    imgpath3, imgpath4
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesFeedback">
+    insert into eforces_feedback (id, type, userId, 
+      incNum, remark, phone, 
+      allowCall, crtTime, imgPath1, 
+      imgpath2, imgpath3, imgpath4
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{incnum,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{allowcall,jdbcType=INTEGER}, #{crttime,jdbcType=TIMESTAMP}, #{imgpath1,jdbcType=VARCHAR}, 
+      #{imgpath2,jdbcType=VARCHAR}, #{imgpath3,jdbcType=VARCHAR}, #{imgpath4,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesFeedback">
+    insert into eforces_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="incnum != null">
+        incNum,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="allowcall != null">
+        allowCall,
+      </if>
+      <if test="crttime != null">
+        crtTime,
+      </if>
+      <if test="imgpath1 != null">
+        imgPath1,
+      </if>
+      <if test="imgpath2 != null">
+        imgpath2,
+      </if>
+      <if test="imgpath3 != null">
+        imgpath3,
+      </if>
+      <if test="imgpath4 != null">
+        imgpath4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="incnum != null">
+        #{incnum,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="allowcall != null">
+        #{allowcall,jdbcType=INTEGER},
+      </if>
+      <if test="crttime != null">
+        #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imgpath1 != null">
+        #{imgpath1,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath2 != null">
+        #{imgpath2,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath3 != null">
+        #{imgpath3,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath4 != null">
+        #{imgpath4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesFeedback">
+    update eforces_feedback
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="incnum != null">
+        incNum = #{incnum,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="allowcall != null">
+        allowCall = #{allowcall,jdbcType=INTEGER},
+      </if>
+      <if test="crttime != null">
+        crtTime = #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imgpath1 != null">
+        imgPath1 = #{imgpath1,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath2 != null">
+        imgpath2 = #{imgpath2,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath3 != null">
+        imgpath3 = #{imgpath3,jdbcType=VARCHAR},
+      </if>
+      <if test="imgpath4 != null">
+        imgpath4 = #{imgpath4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesFeedback">
+    update eforces_feedback
+    set type = #{type,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER},
+      incNum = #{incnum,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      allowCall = #{allowcall,jdbcType=INTEGER},
+      crtTime = #{crttime,jdbcType=TIMESTAMP},
+      imgPath1 = #{imgpath1,jdbcType=VARCHAR},
+      imgpath2 = #{imgpath2,jdbcType=VARCHAR},
+      imgpath3 = #{imgpath3,jdbcType=VARCHAR},
+      imgpath4 = #{imgpath4,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

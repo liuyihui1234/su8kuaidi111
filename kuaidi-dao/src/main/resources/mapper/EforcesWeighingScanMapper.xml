@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesWeighingScanMapper">
+	<resultMap id="BaseResultMap"
+		type="org.kuaidi.bean.domain.EforcesWeighingScan">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="createtime" jdbcType="TIMESTAMP"
+			property="createtime" />
+		<result column="flightsnumber" jdbcType="VARCHAR"
+			property="flightsnumber" />
+		<result column="goodstype" jdbcType="VARCHAR"
+			property="goodstype" />
+		<result column="expresstype" jdbcType="VARCHAR"
+			property="expresstype" />
+		<result column="expressid" jdbcType="INTEGER"
+			property="expressid" />
+		<result column="postman" jdbcType="VARCHAR" property="postman" />
+		<result column="postmanid" jdbcType="VARCHAR"
+			property="postmanid" />
+		<result column="did" jdbcType="VARCHAR" property="did" />
+		<result column="destination" jdbcType="VARCHAR"
+			property="destination" />
+		<result column="weight" jdbcType="DECIMAL" property="weight" />
+		<result column="scantype" jdbcType="VARCHAR"
+			property="scantype" />
+		<result column="scanners" jdbcType="VARCHAR"
+			property="scanners" />
+		<result column="scannerid" jdbcType="VARCHAR"
+			property="scannerid" />
+		<result column="incname" jdbcType="VARCHAR" property="incname" />
+		<result column="incid" jdbcType="VARCHAR" property="incid" />
+		<result column="scantime" jdbcType="TIMESTAMP"
+			property="scantime" />
+		<result column="entrytime" jdbcType="TIMESTAMP"
+			property="entrytime" />
+		<result column="billsnumber" jdbcType="LONGVARCHAR"
+			property="billsnumber" />
+		<result column="bz" jdbcType="LONGVARCHAR" property="bz" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, createtime, flightsnumber, goodstype, expresstype,
+		expressid,
+		postman, postmanid,
+		did, destination, weight, scantype,
+		scanners, scannerid, incname, incid,
+		scantime,
+		entrytime, amount
+	</sql>
+	<sql id="Blob_Column_List">
+		billsnumber, bz
+	</sql>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		*
+		from
+		eforces_weighingscan
+		where
+		isDelete=1
+		<if test="paramter!=null">
+		and incid like CONCAT(#{paramter},'%')
+		</if>
+	</select>
+
+
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from eforces_weighingscan
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<update id="updateIsDeleteById">
+		update
+		eforces_weighingscan
+		set
+		isDelete=0
+		where
+		id
+		in
+		<foreach collection="list" item="ids" index="index" open="("
+			close=")" separator=",">
+			#{ids}
+		</foreach>
+
+
+	</update>
+	<insert id="insert"
+		parameterType="org.kuaidi.bean.domain.EforcesWeighingScan">
+		insert into eforces_weighingscan (id, createtime,
+		flightsnumber,
+		goodstype, expresstype, expressid,
+		postman, postmanid,
+		did,
+		destination, weight, scantype,
+		scanners, scannerid, incname,
+		incid,
+		scantime, entrytime,
+		amount, billsnumber, bz
+		)
+		values
+		(#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP},
+		#{flightsnumber,jdbcType=VARCHAR},
+		#{goodstype,jdbcType=VARCHAR},
+		#{expresstype,jdbcType=VARCHAR}, #{expressid,jdbcType=INTEGER},
+		#{postman,jdbcType=VARCHAR}, #{postmanid,jdbcType=VARCHAR},
+		#{did,jdbcType=VARCHAR},
+		#{destination,jdbcType=VARCHAR},
+		#{weight,jdbcType=DECIMAL}, #{scantype,jdbcType=VARCHAR},
+		#{scanners,jdbcType=VARCHAR}, #{scannerid,jdbcType=VARCHAR},
+		#{incname,jdbcType=VARCHAR},
+		#{incid,jdbcType=VARCHAR},
+		#{scantime,jdbcType=TIMESTAMP}, #{entrytime,jdbcType=TIMESTAMP},
+		#{amount,jdbcType=INTEGER}, #{billsnumber,jdbcType=LONGVARCHAR},
+		#{bz,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="org.kuaidi.bean.domain.EforcesWeighingScan">
+		insert into eforces_weighingscan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			createtime,
+			
+			<if test="flightsnumber != null">
+				flightsnumber,
+			</if>
+			<if test="goodstype != null">
+				goodstype,
+			</if>
+			<if test="expresstype != null">
+				expresstype,
+			</if>
+			<if test="expressid != null">
+				expressid,
+			</if>
+			<if test="postman != null">
+				postman,
+			</if>
+			<if test="postmanid != null">
+				postmanid,
+			</if>
+			<if test="did != null">
+				did,
+			</if>
+			<if test="destination != null">
+				destination,
+			</if>
+			<if test="weight != null">
+				weight,
+			</if>
+			<if test="scantype != null">
+				scantype,
+			</if>
+			<if test="scanners != null">
+				scanners,
+			</if>
+			<if test="scannerid != null">
+				scannerid,
+			</if>
+			<if test="incname != null">
+				incname,
+			</if>
+			<if test="incid != null">
+				incid,
+			</if>
+				scantime,
+				entrytime,
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="billsnumber != null">
+				billsnumber,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			now(),
+			<if test="flightsnumber != null">
+				#{flightsnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				#{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expresstype != null">
+				#{expresstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expressid != null">
+				#{expressid,jdbcType=INTEGER},
+			</if>
+			<if test="postman != null">
+				#{postman,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanid != null">
+				#{postmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="did != null">
+				#{did,jdbcType=VARCHAR},
+			</if>
+			<if test="destination != null">
+				#{destination,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				#{weight,jdbcType=DECIMAL},
+			</if>
+			<if test="scantype != null">
+				#{scantype,jdbcType=VARCHAR},
+			</if>
+			<if test="scanners != null">
+				#{scanners,jdbcType=VARCHAR},
+			</if>
+			<if test="scannerid != null">
+				#{scannerid,jdbcType=VARCHAR},
+			</if>
+			<if test="incname != null">
+				#{incname,jdbcType=VARCHAR},
+			</if>
+			<if test="incid != null">
+				#{incid,jdbcType=VARCHAR},
+			</if>
+			now(),
+			now(),
+			<if test="amount != null">
+				#{amount,jdbcType=INTEGER},
+			</if>
+			<if test="billsnumber != null">
+				#{billsnumber,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="bz != null">
+				#{bz,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="org.kuaidi.bean.domain.EforcesWeighingScan">
+		update eforces_weighingscan
+		<set>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flightsnumber != null">
+				flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				goodstype = #{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expresstype != null">
+				expresstype = #{expresstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expressid != null">
+				expressid = #{expressid,jdbcType=INTEGER},
+			</if>
+			<if test="postman != null">
+				postman = #{postman,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanid != null">
+				postmanid = #{postmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="did != null">
+				did = #{did,jdbcType=VARCHAR},
+			</if>
+			<if test="destination != null">
+				destination = #{destination,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				weight = #{weight,jdbcType=DECIMAL},
+			</if>
+			<if test="scantype != null">
+				scantype = #{scantype,jdbcType=VARCHAR},
+			</if>
+			<if test="scanners != null">
+				scanners = #{scanners,jdbcType=VARCHAR},
+			</if>
+			<if test="scannerid != null">
+				scannerid = #{scannerid,jdbcType=VARCHAR},
+			</if>
+			<if test="incname != null">
+				incname = #{incname,jdbcType=VARCHAR},
+			</if>
+			<if test="incid != null">
+				incid = #{incid,jdbcType=VARCHAR},
+			</if>
+			<if test="scantime != null">
+				scantime = #{scantime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="entrytime != null">
+				entrytime = #{entrytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=INTEGER},
+			</if>
+			<if test="billsnumber != null">
+				billsnumber = #{billsnumber,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="bz != null">
+				bz = #{bz,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="org.kuaidi.bean.domain.EforcesWeighingScan">
+		update eforces_weighingscan
+		set createtime =
+		#{createtime,jdbcType=TIMESTAMP},
+		flightsnumber =
+		#{flightsnumber,jdbcType=VARCHAR},
+		goodstype =
+		#{goodstype,jdbcType=VARCHAR},
+		expresstype =
+		#{expresstype,jdbcType=VARCHAR},
+		expressid =
+		#{expressid,jdbcType=INTEGER},
+		postman = #{postman,jdbcType=VARCHAR},
+		postmanid = #{postmanid,jdbcType=VARCHAR},
+		did =
+		#{did,jdbcType=VARCHAR},
+		destination = #{destination,jdbcType=VARCHAR},
+		weight = #{weight,jdbcType=DECIMAL},
+		scantype =
+		#{scantype,jdbcType=VARCHAR},
+		scanners = #{scanners,jdbcType=VARCHAR},
+		scannerid = #{scannerid,jdbcType=VARCHAR},
+		incname =
+		#{incname,jdbcType=VARCHAR},
+		incid = #{incid,jdbcType=VARCHAR},
+		scantime = #{scantime,jdbcType=TIMESTAMP},
+		entrytime =
+		#{entrytime,jdbcType=TIMESTAMP},
+		amount = #{amount,jdbcType=INTEGER},
+		billsnumber = #{billsnumber,jdbcType=LONGVARCHAR},
+		bz =
+		#{bz,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="org.kuaidi.bean.domain.EforcesWeighingScan">
+		update eforces_weighingscan
+		set createtime =
+		#{createtime,jdbcType=TIMESTAMP},
+		flightsnumber =
+		#{flightsnumber,jdbcType=VARCHAR},
+		goodstype =
+		#{goodstype,jdbcType=VARCHAR},
+		expresstype =
+		#{expresstype,jdbcType=VARCHAR},
+		expressid =
+		#{expressid,jdbcType=INTEGER},
+		postman = #{postman,jdbcType=VARCHAR},
+		postmanid = #{postmanid,jdbcType=VARCHAR},
+		did =
+		#{did,jdbcType=VARCHAR},
+		destination = #{destination,jdbcType=VARCHAR},
+		weight = #{weight,jdbcType=DECIMAL},
+		scantype =
+		#{scantype,jdbcType=VARCHAR},
+		scanners = #{scanners,jdbcType=VARCHAR},
+		scannerid = #{scannerid,jdbcType=VARCHAR},
+		incname =
+		#{incname,jdbcType=VARCHAR},
+		incid = #{incid,jdbcType=VARCHAR},
+		scantime = #{scantime,jdbcType=TIMESTAMP},
+		entrytime =
+		#{entrytime,jdbcType=TIMESTAMP},
+		amount = #{amount,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

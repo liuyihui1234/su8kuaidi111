@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesRectoOrderMapper">
+	<resultMap id="BaseResultMap"
+		type="org.kuaidi.bean.domain.EforcesRectoOrder">
+		<id column="Id" jdbcType="INTEGER" property="id" />
+		<result column="Number" jdbcType="VARCHAR" property="number" />
+		<result column="OperationTime" jdbcType="TIMESTAMP"
+			property="operationtime" />
+		<result column="Num" jdbcType="INTEGER" property="num" />
+		<result column="ScanTime" jdbcType="TIMESTAMP"
+			property="scantime" />
+		<result column="Shift" jdbcType="VARCHAR" property="shift" />
+		<result column="Images" jdbcType="VARCHAR" property="images" />
+		<result column="PostmanId" jdbcType="VARCHAR"
+			property="postmanid" />
+		<result column="PostmanName" jdbcType="VARCHAR"
+			property="postmanname" />
+		<result column="DeTypeId" jdbcType="INTEGER"
+			property="detypeid" />
+		<result column="DeTypeName" jdbcType="VARCHAR"
+			property="detypename" />
+		<result column="ScanTypeId" jdbcType="INTEGER"
+			property="scantypeid" />
+		<result column="ScanTypeName" jdbcType="VARCHAR"
+			property="scantypename" />
+		<result column="GoodsType" jdbcType="VARCHAR"
+			property="goodstype" />
+		<result column="GoodsId" jdbcType="INTEGER" property="goodsid" />
+		<result column="ScanMan" jdbcType="VARCHAR" property="scanman" />
+		<result column="ScanManId" jdbcType="VARCHAR"
+			property="scanmanid" />
+		<result column="CreateId" jdbcType="VARCHAR"
+			property="createid" />
+		<result column="CreateName" jdbcType="VARCHAR"
+			property="createname" />
+		<result column="DepartName" jdbcType="VARCHAR"
+			property="departname" />
+		<result column="DepartId" jdbcType="VARCHAR"
+			property="departid" />
+		<result column="jjrqm" jdbcType="VARCHAR" property="jjrqm" />
+		<result column="jjrqmrq" jdbcType="TIMESTAMP"
+			property="jjrqmrq" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		Id, Number, OperationTime, Num, ScanTime, Shift, Images, PostmanId,
+		PostmanName,
+		DeTypeId, DeTypeName, ScanTypeId, ScanTypeName, GoodsType, GoodsId, ScanMan,
+		ScanManId,
+		CreateId, CreateName, DepartName, DepartId, jjrqm, jjrqmrq
+	</sql>
+	
+	<update id="updateIsDeleteById">
+	update
+	eforces_rectoorder
+	set 
+	isDelete=0
+	where
+	id 
+	in
+	<foreach collection="list" index="index" item="ids"
+	open="(" close=")" separator=",">
+	#{ids}
+	</foreach>
+	</update>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		*
+		from
+		eforces_rectoorder
+		where
+		isDelete=1
+		<if test="_parameter!=null">
+			and incid like CONCAT(#{_parameter},'%')
+		</if>
+	</select>
+
+
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from eforces_rectoorder
+		where Id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectCountByUserNum"
+		parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from eforces_rectoorder where CreateId =
+		#{userNumber,jdbcType=VARCHAR}
+	</select>
+
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from eforces_rectoorder
+		where Id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="org.kuaidi.bean.domain.EforcesRectoOrder">
+		insert into eforces_rectoorder (Id, Number, OperationTime,
+		Num, ScanTime, Shift,
+		Images, PostmanId, PostmanName,
+		DeTypeId, DeTypeName, ScanTypeId,
+		ScanTypeName, GoodsType, GoodsId,
+		ScanMan, ScanManId, CreateId,
+		CreateName, DepartName, DepartId,
+		jjrqm, jjrqmrq)
+		values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR},
+		#{operationtime,jdbcType=TIMESTAMP},
+		#{num,jdbcType=INTEGER}, #{scantime,jdbcType=TIMESTAMP}, #{shift,jdbcType=VARCHAR},
+		#{images,jdbcType=VARCHAR}, #{postmanid,jdbcType=VARCHAR},
+		#{postmanname,jdbcType=VARCHAR},
+		#{detypeid,jdbcType=INTEGER}, #{detypename,jdbcType=VARCHAR}, #{scantypeid,jdbcType=INTEGER},
+		#{scantypename,jdbcType=VARCHAR}, #{goodstype,jdbcType=VARCHAR},
+		#{goodsid,jdbcType=INTEGER},
+		#{scanman,jdbcType=VARCHAR}, #{scanmanid,jdbcType=VARCHAR}, #{createid,jdbcType=VARCHAR},
+		#{createname,jdbcType=VARCHAR}, #{departname,jdbcType=VARCHAR},
+		#{departid,jdbcType=VARCHAR},
+		#{jjrqm,jdbcType=VARCHAR}, #{jjrqmrq,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="org.kuaidi.bean.domain.EforcesRectoOrder">
+		insert into eforces_rectoorder
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				Id,
+			</if>
+			<if test="number != null">
+				Number,
+			</if>
+				OperationTime,
+			<if test="num != null">
+				Num,
+			</if>
+				ScanTime,
+			<if test="shift != null">
+				Shift,
+			</if>
+			<if test="images != null">
+				Images,
+			</if>
+			<if test="postmanid != null">
+				PostmanId,
+			</if>
+			<if test="postmanname != null">
+				PostmanName,
+			</if>
+			<if test="detypeid != null">
+				DeTypeId,
+			</if>
+			<if test="detypename != null">
+				DeTypeName,
+			</if>
+			<if test="scantypeid != null">
+				ScanTypeId,
+			</if>
+			<if test="scantypename != null">
+				ScanTypeName,
+			</if>
+			<if test="goodstype != null">
+				GoodsType,
+			</if>
+			<if test="goodsid != null">
+				GoodsId,
+			</if>
+			<if test="scanman != null">
+				ScanMan,
+			</if>
+			<if test="scanmanid != null">
+				ScanManId,
+			</if>
+			<if test="createid != null">
+				CreateId,
+			</if>
+			<if test="createname != null">
+				CreateName,
+			</if>
+			<if test="departname != null">
+				DepartName,
+			</if>
+			<if test="departid != null">
+				DepartId,
+			</if>
+			<if test="jjrqm != null">
+				jjrqm,
+			</if>
+				jjrqmrq
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="number != null">
+				#{number,jdbcType=VARCHAR},
+			</if>
+			now(),
+			<if test="num != null">
+				#{num,jdbcType=INTEGER},
+			</if>
+			now(),
+			<if test="shift != null">
+				#{shift,jdbcType=VARCHAR},
+			</if>
+			<if test="images != null">
+				#{images,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanid != null">
+				#{postmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanname != null">
+				#{postmanname,jdbcType=VARCHAR},
+			</if>
+			<if test="detypeid != null">
+				#{detypeid,jdbcType=INTEGER},
+			</if>
+			<if test="detypename != null">
+				#{detypename,jdbcType=VARCHAR},
+			</if>
+			<if test="scantypeid != null">
+				#{scantypeid,jdbcType=INTEGER},
+			</if>
+			<if test="scantypename != null">
+				#{scantypename,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				#{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsid != null">
+				#{goodsid,jdbcType=INTEGER},
+			</if>
+			<if test="scanman != null">
+				#{scanman,jdbcType=VARCHAR},
+			</if>
+			<if test="scanmanid != null">
+				#{scanmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="createid != null">
+				#{createid,jdbcType=VARCHAR},
+			</if>
+			<if test="createname != null">
+				#{createname,jdbcType=VARCHAR},
+			</if>
+			<if test="departname != null">
+				#{departname,jdbcType=VARCHAR},
+			</if>
+			<if test="departid != null">
+				#{departid,jdbcType=VARCHAR},
+			</if>
+			<if test="jjrqm != null">
+				#{jjrqm,jdbcType=VARCHAR},
+			</if>
+			now(),
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="org.kuaidi.bean.domain.EforcesRectoOrder">
+		update eforces_rectoorder
+		<set>
+			<if test="number != null">
+				Number = #{number,jdbcType=VARCHAR},
+			</if>
+			<if test="operationtime != null">
+				OperationTime = #{operationtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="num != null">
+				Num = #{num,jdbcType=INTEGER},
+			</if>
+			<if test="scantime != null">
+				ScanTime = #{scantime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="shift != null">
+				Shift = #{shift,jdbcType=VARCHAR},
+			</if>
+			<if test="images != null">
+				Images = #{images,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanid != null">
+				PostmanId = #{postmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanname != null">
+				PostmanName = #{postmanname,jdbcType=VARCHAR},
+			</if>
+			<if test="detypeid != null">
+				DeTypeId = #{detypeid,jdbcType=INTEGER},
+			</if>
+			<if test="detypename != null">
+				DeTypeName = #{detypename,jdbcType=VARCHAR},
+			</if>
+			<if test="scantypeid != null">
+				ScanTypeId = #{scantypeid,jdbcType=INTEGER},
+			</if>
+			<if test="scantypename != null">
+				ScanTypeName = #{scantypename,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				GoodsType = #{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsid != null">
+				GoodsId = #{goodsid,jdbcType=INTEGER},
+			</if>
+			<if test="scanman != null">
+				ScanMan = #{scanman,jdbcType=VARCHAR},
+			</if>
+			<if test="scanmanid != null">
+				ScanManId = #{scanmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="createid != null">
+				CreateId = #{createid,jdbcType=VARCHAR},
+			</if>
+			<if test="createname != null">
+				CreateName = #{createname,jdbcType=VARCHAR},
+			</if>
+			<if test="departname != null">
+				DepartName = #{departname,jdbcType=VARCHAR},
+			</if>
+			<if test="departid != null">
+				DepartId = #{departid,jdbcType=VARCHAR},
+			</if>
+			<if test="jjrqm != null">
+				jjrqm = #{jjrqm,jdbcType=VARCHAR},
+			</if>
+			<if test="jjrqmrq != null">
+				jjrqmrq = #{jjrqmrq,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where Id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="org.kuaidi.bean.domain.EforcesRectoOrder">
+		update eforces_rectoorder
+		set Number = #{number,jdbcType=VARCHAR},
+		OperationTime = #{operationtime,jdbcType=TIMESTAMP},
+		Num = #{num,jdbcType=INTEGER},
+		ScanTime = #{scantime,jdbcType=TIMESTAMP},
+		Shift = #{shift,jdbcType=VARCHAR},
+		Images = #{images,jdbcType=VARCHAR},
+		PostmanId = #{postmanid,jdbcType=VARCHAR},
+		PostmanName = #{postmanname,jdbcType=VARCHAR},
+		DeTypeId = #{detypeid,jdbcType=INTEGER},
+		DeTypeName = #{detypename,jdbcType=VARCHAR},
+		ScanTypeId = #{scantypeid,jdbcType=INTEGER},
+		ScanTypeName = #{scantypename,jdbcType=VARCHAR},
+		GoodsType = #{goodstype,jdbcType=VARCHAR},
+		GoodsId = #{goodsid,jdbcType=INTEGER},
+		ScanMan = #{scanman,jdbcType=VARCHAR},
+		ScanManId = #{scanmanid,jdbcType=VARCHAR},
+		CreateId = #{createid,jdbcType=VARCHAR},
+		CreateName = #{createname,jdbcType=VARCHAR},
+		DepartName = #{departname,jdbcType=VARCHAR},
+		DepartId = #{departid,jdbcType=VARCHAR},
+		jjrqm = #{jjrqm,jdbcType=VARCHAR},
+		jjrqmrq = #{jjrqmrq,jdbcType=TIMESTAMP}
+		where Id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

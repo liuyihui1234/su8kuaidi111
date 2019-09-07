@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesPaytypeMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.maintainance.EforcesPaytype">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Number" jdbcType="VARCHAR" property="number" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+
+    <result column="Remarks" jdbcType="LONGVARCHAR" property="remarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Number, Name,Remarks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_paytype
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_paytype
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.maintainance.EforcesPaytype">
+    insert into eforces_paytype (Id, Number, Name, 
+      Remarks)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.maintainance.EforcesPaytype">
+    insert into eforces_paytype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+      <if test="remarks != null">
+        Remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_paytype where isdelete = 0
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.maintainance.EforcesPaytype">
+    update eforces_paytype
+    <set>
+      <if test="number != null">
+        Number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        Remarks = #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateDelete">
+    update eforces_paytype
+    set isDelete = 1
+    where Id in
+    <foreach collection="array" item="id" index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.maintainance.EforcesPaytype">
+    update eforces_paytype
+    set Number = #{number,jdbcType=VARCHAR},
+      Name = #{name,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

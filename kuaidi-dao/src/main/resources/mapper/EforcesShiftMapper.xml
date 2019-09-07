@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesShiftMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.maintainance.EforcesShift">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Number" jdbcType="VARCHAR" property="number" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Number, Name
+  </sql>
+
+  <!-- 查询班次管理 -->
+  <select id="selectByShiftlist" resultMap="BaseResultMap">
+    SELECT * from eforces_shift where isdelete = 0
+  </select>
+
+  <!-- 删除 只把状态修改为1  -->
+  <update id="removeByShift">
+    update
+    eforces_shift
+    set
+    isDelete=1
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_shift
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_shift
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.maintainance.EforcesShift">
+    insert into eforces_shift (Id, Number, Name
+      )
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.maintainance.EforcesShift">
+    insert into eforces_shift
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.maintainance.EforcesShift">
+    update eforces_shift
+    <set>
+      <if test="number != null">
+        Number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.maintainance.EforcesShift">
+    update eforces_shift
+    set Number = #{number,jdbcType=VARCHAR},
+      Name = #{name,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesIncmentMapper">
+    <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesIncment">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="parentid" jdbcType="VARCHAR" property="parentid"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="leaderidlist" jdbcType="VARCHAR" property="leaderidlist"/>
+        <result column="mnemonic" jdbcType="VARCHAR" property="mnemonic"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="moneytype" jdbcType="VARCHAR" property="moneytype"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="lagearea" jdbcType="VARCHAR" property="lagearea"/>
+        <result column="regional" jdbcType="VARCHAR" property="regional"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="defaultsenda" jdbcType="VARCHAR" property="defaultsenda"/>
+        <result column="financecenter" jdbcType="VARCHAR" property="financecenter"/>
+        <result column="financecentername" jdbcType="VARCHAR" property="financecentername"/>
+        <result column="parentname" jdbcType="VARCHAR" property="parentname"/>
+        <result column="deliveryrange" jdbcType="VARCHAR" property="deliveryrange"/>
+        <result column="deliveryrangename" jdbcType="VARCHAR" property="deliveryrangename"/>
+        <result column="weburl" jdbcType="VARCHAR" property="weburl"/>
+        <result column="featurescode" jdbcType="VARCHAR" property="featurescode"/>
+        <result column="isfinancecenter" jdbcType="INTEGER" property="isfinancecenter"/>
+        <result column="istopay" jdbcType="INTEGER" property="istopay"/>
+        <result column="istransfer" jdbcType="INTEGER" property="istransfer"/>
+        <result column="transfername" jdbcType="VARCHAR" property="transfername"/>
+        <result column="transfernumber" jdbcType="VARCHAR" property="transfernumber"/>
+        <result column="istariff" jdbcType="INTEGER" property="istariff"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, parentid, remark, leaderidlist, mnemonic, number, moneytype, tel, mobile, 
+    lagearea, regional, province, city, area, type, defaultsenda, financecenter, financecentername, 
+    parentname, deliveryrange, deliveryrangename, weburl, featurescode, isfinancecenter, 
+    istopay, istransfer, transfername, transfernumber, istariff,level, address
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+       a.id, a.name, a.parentid, a.remark, a.leaderidlist, a.mnemonic, a.number, a.moneytype, a.tel, a.mobile,
+    a.lagearea, a.regional, a.province, a.city, a.area, a.type, a.defaultsenda, a.financecenter, a.financecentername,
+    a.parentname, a.deliveryrange, a.deliveryrangename, a.weburl, a.featurescode, a.isfinancecenter,
+    a.istopay, a.istransfer, a.transfername, a.transfernumber, a.istariff,a.level,
+        b.name as provincename,
+        c.name as cityname,
+        d.name as areaname
+        from eforces_incment a
+        left join eforces_province b on a.province = b.code
+        left join eforces_city c on a.city = c.code and a.province = c.provinceId
+        left join eforces_area d on a.area = d.code and a.city = d.cityId
+        where a.id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getprovinceid" parameterType="string" resultType="string">
+          select
+            code as province from eforces_province
+            where
+            name like  concat(#{name,jdbcType=VARCHAR},'%')
+    </select>
+    <select id="getcityid" parameterType="string" resultType="string"> 
+          select
+            code as city from eforces_city
+            where
+            name like  concat(#{name,jdbcType=VARCHAR},'%')
+    </select>
+    <select id="getareaid" parameterType="string" resultType="string">
+          select
+            code as area from eforces_area
+            where
+            name like  concat(#{0},'%') AND cityId = #{1}
+    </select>
+
+    <select id="selectAllIcrment" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_incment where  isdelete = 0
+        <if test="_parameter!=null">
+         and name like concat('%',#{_parameter},'%') or number  like concat('%',#{_parameter},'%')
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_incment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesIncment">
+    insert into eforces_incment (id, name, parentid,
+      remark, leaderidlist, mnemonic, 
+      number, moneytype, tel, 
+      mobile, lagearea, regional, 
+      province, city, area, 
+      type, defaultsenda, financecenter, 
+      financecentername, parentname, deliveryrange, 
+      deliveryrangename, weburl, featurescode, 
+      isfinancecenter, istopay, istransfer, 
+      transfername, transfernumber, istariff,level
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{leaderidlist,jdbcType=VARCHAR}, #{mnemonic,jdbcType=VARCHAR}, 
+      #{number,jdbcType=VARCHAR}, #{moneytype,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{lagearea,jdbcType=VARCHAR}, #{regional,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{defaultsenda,jdbcType=VARCHAR}, #{financecenter,jdbcType=VARCHAR}, 
+      #{financecentername,jdbcType=VARCHAR}, #{parentname,jdbcType=VARCHAR}, #{deliveryrange,jdbcType=VARCHAR}, 
+      #{deliveryrangename,jdbcType=VARCHAR}, #{weburl,jdbcType=VARCHAR}, #{featurescode,jdbcType=VARCHAR}, 
+      #{isfinancecenter,jdbcType=INTEGER}, #{istopay,jdbcType=INTEGER}, #{istransfer,jdbcType=INTEGER}, 
+      #{transfername,jdbcType=VARCHAR}, #{transfernumber,jdbcType=VARCHAR}, #{istariff,jdbcType=INTEGER}, 
+      #{level,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesIncment" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into eforces_incment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="parentid != null">
+                parentid,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="leaderidlist != null">
+                leaderidlist,
+            </if>
+            <if test="mnemonic != null">
+                mnemonic,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="moneytype != null">
+                moneytype,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="lagearea != null">
+                lagearea,
+            </if>
+            <if test="regional != null">
+                regional,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="defaultsenda != null">
+                defaultsenda,
+            </if>
+            <if test="financecenter != null">
+                financecenter,
+            </if>
+            <if test="financecentername != null">
+                financecentername,
+            </if>
+            <if test="parentname != null">
+                parentname,
+            </if>
+            <if test="deliveryrange != null">
+                deliveryrange,
+            </if>
+            <if test="deliveryrangename != null">
+                deliveryrangename,
+            </if>
+            <if test="weburl != null">
+                weburl,
+            </if>
+            <if test="featurescode != null">
+                featurescode,
+            </if>
+            <if test="isfinancecenter != null">
+                isfinancecenter,
+            </if>
+            <if test="istopay != null">
+                istopay,
+            </if>
+            <if test="istransfer != null">
+                istransfer,
+            </if>
+            <if test="transfername != null">
+                transfername,
+            </if>
+            <if test="transfernumber != null">
+                transfernumber,
+            </if>
+            <if test="istariff != null">
+                istariff,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="parentid != null">
+                #{parentid,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="leaderidlist != null">
+                #{leaderidlist,jdbcType=VARCHAR},
+            </if>
+            <if test="mnemonic != null">
+                #{mnemonic,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="moneytype != null">
+                #{moneytype,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="lagearea != null">
+                #{lagearea,jdbcType=VARCHAR},
+            </if>
+            <if test="regional != null">
+                #{regional,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultsenda != null">
+                #{defaultsenda,jdbcType=VARCHAR},
+            </if>
+            <if test="financecenter != null">
+                #{financecenter,jdbcType=VARCHAR},
+            </if>
+            <if test="financecentername != null">
+                #{financecentername,jdbcType=VARCHAR},
+            </if>
+            <if test="parentname != null">
+                #{parentname,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryrange != null">
+                #{deliveryrange,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryrangename != null">
+                #{deliveryrangename,jdbcType=VARCHAR},
+            </if>
+            <if test="weburl != null">
+                #{weburl,jdbcType=VARCHAR},
+            </if>
+            <if test="featurescode != null">
+                #{featurescode,jdbcType=VARCHAR},
+            </if>
+            <if test="isfinancecenter != null">
+                #{isfinancecenter,jdbcType=INTEGER},
+            </if>
+            <if test="istopay != null">
+                #{istopay,jdbcType=INTEGER},
+            </if>
+            <if test="istransfer != null">
+                #{istransfer,jdbcType=INTEGER},
+            </if>
+            <if test="transfername != null">
+                #{transfername,jdbcType=VARCHAR},
+            </if>
+            <if test="transfernumber != null">
+                #{transfernumber,jdbcType=VARCHAR},
+            </if>
+            <if test="istariff != null">
+                #{istariff,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                 #{level,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesIncment">
+        update eforces_incment
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="parentid != null">
+                parentid = #{parentid,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="leaderidlist != null">
+                leaderidlist = #{leaderidlist,jdbcType=VARCHAR},
+            </if>
+            <if test="mnemonic != null">
+                mnemonic = #{mnemonic,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="moneytype != null">
+                moneytype = #{moneytype,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                tel = #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="lagearea != null">
+                lagearea = #{lagearea,jdbcType=VARCHAR},
+            </if>
+            <if test="regional != null">
+                regional = #{regional,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="area != null">
+                area = #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultsenda != null">
+                defaultsenda = #{defaultsenda,jdbcType=VARCHAR},
+            </if>
+            <if test="financecenter != null">
+                financecenter = #{financecenter,jdbcType=VARCHAR},
+            </if>
+            <if test="financecentername != null">
+                financecentername = #{financecentername,jdbcType=VARCHAR},
+            </if>
+            <if test="parentname != null">
+                parentname = #{parentname,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryrange != null">
+                deliveryrange = #{deliveryrange,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryrangename != null">
+                deliveryrangename = #{deliveryrangename,jdbcType=VARCHAR},
+            </if>
+            <if test="weburl != null">
+                weburl = #{weburl,jdbcType=VARCHAR},
+            </if>
+            <if test="featurescode != null">
+                featurescode = #{featurescode,jdbcType=VARCHAR},
+            </if>
+            <if test="isfinancecenter != null">
+                isfinancecenter = #{isfinancecenter,jdbcType=INTEGER},
+            </if>
+            <if test="istopay != null">
+                istopay = #{istopay,jdbcType=INTEGER},
+            </if>
+            <if test="istransfer != null">
+                istransfer = #{istransfer,jdbcType=INTEGER},
+            </if>
+            <if test="transfername != null">
+                transfername = #{transfername,jdbcType=VARCHAR},
+            </if>
+            <if test="transfernumber != null">
+                transfernumber = #{transfernumber,jdbcType=VARCHAR},
+            </if>
+            <if test="istariff != null">
+                istariff = #{istariff,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesIncment">
+    update eforces_incment
+    set name = #{name,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      leaderidlist = #{leaderidlist,jdbcType=VARCHAR},
+      mnemonic = #{mnemonic,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      moneytype = #{moneytype,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      lagearea = #{lagearea,jdbcType=VARCHAR},
+      regional = #{regional,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      defaultsenda = #{defaultsenda,jdbcType=VARCHAR},
+      financecenter = #{financecenter,jdbcType=VARCHAR},
+      financecentername = #{financecentername,jdbcType=VARCHAR},
+      parentname = #{parentname,jdbcType=VARCHAR},
+      deliveryrange = #{deliveryrange,jdbcType=VARCHAR},
+      deliveryrangename = #{deliveryrangename,jdbcType=VARCHAR},
+      weburl = #{weburl,jdbcType=VARCHAR},
+      featurescode = #{featurescode,jdbcType=VARCHAR},
+      isfinancecenter = #{isfinancecenter,jdbcType=INTEGER},
+      istopay = #{istopay,jdbcType=INTEGER},
+      istransfer = #{istransfer,jdbcType=INTEGER},
+      transfername = #{transfername,jdbcType=VARCHAR},
+      transfernumber = #{transfernumber,jdbcType=VARCHAR},
+      istariff = #{istariff,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectIncmentByParentid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_incment
+    where parentid in
+    <foreach collection="list" item="number" index="index" open="(" close=")" separator=",">
+      #{number}
+    </foreach>
+  </select>
+
+  <select id="selectIncmentByNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_incment
+    where number in
+    <foreach collection="list" item="number" index="index" open="(" close=")" separator=",">
+      #{number}
+    </foreach>
+  </select>
+
+  <select id="selectByNumber" resultMap="BaseResultMap">
+		select
+    <include refid="Base_Column_List" />
+    from eforces_incment
+    where number = #{number,jdbcType=VARCHAR}
+ </select>
+ 
+ <select id="statisticsIncmentByNumber" resultType="java.util.HashMap">
+ 	SELECT incment.number as number   , incment.name as name , count(scan.billsnumber )  as total , incment.address as address   from eforces_incment incment  left join   eforces_sentscan scan on incment.number = scan.incid  
+		where scan.scantime > 
+		 date_sub(NOW(), interval 522 month)  and number in
+		 
+		 <foreach collection="list" item="number" index="index" open="(" close=")" separator=",">
+		      #{number}
+		  </foreach>
+		group by incment.name , incment.number
+ </select>
+ 
+ <select id="statisticsIncmentByParentid" resultType="java.util.HashMap">
+ 	SELECT incment.number as number   , incment.name as name , count(scan.billsnumber )  as total , '' as address   from eforces_incment incment   left join   eforces_sentscan scan on incment.number = scan.incid  
+		where scan.scantime > 
+		 date_sub(NOW(), interval 522 month)  and parentid  in
+
+		 <foreach collection="list" item="number" index="index" open="(" close=")" separator=",">
+		      #{number}
+		  </foreach>
+		group by incment.name , incment.number
+ </select>
+
+
+    <update id="deleteByid" >
+        update eforces_incment
+        set isdelete = 1
+        where id
+        in
+        <foreach collection="list" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
+ 
+</mapper>

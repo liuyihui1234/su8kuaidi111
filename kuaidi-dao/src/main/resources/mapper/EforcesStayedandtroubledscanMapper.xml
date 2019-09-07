@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesStayedandtroubledscanMapper">
+    <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="billsnumber" jdbcType="VARCHAR" property="billsnumber"/>
+        <result column="createtime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="flightsnumber" jdbcType="VARCHAR" property="flightsnumber"/>
+        <result column="troubledtype" jdbcType="VARCHAR" property="troubledtype"/>
+        <result column="scantype" jdbcType="VARCHAR" property="scantype"/>
+        <result column="sacnners" jdbcType="VARCHAR" property="sacnners"/>
+        <result column="sacnnerid" jdbcType="VARCHAR" property="sacnnerid"/>
+        <result column="incname" jdbcType="VARCHAR" property="incname"/>
+        <result column="incid" jdbcType="VARCHAR" property="incid"/>
+        <result column="scantime" jdbcType="TIMESTAMP" property="scantime"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+		<result column="causeId" jdbcType="INTEGER" property="causeId"/>
+		<result column="isDelete" jdbcType="INTEGER" property="isDelete"/>
+
+        <association property="order" javaType="org.kuaidi.bean.domain.EforcesOrder">
+            <id column="Id" jdbcType="INTEGER" property="id"/>
+            <result column="Number" jdbcType="VARCHAR" property="number"/>
+            <result column="Formguestcode" jdbcType="VARCHAR" property="formguestcode"/>
+            <result column="formguestname" jdbcType="VARCHAR" property="formguestname"/>
+            <result column="FromName" jdbcType="VARCHAR" property="fromname"/>
+            <result column="Fromcity" jdbcType="VARCHAR" property="fromcity"/>
+            <result column="Fromcityname" jdbcType="VARCHAR" property="fromcityname"/>
+            <result column="Fromprovince" jdbcType="VARCHAR" property="fromprovince"/>
+            <result column="FromProvincename" jdbcType="VARCHAR" property="fromprovincename"/>
+            <result column="fromarea" jdbcType="VARCHAR" property="fromarea"/>
+            <result column="fromareaname" jdbcType="VARCHAR" property="fromareaname"/>
+            <result column="Fromincname" jdbcType="VARCHAR" property="fromincname"/>
+            <result column="Fromaddress" jdbcType="VARCHAR" property="fromaddress"/>
+            <result column="Fromtel" jdbcType="VARCHAR" property="fromtel"/>
+            <result column="Fromcode" jdbcType="VARCHAR" property="fromcode"/>
+            <result column="Toguestname" jdbcType="VARCHAR" property="toguestname"/>
+            <result column="Toguestcode" jdbcType="VARCHAR" property="toguestcode"/>
+            <result column="Toprovince" jdbcType="VARCHAR" property="toprovince"/>
+            <result column="Toprovincename" jdbcType="VARCHAR" property="toprovincename"/>
+            <result column="Tocity" jdbcType="VARCHAR" property="tocity"/>
+            <result column="Tocityname" jdbcType="VARCHAR" property="tocityname"/>
+            <result column="ToArea" jdbcType="VARCHAR" property="toarea"/>
+            <result column="ToAreaname" jdbcType="VARCHAR" property="toareaname"/>
+            <result column="Toincname" jdbcType="VARCHAR" property="toincname"/>
+            <result column="Toaddress" jdbcType="VARCHAR" property="toaddress"/>
+            <result column="Toname" jdbcType="VARCHAR" property="toname"/>
+            <result column="Tocode" jdbcType="VARCHAR" property="tocode"/>
+            <result column="Totel" jdbcType="VARCHAR" property="totel"/>
+            <result column="Isfile" jdbcType="INTEGER" property="isfile"/>
+            <result column="isgoods" jdbcType="VARCHAR" property="isgoods"/>
+            <result column="Filename" jdbcType="VARCHAR" property="filename"/>
+            <result column="Num" jdbcType="INTEGER" property="num"/>
+            <result column="Weight" jdbcType="DECIMAL" property="weight"/>
+            <result column="Longs" jdbcType="DECIMAL" property="longs"/>
+            <result column="Widths" jdbcType="DECIMAL" property="widths"/>
+            <result column="Heights" jdbcType="DECIMAL" property="heights"/>
+            <result column="Volume" jdbcType="DECIMAL" property="volume"/>
+            <result column="begintime" jdbcType="TIMESTAMP" property="begintime"/>
+            <result column="Senduserid" jdbcType="VARCHAR" property="senduserid"/>
+            <result column="Sendusername" jdbcType="VARCHAR" property="sendusername"/>
+            <result column="fromusersignature" jdbcType="VARCHAR" property="fromusersignature"/>
+            <result column="sendusersignature" jdbcType="VARCHAR" property="sendusersignature"/>
+            <result column="Iscollection" jdbcType="INTEGER" property="iscollection"/>
+            <result column="Paymode" jdbcType="INTEGER" property="paymode"/>
+            <result column="Isinsured" jdbcType="INTEGER" property="isinsured"/>
+            <result column="Insuredsumprice" jdbcType="DECIMAL" property="insuredsumprice"/>
+            <result column="Insuredprice" jdbcType="DECIMAL" property="insuredprice"/>
+            <result column="Ismobilesend" jdbcType="INTEGER" property="ismobilesend"/>
+            <result column="Mobileprice" jdbcType="DECIMAL" property="mobileprice"/>
+            <result column="Price" jdbcType="DECIMAL" property="price"/>
+            <result column="Sendmode" jdbcType="INTEGER" property="sendmode"/>
+            <result column="Modeprice" jdbcType="DECIMAL" property="modeprice"/>
+            <result column="Tousersignature" jdbcType="VARCHAR" property="tousersignature"/>
+            <result column="Collectionsignature" jdbcType="VARCHAR" property="collectionsignature"/>
+            <result column="Signaturecode" jdbcType="VARCHAR" property="signaturecode"/>
+            <result column="Endtime" jdbcType="TIMESTAMP" property="endtime"/>
+            <result column="Sumprice" jdbcType="DECIMAL" property="sumprice"/>
+            <result column="Deliveryuserid" jdbcType="VARCHAR" property="deliveryuserid"/>
+            <result column="Deliveryusername" jdbcType="VARCHAR" property="deliveryusername"/>
+            <result column="Createtime" jdbcType="TIMESTAMP" property="createtime"/>
+            <result column="Createuserid" jdbcType="VARCHAR" property="createuserid"/>
+            <result column="Createusername" jdbcType="VARCHAR" property="createusername"/>
+            <result column="Createincnumber" jdbcType="VARCHAR" property="createincnumber"/>
+            <result column="Createincname" jdbcType="VARCHAR" property="createincname"/>
+            <result column="zqj" jdbcType="INTEGER" property="zqj"/>
+            <result column="zjj" jdbcType="INTEGER" property="zjj"/>
+            <result column="sfdshk" jdbcType="INTEGER" property="sfdshk"/>
+            <result column="dshk" jdbcType="DECIMAL" property="dshk"/>
+            <result column="dsfy" jdbcType="DECIMAL" property="dsfy"/>
+            <result column="qfhd" jdbcType="INTEGER" property="qfhd"/>
+            <result column="hdh" jdbcType="VARCHAR" property="hdh"/>
+            <result column="fdfy" jdbcType="DECIMAL" property="fdfy"/>
+            <result column="tsps" jdbcType="INTEGER" property="tsps"/>
+            <result column="ywfy" jdbcType="DECIMAL" property="ywfy"/>
+            <result column="yyfy" jdbcType="DECIMAL" property="yyfy"/>
+            <result column="bzjg" jdbcType="INTEGER" property="bzjg"/>
+            <result column="clfy" jdbcType="DECIMAL" property="clfy"/>
+            <result column="rgfy" jdbcType="DECIMAL" property="rgfy"/>
+            <result column="qtgxhfw" jdbcType="INTEGER" property="qtgxhfw"/>
+            <result column="dzfy" jdbcType="DECIMAL" property="dzfy"/>
+            <result column="iszf" jdbcType="INTEGER" property="iszf"/>
+            <result column="isduanxin" jdbcType="INTEGER" property="isduanxin"/>
+            <result column="sjrshouji" jdbcType="VARCHAR" property="sjrshouji"/>
+            <result column="wupinnum" jdbcType="INTEGER" property="wupinnum"/>
+            <result column="wupinprices" jdbcType="DECIMAL" property="wupinprices"/>
+            <result column="kahao" jdbcType="VARCHAR" property="kahao"/>
+            <result column="dsfwf" jdbcType="INTEGER" property="dsfwf"/>
+            <result column="tssp" jdbcType="INTEGER" property="tssp"/>
+            <result column="isqdfh" jdbcType="INTEGER" property="isqdfh"/>
+            <result column="zzfwqt" jdbcType="VARCHAR" property="zzfwqt"/>
+            <result column="fyjs" jdbcType="INTEGER" property="fyjs"/>
+            <result column="fyzl" jdbcType="DECIMAL" property="fyzl"/>
+            <result column="fyjfzl" jdbcType="DECIMAL" property="fyjfzl"/>
+            <result column="yyfjf" jdbcType="DECIMAL" property="yyfjf"/>
+            <result column="fkfs" jdbcType="VARCHAR" property="fkfs"/>
+            <result column="fkfsqt" jdbcType="VARCHAR" property="fkfsqt"/>
+            <result column="yuejiezhanghu" jdbcType="VARCHAR" property="yuejiezhanghu"/>
+            <result column="openid" jdbcType="VARCHAR" property="openid"/>
+            <result column="sfz" jdbcType="VARCHAR" property="sfz"/>
+            <result column="zhCode" jdbcType="VARCHAR" property="zhcode"/>
+            <result column="zhNumber" jdbcType="VARCHAR" property="zhnumber"/>
+            <result column="isGetTrace" jdbcType="TINYINT" property="isgettrace"/>
+            <result column="Remark" jdbcType="LONGVARCHAR" property="remark"/>
+            <result column="fwyq" jdbcType="LONGVARCHAR" property="fwyq"/>
+        </association>
+
+
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="billsnumber" jdbcType="VARCHAR" property="billsnumber"/>
+        <result column="createtime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="flightsnumber" jdbcType="VARCHAR" property="flightsnumber"/>
+        <result column="troubledtype" jdbcType="VARCHAR" property="troubledtype"/>
+        <result column="scantype" jdbcType="VARCHAR" property="scantype"/>
+        <result column="sacnners" jdbcType="VARCHAR" property="sacnners"/>
+        <result column="sacnnerid" jdbcType="VARCHAR" property="sacnnerid"/>
+        <result column="incname" jdbcType="VARCHAR" property="incname"/>
+        <result column="incid" jdbcType="VARCHAR" property="incid"/>
+        <result column="scantime" jdbcType="TIMESTAMP" property="scantime"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+    </resultMap>
+
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+        <result column="bz" jdbcType="LONGVARCHAR" property="bz"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, billsnumber, createtime, flightsnumber, troubledtype, scantype, sacnners, sacnnerid, 
+    incname, incid, scantime, amount, causeId , isDelete
+  </sql>
+    <sql id="Blob_Column_List">
+    bz
+  </sql>
+
+    <!-- 获取问题件 -->
+    <select id="getIssue" resultMap="ResultMapWithBLOBs">
+    SELECT trouble.*, bill.*  from  eforces_stayedandtroubledscan    trouble
+ 	join  eforces_problemcause  cause on trouble.troubledtype = cause.Name 
+    JOIN eforces_order bill on trouble.billsnumber=bill.Number
+     where trouble.incid  = #{incid} 
+     and cause.isDelete = 0 and   cause.id in 
+     <foreach collection="causeIds" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+    <!-- web获取所有问题件 -->
+    <select id="getAllIssue" resultMap="BaseResultMap2">
+        SELECT  <include refid="Base_Column_List"></include> from eforces_stayedandtroubledscan
+           where isdelete = 0
+            <if test="_parameter != null">
+            and     incId like CONCAT(#{_parameter},'%')
+            </if>
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from eforces_stayedandtroubledscan
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_stayedandtroubledscan
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    	delete from eforces_stayedandtroubledscan
+    	where id = #{id,jdbcType=INTEGER}
+  	</delete>
+  	
+  	<delete id="deleteStayedandtroubledByNumber" parameterType="java.lang.String">
+    	update  eforces_stayedandtroubledscan  set isDelete = 1 
+    	where billsnumber = #{billsNumber,jdbcType=VARCHAR}
+  	</delete>
+
+    <update id="deleteByid" >
+        update eforces_stayedandtroubledscan
+        set isdelete = 1
+        where id
+        in
+        <foreach collection="list" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
+  
+  
+    <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+    insert into eforces_stayedandtroubledscan (id, billsnumber, createtime, 
+      flightsnumber, troubledtype, scantype, 
+      sacnners, sacnnerid, incname, 
+      incid, scantime, amount, causeId,
+      bz)
+    values (#{id,jdbcType=INTEGER}, #{billsnumber,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{flightsnumber,jdbcType=VARCHAR}, #{troubledtype,jdbcType=VARCHAR}, #{scantype,jdbcType=VARCHAR}, 
+      #{sacnners,jdbcType=VARCHAR}, #{sacnnerid,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR}, 
+      #{incid,jdbcType=VARCHAR}, #{scantime,jdbcType=TIMESTAMP}, #{amount,jdbcType=INTEGER}, 
+      #{causeId,jdbcType=VARCHAR}, 
+      #{bz,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+        insert into eforces_stayedandtroubledscan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="billsnumber != null">
+                billsnumber,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="flightsnumber != null">
+                flightsnumber,
+            </if>
+            <if test="troubledtype != null">
+                troubledtype,
+            </if>
+            <if test="scantype != null">
+                scantype,
+            </if>
+            <if test="sacnners != null">
+                sacnners,
+            </if>
+            <if test="sacnnerid != null">
+                sacnnerid,
+            </if>
+            <if test="incname != null">
+                incname,
+            </if>
+            <if test="incid != null">
+                incid,
+            </if>
+            <if test="scantime != null">
+                scantime,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="causeId != null">
+                causeId,
+            </if>
+            <if test="bz != null">
+                bz,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="billsnumber != null">
+                #{billsnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flightsnumber != null">
+                #{flightsnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="troubledtype != null">
+                #{troubledtype,jdbcType=VARCHAR},
+            </if>
+            <if test="scantype != null">
+                #{scantype,jdbcType=VARCHAR},
+            </if>
+            <if test="sacnners != null">
+                #{sacnners,jdbcType=VARCHAR},
+            </if>
+            <if test="sacnnerid != null">
+                #{sacnnerid,jdbcType=VARCHAR},
+            </if>
+            <if test="incname != null">
+                #{incname,jdbcType=VARCHAR},
+            </if>
+            <if test="incid != null">
+                #{incid,jdbcType=VARCHAR},
+            </if>
+            <if test="scantime != null">
+                #{scantime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=INTEGER},
+            </if>
+             <if test="causeId != null">
+                #{causeId,jdbcType=VARCHAR},
+            </if>
+            <if test="bz != null">
+                #{bz,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+        update eforces_stayedandtroubledscan
+        <set>
+            <if test="billsnumber != null">
+                billsnumber = #{billsnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flightsnumber != null">
+                flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="troubledtype != null">
+                troubledtype = #{troubledtype,jdbcType=VARCHAR},
+            </if>
+            <if test="scantype != null">
+                scantype = #{scantype,jdbcType=VARCHAR},
+            </if>
+            <if test="sacnners != null">
+                sacnners = #{sacnners,jdbcType=VARCHAR},
+            </if>
+            <if test="sacnnerid != null">
+                sacnnerid = #{sacnnerid,jdbcType=VARCHAR},
+            </if>
+            <if test="incname != null">
+                incname = #{incname,jdbcType=VARCHAR},
+            </if>
+            <if test="incid != null">
+                incid = #{incid,jdbcType=VARCHAR},
+            </if>
+            <if test="scantime != null">
+                scantime = #{scantime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="causeId != null">
+                causeId = #{causeId,jdbcType=VARCHAR},
+            </if>
+            <if test="bz != null">
+                bz = #{bz,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+    update eforces_stayedandtroubledscan
+    set billsnumber = #{billsnumber,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+      troubledtype = #{troubledtype,jdbcType=VARCHAR},
+      scantype = #{scantype,jdbcType=VARCHAR},
+      sacnners = #{sacnners,jdbcType=VARCHAR},
+      sacnnerid = #{sacnnerid,jdbcType=VARCHAR},
+      incname = #{incname,jdbcType=VARCHAR},
+      incid = #{incid,jdbcType=VARCHAR},
+      scantime = #{scantime,jdbcType=TIMESTAMP},
+      amount = #{amount,jdbcType=INTEGER},
+      causeId = #{causeId,jdbcType=VARCHAR},
+      bz = #{bz,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
+    update eforces_stayedandtroubledscan
+    set billsnumber = #{billsnumber,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+      troubledtype = #{troubledtype,jdbcType=VARCHAR},
+      scantype = #{scantype,jdbcType=VARCHAR},
+      sacnners = #{sacnners,jdbcType=VARCHAR},
+      sacnnerid = #{sacnnerid,jdbcType=VARCHAR},
+      incname = #{incname,jdbcType=VARCHAR},
+      incid = #{incid,jdbcType=VARCHAR},
+      scantime = #{scantime,jdbcType=TIMESTAMP},
+      causeId = #{causeId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

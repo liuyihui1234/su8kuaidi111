@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesHomepagepicMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesHomepagepic">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="picPath" jdbcType="VARCHAR" property="picpath" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="crtTime" jdbcType="TIMESTAMP" property="crttime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, picPath, sort, crtTime, remark
+  </sql>
+
+  <select id="selectByDivide" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from eforces_homePagePic where type=#{type} order by sort asc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_homePagePic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_homePagePic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesHomepagepic">
+    insert into eforces_homePagePic (id, type, picPath, 
+      sort, crtTime, remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{picpath,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{crttime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesHomepagepic">
+    insert into eforces_homePagePic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="picpath != null">
+        picPath,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="crttime != null">
+        crtTime,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="picpath != null">
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="crttime != null">
+        #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesHomepagepic">
+    update eforces_homePagePic
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="picpath != null">
+        picPath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="crttime != null">
+        crtTime = #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesHomepagepic">
+    update eforces_homePagePic
+    set type = #{type,jdbcType=INTEGER},
+      picPath = #{picpath,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      crtTime = #{crttime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

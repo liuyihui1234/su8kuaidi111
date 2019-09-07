@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesCustomerSignMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesCustomerSign">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Number" jdbcType="VARCHAR" property="number" />
+    <result column="SignTime" jdbcType="TIMESTAMP" property="signtime" />
+    <result column="TouserSignature" jdbcType="VARCHAR" property="tousersignature" />
+    <result column="DeliveryUserName" jdbcType="VARCHAR" property="deliveryusername" />
+    <result column="DeliveryUserId" jdbcType="VARCHAR" property="deliveryuserid" />
+    <result column="Incname" jdbcType="VARCHAR" property="incname" />
+    <result column="Incid" jdbcType="VARCHAR" property="incid" />
+    <result column="Operators" jdbcType="VARCHAR" property="operators" />
+    <result column="OperatorId" jdbcType="VARCHAR" property="operatorid" />
+
+    <result column="fannex" jdbcType="LONGVARCHAR" property="fannex" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Number, SignTime, TouserSignature, DeliveryUserName, DeliveryUserId, Incname, 
+    Incid, Operators, OperatorId,fannex
+  </sql>
+
+
+  <select id="getAllSign" resultMap="BaseResultMap">
+    SELECT  <include refid="Base_Column_List"></include> from eforces_customersign
+    <if test="_parameter != null">
+      where  incId like CONCAT(#{_parameter},'%')
+    </if>
+  </select>
+
+
+  
+  <select id="selectByDeliveryUserId" resultMap="BaseResultMap">
+  select
+  *
+  from
+  eforces_customersign
+  where
+  DeliveryUserId=#{DeliveryUserId}
+  order by
+  SignTime
+  desc
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_customersign
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_customersign
+    where number = #{number,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_customersign
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesCustomerSign">
+    insert into eforces_customersign (Id, Number, SignTime, 
+      TouserSignature, DeliveryUserName, DeliveryUserId, 
+      Incname, Incid, Operators, 
+      OperatorId, fannex)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{signtime,jdbcType=TIMESTAMP}, 
+      #{tousersignature,jdbcType=VARCHAR}, #{deliveryusername,jdbcType=VARCHAR}, #{deliveryuserid,jdbcType=VARCHAR}, 
+      #{incname,jdbcType=VARCHAR}, #{incid,jdbcType=VARCHAR}, #{operators,jdbcType=VARCHAR}, 
+      #{operatorid,jdbcType=VARCHAR}, #{fannex,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesCustomerSign">
+    insert into eforces_customersign
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="signtime == null">
+        SignTime,
+      </if>
+      <if test="tousersignature != null">
+        TouserSignature,
+      </if>
+      <if test="deliveryusername != null">
+        DeliveryUserName,
+      </if>
+      <if test="deliveryuserid != null">
+        DeliveryUserId,
+      </if>
+      <if test="incname != null">
+        Incname,
+      </if>
+      <if test="incid != null">
+        Incid,
+      </if>
+      <if test="operators != null">
+        Operators,
+      </if>
+      <if test="operatorid != null">
+        OperatorId,
+      </if>
+      <if test="fannex != null">
+        fannex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="signtime == null">
+        now(),
+      </if>
+      <if test="tousersignature != null">
+        #{tousersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryusername != null">
+        #{deliveryusername,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryuserid != null">
+        #{deliveryuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="operators != null">
+        #{operators,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorid != null">
+        #{operatorid,jdbcType=VARCHAR},
+      </if>
+      <if test="fannex != null">
+        #{fannex,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesCustomerSign">
+    update eforces_customersign
+    <set>
+      <if test="number != null">
+        Number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="signtime != null">
+        SignTime = #{signtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tousersignature != null">
+        TouserSignature = #{tousersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryusername != null">
+        DeliveryUserName = #{deliveryusername,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryuserid != null">
+        DeliveryUserId = #{deliveryuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        Incname = #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        Incid = #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="operators != null">
+        Operators = #{operators,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorid != null">
+        OperatorId = #{operatorid,jdbcType=VARCHAR},
+      </if>
+      <if test="fannex != null">
+        fannex = #{fannex,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesCustomerSign">
+    update eforces_customersign
+    set Number = #{number,jdbcType=VARCHAR},
+      SignTime = #{signtime,jdbcType=TIMESTAMP},
+      TouserSignature = #{tousersignature,jdbcType=VARCHAR},
+      DeliveryUserName = #{deliveryusername,jdbcType=VARCHAR},
+      DeliveryUserId = #{deliveryuserid,jdbcType=VARCHAR},
+      Incname = #{incname,jdbcType=VARCHAR},
+      Incid = #{incid,jdbcType=VARCHAR},
+      Operators = #{operators,jdbcType=VARCHAR},
+      OperatorId = #{operatorid,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByOperatorId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_customersign
+    where operatorid = #{operatorid,jdbcType=VARCHAR}
+  </select>
+</mapper>

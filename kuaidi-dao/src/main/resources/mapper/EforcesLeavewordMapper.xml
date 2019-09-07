@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesLeavewordMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesLeaveword">
+    <result column="incNumber" jdbcType="VARCHAR" property="incnumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="Phone" jdbcType="VARCHAR" property="phone" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesLeaveword">
+    insert into eforces_leaveWord (incNumber, name, Phone, 
+      describe, status, createTime
+      )
+    values (#{incnumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{describe,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <!-- 我的留言 -->
+  <select id="listMsg" resultMap="BaseResultMap">
+    SELECT * from eforces_leaveWord where incNumber=#{incNumber}
+  </select>
+
+
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesLeaveword">
+    insert into eforces_leaveWord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="incnumber != null">
+        incNumber,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        Phone,
+      </if>
+      <if test="describe != null">
+        describe,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="incnumber != null">
+        #{incnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

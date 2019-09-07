@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesComplaintMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesComplaint">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="customerName" jdbcType="VARCHAR" property="customername" />
+    <result column="crtTime" jdbcType="TIMESTAMP" property="crttime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="incNumber" jdbcType="VARCHAR" property="incnumber" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, remark, phone, customerName, crtTime, status, incNumber
+  </sql>
+
+  <!-- 投诉记录 -->
+  <select id="getcomplaint" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * from eforces_Complaint WHERE Incnumber=#{incNumber,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_Complaint
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_Complaint
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesComplaint">
+    insert into eforces_Complaint (id, title, remark, 
+      phone, customerName, crtTime, 
+      status, incNumber)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{customername,jdbcType=VARCHAR}, #{crttime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{incnumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesComplaint">
+    insert into eforces_Complaint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="customername != null">
+        customerName,
+      </if>
+      <if test="crttime != null">
+        crtTime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="incnumber != null">
+        incNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null">
+        #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="incnumber != null">
+        #{incnumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesComplaint">
+    update eforces_Complaint
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="customername != null">
+        customerName = #{customername,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        crtTime = #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="incnumber != null">
+        incNumber = #{incnumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesComplaint">
+    update eforces_Complaint
+    set title = #{title,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      customerName = #{customername,jdbcType=VARCHAR},
+      crtTime = #{crttime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      incNumber = #{incnumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

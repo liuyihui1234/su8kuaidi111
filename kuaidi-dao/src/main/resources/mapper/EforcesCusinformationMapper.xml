@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesCusinformationMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesCusinformation">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="GuestId" jdbcType="INTEGER" property="guestid" />
+    <result column="GuestName" jdbcType="VARCHAR" property="guestname" />
+    <result column="IsFisWeight" jdbcType="VARCHAR" property="isfisweight" />
+    <result column="Userid" jdbcType="VARCHAR" property="userid" />
+    <result column="Username" jdbcType="VARCHAR" property="username" />
+    <result column="CostType" jdbcType="VARCHAR" property="costtype" />
+    <result column="Calcumethod" jdbcType="VARCHAR" property="calcumethod" />
+    <result column="GoodType" jdbcType="VARCHAR" property="goodtype" />
+    <result column="PayType" jdbcType="VARCHAR" property="paytype" />
+    <result column="OperatPay" jdbcType="DECIMAL" property="operatpay" />
+    <result column="Discount" jdbcType="DECIMAL" property="discount" />
+    <result column="TransportType" jdbcType="VARCHAR" property="transporttype" />
+    <result column="CarrierId" jdbcType="INTEGER" property="carrierid" />
+    <result column="CarrierName" jdbcType="VARCHAR" property="carriername" />
+    <result column="FisWeight" jdbcType="INTEGER" property="fisweight" />
+    <result column="FwPay" jdbcType="DECIMAL" property="fwpay" />
+    <result column="IsFell" jdbcType="VARCHAR" property="isfell" />
+    <result column="FisNum" jdbcType="INTEGER" property="fisnum" />
+    <result column="StarWei1" jdbcType="INTEGER" property="starwei1" />
+    <result column="EndWei1" jdbcType="INTEGER" property="endwei1" />
+    <result column="IsFell1" jdbcType="VARCHAR" property="isfell1" />
+    <result column="Danwei1" jdbcType="DECIMAL" property="danwei1" />
+    <result column="StarWei2" jdbcType="INTEGER" property="starwei2" />
+    <result column="EndWei2" jdbcType="INTEGER" property="endwei2" />
+    <result column="IsFell2" jdbcType="VARCHAR" property="isfell2" />
+    <result column="Danwei2" jdbcType="DECIMAL" property="danwei2" />
+    <result column="StarWei3" jdbcType="INTEGER" property="starwei3" />
+    <result column="EndWei3" jdbcType="INTEGER" property="endwei3" />
+    <result column="IsFell3" jdbcType="VARCHAR" property="isfell3" />
+    <result column="Danwei3" jdbcType="DECIMAL" property="danwei3" />
+    <result column="StarWei4" jdbcType="INTEGER" property="starwei4" />
+    <result column="EndWei4" jdbcType="INTEGER" property="endwei4" />
+    <result column="IsFell4" jdbcType="VARCHAR" property="isfell4" />
+    <result column="Danwei4" jdbcType="DECIMAL" property="danwei4" />
+    <result column="StarWei5" jdbcType="INTEGER" property="starwei5" />
+    <result column="EndWei5" jdbcType="INTEGER" property="endwei5" />
+    <result column="IsFell5" jdbcType="VARCHAR" property="isfell5" />
+    <result column="Danwei5" jdbcType="DECIMAL" property="danwei5" />
+    <result column="StarWei6" jdbcType="INTEGER" property="starwei6" />
+    <result column="EndWei6" jdbcType="INTEGER" property="endwei6" />
+    <result column="IsFell6" jdbcType="VARCHAR" property="isfell6" />
+    <result column="Danwei6" jdbcType="DECIMAL" property="danwei6" />
+    <result column="StarWei7" jdbcType="INTEGER" property="starwei7" />
+    <result column="EndWei7" jdbcType="INTEGER" property="endwei7" />
+    <result column="IsFell7" jdbcType="VARCHAR" property="isfell7" />
+    <result column="Danwei7" jdbcType="DECIMAL" property="danwei7" />
+    <result column="StarWei8" jdbcType="INTEGER" property="starwei8" />
+    <result column="EndWei8" jdbcType="INTEGER" property="endwei8" />
+    <result column="IsFell8" jdbcType="VARCHAR" property="isfell8" />
+    <result column="Danwei8" jdbcType="DECIMAL" property="danwei8" />
+    <result column="StarTime" jdbcType="TIMESTAMP" property="startime" />
+    <result column="EndTime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="Incnumber" jdbcType="VARCHAR" property="incnumber" />
+    <result column="Incname" jdbcType="VARCHAR" property="incname" />
+    <result column="WeightType" jdbcType="VARCHAR" property="weighttype" />
+    <result column="JinSe" jdbcType="DECIMAL" property="jinse" />
+    <result column="XuWeight" jdbcType="VARCHAR" property="xuweight" />
+    <result column="FenJd1" jdbcType="DECIMAL" property="fenjd1" />
+    <result column="FenJd2" jdbcType="DECIMAL" property="fenjd2" />
+    <result column="createid" jdbcType="VARCHAR" property="createid" />
+    <result column="createname" jdbcType="VARCHAR" property="createname" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.kuaidi.bean.domain.EforcesCusinformation">
+    <result column="RecipientId" jdbcType="LONGVARCHAR" property="recipientid" />
+    <result column="RecipientName" jdbcType="LONGVARCHAR" property="recipientname" />
+    <result column="Remarks" jdbcType="LONGVARCHAR" property="remarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, GuestId, GuestName, IsFisWeight, Userid, Username, CostType, Calcumethod, GoodType, 
+    PayType, OperatPay, Discount, TransportType, CarrierId, CarrierName, FisWeight, FwPay, 
+    IsFell, FisNum, StarWei1, EndWei1, IsFell1, Danwei1, StarWei2, EndWei2, IsFell2, 
+    Danwei2, StarWei3, EndWei3, IsFell3, Danwei3, StarWei4, EndWei4, IsFell4, Danwei4, 
+    StarWei5, EndWei5, IsFell5, Danwei5, StarWei6, EndWei6, IsFell6, Danwei6, StarWei7, 
+    EndWei7, IsFell7, Danwei7, StarWei8, EndWei8, IsFell8, Danwei8, StarTime, EndTime, 
+    Incnumber, Incname, WeightType, JinSe, XuWeight, FenJd1, FenJd2, createid, createname, 
+    createtime
+  </sql>
+  <sql id="Blob_Column_List">
+    RecipientId, RecipientName, Remarks
+  </sql>
+  
+  <update id="updateIsDeleteById">
+  update
+  eforces_cusinformation
+  set
+  isDelete=1
+  where
+  id
+  in
+  <foreach collection="array" index="index" item="id"
+  open="(" close=")" separator=",">
+  #{id}
+  </foreach>
+  </update>
+  
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+  select
+  *
+  from
+  eforces_cusinformation
+  where
+  isDelete=0
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_cusinformation
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_cusinformation
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesCusinformation">
+    insert into eforces_cusinformation (Id, GuestId, GuestName, 
+      IsFisWeight, Userid, Username, 
+      CostType, Calcumethod, GoodType, 
+      PayType, OperatPay, Discount, 
+      TransportType, CarrierId, CarrierName, 
+      FisWeight, FwPay, IsFell, 
+      FisNum, StarWei1, EndWei1, 
+      IsFell1, Danwei1, StarWei2, 
+      EndWei2, IsFell2, Danwei2, 
+      StarWei3, EndWei3, IsFell3, 
+      Danwei3, StarWei4, EndWei4, 
+      IsFell4, Danwei4, StarWei5, 
+      EndWei5, IsFell5, Danwei5, 
+      StarWei6, EndWei6, IsFell6, 
+      Danwei6, StarWei7, EndWei7, 
+      IsFell7, Danwei7, StarWei8, 
+      EndWei8, IsFell8, Danwei8, 
+      StarTime, EndTime, Incnumber, 
+      Incname, WeightType, JinSe, 
+      XuWeight, FenJd1, FenJd2, 
+      createid, createname, createtime, 
+      RecipientId, RecipientName, Remarks
+      )
+    values (#{id,jdbcType=INTEGER}, #{guestid,jdbcType=INTEGER}, #{guestname,jdbcType=VARCHAR}, 
+      #{isfisweight,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{costtype,jdbcType=VARCHAR}, #{calcumethod,jdbcType=VARCHAR}, #{goodtype,jdbcType=VARCHAR}, 
+      #{paytype,jdbcType=VARCHAR}, #{operatpay,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL}, 
+      #{transporttype,jdbcType=VARCHAR}, #{carrierid,jdbcType=INTEGER}, #{carriername,jdbcType=VARCHAR}, 
+      #{fisweight,jdbcType=INTEGER}, #{fwpay,jdbcType=DECIMAL}, #{isfell,jdbcType=VARCHAR}, 
+      #{fisnum,jdbcType=INTEGER}, #{starwei1,jdbcType=INTEGER}, #{endwei1,jdbcType=INTEGER}, 
+      #{isfell1,jdbcType=VARCHAR}, #{danwei1,jdbcType=DECIMAL}, #{starwei2,jdbcType=INTEGER}, 
+      #{endwei2,jdbcType=INTEGER}, #{isfell2,jdbcType=VARCHAR}, #{danwei2,jdbcType=DECIMAL}, 
+      #{starwei3,jdbcType=INTEGER}, #{endwei3,jdbcType=INTEGER}, #{isfell3,jdbcType=VARCHAR}, 
+      #{danwei3,jdbcType=DECIMAL}, #{starwei4,jdbcType=INTEGER}, #{endwei4,jdbcType=INTEGER}, 
+      #{isfell4,jdbcType=VARCHAR}, #{danwei4,jdbcType=DECIMAL}, #{starwei5,jdbcType=INTEGER}, 
+      #{endwei5,jdbcType=INTEGER}, #{isfell5,jdbcType=VARCHAR}, #{danwei5,jdbcType=DECIMAL}, 
+      #{starwei6,jdbcType=INTEGER}, #{endwei6,jdbcType=INTEGER}, #{isfell6,jdbcType=VARCHAR}, 
+      #{danwei6,jdbcType=DECIMAL}, #{starwei7,jdbcType=INTEGER}, #{endwei7,jdbcType=INTEGER}, 
+      #{isfell7,jdbcType=VARCHAR}, #{danwei7,jdbcType=DECIMAL}, #{starwei8,jdbcType=INTEGER}, 
+      #{endwei8,jdbcType=INTEGER}, #{isfell8,jdbcType=VARCHAR}, #{danwei8,jdbcType=DECIMAL}, 
+      #{startime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{incnumber,jdbcType=VARCHAR}, 
+      #{incname,jdbcType=VARCHAR}, #{weighttype,jdbcType=VARCHAR}, #{jinse,jdbcType=DECIMAL}, 
+      #{xuweight,jdbcType=VARCHAR}, #{fenjd1,jdbcType=DECIMAL}, #{fenjd2,jdbcType=DECIMAL}, 
+      #{createid,jdbcType=VARCHAR}, #{createname,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{recipientid,jdbcType=LONGVARCHAR}, #{recipientname,jdbcType=LONGVARCHAR}, #{remarks,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesCusinformation">
+    insert into eforces_cusinformation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="guestid != null">
+        GuestId,
+      </if>
+      <if test="guestname != null">
+        GuestName,
+      </if>
+      <if test="isfisweight != null">
+        IsFisWeight,
+      </if>
+      <if test="userid != null">
+        Userid,
+      </if>
+      <if test="username != null">
+        Username,
+      </if>
+      <if test="costtype != null">
+        CostType,
+      </if>
+      <if test="calcumethod != null">
+        Calcumethod,
+      </if>
+      <if test="goodtype != null">
+        GoodType,
+      </if>
+      <if test="paytype != null">
+        PayType,
+      </if>
+      <if test="operatpay != null">
+        OperatPay,
+      </if>
+      <if test="discount != null">
+        Discount,
+      </if>
+      <if test="transporttype != null">
+        TransportType,
+      </if>
+      <if test="carrierid != null">
+        CarrierId,
+      </if>
+      <if test="carriername != null">
+        CarrierName,
+      </if>
+      <if test="fisweight != null">
+        FisWeight,
+      </if>
+      <if test="fwpay != null">
+        FwPay,
+      </if>
+      <if test="isfell != null">
+        IsFell,
+      </if>
+      <if test="fisnum != null">
+        FisNum,
+      </if>
+      <if test="starwei1 != null">
+        StarWei1,
+      </if>
+      <if test="endwei1 != null">
+        EndWei1,
+      </if>
+      <if test="isfell1 != null">
+        IsFell1,
+      </if>
+      <if test="danwei1 != null">
+        Danwei1,
+      </if>
+      <if test="starwei2 != null">
+        StarWei2,
+      </if>
+      <if test="endwei2 != null">
+        EndWei2,
+      </if>
+      <if test="isfell2 != null">
+        IsFell2,
+      </if>
+      <if test="danwei2 != null">
+        Danwei2,
+      </if>
+      <if test="starwei3 != null">
+        StarWei3,
+      </if>
+      <if test="endwei3 != null">
+        EndWei3,
+      </if>
+      <if test="isfell3 != null">
+        IsFell3,
+      </if>
+      <if test="danwei3 != null">
+        Danwei3,
+      </if>
+      <if test="starwei4 != null">
+        StarWei4,
+      </if>
+      <if test="endwei4 != null">
+        EndWei4,
+      </if>
+      <if test="isfell4 != null">
+        IsFell4,
+      </if>
+      <if test="danwei4 != null">
+        Danwei4,
+      </if>
+      <if test="starwei5 != null">
+        StarWei5,
+      </if>
+      <if test="endwei5 != null">
+        EndWei5,
+      </if>
+      <if test="isfell5 != null">
+        IsFell5,
+      </if>
+      <if test="danwei5 != null">
+        Danwei5,
+      </if>
+      <if test="starwei6 != null">
+        StarWei6,
+      </if>
+      <if test="endwei6 != null">
+        EndWei6,
+      </if>
+      <if test="isfell6 != null">
+        IsFell6,
+      </if>
+      <if test="danwei6 != null">
+        Danwei6,
+      </if>
+      <if test="starwei7 != null">
+        StarWei7,
+      </if>
+      <if test="endwei7 != null">
+        EndWei7,
+      </if>
+      <if test="isfell7 != null">
+        IsFell7,
+      </if>
+      <if test="danwei7 != null">
+        Danwei7,
+      </if>
+      <if test="starwei8 != null">
+        StarWei8,
+      </if>
+      <if test="endwei8 != null">
+        EndWei8,
+      </if>
+      <if test="isfell8 != null">
+        IsFell8,
+      </if>
+      <if test="danwei8 != null">
+        Danwei8,
+      </if>
+      <if test="startime != null">
+        StarTime,
+      </if>
+      <if test="endtime != null">
+        EndTime,
+      </if>
+      <if test="incnumber != null">
+        Incnumber,
+      </if>
+      <if test="incname != null">
+        Incname,
+      </if>
+      <if test="weighttype != null">
+        WeightType,
+      </if>
+      <if test="jinse != null">
+        JinSe,
+      </if>
+      <if test="xuweight != null">
+        XuWeight,
+      </if>
+      <if test="fenjd1 != null">
+        FenJd1,
+      </if>
+      <if test="fenjd2 != null">
+        FenJd2,
+      </if>
+      <if test="createid != null">
+        createid,
+      </if>
+      <if test="createname != null">
+        createname,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="recipientid != null">
+        RecipientId,
+      </if>
+      <if test="recipientname != null">
+        RecipientName,
+      </if>
+      <if test="remarks != null">
+        Remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="guestid != null">
+        #{guestid,jdbcType=INTEGER},
+      </if>
+      <if test="guestname != null">
+        #{guestname,jdbcType=VARCHAR},
+      </if>
+      <if test="isfisweight != null">
+        #{isfisweight,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="costtype != null">
+        #{costtype,jdbcType=VARCHAR},
+      </if>
+      <if test="calcumethod != null">
+        #{calcumethod,jdbcType=VARCHAR},
+      </if>
+      <if test="goodtype != null">
+        #{goodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="paytype != null">
+        #{paytype,jdbcType=VARCHAR},
+      </if>
+      <if test="operatpay != null">
+        #{operatpay,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="transporttype != null">
+        #{transporttype,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierid != null">
+        #{carrierid,jdbcType=INTEGER},
+      </if>
+      <if test="carriername != null">
+        #{carriername,jdbcType=VARCHAR},
+      </if>
+      <if test="fisweight != null">
+        #{fisweight,jdbcType=INTEGER},
+      </if>
+      <if test="fwpay != null">
+        #{fwpay,jdbcType=DECIMAL},
+      </if>
+      <if test="isfell != null">
+        #{isfell,jdbcType=VARCHAR},
+      </if>
+      <if test="fisnum != null">
+        #{fisnum,jdbcType=INTEGER},
+      </if>
+      <if test="starwei1 != null">
+        #{starwei1,jdbcType=INTEGER},
+      </if>
+      <if test="endwei1 != null">
+        #{endwei1,jdbcType=INTEGER},
+      </if>
+      <if test="isfell1 != null">
+        #{isfell1,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei1 != null">
+        #{danwei1,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei2 != null">
+        #{starwei2,jdbcType=INTEGER},
+      </if>
+      <if test="endwei2 != null">
+        #{endwei2,jdbcType=INTEGER},
+      </if>
+      <if test="isfell2 != null">
+        #{isfell2,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei2 != null">
+        #{danwei2,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei3 != null">
+        #{starwei3,jdbcType=INTEGER},
+      </if>
+      <if test="endwei3 != null">
+        #{endwei3,jdbcType=INTEGER},
+      </if>
+      <if test="isfell3 != null">
+        #{isfell3,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei3 != null">
+        #{danwei3,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei4 != null">
+        #{starwei4,jdbcType=INTEGER},
+      </if>
+      <if test="endwei4 != null">
+        #{endwei4,jdbcType=INTEGER},
+      </if>
+      <if test="isfell4 != null">
+        #{isfell4,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei4 != null">
+        #{danwei4,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei5 != null">
+        #{starwei5,jdbcType=INTEGER},
+      </if>
+      <if test="endwei5 != null">
+        #{endwei5,jdbcType=INTEGER},
+      </if>
+      <if test="isfell5 != null">
+        #{isfell5,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei5 != null">
+        #{danwei5,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei6 != null">
+        #{starwei6,jdbcType=INTEGER},
+      </if>
+      <if test="endwei6 != null">
+        #{endwei6,jdbcType=INTEGER},
+      </if>
+      <if test="isfell6 != null">
+        #{isfell6,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei6 != null">
+        #{danwei6,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei7 != null">
+        #{starwei7,jdbcType=INTEGER},
+      </if>
+      <if test="endwei7 != null">
+        #{endwei7,jdbcType=INTEGER},
+      </if>
+      <if test="isfell7 != null">
+        #{isfell7,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei7 != null">
+        #{danwei7,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei8 != null">
+        #{starwei8,jdbcType=INTEGER},
+      </if>
+      <if test="endwei8 != null">
+        #{endwei8,jdbcType=INTEGER},
+      </if>
+      <if test="isfell8 != null">
+        #{isfell8,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei8 != null">
+        #{danwei8,jdbcType=DECIMAL},
+      </if>
+      <if test="startime != null">
+        #{startime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incnumber != null">
+        #{incnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="weighttype != null">
+        #{weighttype,jdbcType=VARCHAR},
+      </if>
+      <if test="jinse != null">
+        #{jinse,jdbcType=DECIMAL},
+      </if>
+      <if test="xuweight != null">
+        #{xuweight,jdbcType=VARCHAR},
+      </if>
+      <if test="fenjd1 != null">
+        #{fenjd1,jdbcType=DECIMAL},
+      </if>
+      <if test="fenjd2 != null">
+        #{fenjd2,jdbcType=DECIMAL},
+      </if>
+      <if test="createid != null">
+        #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createname != null">
+        #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recipientid != null">
+        #{recipientid,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="recipientname != null">
+        #{recipientname,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesCusinformation">
+    update eforces_cusinformation
+    <set>
+      <if test="guestid != null">
+        GuestId = #{guestid,jdbcType=INTEGER},
+      </if>
+      <if test="guestname != null">
+        GuestName = #{guestname,jdbcType=VARCHAR},
+      </if>
+      <if test="isfisweight != null">
+        IsFisWeight = #{isfisweight,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        Userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        Username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="costtype != null">
+        CostType = #{costtype,jdbcType=VARCHAR},
+      </if>
+      <if test="calcumethod != null">
+        Calcumethod = #{calcumethod,jdbcType=VARCHAR},
+      </if>
+      <if test="goodtype != null">
+        GoodType = #{goodtype,jdbcType=VARCHAR},
+      </if>
+      <if test="paytype != null">
+        PayType = #{paytype,jdbcType=VARCHAR},
+      </if>
+      <if test="operatpay != null">
+        OperatPay = #{operatpay,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null">
+        Discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="transporttype != null">
+        TransportType = #{transporttype,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierid != null">
+        CarrierId = #{carrierid,jdbcType=INTEGER},
+      </if>
+      <if test="carriername != null">
+        CarrierName = #{carriername,jdbcType=VARCHAR},
+      </if>
+      <if test="fisweight != null">
+        FisWeight = #{fisweight,jdbcType=INTEGER},
+      </if>
+      <if test="fwpay != null">
+        FwPay = #{fwpay,jdbcType=DECIMAL},
+      </if>
+      <if test="isfell != null">
+        IsFell = #{isfell,jdbcType=VARCHAR},
+      </if>
+      <if test="fisnum != null">
+        FisNum = #{fisnum,jdbcType=INTEGER},
+      </if>
+      <if test="starwei1 != null">
+        StarWei1 = #{starwei1,jdbcType=INTEGER},
+      </if>
+      <if test="endwei1 != null">
+        EndWei1 = #{endwei1,jdbcType=INTEGER},
+      </if>
+      <if test="isfell1 != null">
+        IsFell1 = #{isfell1,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei1 != null">
+        Danwei1 = #{danwei1,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei2 != null">
+        StarWei2 = #{starwei2,jdbcType=INTEGER},
+      </if>
+      <if test="endwei2 != null">
+        EndWei2 = #{endwei2,jdbcType=INTEGER},
+      </if>
+      <if test="isfell2 != null">
+        IsFell2 = #{isfell2,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei2 != null">
+        Danwei2 = #{danwei2,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei3 != null">
+        StarWei3 = #{starwei3,jdbcType=INTEGER},
+      </if>
+      <if test="endwei3 != null">
+        EndWei3 = #{endwei3,jdbcType=INTEGER},
+      </if>
+      <if test="isfell3 != null">
+        IsFell3 = #{isfell3,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei3 != null">
+        Danwei3 = #{danwei3,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei4 != null">
+        StarWei4 = #{starwei4,jdbcType=INTEGER},
+      </if>
+      <if test="endwei4 != null">
+        EndWei4 = #{endwei4,jdbcType=INTEGER},
+      </if>
+      <if test="isfell4 != null">
+        IsFell4 = #{isfell4,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei4 != null">
+        Danwei4 = #{danwei4,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei5 != null">
+        StarWei5 = #{starwei5,jdbcType=INTEGER},
+      </if>
+      <if test="endwei5 != null">
+        EndWei5 = #{endwei5,jdbcType=INTEGER},
+      </if>
+      <if test="isfell5 != null">
+        IsFell5 = #{isfell5,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei5 != null">
+        Danwei5 = #{danwei5,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei6 != null">
+        StarWei6 = #{starwei6,jdbcType=INTEGER},
+      </if>
+      <if test="endwei6 != null">
+        EndWei6 = #{endwei6,jdbcType=INTEGER},
+      </if>
+      <if test="isfell6 != null">
+        IsFell6 = #{isfell6,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei6 != null">
+        Danwei6 = #{danwei6,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei7 != null">
+        StarWei7 = #{starwei7,jdbcType=INTEGER},
+      </if>
+      <if test="endwei7 != null">
+        EndWei7 = #{endwei7,jdbcType=INTEGER},
+      </if>
+      <if test="isfell7 != null">
+        IsFell7 = #{isfell7,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei7 != null">
+        Danwei7 = #{danwei7,jdbcType=DECIMAL},
+      </if>
+      <if test="starwei8 != null">
+        StarWei8 = #{starwei8,jdbcType=INTEGER},
+      </if>
+      <if test="endwei8 != null">
+        EndWei8 = #{endwei8,jdbcType=INTEGER},
+      </if>
+      <if test="isfell8 != null">
+        IsFell8 = #{isfell8,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei8 != null">
+        Danwei8 = #{danwei8,jdbcType=DECIMAL},
+      </if>
+      <if test="startime != null">
+        StarTime = #{startime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        EndTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incnumber != null">
+        Incnumber = #{incnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        Incname = #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="weighttype != null">
+        WeightType = #{weighttype,jdbcType=VARCHAR},
+      </if>
+      <if test="jinse != null">
+        JinSe = #{jinse,jdbcType=DECIMAL},
+      </if>
+      <if test="xuweight != null">
+        XuWeight = #{xuweight,jdbcType=VARCHAR},
+      </if>
+      <if test="fenjd1 != null">
+        FenJd1 = #{fenjd1,jdbcType=DECIMAL},
+      </if>
+      <if test="fenjd2 != null">
+        FenJd2 = #{fenjd2,jdbcType=DECIMAL},
+      </if>
+      <if test="createid != null">
+        createid = #{createid,jdbcType=VARCHAR},
+      </if>
+      <if test="createname != null">
+        createname = #{createname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recipientid != null">
+        RecipientId = #{recipientid,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="recipientname != null">
+        RecipientName = #{recipientname,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remarks != null">
+        Remarks = #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.kuaidi.bean.domain.EforcesCusinformation">
+    update eforces_cusinformation
+    set GuestId = #{guestid,jdbcType=INTEGER},
+      GuestName = #{guestname,jdbcType=VARCHAR},
+      IsFisWeight = #{isfisweight,jdbcType=VARCHAR},
+      Userid = #{userid,jdbcType=VARCHAR},
+      Username = #{username,jdbcType=VARCHAR},
+      CostType = #{costtype,jdbcType=VARCHAR},
+      Calcumethod = #{calcumethod,jdbcType=VARCHAR},
+      GoodType = #{goodtype,jdbcType=VARCHAR},
+      PayType = #{paytype,jdbcType=VARCHAR},
+      OperatPay = #{operatpay,jdbcType=DECIMAL},
+      Discount = #{discount,jdbcType=DECIMAL},
+      TransportType = #{transporttype,jdbcType=VARCHAR},
+      CarrierId = #{carrierid,jdbcType=INTEGER},
+      CarrierName = #{carriername,jdbcType=VARCHAR},
+      FisWeight = #{fisweight,jdbcType=INTEGER},
+      FwPay = #{fwpay,jdbcType=DECIMAL},
+      IsFell = #{isfell,jdbcType=VARCHAR},
+      FisNum = #{fisnum,jdbcType=INTEGER},
+      StarWei1 = #{starwei1,jdbcType=INTEGER},
+      EndWei1 = #{endwei1,jdbcType=INTEGER},
+      IsFell1 = #{isfell1,jdbcType=VARCHAR},
+      Danwei1 = #{danwei1,jdbcType=DECIMAL},
+      StarWei2 = #{starwei2,jdbcType=INTEGER},
+      EndWei2 = #{endwei2,jdbcType=INTEGER},
+      IsFell2 = #{isfell2,jdbcType=VARCHAR},
+      Danwei2 = #{danwei2,jdbcType=DECIMAL},
+      StarWei3 = #{starwei3,jdbcType=INTEGER},
+      EndWei3 = #{endwei3,jdbcType=INTEGER},
+      IsFell3 = #{isfell3,jdbcType=VARCHAR},
+      Danwei3 = #{danwei3,jdbcType=DECIMAL},
+      StarWei4 = #{starwei4,jdbcType=INTEGER},
+      EndWei4 = #{endwei4,jdbcType=INTEGER},
+      IsFell4 = #{isfell4,jdbcType=VARCHAR},
+      Danwei4 = #{danwei4,jdbcType=DECIMAL},
+      StarWei5 = #{starwei5,jdbcType=INTEGER},
+      EndWei5 = #{endwei5,jdbcType=INTEGER},
+      IsFell5 = #{isfell5,jdbcType=VARCHAR},
+      Danwei5 = #{danwei5,jdbcType=DECIMAL},
+      StarWei6 = #{starwei6,jdbcType=INTEGER},
+      EndWei6 = #{endwei6,jdbcType=INTEGER},
+      IsFell6 = #{isfell6,jdbcType=VARCHAR},
+      Danwei6 = #{danwei6,jdbcType=DECIMAL},
+      StarWei7 = #{starwei7,jdbcType=INTEGER},
+      EndWei7 = #{endwei7,jdbcType=INTEGER},
+      IsFell7 = #{isfell7,jdbcType=VARCHAR},
+      Danwei7 = #{danwei7,jdbcType=DECIMAL},
+      StarWei8 = #{starwei8,jdbcType=INTEGER},
+      EndWei8 = #{endwei8,jdbcType=INTEGER},
+      IsFell8 = #{isfell8,jdbcType=VARCHAR},
+      Danwei8 = #{danwei8,jdbcType=DECIMAL},
+      StarTime = #{startime,jdbcType=TIMESTAMP},
+      EndTime = #{endtime,jdbcType=TIMESTAMP},
+      Incnumber = #{incnumber,jdbcType=VARCHAR},
+      Incname = #{incname,jdbcType=VARCHAR},
+      WeightType = #{weighttype,jdbcType=VARCHAR},
+      JinSe = #{jinse,jdbcType=DECIMAL},
+      XuWeight = #{xuweight,jdbcType=VARCHAR},
+      FenJd1 = #{fenjd1,jdbcType=DECIMAL},
+      FenJd2 = #{fenjd2,jdbcType=DECIMAL},
+      createid = #{createid,jdbcType=VARCHAR},
+      createname = #{createname,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      RecipientId = #{recipientid,jdbcType=LONGVARCHAR},
+      RecipientName = #{recipientname,jdbcType=LONGVARCHAR},
+      Remarks = #{remarks,jdbcType=LONGVARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesCusinformation">
+    update eforces_cusinformation
+    set GuestId = #{guestid,jdbcType=INTEGER},
+      GuestName = #{guestname,jdbcType=VARCHAR},
+      IsFisWeight = #{isfisweight,jdbcType=VARCHAR},
+      Userid = #{userid,jdbcType=VARCHAR},
+      Username = #{username,jdbcType=VARCHAR},
+      CostType = #{costtype,jdbcType=VARCHAR},
+      Calcumethod = #{calcumethod,jdbcType=VARCHAR},
+      GoodType = #{goodtype,jdbcType=VARCHAR},
+      PayType = #{paytype,jdbcType=VARCHAR},
+      OperatPay = #{operatpay,jdbcType=DECIMAL},
+      Discount = #{discount,jdbcType=DECIMAL},
+      TransportType = #{transporttype,jdbcType=VARCHAR},
+      CarrierId = #{carrierid,jdbcType=INTEGER},
+      CarrierName = #{carriername,jdbcType=VARCHAR},
+      FisWeight = #{fisweight,jdbcType=INTEGER},
+      FwPay = #{fwpay,jdbcType=DECIMAL},
+      IsFell = #{isfell,jdbcType=VARCHAR},
+      FisNum = #{fisnum,jdbcType=INTEGER},
+      StarWei1 = #{starwei1,jdbcType=INTEGER},
+      EndWei1 = #{endwei1,jdbcType=INTEGER},
+      IsFell1 = #{isfell1,jdbcType=VARCHAR},
+      Danwei1 = #{danwei1,jdbcType=DECIMAL},
+      StarWei2 = #{starwei2,jdbcType=INTEGER},
+      EndWei2 = #{endwei2,jdbcType=INTEGER},
+      IsFell2 = #{isfell2,jdbcType=VARCHAR},
+      Danwei2 = #{danwei2,jdbcType=DECIMAL},
+      StarWei3 = #{starwei3,jdbcType=INTEGER},
+      EndWei3 = #{endwei3,jdbcType=INTEGER},
+      IsFell3 = #{isfell3,jdbcType=VARCHAR},
+      Danwei3 = #{danwei3,jdbcType=DECIMAL},
+      StarWei4 = #{starwei4,jdbcType=INTEGER},
+      EndWei4 = #{endwei4,jdbcType=INTEGER},
+      IsFell4 = #{isfell4,jdbcType=VARCHAR},
+      Danwei4 = #{danwei4,jdbcType=DECIMAL},
+      StarWei5 = #{starwei5,jdbcType=INTEGER},
+      EndWei5 = #{endwei5,jdbcType=INTEGER},
+      IsFell5 = #{isfell5,jdbcType=VARCHAR},
+      Danwei5 = #{danwei5,jdbcType=DECIMAL},
+      StarWei6 = #{starwei6,jdbcType=INTEGER},
+      EndWei6 = #{endwei6,jdbcType=INTEGER},
+      IsFell6 = #{isfell6,jdbcType=VARCHAR},
+      Danwei6 = #{danwei6,jdbcType=DECIMAL},
+      StarWei7 = #{starwei7,jdbcType=INTEGER},
+      EndWei7 = #{endwei7,jdbcType=INTEGER},
+      IsFell7 = #{isfell7,jdbcType=VARCHAR},
+      Danwei7 = #{danwei7,jdbcType=DECIMAL},
+      StarWei8 = #{starwei8,jdbcType=INTEGER},
+      EndWei8 = #{endwei8,jdbcType=INTEGER},
+      IsFell8 = #{isfell8,jdbcType=VARCHAR},
+      Danwei8 = #{danwei8,jdbcType=DECIMAL},
+      StarTime = #{startime,jdbcType=TIMESTAMP},
+      EndTime = #{endtime,jdbcType=TIMESTAMP},
+      Incnumber = #{incnumber,jdbcType=VARCHAR},
+      Incname = #{incname,jdbcType=VARCHAR},
+      WeightType = #{weighttype,jdbcType=VARCHAR},
+      JinSe = #{jinse,jdbcType=DECIMAL},
+      XuWeight = #{xuweight,jdbcType=VARCHAR},
+      FenJd1 = #{fenjd1,jdbcType=DECIMAL},
+      FenJd2 = #{fenjd2,jdbcType=DECIMAL},
+      createid = #{createid,jdbcType=VARCHAR},
+      createname = #{createname,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

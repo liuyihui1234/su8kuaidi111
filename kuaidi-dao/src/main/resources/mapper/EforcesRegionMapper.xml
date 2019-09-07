@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesRegionMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesRegion">
+    <id column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parentCode" jdbcType="VARCHAR" property="parentCode" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="bigZoneId" jdbcType="INTEGER" property="bigZoneId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    code, name, parentCode, remark, bigZoneId
+  </sql>
+    <!-- 查询省 -->
+    <select id="selectMaxCodeByParent" parameterType="java.lang.String">
+        select MAX(`code`)  from eforces_region where parentCode=#{code,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 查询市 -->
+    <select id="selectRegionByParent" parameterType="java.lang.String" resultMap ="BaseResultMap">
+        select
+      <include refid="Base_Column_List" />
+          from eforces_region where parentCode=#{code,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 市区县管理 -->
+    <select id="getListMsg" resultMap="BaseResultMap">
+        select * from eforces_region where isDelete = 0
+    </select>
+
+    <!-- 删除 -->
+    <update id="removeUpdate">
+        update
+        eforces_region
+        set
+        isDelete=1
+        where
+       code
+        in
+        <foreach collection="array" item="code"
+                 index="index" open="(" close=")" separator="," >
+            #{code}
+        </foreach>
+    </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_region
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="selectRegionByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"  />
+    from eforces_region
+    where parentCode = #{code,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAllRegion"  resultMap="BaseResultMap">
+   		select 
+	  <include refid="Base_Column_List" />
+	    from eforces_region
+  </select>
+  
+  <select id="selectRegionByCodes"  resultMap="BaseResultMap">
+   		select 
+	  <include refid="Base_Column_List" />
+	    from eforces_region
+	    where code  in   
+	  <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+		  #{id}
+	  </foreach>
+	  ORDER BY  code asc 
+  </select>
+  
+  <select id="selectByParentCode" resultType="java.util.HashMap">
+  	SELECT
+	region.*,
+	case when 
+		netsign.id is NULL 
+	THEN
+		FALSE
+	ELSE 
+	  TRUE
+	end
+	
+	flag
+	
+	FROM
+		eforces_region region
+	LEFT JOIN eforces_netsign netsign ON region.CODE = netsign.networkareacode
+	AND netsign.`status` = 1
+	WHERE
+		parentCode in 
+		<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+		  #{id}
+	  </foreach>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from eforces_region
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesRegion">
+    insert into eforces_region (code, name, parentCode, 
+      remark, bigZoneId)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{bigZoneId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesRegion">
+    insert into eforces_region
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="parentCode != null">
+        parentCode,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="bigZoneId != null">
+        bigZoneId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="bigZoneId != null">
+        #{bigZoneId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesRegion">
+    update eforces_region
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        parentCode = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="bigZoneId != null">
+        bigZoneId = #{bigZoneId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesRegion">
+    update eforces_region
+    set name = #{name,jdbcType=VARCHAR},
+      parentCode = #{parentCode,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      bigZoneId = #{bigZoneId,jdbcType=INTEGER}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

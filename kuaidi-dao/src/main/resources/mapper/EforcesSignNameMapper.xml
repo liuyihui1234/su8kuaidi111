@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesSignNameMapper">
+	<resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesSignName">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="crtTime" jdbcType="DATE" property="crttime" />
+		<result column="userId" jdbcType="INTEGER" property="userid" />
+		<result column="incNumber" jdbcType="VARCHAR" property="incnumber" />
+		<result column="longitude" jdbcType="REAL" property="longitude" />
+		<result column="latitude" jdbcType="REAL" property="latitude" />
+		<result column="receivePointFlage" jdbcType="INTEGER" property="receivepointflage" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+    id, crtTime, userId, incNumber, longitude, latitude, receivePointFlage
+  </sql>
+
+	<!-- 签到添加 -->
+ 	<insert id="addSignName" parameterType="org.kuaidi.bean.domain.EforcesSignName" keyProperty="id"
+            useGeneratedKeys="true">
+ 	insert
+ 	into
+ 	eforces_signName
+ 	(userid,incnumber,
+	 longitude,latitude,crtTime,receivePointFlage)
+	 values
+	 (#{userid},#{incnumber},
+	 #{longitude},#{latitude},#{crttime},#{receivepointflage})
+	</insert>
+	<!-- 获取签到信息 -->
+  <select id="getSignMsg" resultType="org.kuaidi.bean.domain.EforcesSignName">
+	select 
+	*
+	from
+	eforces_signName
+	where
+	crtTime   <![CDATA[ >= #{crtTime} ]]>
+	 and
+	 userid=#{userid,jdbcType=INTEGER}
+	 order by id asc 
+  </select>
+
+	<!-- 获取累计签到天数 -->
+	<select id="getCount" resultType="java.lang.Integer">
+		select count(*) from eforces_signName where userid=#{userid,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from eforces_signName
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_signName
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+	<insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesSignName">
+    insert into eforces_signName (id, crtTime, userId,
+      incNumber, longitude, latitude,
+      receivePointFlage)
+    values (#{id,jdbcType=INTEGER}, #{crttime,jdbcType=DATE}, #{userid,jdbcType=INTEGER},
+      #{incnumber,jdbcType=VARCHAR}, #{longitude,jdbcType=REAL}, #{latitude,jdbcType=REAL},
+      #{receivepointflage,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesSignName" keyProperty="id"
+            useGeneratedKeys="true">
+		insert into eforces_signName
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="crttime != null">
+				crtTime,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="incnumber != null">
+				incNumber,
+			</if>
+			<if test="longitude != null">
+				longitude,
+			</if>
+			<if test="latitude != null">
+				latitude,
+			</if>
+			<if test="receivepointflage != null">
+				receivePointFlage,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="crttime != null">
+				#{crttime,jdbcType=DATE},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="incnumber != null">
+				#{incnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+				#{longitude,jdbcType=REAL},
+			</if>
+			<if test="latitude != null">
+				#{latitude,jdbcType=REAL},
+			</if>
+			<if test="receivepointflage != null">
+				#{receivepointflage,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesSignName">
+		update eforces_signName
+		<set>
+			<if test="crttime != null">
+				crtTime = #{crttime,jdbcType=DATE},
+			</if>
+			<if test="userid != null">
+				userId = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="incnumber != null">
+				incNumber = #{incnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=REAL},
+			</if>
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=REAL},
+			</if>
+			<if test="receivepointflage != null">
+				receivePointFlage = #{receivepointflage,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesSignName">
+    update eforces_signName
+    set crtTime = #{crttime,jdbcType=DATE},
+      userId = #{userid,jdbcType=INTEGER},
+      incNumber = #{incnumber,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=REAL},
+      latitude = #{latitude,jdbcType=REAL},
+      receivePointFlage = #{receivepointflage,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

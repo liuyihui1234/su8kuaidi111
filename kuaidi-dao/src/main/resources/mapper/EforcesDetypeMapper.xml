@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesDetypeMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.maintainance.EforcesDetype">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Number" jdbcType="VARCHAR" property="number" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="Recipient" jdbcType="VARCHAR" property="recipient" />
+    <result column="isDelete" jdbcType="INTEGER" property="isdelete" />
+
+    <result column="Remarks" jdbcType="LONGVARCHAR" property="remarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Number, Name, Recipient, isDelete
+  </sql>
+  <sql id="Blob_Column_List">
+    Remarks
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_detype
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_detype
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.maintainance.EforcesDetype">
+    insert into eforces_detype (Id, Number, Name,
+      Recipient, isDelete, Remarks
+      )
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{recipient,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{remarks,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.maintainance.EforcesDetype">
+    insert into eforces_detype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+      <if test="recipient != null">
+        Recipient,
+      </if>
+      <if test="isdelete != null">
+        isDelete,
+      </if>
+      <if test="remarks != null">
+        Remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="recipient != null">
+        #{recipient,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_detype where isdelete = 0
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.maintainance.EforcesDetype">
+    update eforces_detype
+    <set>
+      <if test="number != null">
+        Number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="recipient != null">
+        Recipient = #{recipient,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null">
+        isDelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        Remarks = #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateDelete">
+    update eforces_detype
+    set isDelete = 1
+    where Id in
+    <foreach collection="array" item="id" index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.maintainance.EforcesDetype">
+    update eforces_detype
+    set Number = #{number,jdbcType=VARCHAR},
+      Name = #{name,jdbcType=VARCHAR},
+      Recipient = #{recipient,jdbcType=VARCHAR},
+      isDelete = #{isdelete,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,1491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesOrderMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesOrder">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Number" jdbcType="VARCHAR" property="number" />
+    <result column="Formguestcode" jdbcType="VARCHAR" property="formguestcode" />
+    <result column="formguestname" jdbcType="VARCHAR" property="formguestname" />
+    <result column="FromName" jdbcType="VARCHAR" property="fromname" />
+    <result column="Fromcity" jdbcType="VARCHAR" property="fromcity" />
+    <result column="Fromcityname" jdbcType="VARCHAR" property="fromcityname" />
+    <result column="Fromprovince" jdbcType="VARCHAR" property="fromprovince" />
+    <result column="FromProvincename" jdbcType="VARCHAR" property="fromprovincename" />
+    <result column="fromarea" jdbcType="VARCHAR" property="fromarea" />
+    <result column="fromareaname" jdbcType="VARCHAR" property="fromareaname" />
+    <result column="Fromareastreet" jdbcType="VARCHAR" property="fromareastreet" />
+    <result column="Fromareastreetname" jdbcType="VARCHAR" property="fromareastreetname" />
+    <result column="Fromincname" jdbcType="VARCHAR" property="fromincname" />
+    <result column="Fromaddress" jdbcType="VARCHAR" property="fromaddress" />
+    <result column="Fromtel" jdbcType="VARCHAR" property="fromtel" />
+    <result column="Fromcode" jdbcType="VARCHAR" property="fromcode" />
+    <result column="Toguestname" jdbcType="VARCHAR" property="toguestname" />
+    <result column="Toguestcode" jdbcType="VARCHAR" property="toguestcode" />
+    <result column="Toprovince" jdbcType="VARCHAR" property="toprovince" />
+    <result column="Toprovincename" jdbcType="VARCHAR" property="toprovincename" />
+    <result column="Tocity" jdbcType="VARCHAR" property="tocity" />
+    <result column="Tocityname" jdbcType="VARCHAR" property="tocityname" />
+    <result column="ToArea" jdbcType="VARCHAR" property="toarea" />
+    <result column="ToAreaname" jdbcType="VARCHAR" property="toareaname" />
+    <result column="Toareastreet" jdbcType="VARCHAR" property="toareastreet" />
+    <result column="Toareastreetname" jdbcType="VARCHAR" property="toareastreetname" />
+    <result column="Toincname" jdbcType="VARCHAR" property="toincname" />
+    <result column="Toaddress" jdbcType="VARCHAR" property="toaddress" />
+    <result column="Toname" jdbcType="VARCHAR" property="toname" />
+    <result column="Tocode" jdbcType="VARCHAR" property="tocode" />
+    <result column="Totel" jdbcType="VARCHAR" property="totel" />
+    <result column="Paymentflag" jdbcType="INTEGER" property="paymentflag" />
+    <result column="Paymentforgoods" jdbcType="DECIMAL" property="paymentforgoods" />
+    <result column="Isfile" jdbcType="INTEGER" property="isfile" />
+    <result column="isgoods" jdbcType="VARCHAR" property="isgoods" />
+    <result column="Filename" jdbcType="VARCHAR" property="filename" />
+    <result column="Num" jdbcType="INTEGER" property="num" />
+    <result column="Weight" jdbcType="DECIMAL" property="weight" />
+    <result column="Longs" jdbcType="DECIMAL" property="longs" />
+    <result column="Widths" jdbcType="DECIMAL" property="widths" />
+    <result column="Heights" jdbcType="DECIMAL" property="heights" />
+    <result column="Volume" jdbcType="DECIMAL" property="volume" />
+    <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
+    <result column="Senduserid" jdbcType="VARCHAR" property="senduserid" />
+    <result column="Sendusername" jdbcType="VARCHAR" property="sendusername" />
+    <result column="fromusersignature" jdbcType="VARCHAR" property="fromusersignature" />
+    <result column="sendusersignature" jdbcType="VARCHAR" property="sendusersignature" />
+    <result column="Iscollection" jdbcType="INTEGER" property="iscollection" />
+    <result column="Paymode" jdbcType="INTEGER" property="paymode" />
+    <result column="Isinsured" jdbcType="INTEGER" property="isinsured" />
+    <result column="Insuredsumprice" jdbcType="DECIMAL" property="insuredsumprice" />
+    <result column="Insuredprice" jdbcType="DECIMAL" property="insuredprice" />
+    <result column="Ismobilesend" jdbcType="INTEGER" property="ismobilesend" />
+    <result column="Mobileprice" jdbcType="DECIMAL" property="mobileprice" />
+    <result column="Price" jdbcType="DECIMAL" property="price" />
+    <result column="Sendmode" jdbcType="INTEGER" property="sendmode" />
+    <result column="Modeprice" jdbcType="DECIMAL" property="modeprice" />
+    <result column="Tousersignature" jdbcType="VARCHAR" property="tousersignature" />
+    <result column="Collectionsignature" jdbcType="VARCHAR" property="collectionsignature" />
+    <result column="Signaturecode" jdbcType="VARCHAR" property="signaturecode" />
+    <result column="Endtime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="Sumprice" jdbcType="DECIMAL" property="sumprice" />
+    <result column="Deliveryuserid" jdbcType="VARCHAR" property="deliveryuserid" />
+    <result column="Deliveryusername" jdbcType="VARCHAR" property="deliveryusername" />
+    <result column="Createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="Createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="Createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="Createincnumber" jdbcType="VARCHAR" property="createincnumber" />
+    <result column="Createincname" jdbcType="VARCHAR" property="createincname" />
+    <result column="zqj" jdbcType="INTEGER" property="zqj" />
+    <result column="zjj" jdbcType="INTEGER" property="zjj" />
+    <result column="sfdshk" jdbcType="INTEGER" property="sfdshk" />
+    <result column="dshk" jdbcType="DECIMAL" property="dshk" />
+    <result column="dsfy" jdbcType="DECIMAL" property="dsfy" />
+    <result column="qfhd" jdbcType="INTEGER" property="qfhd" />
+    <result column="hdh" jdbcType="VARCHAR" property="hdh" />
+    <result column="fdfy" jdbcType="DECIMAL" property="fdfy" />
+    <result column="tsps" jdbcType="INTEGER" property="tsps" />
+    <result column="ywfy" jdbcType="DECIMAL" property="ywfy" />
+    <result column="yyfy" jdbcType="DECIMAL" property="yyfy" />
+    <result column="bzjg" jdbcType="INTEGER" property="bzjg" />
+    <result column="clfy" jdbcType="DECIMAL" property="clfy" />
+    <result column="rgfy" jdbcType="DECIMAL" property="rgfy" />
+    <result column="qtgxhfw" jdbcType="INTEGER" property="qtgxhfw" />
+    <result column="dzfy" jdbcType="DECIMAL" property="dzfy" />
+    <result column="iszf" jdbcType="INTEGER" property="iszf" />
+    <result column="isduanxin" jdbcType="INTEGER" property="isduanxin" />
+    <result column="sjrshouji" jdbcType="VARCHAR" property="sjrshouji" />
+    <result column="wupinnum" jdbcType="INTEGER" property="wupinnum" />
+    <result column="wupinprices" jdbcType="DECIMAL" property="wupinprices" />
+    <result column="kahao" jdbcType="VARCHAR" property="kahao" />
+    <result column="dsfwf" jdbcType="INTEGER" property="dsfwf" />
+    <result column="tssp" jdbcType="INTEGER" property="tssp" />
+    <result column="isqdfh" jdbcType="INTEGER" property="isqdfh" />
+    <result column="zzfwqt" jdbcType="VARCHAR" property="zzfwqt" />
+    <result column="fyjs" jdbcType="INTEGER" property="fyjs" />
+    <result column="fyzl" jdbcType="DECIMAL" property="fyzl" />
+    <result column="fyjfzl" jdbcType="DECIMAL" property="fyjfzl" />
+    <result column="yyfjf" jdbcType="DECIMAL" property="yyfjf" />
+    <result column="fkfs" jdbcType="VARCHAR" property="fkfs" />
+    <result column="fkfsqt" jdbcType="VARCHAR" property="fkfsqt" />
+    <result column="yuejiezhanghu" jdbcType="VARCHAR" property="yuejiezhanghu" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="sfz" jdbcType="VARCHAR" property="sfz" />
+    <result column="zhCode" jdbcType="VARCHAR" property="zhcode" />
+    <result column="zhNumber" jdbcType="VARCHAR" property="zhnumber" />
+    <result column="isGetTrace" jdbcType="TINYINT" property="isgettrace" />
+    <result column="Remark" jdbcType="LONGVARCHAR" property="remark" />
+    <result column="fwyq" jdbcType="LONGVARCHAR" property="fwyq" />
+    <result column="isDelete" jdbcType="INTEGER" property="isDelete" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Number, Formguestcode, formguestname, FromName, Fromcity, Fromcityname, Fromprovince, 
+    FromProvincename, fromarea, fromareaname, Fromareastreet, Fromareastreetname, Fromincname,
+    Fromaddress, Fromtel, Fromcode, Toguestname, Toguestcode, Toprovince, Toprovincename,
+    Tocity, Tocityname, ToArea, ToAreaname, Toareastreet, Toareastreetname, Toincname,
+    Toaddress, Toname, Tocode, Totel, Paymentflag, Paymentforgoods, Isfile, isgoods,
+    Filename, Num, Weight, Longs, Widths, Heights, Volume, begintime, Senduserid, Sendusername,
+    fromusersignature, sendusersignature, Iscollection, Paymode, Isinsured, Insuredsumprice,
+    Insuredprice, Ismobilesend, Mobileprice, Price, Sendmode, Modeprice, Tousersignature,
+    Collectionsignature, Signaturecode, Endtime, Sumprice, Deliveryuserid, Deliveryusername,
+    Createtime, Createuserid, Createusername, Createincnumber, Createincname,
+    zqj, zjj, sfdshk, dshk, dsfy, qfhd, hdh, fdfy, tsps, ywfy, yyfy, bzjg, clfy, rgfy,
+    qtgxhfw, dzfy, iszf, isduanxin, sjrshouji, wupinnum, wupinprices, kahao, dsfwf,
+    tssp, isqdfh, zzfwqt, fyjs, fyzl, fyjfzl, yyfjf, fkfs, fkfsqt, yuejiezhanghu, openid,
+    sfz, zhCode, zhNumber, isGetTrace
+  </sql>
+  <sql id="Blob_Column_List">
+    Remark, fwyq
+  </sql>
+
+  <!-- 根据多个订单号查询订单信息 -->
+  <select id="getAllNumberMsg" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from eforces_order
+    where
+    number
+    in
+    <foreach collection="list" item="number"
+             index="index" open="(" close=")" separator="," >
+      #{number}
+    </foreach>
+  </select>
+
+  <!-- 收件、根据Number订单编号查询数据添加到扫描表 -->
+  <select id="getOrderMsg" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * from eforces_order where Number=#{Number}
+  </select>
+
+  <!-- 获取已支付订单信息 -->
+  <select id="yetPayment"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from eforces_distributedscan
+    distribute join eforces_order  bill on distribute.billsnumber = bill.Number
+    join eforces_customersign sign on sign.Number  = distribute.billsnumber
+    where bill.Paymentflag = 1 and  distribute.postmanid = #{postmanid}
+  </select>
+
+  <!-- 获取未支付订单信息 -->
+  <select id="notPayment" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from eforces_distributedscan
+    distribute  join eforces_order  bill on distribute.billsnumber = bill.Number
+    where bill.Paymentflag = 1 and  distribute.postmanid = #{postmanid}
+    and bill.Number not in (select  sign.Number  from eforces_customersign sign where sign.OperatorId = #{postmanid})
+  </select>
+
+  <!-- 收件详情信息 -->
+  <select id="getListAddressee" resultMap="BaseResultMap">
+    SELECT bill.* from eforces_order bill  JOIN eforces_receivedscan  receive ON receive.billsnumber=bill.number WHERE incid=#{incid}
+  </select>
+  
+  <select id="getDestoryBill" resultMap="BaseResultMap">
+  	 SELECT  bill.*  from  eforces_stayedandtroubledscan    trouble
+ 	join  eforces_problemcause  cause on trouble.troubledtype = cause.Name 
+    JOIN eforces_order bill on trouble.billsnumber=bill.Number
+     where trouble.incid  = #{incid} 
+     and cause.isDelete = 0 and   cause.id in 
+     <foreach collection="causeIds" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <!-- 寄/派件运单管理-->
+  <select id="getAllMsg" resultMap="BaseResultMap">
+    select  * from eforces_order where isDelete = 1
+  </select>
+
+  <!-- 删除 -->
+  <update id="removeUpdate">
+    update
+    eforces_order
+    set
+    isDelete=0
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+  
+  <select id="selectByCreateUserId" resultMap="BaseResultMap">
+  select
+  *
+  from 
+  eforces_order
+  where
+  Createuserid=#{Createuserid}
+  order by
+  Createtime
+  desc
+  </select>
+
+  <select id="selectDeleveryByCreateUserId" resultMap="BaseResultMap">
+  select
+  DISTINCT  bill.*
+  from
+  eforces_order  bill join eforces_customersign  sign on bill.Number = sign.Number 
+  where
+   sign.DeliveryUserId = #{Createuserid}
+  order by
+  bill.Createtime
+  desc
+  </select>
+  
+  <select id="selectLikeByNumber" resultMap="BaseResultMap">
+  SELECT
+  *
+  FROM
+  eforces_order
+  WHERE
+  Number LIKE "%"#{number,jdbcType=VARCHAR}"%"
+  </select>
+  
+  <select id= "getOrderByNumbers"   resultMap="BaseResultMap">
+  SELECT
+  *
+  FROM
+  eforces_order
+  WHERE 
+  Number in  
+	 <foreach collection="billsNumber" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+    
+  </select>
+  <select id="getHadPostPackage" parameterType="java.lang.String" resultMap="BaseResultMap">
+    	SELECT bill.* from eforces_order bill join  eforces_sentscan  sent  on bill.Number =  sent.billsnumber  where  bill.isDelete = 0  and sent.incid = #{incid}
+  </select>
+
+  <select id="notHadPostPackage" resultMap="BaseResultMap">
+		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
+  			where  bill.isDelete = 0  and receive.incid = #{incid}	and 
+		 receive.billsnumber  not  in (
+			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}
+			Union 
+			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid}
+		)  
+  </select>
+
+  <select id="getHadFinishPackage" parameterType="java.lang.String" resultMap="BaseResultMap">
+	   SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan receive on bill.number = receive.billsnumber   where bill.isDelete = 0  and receive.incid = #{incid}  and  bill.number not in (
+ 			SELECT number  from eforces_customersign  
+		) 
+  </select>
+  
+   <select id="getNotFinishPackage" parameterType="java.lang.String" resultMap="BaseResultMap">
+ 		SELECT receive.incid, bill.* from eforces_order bill JOIN
+		eforces_receivedscan  receive
+			   on  bill.number = receive.billsnumber   where  bill.isDelete = 0  and receive.incid = #{incid} 	and
+		 receive.billsnumber  not in  (
+			SELECT number  from eforces_customersign 
+		)
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_order
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByUserId"  parameterType="java.lang.String" resultType ="java.lang.Integer" >
+  		select count(*)  from eforces_order  where  Createuserid =  #{userNumber,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_order
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesOrder">
+    insert into eforces_order (Id, Number, Formguestcode, 
+      formguestname, FromName, Fromcity, 
+      Fromcityname, Fromprovince, FromProvincename, 
+      fromarea, fromareaname, Fromareastreet,
+      Fromareastreetname, Fromincname, Fromaddress,
+      Fromtel, Fromcode, Toguestname,
+      Toguestcode, Toprovince, Toprovincename,
+      Tocity, Tocityname, ToArea,
+      ToAreaname, Toareastreet, Toareastreetname,
+      Toincname, Toaddress, Toname,
+      Tocode, Totel, Paymentflag,
+      Paymentforgoods, Isfile, isgoods,
+      Filename, Num, Weight,
+      Longs, Widths, Heights,
+      Volume, begintime, Senduserid,
+      Sendusername, fromusersignature, sendusersignature,
+      Iscollection, Paymode, Isinsured,
+      Insuredsumprice, Insuredprice, Ismobilesend,
+      Mobileprice, Price, Sendmode,
+      Modeprice, Tousersignature, Collectionsignature,
+      Signaturecode, Endtime, Sumprice,
+      Deliveryuserid, Deliveryusername, Remark,
+      Createtime, Createuserid, Createusername,
+      Createincnumber, Createincname, zqj,
+      zjj, sfdshk, dshk,
+      dsfy, qfhd, hdh, fdfy,
+      tsps, ywfy, yyfy, bzjg,
+      clfy, rgfy, qtgxhfw,
+      fwyq, dzfy, iszf, isduanxin,
+      sjrshouji, wupinnum, wupinprices,
+      kahao, dsfwf, tssp,
+      isqdfh, zzfwqt, fyjs,
+      fyzl, fyjfzl, yyfjf,
+      fkfs, fkfsqt, yuejiezhanghu,
+      openid, sfz, zhCode,
+      zhNumber, isGetTrace)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{formguestcode,jdbcType=VARCHAR},
+      #{formguestname,jdbcType=VARCHAR}, #{fromname,jdbcType=VARCHAR}, #{fromcity,jdbcType=VARCHAR},
+      #{fromcityname,jdbcType=VARCHAR}, #{fromprovince,jdbcType=VARCHAR}, #{fromprovincename,jdbcType=VARCHAR},
+      #{fromarea,jdbcType=VARCHAR}, #{fromareaname,jdbcType=VARCHAR}, #{fromareastreet,jdbcType=VARCHAR},
+      #{fromareastreetname,jdbcType=VARCHAR}, #{fromincname,jdbcType=VARCHAR}, #{fromaddress,jdbcType=VARCHAR},
+      #{fromtel,jdbcType=VARCHAR}, #{fromcode,jdbcType=VARCHAR}, #{toguestname,jdbcType=VARCHAR},
+      #{toguestcode,jdbcType=VARCHAR}, #{toprovince,jdbcType=VARCHAR}, #{toprovincename,jdbcType=VARCHAR},
+      #{tocity,jdbcType=VARCHAR}, #{tocityname,jdbcType=VARCHAR}, #{toarea,jdbcType=VARCHAR},
+      #{toareaname,jdbcType=VARCHAR}, #{toareastreet,jdbcType=VARCHAR}, #{toareastreetname,jdbcType=VARCHAR},
+      #{toincname,jdbcType=VARCHAR}, #{toaddress,jdbcType=VARCHAR}, #{toname,jdbcType=VARCHAR},
+      #{tocode,jdbcType=VARCHAR}, #{totel,jdbcType=VARCHAR}, #{paymentflag,jdbcType=INTEGER},
+      #{paymentforgoods,jdbcType=DECIMAL}, #{isfile,jdbcType=INTEGER}, #{isgoods,jdbcType=VARCHAR},
+      #{filename,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{weight,jdbcType=DECIMAL},
+      #{longs,jdbcType=DECIMAL}, #{widths,jdbcType=DECIMAL}, #{heights,jdbcType=DECIMAL},
+      #{volume,jdbcType=DECIMAL}, #{begintime,jdbcType=TIMESTAMP}, #{senduserid,jdbcType=VARCHAR},
+      #{sendusername,jdbcType=VARCHAR}, #{fromusersignature,jdbcType=VARCHAR}, #{sendusersignature,jdbcType=VARCHAR},
+      #{iscollection,jdbcType=INTEGER}, #{paymode,jdbcType=INTEGER}, #{isinsured,jdbcType=INTEGER},
+      #{insuredsumprice,jdbcType=DECIMAL}, #{insuredprice,jdbcType=DECIMAL}, #{ismobilesend,jdbcType=INTEGER},
+      #{mobileprice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{sendmode,jdbcType=INTEGER},
+      #{modeprice,jdbcType=DECIMAL}, #{tousersignature,jdbcType=VARCHAR}, #{collectionsignature,jdbcType=VARCHAR},
+      #{signaturecode,jdbcType=VARCHAR}, #{endtime,jdbcType=TIMESTAMP}, #{sumprice,jdbcType=DECIMAL},
+      #{deliveryuserid,jdbcType=VARCHAR}, #{deliveryusername,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR},
+      #{createtime,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, #{createusername,jdbcType=VARCHAR},
+      #{createincnumber,jdbcType=VARCHAR}, #{createincname,jdbcType=VARCHAR}, #{zqj,jdbcType=INTEGER},
+      #{zjj,jdbcType=INTEGER}, #{sfdshk,jdbcType=INTEGER}, #{dshk,jdbcType=DECIMAL},
+      #{dsfy,jdbcType=DECIMAL}, #{qfhd,jdbcType=INTEGER}, #{hdh,jdbcType=VARCHAR}, #{fdfy,jdbcType=DECIMAL},
+      #{tsps,jdbcType=INTEGER}, #{ywfy,jdbcType=DECIMAL}, #{yyfy,jdbcType=DECIMAL}, #{bzjg,jdbcType=INTEGER},
+      #{clfy,jdbcType=DECIMAL}, #{rgfy,jdbcType=DECIMAL}, #{qtgxhfw,jdbcType=INTEGER},
+      #{fwyq,jdbcType=LONGVARCHAR}, #{dzfy,jdbcType=DECIMAL}, #{iszf,jdbcType=INTEGER}, #{isduanxin,jdbcType=INTEGER},
+      #{sjrshouji,jdbcType=VARCHAR}, #{wupinnum,jdbcType=INTEGER}, #{wupinprices,jdbcType=DECIMAL},
+      #{kahao,jdbcType=VARCHAR}, #{dsfwf,jdbcType=INTEGER}, #{tssp,jdbcType=INTEGER},
+      #{isqdfh,jdbcType=INTEGER}, #{zzfwqt,jdbcType=VARCHAR}, #{fyjs,jdbcType=INTEGER},
+      #{fyzl,jdbcType=DECIMAL}, #{fyjfzl,jdbcType=DECIMAL}, #{yyfjf,jdbcType=DECIMAL},
+      #{fkfs,jdbcType=VARCHAR}, #{fkfsqt,jdbcType=VARCHAR}, #{yuejiezhanghu,jdbcType=VARCHAR},
+      #{openid,jdbcType=VARCHAR}, #{sfz,jdbcType=VARCHAR}, #{zhcode,jdbcType=VARCHAR},
+      #{zhnumber,jdbcType=VARCHAR}, #{isgettrace,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesOrder">
+    insert into eforces_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="formguestcode != null">
+        Formguestcode,
+      </if>
+      <if test="formguestname != null">
+        formguestname,
+      </if>
+      <if test="fromname != null">
+        FromName,
+      </if>
+      <if test="fromcity != null">
+        Fromcity,
+      </if>
+      <if test="fromcityname != null">
+        Fromcityname,
+      </if>
+      <if test="fromprovince != null">
+        Fromprovince,
+      </if>
+      <if test="fromprovincename != null">
+        FromProvincename,
+      </if>
+      <if test="fromarea != null">
+        fromarea,
+      </if>
+      <if test="fromareaname != null">
+        fromareaname,
+      </if>
+      <if test="fromareastreet != null">
+        Fromareastreet,
+      </if>
+      <if test="fromareastreetname != null">
+        Fromareastreetname,
+      </if>
+      <if test="fromincname != null">
+        Fromincname,
+      </if>
+      <if test="fromaddress != null">
+        Fromaddress,
+      </if>
+      <if test="fromtel != null">
+        Fromtel,
+      </if>
+      <if test="fromcode != null">
+        Fromcode,
+      </if>
+      <if test="toguestname != null">
+        Toguestname,
+      </if>
+      <if test="toguestcode != null">
+        Toguestcode,
+      </if>
+      <if test="toprovince != null">
+        Toprovince,
+      </if>
+      <if test="toprovincename != null">
+        Toprovincename,
+      </if>
+      <if test="tocity != null">
+        Tocity,
+      </if>
+      <if test="tocityname != null">
+        Tocityname,
+      </if>
+      <if test="toarea != null">
+        ToArea,
+      </if>
+      <if test="toareaname != null">
+        ToAreaname,
+      </if>
+      <if test="toareastreet != null">
+        Toareastreet,
+      </if>
+      <if test="toareastreetname != null">
+        Toareastreetname,
+      </if>
+      <if test="toincname != null">
+        Toincname,
+      </if>
+      <if test="toaddress != null">
+        Toaddress,
+      </if>
+      <if test="toname != null">
+        Toname,
+      </if>
+      <if test="tocode != null">
+        Tocode,
+      </if>
+      <if test="totel != null">
+        Totel,
+      </if>
+      <if test="paymentflag != null">
+        Paymentflag,
+      </if>
+      <if test="paymentforgoods != null">
+        Paymentforgoods,
+      </if>
+      <if test="isfile != null">
+        Isfile,
+      </if>
+      <if test="isgoods != null">
+        isgoods,
+      </if>
+      <if test="filename != null">
+        Filename,
+      </if>
+      <if test="num != null">
+        Num,
+      </if>
+      <if test="weight != null">
+        Weight,
+      </if>
+      <if test="longs != null">
+        Longs,
+      </if>
+      <if test="widths != null">
+        Widths,
+      </if>
+      <if test="heights != null">
+        Heights,
+      </if>
+      <if test="volume != null">
+        Volume,
+      </if>
+      <if test="begintime != null">
+        begintime,
+      </if>
+      <if test="senduserid != null">
+        Senduserid,
+      </if>
+      <if test="sendusername != null">
+        Sendusername,
+      </if>
+      <if test="fromusersignature != null">
+        fromusersignature,
+      </if>
+      <if test="sendusersignature != null">
+        sendusersignature,
+      </if>
+      <if test="iscollection != null">
+        Iscollection,
+      </if>
+      <if test="paymode != null">
+        Paymode,
+      </if>
+      <if test="isinsured != null">
+        Isinsured,
+      </if>
+      <if test="insuredsumprice != null">
+        Insuredsumprice,
+      </if>
+      <if test="insuredprice != null">
+        Insuredprice,
+      </if>
+      <if test="ismobilesend != null">
+        Ismobilesend,
+      </if>
+      <if test="mobileprice != null">
+        Mobileprice,
+      </if>
+      <if test="price != null">
+        Price,
+      </if>
+      <if test="sendmode != null">
+        Sendmode,
+      </if>
+      <if test="modeprice != null">
+        Modeprice,
+      </if>
+      <if test="tousersignature != null">
+        Tousersignature,
+      </if>
+      <if test="collectionsignature != null">
+        Collectionsignature,
+      </if>
+      <if test="signaturecode != null">
+        Signaturecode,
+      </if>
+      <if test="endtime != null">
+        Endtime,
+      </if>
+      <if test="sumprice != null">
+        Sumprice,
+      </if>
+      <if test="deliveryuserid != null">
+        Deliveryuserid,
+      </if>
+      <if test="deliveryusername != null">
+        Deliveryusername,
+      </if>
+      Createtime,
+      <if test="createuserid != null">
+        Createuserid,
+      </if>
+      <if test="createusername != null">
+        Createusername,
+      </if>
+      <if test="createincnumber != null">
+        Createincnumber,
+      </if>
+      <if test="createincname != null">
+        Createincname,
+      </if>
+      <if test="zqj != null">
+        zqj,
+      </if>
+      <if test="zjj != null">
+        zjj,
+      </if>
+      <if test="sfdshk != null">
+        sfdshk,
+      </if>
+      <if test="dshk != null">
+        dshk,
+      </if>
+      <if test="dsfy != null">
+        dsfy,
+      </if>
+      <if test="qfhd != null">
+        qfhd,
+      </if>
+      <if test="hdh != null">
+        hdh,
+      </if>
+      <if test="fdfy != null">
+        fdfy,
+      </if>
+      <if test="tsps != null">
+        tsps,
+      </if>
+      <if test="ywfy != null">
+        ywfy,
+      </if>
+      <if test="yyfy != null">
+        yyfy,
+      </if>
+      <if test="bzjg != null">
+        bzjg,
+      </if>
+      <if test="clfy != null">
+        clfy,
+      </if>
+      <if test="rgfy != null">
+        rgfy,
+      </if>
+      <if test="qtgxhfw != null">
+        qtgxhfw,
+      </if>
+      <if test="dzfy != null">
+        dzfy,
+      </if>
+      <if test="iszf != null">
+        iszf,
+      </if>
+      <if test="isduanxin != null">
+        isduanxin,
+      </if>
+      <if test="sjrshouji != null">
+        sjrshouji,
+      </if>
+      <if test="wupinnum != null">
+        wupinnum,
+      </if>
+      <if test="wupinprices != null">
+        wupinprices,
+      </if>
+      <if test="kahao != null">
+        kahao,
+      </if>
+      <if test="dsfwf != null">
+        dsfwf,
+      </if>
+      <if test="tssp != null">
+        tssp,
+      </if>
+      <if test="isqdfh != null">
+        isqdfh,
+      </if>
+      <if test="zzfwqt != null">
+        zzfwqt,
+      </if>
+      <if test="fyjs != null">
+        fyjs,
+      </if>
+      <if test="fyzl != null">
+        fyzl,
+      </if>
+      <if test="fyjfzl != null">
+        fyjfzl,
+      </if>
+      <if test="yyfjf != null">
+        yyfjf,
+      </if>
+      <if test="fkfs != null">
+        fkfs,
+      </if>
+      <if test="fkfsqt != null">
+        fkfsqt,
+      </if>
+      <if test="yuejiezhanghu != null">
+        yuejiezhanghu,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="sfz != null">
+        sfz,
+      </if>
+      <if test="zhcode != null">
+        zhCode,
+      </if>
+      <if test="zhnumber != null">
+        zhNumber,
+      </if>
+      <if test="isgettrace != null">
+        isGetTrace,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+      <if test="fwyq != null">
+        fwyq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="formguestcode != null">
+        #{formguestcode,jdbcType=VARCHAR},
+      </if>
+      <if test="formguestname != null">
+        #{formguestname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromname != null">
+        #{fromname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromcity != null">
+        #{fromcity,jdbcType=VARCHAR},
+      </if>
+      <if test="fromcityname != null">
+        #{fromcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromprovince != null">
+        #{fromprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="fromprovincename != null">
+        #{fromprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="fromarea != null">
+        #{fromarea,jdbcType=VARCHAR},
+      </if>
+      <if test="fromareaname != null">
+        #{fromareaname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromareastreet != null">
+        #{fromareastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="fromareastreetname != null">
+        #{fromareastreetname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromincname != null">
+        #{fromincname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromaddress != null">
+        #{fromaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fromtel != null">
+        #{fromtel,jdbcType=VARCHAR},
+      </if>
+      <if test="fromcode != null">
+        #{fromcode,jdbcType=VARCHAR},
+      </if>
+      <if test="toguestname != null">
+        #{toguestname,jdbcType=VARCHAR},
+      </if>
+      <if test="toguestcode != null">
+        #{toguestcode,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovince != null">
+        #{toprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovincename != null">
+        #{toprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="tocity != null">
+        #{tocity,jdbcType=VARCHAR},
+      </if>
+      <if test="tocityname != null">
+        #{tocityname,jdbcType=VARCHAR},
+      </if>
+      <if test="toarea != null">
+        #{toarea,jdbcType=VARCHAR},
+      </if>
+      <if test="toareaname != null">
+        #{toareaname,jdbcType=VARCHAR},
+      </if>
+      <if test="toareastreet != null">
+        #{toareastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="toareastreetname != null">
+        #{toareastreetname,jdbcType=VARCHAR},
+      </if>
+      <if test="toincname != null">
+        #{toincname,jdbcType=VARCHAR},
+      </if>
+      <if test="toaddress != null">
+        #{toaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="toname != null">
+        #{toname,jdbcType=VARCHAR},
+      </if>
+      <if test="tocode != null">
+        #{tocode,jdbcType=VARCHAR},
+      </if>
+      <if test="totel != null">
+        #{totel,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentflag != null">
+        #{paymentflag,jdbcType=INTEGER},
+      </if>
+      <if test="paymentforgoods != null">
+        #{paymentforgoods,jdbcType=DECIMAL},
+      </if>
+      <if test="isfile != null">
+        #{isfile,jdbcType=INTEGER},
+      </if>
+      <if test="isgoods != null">
+        #{isgoods,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="longs != null">
+        #{longs,jdbcType=DECIMAL},
+      </if>
+      <if test="widths != null">
+        #{widths,jdbcType=DECIMAL},
+      </if>
+      <if test="heights != null">
+        #{heights,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="begintime != null">
+        #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="senduserid != null">
+        #{senduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendusername != null">
+        #{sendusername,jdbcType=VARCHAR},
+      </if>
+      <if test="fromusersignature != null">
+        #{fromusersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="sendusersignature != null">
+        #{sendusersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="iscollection != null">
+        #{iscollection,jdbcType=INTEGER},
+      </if>
+      <if test="paymode != null">
+        #{paymode,jdbcType=INTEGER},
+      </if>
+      <if test="isinsured != null">
+        #{isinsured,jdbcType=INTEGER},
+      </if>
+      <if test="insuredsumprice != null">
+        #{insuredsumprice,jdbcType=DECIMAL},
+      </if>
+      <if test="insuredprice != null">
+        #{insuredprice,jdbcType=DECIMAL},
+      </if>
+      <if test="ismobilesend != null">
+        #{ismobilesend,jdbcType=INTEGER},
+      </if>
+      <if test="mobileprice != null">
+        #{mobileprice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="sendmode != null">
+        #{sendmode,jdbcType=INTEGER},
+      </if>
+      <if test="modeprice != null">
+        #{modeprice,jdbcType=DECIMAL},
+      </if>
+      <if test="tousersignature != null">
+        #{tousersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionsignature != null">
+        #{collectionsignature,jdbcType=VARCHAR},
+      </if>
+      <if test="signaturecode != null">
+        #{signaturecode,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sumprice != null">
+        #{sumprice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryuserid != null">
+        #{deliveryuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryusername != null">
+        #{deliveryusername,jdbcType=VARCHAR},
+      </if>
+      now(),
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="createincnumber != null">
+        #{createincnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createincname != null">
+        #{createincname,jdbcType=VARCHAR},
+      </if>
+      <if test="zqj != null">
+        #{zqj,jdbcType=INTEGER},
+      </if>
+      <if test="zjj != null">
+        #{zjj,jdbcType=INTEGER},
+      </if>
+      <if test="sfdshk != null">
+        #{sfdshk,jdbcType=INTEGER},
+      </if>
+      <if test="dshk != null">
+        #{dshk,jdbcType=DECIMAL},
+      </if>
+      <if test="dsfy != null">
+        #{dsfy,jdbcType=DECIMAL},
+      </if>
+      <if test="qfhd != null">
+        #{qfhd,jdbcType=INTEGER},
+      </if>
+      <if test="hdh != null">
+        #{hdh,jdbcType=VARCHAR},
+      </if>
+      <if test="fdfy != null">
+        #{fdfy,jdbcType=DECIMAL},
+      </if>
+      <if test="tsps != null">
+        #{tsps,jdbcType=INTEGER},
+      </if>
+      <if test="ywfy != null">
+        #{ywfy,jdbcType=DECIMAL},
+      </if>
+      <if test="yyfy != null">
+        #{yyfy,jdbcType=DECIMAL},
+      </if>
+      <if test="bzjg != null">
+        #{bzjg,jdbcType=INTEGER},
+      </if>
+      <if test="clfy != null">
+        #{clfy,jdbcType=DECIMAL},
+      </if>
+      <if test="rgfy != null">
+        #{rgfy,jdbcType=DECIMAL},
+      </if>
+      <if test="qtgxhfw != null">
+        #{qtgxhfw,jdbcType=INTEGER},
+      </if>
+      <if test="dzfy != null">
+        #{dzfy,jdbcType=DECIMAL},
+      </if>
+      <if test="iszf != null">
+        #{iszf,jdbcType=INTEGER},
+      </if>
+      <if test="isduanxin != null">
+        #{isduanxin,jdbcType=INTEGER},
+      </if>
+      <if test="sjrshouji != null">
+        #{sjrshouji,jdbcType=VARCHAR},
+      </if>
+      <if test="wupinnum != null">
+        #{wupinnum,jdbcType=INTEGER},
+      </if>
+      <if test="wupinprices != null">
+        #{wupinprices,jdbcType=DECIMAL},
+      </if>
+      <if test="kahao != null">
+        #{kahao,jdbcType=VARCHAR},
+      </if>
+      <if test="dsfwf != null">
+        #{dsfwf,jdbcType=INTEGER},
+      </if>
+      <if test="tssp != null">
+        #{tssp,jdbcType=INTEGER},
+      </if>
+      <if test="isqdfh != null">
+        #{isqdfh,jdbcType=INTEGER},
+      </if>
+      <if test="zzfwqt != null">
+        #{zzfwqt,jdbcType=VARCHAR},
+      </if>
+      <if test="fyjs != null">
+        #{fyjs,jdbcType=INTEGER},
+      </if>
+      <if test="fyzl != null">
+        #{fyzl,jdbcType=DECIMAL},
+      </if>
+      <if test="fyjfzl != null">
+        #{fyjfzl,jdbcType=DECIMAL},
+      </if>
+      <if test="yyfjf != null">
+        #{yyfjf,jdbcType=DECIMAL},
+      </if>
+      <if test="fkfs != null">
+        #{fkfs,jdbcType=VARCHAR},
+      </if>
+      <if test="fkfsqt != null">
+        #{fkfsqt,jdbcType=VARCHAR},
+      </if>
+      <if test="yuejiezhanghu != null">
+        #{yuejiezhanghu,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="sfz != null">
+        #{sfz,jdbcType=VARCHAR},
+      </if>
+      <if test="zhcode != null">
+        #{zhcode,jdbcType=VARCHAR},
+      </if>
+      <if test="zhnumber != null">
+        #{zhnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="isgettrace != null">
+        #{isgettrace,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fwyq != null">
+        #{fwyq,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesOrder">
+    update eforces_order
+    <set>
+      <if test="number != null">
+        Number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="formguestcode != null">
+        Formguestcode = #{formguestcode,jdbcType=VARCHAR},
+      </if>
+      <if test="formguestname != null">
+        formguestname = #{formguestname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromname != null">
+        FromName = #{fromname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromcity != null">
+        Fromcity = #{fromcity,jdbcType=VARCHAR},
+      </if>
+      <if test="fromcityname != null">
+        Fromcityname = #{fromcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromprovince != null">
+        Fromprovince = #{fromprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="fromprovincename != null">
+        FromProvincename = #{fromprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="fromarea != null">
+        fromarea = #{fromarea,jdbcType=VARCHAR},
+      </if>
+      <if test="fromareaname != null">
+        fromareaname = #{fromareaname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromareastreet != null">
+        Fromareastreet = #{fromareastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="fromareastreetname != null">
+        Fromareastreetname = #{fromareastreetname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromincname != null">
+        Fromincname = #{fromincname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromaddress != null">
+        Fromaddress = #{fromaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fromtel != null">
+        Fromtel = #{fromtel,jdbcType=VARCHAR},
+      </if>
+      <if test="fromcode != null">
+        Fromcode = #{fromcode,jdbcType=VARCHAR},
+      </if>
+      <if test="toguestname != null">
+        Toguestname = #{toguestname,jdbcType=VARCHAR},
+      </if>
+      <if test="toguestcode != null">
+        Toguestcode = #{toguestcode,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovince != null">
+        Toprovince = #{toprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovincename != null">
+        Toprovincename = #{toprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="tocity != null">
+        Tocity = #{tocity,jdbcType=VARCHAR},
+      </if>
+      <if test="tocityname != null">
+        Tocityname = #{tocityname,jdbcType=VARCHAR},
+      </if>
+      <if test="toarea != null">
+        ToArea = #{toarea,jdbcType=VARCHAR},
+      </if>
+      <if test="toareaname != null">
+        ToAreaname = #{toareaname,jdbcType=VARCHAR},
+      </if>
+      <if test="toareastreet != null">
+        Toareastreet = #{toareastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="toareastreetname != null">
+        Toareastreetname = #{toareastreetname,jdbcType=VARCHAR},
+      </if>
+      <if test="toincname != null">
+        Toincname = #{toincname,jdbcType=VARCHAR},
+      </if>
+      <if test="toaddress != null">
+        Toaddress = #{toaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="toname != null">
+        Toname = #{toname,jdbcType=VARCHAR},
+      </if>
+      <if test="tocode != null">
+        Tocode = #{tocode,jdbcType=VARCHAR},
+      </if>
+      <if test="totel != null">
+        Totel = #{totel,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentflag != null">
+        Paymentflag = #{paymentflag,jdbcType=INTEGER},
+      </if>
+      <if test="paymentforgoods != null">
+        Paymentforgoods = #{paymentforgoods,jdbcType=DECIMAL},
+      </if>
+      <if test="isfile != null">
+        Isfile = #{isfile,jdbcType=INTEGER},
+      </if>
+      <if test="isgoods != null">
+        isgoods = #{isgoods,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        Filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        Num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        Weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="longs != null">
+        Longs = #{longs,jdbcType=DECIMAL},
+      </if>
+      <if test="widths != null">
+        Widths = #{widths,jdbcType=DECIMAL},
+      </if>
+      <if test="heights != null">
+        Heights = #{heights,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null">
+        Volume = #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="begintime != null">
+        begintime = #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="senduserid != null">
+        Senduserid = #{senduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendusername != null">
+        Sendusername = #{sendusername,jdbcType=VARCHAR},
+      </if>
+      <if test="fromusersignature != null">
+        fromusersignature = #{fromusersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="sendusersignature != null">
+        sendusersignature = #{sendusersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="iscollection != null">
+        Iscollection = #{iscollection,jdbcType=INTEGER},
+      </if>
+      <if test="paymode != null">
+        Paymode = #{paymode,jdbcType=INTEGER},
+      </if>
+      <if test="isinsured != null">
+        Isinsured = #{isinsured,jdbcType=INTEGER},
+      </if>
+      <if test="insuredsumprice != null">
+        Insuredsumprice = #{insuredsumprice,jdbcType=DECIMAL},
+      </if>
+      <if test="insuredprice != null">
+        Insuredprice = #{insuredprice,jdbcType=DECIMAL},
+      </if>
+      <if test="ismobilesend != null">
+        Ismobilesend = #{ismobilesend,jdbcType=INTEGER},
+      </if>
+      <if test="mobileprice != null">
+        Mobileprice = #{mobileprice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        Price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="sendmode != null">
+        Sendmode = #{sendmode,jdbcType=INTEGER},
+      </if>
+      <if test="modeprice != null">
+        Modeprice = #{modeprice,jdbcType=DECIMAL},
+      </if>
+      <if test="tousersignature != null">
+        Tousersignature = #{tousersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionsignature != null">
+        Collectionsignature = #{collectionsignature,jdbcType=VARCHAR},
+      </if>
+      <if test="signaturecode != null">
+        Signaturecode = #{signaturecode,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        Endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sumprice != null">
+        Sumprice = #{sumprice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryuserid != null">
+        Deliveryuserid = #{deliveryuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryusername != null">
+        Deliveryusername = #{deliveryusername,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="createtime != null">
+        Createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        Createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        Createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="createincnumber != null">
+        Createincnumber = #{createincnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createincname != null">
+        Createincname = #{createincname,jdbcType=VARCHAR},
+      </if>
+      <if test="zqj != null">
+        zqj = #{zqj,jdbcType=INTEGER},
+      </if>
+      <if test="zjj != null">
+        zjj = #{zjj,jdbcType=INTEGER},
+      </if>
+      <if test="sfdshk != null">
+        sfdshk = #{sfdshk,jdbcType=INTEGER},
+      </if>
+      <if test="dshk != null">
+        dshk = #{dshk,jdbcType=DECIMAL},
+      </if>
+      <if test="dsfy != null">
+        dsfy = #{dsfy,jdbcType=DECIMAL},
+      </if>
+      <if test="qfhd != null">
+        qfhd = #{qfhd,jdbcType=INTEGER},
+      </if>
+      <if test="hdh != null">
+        hdh = #{hdh,jdbcType=VARCHAR},
+      </if>
+      <if test="fdfy != null">
+        fdfy = #{fdfy,jdbcType=DECIMAL},
+      </if>
+      <if test="tsps != null">
+        tsps = #{tsps,jdbcType=INTEGER},
+      </if>
+      <if test="ywfy != null">
+        ywfy = #{ywfy,jdbcType=DECIMAL},
+      </if>
+      <if test="yyfy != null">
+        yyfy = #{yyfy,jdbcType=DECIMAL},
+      </if>
+      <if test="bzjg != null">
+        bzjg = #{bzjg,jdbcType=INTEGER},
+      </if>
+      <if test="clfy != null">
+        clfy = #{clfy,jdbcType=DECIMAL},
+      </if>
+      <if test="rgfy != null">
+        rgfy = #{rgfy,jdbcType=DECIMAL},
+      </if>
+      <if test="qtgxhfw != null">
+        qtgxhfw = #{qtgxhfw,jdbcType=INTEGER},
+      </if>
+      <if test="fwyq != null">
+        fwyq = #{fwyq,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dzfy != null">
+        dzfy = #{dzfy,jdbcType=DECIMAL},
+      </if>
+      <if test="iszf != null">
+        iszf = #{iszf,jdbcType=INTEGER},
+      </if>
+      <if test="isduanxin != null">
+        isduanxin = #{isduanxin,jdbcType=INTEGER},
+      </if>
+      <if test="sjrshouji != null">
+        sjrshouji = #{sjrshouji,jdbcType=VARCHAR},
+      </if>
+      <if test="wupinnum != null">
+        wupinnum = #{wupinnum,jdbcType=INTEGER},
+      </if>
+      <if test="wupinprices != null">
+        wupinprices = #{wupinprices,jdbcType=DECIMAL},
+      </if>
+      <if test="kahao != null">
+        kahao = #{kahao,jdbcType=VARCHAR},
+      </if>
+      <if test="dsfwf != null">
+        dsfwf = #{dsfwf,jdbcType=INTEGER},
+      </if>
+      <if test="tssp != null">
+        tssp = #{tssp,jdbcType=INTEGER},
+      </if>
+      <if test="isqdfh != null">
+        isqdfh = #{isqdfh,jdbcType=INTEGER},
+      </if>
+      <if test="zzfwqt != null">
+        zzfwqt = #{zzfwqt,jdbcType=VARCHAR},
+      </if>
+      <if test="fyjs != null">
+        fyjs = #{fyjs,jdbcType=INTEGER},
+      </if>
+      <if test="fyzl != null">
+        fyzl = #{fyzl,jdbcType=DECIMAL},
+      </if>
+      <if test="fyjfzl != null">
+        fyjfzl = #{fyjfzl,jdbcType=DECIMAL},
+      </if>
+      <if test="yyfjf != null">
+        yyfjf = #{yyfjf,jdbcType=DECIMAL},
+      </if>
+      <if test="fkfs != null">
+        fkfs = #{fkfs,jdbcType=VARCHAR},
+      </if>
+      <if test="fkfsqt != null">
+        fkfsqt = #{fkfsqt,jdbcType=VARCHAR},
+      </if>
+      <if test="yuejiezhanghu != null">
+        yuejiezhanghu = #{yuejiezhanghu,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="sfz != null">
+        sfz = #{sfz,jdbcType=VARCHAR},
+      </if>
+      <if test="zhcode != null">
+        zhCode = #{zhcode,jdbcType=VARCHAR},
+      </if>
+      <if test="zhnumber != null">
+        zhNumber = #{zhnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="isgettrace != null">
+        isGetTrace = #{isgettrace,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        isDelete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesOrder">
+    update eforces_order
+    set Number = #{number,jdbcType=VARCHAR},
+      Formguestcode = #{formguestcode,jdbcType=VARCHAR},
+      formguestname = #{formguestname,jdbcType=VARCHAR},
+      FromName = #{fromname,jdbcType=VARCHAR},
+      Fromcity = #{fromcity,jdbcType=VARCHAR},
+      Fromcityname = #{fromcityname,jdbcType=VARCHAR},
+      Fromprovince = #{fromprovince,jdbcType=VARCHAR},
+      FromProvincename = #{fromprovincename,jdbcType=VARCHAR},
+      fromarea = #{fromarea,jdbcType=VARCHAR},
+      fromareaname = #{fromareaname,jdbcType=VARCHAR},
+      Fromareastreet = #{fromareastreet,jdbcType=VARCHAR},
+      Fromareastreetname = #{fromareastreetname,jdbcType=VARCHAR},
+      Fromincname = #{fromincname,jdbcType=VARCHAR},
+      Fromaddress = #{fromaddress,jdbcType=VARCHAR},
+      Fromtel = #{fromtel,jdbcType=VARCHAR},
+      Fromcode = #{fromcode,jdbcType=VARCHAR},
+      Toguestname = #{toguestname,jdbcType=VARCHAR},
+      Toguestcode = #{toguestcode,jdbcType=VARCHAR},
+      Toprovince = #{toprovince,jdbcType=VARCHAR},
+      Toprovincename = #{toprovincename,jdbcType=VARCHAR},
+      Tocity = #{tocity,jdbcType=VARCHAR},
+      Tocityname = #{tocityname,jdbcType=VARCHAR},
+      ToArea = #{toarea,jdbcType=VARCHAR},
+      ToAreaname = #{toareaname,jdbcType=VARCHAR},
+      Toareastreet = #{toareastreet,jdbcType=VARCHAR},
+      Toareastreetname = #{toareastreetname,jdbcType=VARCHAR},
+      Toincname = #{toincname,jdbcType=VARCHAR},
+      Toaddress = #{toaddress,jdbcType=VARCHAR},
+      Toname = #{toname,jdbcType=VARCHAR},
+      Tocode = #{tocode,jdbcType=VARCHAR},
+      Totel = #{totel,jdbcType=VARCHAR},
+      Paymentflag = #{paymentflag,jdbcType=INTEGER},
+      Paymentforgoods = #{paymentforgoods,jdbcType=DECIMAL},
+      Isfile = #{isfile,jdbcType=INTEGER},
+      isgoods = #{isgoods,jdbcType=VARCHAR},
+      Filename = #{filename,jdbcType=VARCHAR},
+      Num = #{num,jdbcType=INTEGER},
+      Weight = #{weight,jdbcType=DECIMAL},
+      Longs = #{longs,jdbcType=DECIMAL},
+      Widths = #{widths,jdbcType=DECIMAL},
+      Heights = #{heights,jdbcType=DECIMAL},
+      Volume = #{volume,jdbcType=DECIMAL},
+      begintime = #{begintime,jdbcType=TIMESTAMP},
+      Senduserid = #{senduserid,jdbcType=VARCHAR},
+      Sendusername = #{sendusername,jdbcType=VARCHAR},
+      fromusersignature = #{fromusersignature,jdbcType=VARCHAR},
+      sendusersignature = #{sendusersignature,jdbcType=VARCHAR},
+      Iscollection = #{iscollection,jdbcType=INTEGER},
+      Paymode = #{paymode,jdbcType=INTEGER},
+      Isinsured = #{isinsured,jdbcType=INTEGER},
+      Insuredsumprice = #{insuredsumprice,jdbcType=DECIMAL},
+      Insuredprice = #{insuredprice,jdbcType=DECIMAL},
+      Ismobilesend = #{ismobilesend,jdbcType=INTEGER},
+      Mobileprice = #{mobileprice,jdbcType=DECIMAL},
+      Price = #{price,jdbcType=DECIMAL},
+      Sendmode = #{sendmode,jdbcType=INTEGER},
+      Modeprice = #{modeprice,jdbcType=DECIMAL},
+      Tousersignature = #{tousersignature,jdbcType=VARCHAR},
+      Collectionsignature = #{collectionsignature,jdbcType=VARCHAR},
+      Signaturecode = #{signaturecode,jdbcType=VARCHAR},
+      Endtime = #{endtime,jdbcType=TIMESTAMP},
+      Sumprice = #{sumprice,jdbcType=DECIMAL},
+      Deliveryuserid = #{deliveryuserid,jdbcType=VARCHAR},
+      Deliveryusername = #{deliveryusername,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=LONGVARCHAR},
+      Createtime = #{createtime,jdbcType=TIMESTAMP},
+      Createuserid = #{createuserid,jdbcType=VARCHAR},
+      Createusername = #{createusername,jdbcType=VARCHAR},
+      Createincnumber = #{createincnumber,jdbcType=VARCHAR},
+      Createincname = #{createincname,jdbcType=VARCHAR},
+      zqj = #{zqj,jdbcType=INTEGER},
+      zjj = #{zjj,jdbcType=INTEGER},
+      sfdshk = #{sfdshk,jdbcType=INTEGER},
+      dshk = #{dshk,jdbcType=DECIMAL},
+      dsfy = #{dsfy,jdbcType=DECIMAL},
+      qfhd = #{qfhd,jdbcType=INTEGER},
+      hdh = #{hdh,jdbcType=VARCHAR},
+      fdfy = #{fdfy,jdbcType=DECIMAL},
+      tsps = #{tsps,jdbcType=INTEGER},
+      ywfy = #{ywfy,jdbcType=DECIMAL},
+      yyfy = #{yyfy,jdbcType=DECIMAL},
+      bzjg = #{bzjg,jdbcType=INTEGER},
+      clfy = #{clfy,jdbcType=DECIMAL},
+      rgfy = #{rgfy,jdbcType=DECIMAL},
+      qtgxhfw = #{qtgxhfw,jdbcType=INTEGER},
+      fwyq = #{fwyq,jdbcType=LONGVARCHAR},
+      dzfy = #{dzfy,jdbcType=DECIMAL},
+      iszf = #{iszf,jdbcType=INTEGER},
+      isduanxin = #{isduanxin,jdbcType=INTEGER},
+      sjrshouji = #{sjrshouji,jdbcType=VARCHAR},
+      wupinnum = #{wupinnum,jdbcType=INTEGER},
+      wupinprices = #{wupinprices,jdbcType=DECIMAL},
+      kahao = #{kahao,jdbcType=VARCHAR},
+      dsfwf = #{dsfwf,jdbcType=INTEGER},
+      tssp = #{tssp,jdbcType=INTEGER},
+      isqdfh = #{isqdfh,jdbcType=INTEGER},
+      zzfwqt = #{zzfwqt,jdbcType=VARCHAR},
+      fyjs = #{fyjs,jdbcType=INTEGER},
+      fyzl = #{fyzl,jdbcType=DECIMAL},
+      fyjfzl = #{fyjfzl,jdbcType=DECIMAL},
+      yyfjf = #{yyfjf,jdbcType=DECIMAL},
+      fkfs = #{fkfs,jdbcType=VARCHAR},
+      fkfsqt = #{fkfsqt,jdbcType=VARCHAR},
+      yuejiezhanghu = #{yuejiezhanghu,jdbcType=VARCHAR},
+      openid = #{openid,jdbcType=VARCHAR},
+      sfz = #{sfz,jdbcType=VARCHAR},
+      zhCode = #{zhcode,jdbcType=VARCHAR},
+      zhNumber = #{zhnumber,jdbcType=VARCHAR},
+      isGetTrace = #{isgettrace,jdbcType=TINYINT},
+      isDelete = #{isDelete,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}      
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

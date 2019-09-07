@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesLogisticStrackingMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesLogisticStracking">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="BillsNumber" jdbcType="VARCHAR" property="billsnumber" />
+    <result column="OperationTime" jdbcType="TIMESTAMP" property="operationtime" />
+    <result column="Operators" jdbcType="VARCHAR" property="operators" />
+    <result column="Incname" jdbcType="VARCHAR" property="incname" />
+    <result column="Incid" jdbcType="VARCHAR" property="incid" />
+    <result column="Mark" jdbcType="INTEGER" property="mark" />
+
+    <result column="Description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, BillsNumber, OperationTime, Operators, Incname, Incid, Mark
+  </sql>
+  <sql id="Blob_Column_List">
+    Description
+  </sql>
+
+  <!-- 物流跟踪记录 -->
+  <select id="getListStracking" resultMap="BaseResultMap">
+    select * from eforces_logisticstracking where isDelete=1
+  </select>
+<!-- 删除 -->
+  <update id="deleteLogisticStraking">
+    update
+    eforces_logisticstracking
+    set
+    isDelete=0
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <!-- 根据多个运单编号查询 -->
+  <select id="getListBillsNumber">
+    select * from eforces_logisticstracking
+    where BillsNumber in
+    <foreach collection="array" item="billsNumber"
+             index="index" open="(" close=")" separator="," >
+      #{billsNumber}
+    </foreach>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_logisticstracking
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectMaxTime" parameterType="java.lang.String" resultType="date">
+    select
+    MAX(operationtime)
+    from eforces_logisticstracking
+    where BillsNumber = #{billsnumber,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_logisticstracking
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesLogisticStracking">
+    insert into eforces_logisticstracking (Id, BillsNumber, OperationTime, 
+      Operators, Incname, Incid, 
+      Mark, Description)
+    values (#{id,jdbcType=INTEGER}, #{billsnumber,jdbcType=VARCHAR}, #{operationtime,jdbcType=TIMESTAMP}, 
+      #{operators,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR}, #{incid,jdbcType=VARCHAR}, 
+      #{mark,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <select id="selectByBillsNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		*
+		from
+		eforces_logisticstracking
+		WHERE
+		BillsNumber =#{billsNumber,jdbcType=VARCHAR}
+	</select>
+
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesLogisticStracking">
+    insert into  eforces_logisticstracking
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="billsnumber != null">
+        BillsNumber,
+      </if>
+      <if test="operationtime == null">
+        OperationTime,
+      </if>
+      <if test="operators != null">
+        Operators,
+      </if>
+      <if test="incname != null">
+        Incname,
+      </if>
+      <if test="incid != null">
+        Incid,
+      </if>
+      <if test="mark != null">
+        Mark,
+      </if>
+      <if test="description != null">
+        Description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billsnumber != null">
+        #{billsnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="operationtime == null">
+        now(),
+      </if>
+      <if test="operators != null">
+        #{operators,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        #{mark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertSelectiveList" parameterType="java.util.List" >
+    insert into eforces_logisticstracking
+    (
+      BillsNumber,
+      OperationTime,
+      Description
+    )
+    values
+    <foreach collection="list" item="logisticStracking" index="index" separator=",">
+      (
+      #{logisticStracking.billsnumber},
+      #{logisticStracking.operationtime},
+      #{logisticStracking.description}
+      )
+    </foreach>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesLogisticStracking">
+    update eforces_logisticstracking
+    <set>
+      <if test="billsnumber != null">
+        BillsNumber = #{billsnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="operationtime != null">
+        OperationTime = #{operationtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operators != null">
+        Operators = #{operators,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        Incname = #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        Incid = #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null">
+        Mark = #{mark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        Description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesLogisticStracking">
+    update eforces_logisticstracking
+    set BillsNumber = #{billsnumber,jdbcType=VARCHAR},
+      OperationTime = #{operationtime,jdbcType=TIMESTAMP},
+      Operators = #{operators,jdbcType=VARCHAR},
+      Incname = #{incname,jdbcType=VARCHAR},
+      Incid = #{incid,jdbcType=VARCHAR},
+      Mark = #{mark,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

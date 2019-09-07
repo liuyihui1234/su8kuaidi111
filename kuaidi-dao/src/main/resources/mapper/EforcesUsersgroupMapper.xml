@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesUsersgroupMapper">
+    <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesUsersgroup">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="groupname" jdbcType="VARCHAR" property="groupname"/>
+        <result column="groupinfo" jdbcType="VARCHAR" property="groupinfo"/>
+        <result column="issuperadmin" jdbcType="INTEGER" property="issuperadmin"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, groupname, groupinfo, issuperadmin
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_usersgroup
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectAllIGroup" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_usersgroup
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_usersgroup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+
+    <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesUsersgroup">
+    insert into eforces_usersgroup (id, groupname, groupinfo, 
+      issuperadmin)
+    values (#{id,jdbcType=INTEGER}, #{groupname,jdbcType=VARCHAR}, #{groupinfo,jdbcType=VARCHAR}, 
+      #{issuperadmin,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesUsersgroup">
+        insert into eforces_usersgroup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="groupname != null">
+                groupname,
+            </if>
+            <if test="groupinfo != null">
+                groupinfo,
+            </if>
+            <if test="issuperadmin != null">
+                issuperadmin,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="groupname != null">
+                #{groupname,jdbcType=VARCHAR},
+            </if>
+            <if test="groupinfo != null">
+                #{groupinfo,jdbcType=VARCHAR},
+            </if>
+            <if test="issuperadmin != null">
+                #{issuperadmin,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesUsersgroup">
+        update eforces_usersgroup
+        <set>
+            <if test="groupname != null">
+                groupname = #{groupname,jdbcType=VARCHAR},
+            </if>
+            <if test="groupinfo != null">
+                groupinfo = #{groupinfo,jdbcType=VARCHAR},
+            </if>
+            <if test="issuperadmin != null">
+                issuperadmin = #{issuperadmin,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesUsersgroup">
+    update eforces_usersgroup
+    set groupname = #{groupname,jdbcType=VARCHAR},
+      groupinfo = #{groupinfo,jdbcType=VARCHAR},
+      issuperadmin = #{issuperadmin,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

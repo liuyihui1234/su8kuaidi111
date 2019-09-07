@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesPaydetaiMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesPaydetai">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="out_trade_no" jdbcType="VARCHAR" property="outTradeNo" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="total_amount" jdbcType="VARCHAR" property="totalAmount" />
+    <result column="netSignId" jdbcType="INTEGER" property="netsignid" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+
+
+<!--  <insert id="orderinfo" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
+
+  </insert>-->
+
+  <!-- 支付后回调的时候修改表里状态 并添加流水交易号 -->
+  <update id="upderinfo" >
+    UPDATE eforces_paydetai SET `status` = 2 ,trade_no = #{tradeNo,jdbcType=VARCHAR} WHERE out_trade_no=#{outTradeNo,jdbcType=VARCHAR}
+  </update>
+
+
+  <sql id="Base_Column_List" >
+    id, out_trade_no, trade_no, total_amount, netSignId, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_paydetai
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectBySort"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_paydetai
+    <where>
+    	1 = 1
+	      <if test="id != null">
+	        and id = #{id,jdbcType=INTEGER}
+	      </if>
+	      <if test="netsignid != null">
+	        and netSignId = #{netsignid,jdbcType=INTEGER}
+	      </if>
+	      <if test="status != null">
+	        and status = #{status,jdbcType=INTEGER}
+	      </if>
+    </where>
+  </select>
+  
+  
+  <select id="selectByTradeno" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_paydetai
+    where out_trade_no = #{trade_no,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_paydetai
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
+    insert into eforces_paydetai (id, out_trade_no, trade_no, 
+      total_amount, netSignId, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{outTradeNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, 
+      #{totalAmount,jdbcType=VARCHAR}, #{netsignid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
+    insert into eforces_paydetai
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="outTradeNo != null">
+        out_trade_no,
+      </if>
+      <if test="tradeNo != null">
+        trade_no,
+      </if>
+      <if test="totalAmount != null">
+        total_amount,
+      </if>
+      <if test="netsignid != null">
+        netSignId,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="netsignid != null">
+        #{netsignid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
+    update eforces_paydetai
+    <set>
+      <if test="outTradeNo != null">
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null">
+        total_amount = #{totalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="netsignid != null">
+        netSignId = #{netsignid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
+    update eforces_paydetai
+    set out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
+      total_amount = #{totalAmount,jdbcType=VARCHAR},
+      netSignId = #{netsignid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

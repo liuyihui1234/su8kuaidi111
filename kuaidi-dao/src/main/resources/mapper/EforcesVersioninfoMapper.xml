@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesVersioninfoMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesVersioninfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="downloadurl" jdbcType="VARCHAR" property="downloadurl" />
+    <result column="crtTime" jdbcType="TIMESTAMP" property="crttime" />
+    <result column="validTime" jdbcType="TIMESTAMP" property="validtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, version, downloadurl, crtTime, validTime
+  </sql>
+
+  <select id="getlist" resultMap="BaseResultMap">
+    select * from eforces_versionInfo where type = #{type}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_versionInfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_versionInfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesVersioninfo">
+    insert into eforces_versionInfo (id, type, version, 
+      downloadurl, crtTime, validTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR}, 
+      #{downloadurl,jdbcType=VARCHAR}, #{crttime,jdbcType=TIMESTAMP}, #{validtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesVersioninfo">
+    insert into eforces_versionInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="downloadurl != null">
+        downloadurl,
+      </if>
+      <if test="crttime != null">
+        crtTime,
+      </if>
+      <if test="validtime != null">
+        validTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadurl != null">
+        #{downloadurl,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validtime != null">
+        #{validtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesVersioninfo">
+    update eforces_versionInfo
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadurl != null">
+        downloadurl = #{downloadurl,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        crtTime = #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validtime != null">
+        validTime = #{validtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesVersioninfo">
+    update eforces_versionInfo
+    set type = #{type,jdbcType=INTEGER},
+      version = #{version,jdbcType=VARCHAR},
+      downloadurl = #{downloadurl,jdbcType=VARCHAR},
+      crtTime = #{crttime,jdbcType=TIMESTAMP},
+      validTime = #{validtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

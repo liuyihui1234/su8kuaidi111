@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesDistributedScanMapper">
+	<resultMap id="BaseResultMap"
+		type="org.kuaidi.bean.domain.EforcesDistributedScan">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="createtime" jdbcType="TIMESTAMP"
+			property="createtime" />
+		<result column="flightsnumber" jdbcType="VARCHAR"
+			property="flightsnumber" />
+		<result column="goodstype" jdbcType="VARCHAR"
+			property="goodstype" />
+		<result column="expresstype" jdbcType="VARCHAR"
+			property="expresstype" />
+		<result column="expressid" jdbcType="INTEGER"
+			property="expressid" />
+		<result column="postman" jdbcType="VARCHAR" property="postman" />
+		<result column="postmanid" jdbcType="VARCHAR"
+			property="postmanid" />
+		<result column="scantype" jdbcType="VARCHAR"
+			property="scantype" />
+		<result column="scanners" jdbcType="VARCHAR"
+			property="scanners" />
+		<result column="scannerid" jdbcType="VARCHAR"
+			property="scannerid" />
+		<result column="incname" jdbcType="VARCHAR" property="incname" />
+		<result column="incid" jdbcType="VARCHAR" property="incid" />
+		<result column="scantime" jdbcType="TIMESTAMP"
+			property="scantime" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+		<result column="billsnumber" jdbcType="LONGVARCHAR"
+			property="billsnumber" />
+		<result column="bz" jdbcType="LONGVARCHAR" property="bz" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap1"
+			   type="org.kuaidi.bean.domain.EforcesDistributedScan">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="createtime" jdbcType="TIMESTAMP"
+				property="createtime" />
+		<result column="flightsnumber" jdbcType="VARCHAR"
+				property="flightsnumber" />
+		<result column="goodstype" jdbcType="VARCHAR"
+				property="goodstype" />
+		<result column="expresstype" jdbcType="VARCHAR"
+				property="expresstype" />
+		<result column="expressid" jdbcType="INTEGER"
+				property="expressid" />
+		<result column="postman" jdbcType="VARCHAR" property="postman" />
+		<result column="postmanid" jdbcType="VARCHAR"
+				property="postmanid" />
+		<result column="scantype" jdbcType="VARCHAR"
+				property="scantype" />
+		<result column="scanners" jdbcType="VARCHAR"
+				property="scanners" />
+		<result column="scannerid" jdbcType="VARCHAR"
+				property="scannerid" />
+		<result column="incname" jdbcType="VARCHAR" property="incname" />
+		<result column="incid" jdbcType="VARCHAR" property="incid" />
+		<result column="scantime" jdbcType="TIMESTAMP"
+				property="scantime" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+		<result column="billsnumber" jdbcType="LONGVARCHAR"
+				property="billsnumber" />
+		<result column="bz" jdbcType="LONGVARCHAR" property="bz" />
+
+		<collection property="eforcesOrder" resultMap="org.kuaidi.dao.EforcesOrderMapper.BaseResultMap"></collection>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, createtime, flightsnumber, goodstype, expresstype,
+		expressid,
+		postman, postmanid,
+		scantype, scanners, scannerid, incname,
+		incid, scantime, amount
+	</sql>
+	
+	<sql id="Blob_Column_List">
+		billsnumber, bz
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from eforces_distributedscan
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByCreateincnumber" 
+		parameterType="java.lang.String" resultType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		SELECT
+		distribute.*
+		from
+		eforces_order bill
+		join
+		eforces_distributedscan distribute
+		on
+		bill.Number = distribute.billsnumber
+		where
+		Createincnumber = #{createincnumber,jdbcType=VARCHAR}
+
+	</select>
+
+	<select id="selectNoByCreateincnumber"
+		parameterType="java.lang.String" resultType="org.kuaidi.bean.domain.EforcesOrder">
+		SELECT
+		bill.*
+		from
+		eforces_order bill
+		where
+		Number
+		not in
+		( select billsnumber
+		from
+		eforces_distributedscan )
+		and
+		Createincnumber = #{number,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getAlldistribute" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List"></include>
+		from eforces_distributedscan where 1=1 and isdelete = 1
+		<if test="_parameter != null">
+			and  incId like CONCAT(#{_parameter},'%')
+		</if>
+	</select>
+
+
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from eforces_distributedscan
+		where id =
+		#{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		insert into eforces_distributedscan (id, createtime,
+		flightsnumber,
+		goodstype, expresstype, expressid,
+		postman, postmanid,
+		scantype,
+		scanners, scannerid, incname,
+		incid, scantime, amount,
+		billsnumber, bz)
+		values (#{id,jdbcType=INTEGER},
+		#{createtime,jdbcType=TIMESTAMP},
+		#{flightsnumber,jdbcType=VARCHAR},
+		#{goodstype,jdbcType=VARCHAR}, #{expresstype,jdbcType=VARCHAR},
+		#{expressid,jdbcType=INTEGER},
+		#{postman,jdbcType=VARCHAR},
+		#{postmanid,jdbcType=VARCHAR},
+		#{scantype,jdbcType=VARCHAR},
+		#{scanners,jdbcType=VARCHAR}, #{scannerid,jdbcType=VARCHAR},
+		#{incname,jdbcType=VARCHAR},
+		#{incid,jdbcType=VARCHAR},
+		#{scantime,jdbcType=TIMESTAMP},
+		#{amount,jdbcType=INTEGER},
+		#{billsnumber,jdbcType=LONGVARCHAR}, #{bz,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		insert into eforces_distributedscan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="flightsnumber != null">
+				flightsnumber,
+			</if>
+			<if test="goodstype != null">
+				goodstype,
+			</if>
+			<if test="expresstype != null">
+				expresstype,
+			</if>
+			<if test="expressid != null">
+				expressid,
+			</if>
+			<if test="postman != null">
+				postman,
+			</if>
+			<if test="postmanid != null">
+				postmanid,
+			</if>
+			<if test="scantype != null">
+				scantype,
+			</if>
+			<if test="scanners != null">
+				scanners,
+			</if>
+			<if test="scannerid != null">
+				scannerid,
+			</if>
+			<if test="incname != null">
+				incname,
+			</if>
+			<if test="incid != null">
+				incid,
+			</if>
+			<if test="scantime != null">
+				scantime,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="billsnumber != null">
+				billsnumber,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flightsnumber != null">
+				#{flightsnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				#{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expresstype != null">
+				#{expresstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expressid != null">
+				#{expressid,jdbcType=INTEGER},
+			</if>
+			<if test="postman != null">
+				#{postman,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanid != null">
+				#{postmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="scantype != null">
+				#{scantype,jdbcType=VARCHAR},
+			</if>
+			<if test="scanners != null">
+				#{scanners,jdbcType=VARCHAR},
+			</if>
+			<if test="scannerid != null">
+				#{scannerid,jdbcType=VARCHAR},
+			</if>
+			<if test="incname != null">
+				#{incname,jdbcType=VARCHAR},
+			</if>
+			<if test="incid != null">
+				#{incid,jdbcType=VARCHAR},
+			</if>
+			<if test="scantime != null">
+				#{scantime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=INTEGER},
+			</if>
+			<if test="billsnumber != null">
+				#{billsnumber,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="bz != null">
+				#{bz,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		update eforces_distributedscan
+		<set>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flightsnumber != null">
+				flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				goodstype = #{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expresstype != null">
+				expresstype = #{expresstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expressid != null">
+				expressid = #{expressid,jdbcType=INTEGER},
+			</if>
+			<if test="postman != null">
+				postman = #{postman,jdbcType=VARCHAR},
+			</if>
+			<if test="postmanid != null">
+				postmanid = #{postmanid,jdbcType=VARCHAR},
+			</if>
+			<if test="scantype != null">
+				scantype = #{scantype,jdbcType=VARCHAR},
+			</if>
+			<if test="scanners != null">
+				scanners = #{scanners,jdbcType=VARCHAR},
+			</if>
+			<if test="scannerid != null">
+				scannerid = #{scannerid,jdbcType=VARCHAR},
+			</if>
+			<if test="incname != null">
+				incname = #{incname,jdbcType=VARCHAR},
+			</if>
+			<if test="incid != null">
+				incid = #{incid,jdbcType=VARCHAR},
+			</if>
+			<if test="scantime != null">
+				scantime = #{scantime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=INTEGER},
+			</if>
+			<if test="billsnumber != null">
+				billsnumber = #{billsnumber,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="bz != null">
+				bz = #{bz,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs"
+		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		update eforces_distributedscan
+		set createtime =
+		#{createtime,jdbcType=TIMESTAMP},
+		flightsnumber =
+		#{flightsnumber,jdbcType=VARCHAR},
+		goodstype =
+		#{goodstype,jdbcType=VARCHAR},
+		expresstype =
+		#{expresstype,jdbcType=VARCHAR},
+		expressid =
+		#{expressid,jdbcType=INTEGER},
+		postman = #{postman,jdbcType=VARCHAR},
+		postmanid = #{postmanid,jdbcType=VARCHAR},
+		scantype =
+		#{scantype,jdbcType=VARCHAR},
+		scanners = #{scanners,jdbcType=VARCHAR},
+		scannerid = #{scannerid,jdbcType=VARCHAR},
+		incname =
+		#{incname,jdbcType=VARCHAR},
+		incid = #{incid,jdbcType=VARCHAR},
+		scantime = #{scantime,jdbcType=TIMESTAMP},
+		amount =
+		#{amount,jdbcType=INTEGER},
+		billsnumber =
+		#{billsnumber,jdbcType=LONGVARCHAR},
+		bz = #{bz,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		update eforces_distributedscan
+		set createtime =
+		#{createtime,jdbcType=TIMESTAMP},
+		flightsnumber =
+		#{flightsnumber,jdbcType=VARCHAR},
+		goodstype =
+		#{goodstype,jdbcType=VARCHAR},
+		expresstype =
+		#{expresstype,jdbcType=VARCHAR},
+		expressid =
+		#{expressid,jdbcType=INTEGER},
+		postman = #{postman,jdbcType=VARCHAR},
+		postmanid = #{postmanid,jdbcType=VARCHAR},
+		scantype =
+		#{scantype,jdbcType=VARCHAR},
+		scanners = #{scanners,jdbcType=VARCHAR},
+		scannerid = #{scannerid,jdbcType=VARCHAR},
+		incname =
+		#{incname,jdbcType=VARCHAR},
+		incid = #{incid,jdbcType=VARCHAR},
+		scantime = #{scantime,jdbcType=TIMESTAMP},
+		amount =
+		#{amount,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectDisByPostmanId" resultMap="BaseResultMap1">
+		select * from eforces_distributedscan d
+		INNER JOIN eforces_order o
+		on d.billsnumber = o.number
+		where postmanid = #{postmanid,jdbcType=VARCHAR}
+		and billsnumber not in
+		<foreach collection="number" item="number" index="index" open="(" close=")" separator=",">
+			#{number}
+		</foreach>
+	</select>
+</mapper>

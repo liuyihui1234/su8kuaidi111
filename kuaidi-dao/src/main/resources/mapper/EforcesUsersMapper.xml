@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesUsersMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesUsers">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="lastip" jdbcType="VARCHAR" property="lastip" />
+    <result column="lasttime" jdbcType="TIMESTAMP" property="lasttime" />
+    <result column="loginnumber" jdbcType="INTEGER" property="loginnumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="depaid" jdbcType="VARCHAR" property="depaid" />
+    <result column="Points" jdbcType="INTEGER" property="points" />
+    <result column="cardid" jdbcType="VARCHAR" property="cardid" />
+    <result column="CardNumber" jdbcType="VARCHAR" property="cardnumber" />
+    <result column="incmentid" jdbcType="INTEGER" property="incmentid" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="ismac" jdbcType="INTEGER" property="ismac" />
+    <result column="gongxian" jdbcType="INTEGER" property="gongxian" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.kuaidi.bean.domain.EforcesUsers">
+    <result column="ShowModule" jdbcType="LONGVARCHAR" property="showmodule" />
+  </resultMap>
+
+  <!-- 查询 -->
+  <select id="selectUsers" resultType="org.kuaidi.bean.domain.EforcesUsers">
+        select * from eforces_users where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR};
+  </select>
+
+  <!-- 新增 -->
+  <insert id="inserUsers">
+    insert into eforces_users (username,password) values (#{username},#{password})
+  </insert>
+
+  <sql id="Base_Column_List">
+    uid, username, password, lastip, lasttime, loginnumber, name, depaid, Points, cardid, 
+    CardNumber, incmentid, type, ismac, gongxian
+  </sql>
+  <sql id="Blob_Column_List">
+    ShowModule
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_users
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_users
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesUsers">
+    insert into eforces_users (uid, username, password, 
+      lastip, lasttime, loginnumber, 
+      name, depaid, Points, 
+      cardid, CardNumber, incmentid, 
+      type, ismac, gongxian, 
+      ShowModule)
+    values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{lastip,jdbcType=VARCHAR}, #{lasttime,jdbcType=TIMESTAMP}, #{loginnumber,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{depaid,jdbcType=VARCHAR}, #{points,jdbcType=INTEGER}, 
+      #{cardid,jdbcType=VARCHAR}, #{cardnumber,jdbcType=VARCHAR}, #{incmentid,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{ismac,jdbcType=INTEGER}, #{gongxian,jdbcType=INTEGER}, 
+      #{showmodule,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesUsers">
+    insert into eforces_users
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="lastip != null">
+        lastip,
+      </if>
+      <if test="lasttime != null">
+        lasttime,
+      </if>
+      <if test="loginnumber != null">
+        loginnumber,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="depaid != null">
+        depaid,
+      </if>
+      <if test="points != null">
+        Points,
+      </if>
+      <if test="cardid != null">
+        cardid,
+      </if>
+      <if test="cardnumber != null">
+        CardNumber,
+      </if>
+      <if test="incmentid != null">
+        incmentid,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="ismac != null">
+        ismac,
+      </if>
+      <if test="gongxian != null">
+        gongxian,
+      </if>
+      <if test="showmodule != null">
+        ShowModule,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastip != null">
+        #{lastip,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null">
+        #{lasttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginnumber != null">
+        #{loginnumber,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="depaid != null">
+        #{depaid,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null">
+        #{points,jdbcType=INTEGER},
+      </if>
+      <if test="cardid != null">
+        #{cardid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnumber != null">
+        #{cardnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="incmentid != null">
+        #{incmentid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="ismac != null">
+        #{ismac,jdbcType=INTEGER},
+      </if>
+      <if test="gongxian != null">
+        #{gongxian,jdbcType=INTEGER},
+      </if>
+      <if test="showmodule != null">
+        #{showmodule,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesUsers">
+    update eforces_users
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastip != null">
+        lastip = #{lastip,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null">
+        lasttime = #{lasttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginnumber != null">
+        loginnumber = #{loginnumber,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="depaid != null">
+        depaid = #{depaid,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null">
+        Points = #{points,jdbcType=INTEGER},
+      </if>
+      <if test="cardid != null">
+        cardid = #{cardid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnumber != null">
+        CardNumber = #{cardnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="incmentid != null">
+        incmentid = #{incmentid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="ismac != null">
+        ismac = #{ismac,jdbcType=INTEGER},
+      </if>
+      <if test="gongxian != null">
+        gongxian = #{gongxian,jdbcType=INTEGER},
+      </if>
+      <if test="showmodule != null">
+        ShowModule = #{showmodule,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.kuaidi.bean.domain.EforcesUsers">
+    update eforces_users
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      lastip = #{lastip,jdbcType=VARCHAR},
+      lasttime = #{lasttime,jdbcType=TIMESTAMP},
+      loginnumber = #{loginnumber,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      depaid = #{depaid,jdbcType=VARCHAR},
+      Points = #{points,jdbcType=INTEGER},
+      cardid = #{cardid,jdbcType=VARCHAR},
+      CardNumber = #{cardnumber,jdbcType=VARCHAR},
+      incmentid = #{incmentid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      ismac = #{ismac,jdbcType=INTEGER},
+      gongxian = #{gongxian,jdbcType=INTEGER},
+      ShowModule = #{showmodule,jdbcType=LONGVARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesUsers">
+    update eforces_users
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      lastip = #{lastip,jdbcType=VARCHAR},
+      lasttime = #{lasttime,jdbcType=TIMESTAMP},
+      loginnumber = #{loginnumber,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      depaid = #{depaid,jdbcType=VARCHAR},
+      Points = #{points,jdbcType=INTEGER},
+      cardid = #{cardid,jdbcType=VARCHAR},
+      CardNumber = #{cardnumber,jdbcType=VARCHAR},
+      incmentid = #{incmentid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      ismac = #{ismac,jdbcType=INTEGER},
+      gongxian = #{gongxian,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesTransportedscanMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesTransportedscan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="billsnumber" jdbcType="VARCHAR" property="billsnumber" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="nextCorpid" jdbcType="INTEGER" property="nextcorpid" />
+    <result column="nextCorpname" jdbcType="VARCHAR" property="nextcorpname" />
+    <result column="nextnumber" jdbcType="VARCHAR" property="nextnumber" />
+    <result column="scantype" jdbcType="VARCHAR" property="scantype" />
+    <result column="scanners" jdbcType="VARCHAR" property="scanners" />
+    <result column="scannerid" jdbcType="VARCHAR" property="scannerid" />
+    <result column="incname" jdbcType="VARCHAR" property="incname" />
+    <result column="incid" jdbcType="VARCHAR" property="incid" />
+    <result column="scantime" jdbcType="TIMESTAMP" property="scantime" />
+    <result column="sendertel" jdbcType="VARCHAR" property="sendertel" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, billsnumber, createtime, nextCorpid, nextCorpname, nextnumber, scantype, scanners, 
+    scannerid, incname, incid, scantime, sendertel, amount, flag, bz
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_transportedscan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByBillsnumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_transportedscan
+    where billsnumber = #{billsnumber,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByNextnumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_transportedscan
+    where nextnumber = #{nextnumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_transportedscan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesTransportedscan">
+    insert into eforces_transportedscan (id, billsnumber, createtime, 
+      nextCorpid, nextCorpname, nextnumber, 
+      scantype, scanners, scannerid, 
+      incname, incid, scantime, 
+      sendertel, amount, flag, 
+      bz)
+    values (#{id,jdbcType=INTEGER}, #{billsnumber,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{nextcorpid,jdbcType=INTEGER}, #{nextcorpname,jdbcType=VARCHAR}, #{nextnumber,jdbcType=VARCHAR}, 
+      #{scantype,jdbcType=VARCHAR}, #{scanners,jdbcType=VARCHAR}, #{scannerid,jdbcType=VARCHAR}, 
+      #{incname,jdbcType=VARCHAR}, #{incid,jdbcType=VARCHAR}, #{scantime,jdbcType=TIMESTAMP}, 
+      #{sendertel,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
+      #{bz,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesTransportedscan">
+    insert into eforces_transportedscan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="billsnumber != null">
+        billsnumber,
+      </if>
+      <if test="createtime == null">
+        createtime,
+      </if>
+      <if test="nextcorpid != null">
+        nextCorpid,
+      </if>
+      <if test="nextcorpname != null">
+        nextCorpname,
+      </if>
+      <if test="nextnumber != null">
+        nextnumber,
+      </if>
+      <if test="scantype != null">
+        scantype,
+      </if>
+      <if test="scanners != null">
+        scanners,
+      </if>
+      <if test="scannerid != null">
+        scannerid,
+      </if>
+      <if test="incname != null">
+        incname,
+      </if>
+      <if test="incid != null">
+        incid,
+      </if>
+      <if test="scantime == null">
+        scantime,
+      </if>
+      <if test="sendertel != null">
+        sendertel,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="bz != null">
+        bz,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billsnumber != null">
+        #{billsnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime == null">
+        now(),
+      </if>
+      <if test="nextcorpid != null">
+        #{nextcorpid,jdbcType=INTEGER},
+      </if>
+      <if test="nextcorpname != null">
+        #{nextcorpname,jdbcType=VARCHAR},
+      </if>
+      <if test="nextnumber != null">
+        #{nextnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="scantype != null">
+        #{scantype,jdbcType=VARCHAR},
+      </if>
+      <if test="scanners != null">
+        #{scanners,jdbcType=VARCHAR},
+      </if>
+      <if test="scannerid != null">
+        #{scannerid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="scantime == null">
+        now(),
+      </if>
+      <if test="sendertel != null">
+        #{sendertel,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectByIncid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_transportedscan
+    <where>
+      flag = 0
+      <if test="_parameter != null">
+        and incId like CONCAT(#{_parameter},'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectState0" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from eforces_transportedscan
+    WHERE state = 0
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesTransportedscan">
+    update eforces_transportedscan
+    <set>
+      <if test="billsnumber != null">
+        billsnumber = #{billsnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextcorpid != null">
+        nextCorpid = #{nextcorpid,jdbcType=INTEGER},
+      </if>
+      <if test="nextcorpname != null">
+        nextCorpname = #{nextcorpname,jdbcType=VARCHAR},
+      </if>
+      <if test="nextnumber != null">
+        nextnumber = #{nextnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="scantype != null">
+        scantype = #{scantype,jdbcType=VARCHAR},
+      </if>
+      <if test="scanners != null">
+        scanners = #{scanners,jdbcType=VARCHAR},
+      </if>
+      <if test="scannerid != null">
+        scannerid = #{scannerid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        incname = #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        incid = #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="scantime != null">
+        scantime = #{scantime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendertel != null">
+        sendertel = #{sendertel,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesTransportedscan">
+    update eforces_transportedscan
+    set billsnumber = #{billsnumber,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      nextCorpid = #{nextcorpid,jdbcType=INTEGER},
+      nextCorpname = #{nextcorpname,jdbcType=VARCHAR},
+      nextnumber = #{nextnumber,jdbcType=VARCHAR},
+      scantype = #{scantype,jdbcType=VARCHAR},
+      scanners = #{scanners,jdbcType=VARCHAR},
+      scannerid = #{scannerid,jdbcType=VARCHAR},
+      incname = #{incname,jdbcType=VARCHAR},
+      incid = #{incid,jdbcType=VARCHAR},
+      scantime = #{scantime,jdbcType=TIMESTAMP},
+      sendertel = #{sendertel,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateState">
+    update eforces_transportedscan
+    set state = 1
+    where billsnumber in
+    <foreach collection="list" item="billsnumber" index="index" open="(" close=")" separator="," >
+      #{billsnumber,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+</mapper>

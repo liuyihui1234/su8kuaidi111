@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesSentScanMapper">
+	<resultMap id="BaseResultMap"
+		type="org.kuaidi.bean.domain.EforcesSentScan">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="createtime" jdbcType="TIMESTAMP"
+			property="createtime" />
+		<result column="flightsnumber" jdbcType="VARCHAR"
+			property="flightsnumber" />
+		<result column="goodstype" jdbcType="VARCHAR"
+			property="goodstype" />
+		<result column="expresstype" jdbcType="VARCHAR"
+			property="expresstype" />
+		<result column="expressid" jdbcType="INTEGER"
+			property="expressid" />
+		<result column="nextstop" jdbcType="VARCHAR"
+			property="nextstop" />
+		<result column="nextstopname" jdbcType="VARCHAR"
+			property="nextstopname" />
+		<result column="scantype" jdbcType="VARCHAR"
+			property="scantype" />
+		<result column="scanners" jdbcType="VARCHAR"
+			property="scanners" />
+		<result column="scannerid" jdbcType="VARCHAR"
+			property="scannerid" />
+		<result column="incname" jdbcType="VARCHAR" property="incname" />
+		<result column="incid" jdbcType="VARCHAR" property="incid" />
+		<result column="scantime" jdbcType="TIMESTAMP"
+			property="scantime" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+		<result column="Nextstop1" jdbcType="VARCHAR"
+			property="nextstop1" />
+		<result column="Nextstopname1" jdbcType="VARCHAR"
+			property="nextstopname1" />
+		<result column="Tranname" jdbcType="VARCHAR"
+			property="tranname" />
+		<result column="billsnumber" jdbcType="LONGVARCHAR"
+			property="billsnumber" />
+		<result column="bz" jdbcType="LONGVARCHAR" 
+			property="bz" />
+		<result column="isBagBill" jdbcType="INTEGER" 
+			property="isBagBill" />
+		<result column="goodsCount" jdbcType="INTEGER" 
+			property="goodsCount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, createtime, flightsnumber, goodstype, expresstype, expressid,
+		nextstop, nextstopname,
+		scantype, scanners, scannerid, incname, incid, scantime, amount, Nextstop1,
+		Nextstopname1,Tranname,isBagBill,goodsCount
+	</sql>
+	<sql id="Blob_Column_List">
+		billsnumber, bz
+	</sql>
+
+
+	<!-- 批量将发件信息插入数据库 -->
+	<insert id="insertList" parameterType="java.util.List">
+		insert into eforces_sentscan
+		( billsnumber,createtime,flightsnumber,goodstype,expresstype,
+		expressid,nextstop,nextstopname,scantype,scanners,
+		scannerid,incname,incid,scantime,amount,Nextstop1,Nextstopname1,Tranname,bz,goodsCount,isBagBill)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			#{item.billsnumber},
+			now(),
+			#{item.flightsnumber},
+			#{item.goodstype},
+			#{item.expresstype},
+			#{item.expressid},
+			#{item.nextstop},
+			#{item.nextstopname},
+			'发件扫描',
+			#{item.scanners},
+			#{item.scannerid},
+			#{item.incname},
+			#{item.incid},
+			now(),
+			#{item.amout},
+			#{item.nextstop1},
+			#{item.nextstopname1},
+			#{item.tranname},
+			#{item.bz}
+			#{item.goodsCount},
+			#{item.isbagbill},
+			)
+		</foreach>
+	</insert>
+
+	<update id="deleteByIds">
+		update
+		eforces_sentscan
+		set
+		isDelete=1
+		where
+		id
+		in
+		<foreach collection="list" index="index" item="ids" open="("
+			close=")" separator=",">
+			#{ids}
+		</foreach>
+
+	</update>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from
+		eforces_sentscan
+		where
+		isDelete=0
+		<if test="_parameter!=null">
+			and incid like CONCAT(#{_parameter},'%')
+		</if>
+	</select>
+	
+	<select id="selectByNumber" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from
+		eforces_sentscan
+		where
+		isDelete=1
+		<if test="billsNumber != null">
+			and billsnumber  =  #{billsNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="incNumber!=null">
+			and incid  =  #{incNumber,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<!-- 查询派件收件总数量 -->
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT count(*) from eforces_order bill join eforces_sentscan scan on
+		bill.Number = scan.billsnumber where scan.incid = #{incid}
+	</select>
+
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from eforces_sentscan
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from eforces_sentscan
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="org.kuaidi.bean.domain.EforcesSentScan">
+		insert into eforces_sentscan (id, createtime, flightsnumber,
+		goodstype, expresstype, expressid,
+		nextstop, nextstopname, scantype,
+		scanners, scannerid, incname,
+		incid, scantime, amount,
+		Nextstop1, Nextstopname1, Tranname,
+		billsnumber, bz, goodsCount,
+		isbagbill)
+		values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP},
+		#{flightsnumber,jdbcType=VARCHAR},
+		#{goodstype,jdbcType=VARCHAR}, #{expresstype,jdbcType=VARCHAR}, #{expressid,jdbcType=INTEGER},
+		#{nextstop,jdbcType=VARCHAR}, #{nextstopname,jdbcType=VARCHAR},
+		#{scantype,jdbcType=VARCHAR},
+		#{scanners,jdbcType=VARCHAR}, #{scannerid,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR},
+		#{incid,jdbcType=VARCHAR}, #{scantime,jdbcType=TIMESTAMP},
+		#{amount,jdbcType=INTEGER},
+		#{nextstop1,jdbcType=VARCHAR}, #{nextstopname1,jdbcType=VARCHAR}, #{tranname,jdbcType=VARCHAR},
+		#{billsnumber,jdbcType=LONGVARCHAR}, #{bz,jdbcType=LONGVARCHAR},#{goodsCount,jdbcType=INTEGER},
+			#{isbagbill,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="org.kuaidi.bean.domain.EforcesSentScan">
+		insert into eforces_sentscan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+				createtime,
+			<if test="flightsnumber != null">
+				flightsnumber,
+			</if>
+			<if test="goodstype != null">
+				goodstype,
+			</if>
+			<if test="expresstype != null">
+				expresstype,
+			</if>
+			<if test="expressid != null">
+				expressid,
+			</if>
+			<if test="nextstop != null">
+				nextstop,
+			</if>
+			<if test="nextstopname != null">
+				nextstopname,
+			</if>
+			<if test="scantype != null">
+				scantype,
+			</if>
+			<if test="scanners != null">
+				scanners,
+			</if>
+			<if test="scannerid != null">
+				scannerid,
+			</if>
+			<if test="incname != null">
+				incname,
+			</if>
+			<if test="incid != null">
+				incid,
+			</if>
+				scantime,
+ 			<if test="amount != null">
+				amount,
+			</if>
+			<if test="nextstop1 != null">
+				Nextstop1,
+			</if>
+			<if test="nextstopname1 != null">
+				Nextstopname1,
+			</if>
+			<if test="tranname != null">
+				Tranname,
+			</if>
+			<if test="billsnumber != null">
+				billsnumber,
+			</if>
+			<if test="bz != null">
+				bz,
+			</if>
+			<if test="goodsCount != null">
+				goodsCount,
+			</if>
+			 <if test="isBagBill != null">
+				isbagbill,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			now(),
+			<if test="flightsnumber != null">
+				#{flightsnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				#{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expresstype != null">
+				#{expresstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expressid != null">
+				#{expressid,jdbcType=INTEGER},
+			</if>
+			<if test="nextstop != null">
+				#{nextstop,jdbcType=VARCHAR},
+			</if>
+			<if test="nextstopname != null">
+				#{nextstopname,jdbcType=VARCHAR},
+			</if>
+			<if test="scantype != null">
+				#{scantype,jdbcType=VARCHAR},
+			</if>
+			<if test="scanners != null">
+				#{scanners,jdbcType=VARCHAR},
+			</if>
+			<if test="scannerid != null">
+				#{scannerid,jdbcType=VARCHAR},
+			</if>
+			<if test="incname != null">
+				#{incname,jdbcType=VARCHAR},
+			</if>
+			<if test="incid != null">
+				#{incid,jdbcType=VARCHAR},
+			</if>
+			now(),
+			<if test="amount != null">
+				#{amount,jdbcType=INTEGER},
+			</if>
+			<if test="nextstop1 != null">
+				#{nextstop1,jdbcType=VARCHAR},
+			</if>
+			<if test="nextstopname1 != null">
+				#{nextstopname1,jdbcType=VARCHAR},
+			</if>
+			<if test="tranname != null">
+				#{tranname,jdbcType=VARCHAR},
+			</if>
+			<if test="billsnumber != null">
+				#{billsnumber,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="bz != null">
+				#{bz,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="goodsCount != null">
+				#{goodsCount,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="isBagBill != null">
+				#{isBagBill,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="org.kuaidi.bean.domain.EforcesSentScan">
+		update eforces_sentscan
+		<set>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="flightsnumber != null">
+				flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="goodstype != null">
+				goodstype = #{goodstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expresstype != null">
+				expresstype = #{expresstype,jdbcType=VARCHAR},
+			</if>
+			<if test="expressid != null">
+				expressid = #{expressid,jdbcType=INTEGER},
+			</if>
+			<if test="nextstop != null">
+				nextstop = #{nextstop,jdbcType=VARCHAR},
+			</if>
+			<if test="nextstopname != null">
+				nextstopname = #{nextstopname,jdbcType=VARCHAR},
+			</if>
+			<if test="scantype != null">
+				scantype = #{scantype,jdbcType=VARCHAR},
+			</if>
+			<if test="scanners != null">
+				scanners = #{scanners,jdbcType=VARCHAR},
+			</if>
+			<if test="scannerid != null">
+				scannerid = #{scannerid,jdbcType=VARCHAR},
+			</if>
+			<if test="incname != null">
+				incname = #{incname,jdbcType=VARCHAR},
+			</if>
+			<if test="incid != null">
+				incid = #{incid,jdbcType=VARCHAR},
+			</if>
+			<if test="scantime != null">
+				scantime = #{scantime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=INTEGER},
+			</if>
+			<if test="nextstop1 != null">
+				Nextstop1 = #{nextstop1,jdbcType=VARCHAR},
+			</if>
+			<if test="nextstopname1 != null">
+				Nextstopname1 = #{nextstopname1,jdbcType=VARCHAR},
+			</if>
+			<if test="tranname != null">
+				Tranname = #{tranname,jdbcType=VARCHAR},
+			</if>
+			<if test="billsnumber != null">
+				billsnumber = #{billsnumber,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="bz != null">
+				bz = #{bz,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="goodsCount != null">
+				goodsCount = #{goodsCount,jdbcType=INTEGER},
+			</if>
+			<if test="isBagBill != null">
+				isbagbill = #{isBagBill,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateById"
+		parameterType="org.kuaidi.bean.domain.EforcesSentScan">
+		update eforces_sentscan
+		set createtime = #{createtime,jdbcType=TIMESTAMP},
+		flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+		goodstype = #{goodstype,jdbcType=VARCHAR},
+		expresstype = #{expresstype,jdbcType=VARCHAR},
+		expressid = #{expressid,jdbcType=INTEGER},
+		nextstop = #{nextstop,jdbcType=VARCHAR},
+		nextstopname = #{nextstopname,jdbcType=VARCHAR},
+		scantype = #{scantype,jdbcType=VARCHAR},
+		scanners = #{scanners,jdbcType=VARCHAR},
+		scannerid = #{scannerid,jdbcType=VARCHAR},
+		incname = #{incname,jdbcType=VARCHAR},
+		incid = #{incid,jdbcType=VARCHAR},
+		scantime = #{scantime,jdbcType=TIMESTAMP},
+		amount = #{amount,jdbcType=INTEGER},
+		Nextstop1 = #{nextstop1,jdbcType=VARCHAR},
+		Nextstopname1 = #{nextstopname1,jdbcType=VARCHAR},
+		Tranname = #{tranname,jdbcType=VARCHAR},
+		billsnumber = #{billsnumber,jdbcType=LONGVARCHAR},
+		bz = #{bz,jdbcType=LONGVARCHAR},
+		goodsCount = #{goodsCount,jdbcType=INTEGER},
+		isbagbill = #{isbagbill,jdbcType=INTEGER},
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="org.kuaidi.bean.domain.EforcesSentScan">
+		update eforces_sentscan
+		set createtime = #{createtime,jdbcType=TIMESTAMP},
+		flightsnumber = #{flightsnumber,jdbcType=VARCHAR},
+		goodstype = #{goodstype,jdbcType=VARCHAR},
+		expresstype = #{expresstype,jdbcType=VARCHAR},
+		expressid = #{expressid,jdbcType=INTEGER},
+		nextstop = #{nextstop,jdbcType=VARCHAR},
+		nextstopname = #{nextstopname,jdbcType=VARCHAR},
+		scantype = #{scantype,jdbcType=VARCHAR},
+		scanners = #{scanners,jdbcType=VARCHAR},
+		scannerid = #{scannerid,jdbcType=VARCHAR},
+		incname = #{incname,jdbcType=VARCHAR},
+		incid = #{incid,jdbcType=VARCHAR},
+		scantime = #{scantime,jdbcType=TIMESTAMP},
+		amount = #{amount,jdbcType=INTEGER},
+		Nextstop1 = #{nextstop1,jdbcType=VARCHAR},
+		Nextstopname1 = #{nextstopname1,jdbcType=VARCHAR},
+		Tranname = #{tranname,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

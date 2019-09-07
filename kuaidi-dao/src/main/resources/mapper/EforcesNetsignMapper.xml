@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesNetsignMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesNetsign">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="IncNumber" jdbcType="VARCHAR" property="incnumber" />
+    <result column="signType" jdbcType="INTEGER" property="signtype" />
+    <result column="identityfont" jdbcType="VARCHAR" property="identityfont" />
+    <result column="identityback" jdbcType="VARCHAR" property="identityback" />
+    <result column="identitynum" jdbcType="VARCHAR" property="identitynum" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="legalPerson" jdbcType="VARCHAR" property="legalperson" />
+    <result column="signPic" jdbcType="VARCHAR" property="signpic" />
+    <result column="crtTime" jdbcType="DATE" property="crttime" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="network" jdbcType="VARCHAR" property="network" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="payType" jdbcType="INTEGER" property="paytype" />
+    <result column="payMoney" jdbcType="REAL" property="paymoney" />
+    <result column="networkareacode" jdbcType="VARCHAR" property="networkareacode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="contractPath" jdbcType="VARCHAR" property="contractpath" />
+    <result column="contractStartTime" jdbcType="DATE" property="contractstarttime" />
+    <result column="contractEndTime" jdbcType="DATE" property="contractendtime" />
+    <result column="delFlage" jdbcType="INTEGER" property="delflage" />
+    <result column="checkUserId" jdbcType="INTEGER" property="checkuserid" />
+    <result column="checkTime" jdbcType="TIMESTAMP" property="checktime" />
+    <result column="default1" jdbcType="VARCHAR" property="default1" />
+    <result column="default2" jdbcType="VARCHAR" property="default2" />
+  </resultMap>
+
+
+  <resultMap id="BaseResultMap1" type="org.kuaidi.bean.domain.EforcesNetsign">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="IncNumber" jdbcType="VARCHAR" property="incnumber" />
+    <result column="signType" jdbcType="INTEGER" property="signtype" />
+    <result column="identityfont" jdbcType="VARCHAR" property="identityfont" />
+    <result column="identityback" jdbcType="VARCHAR" property="identityback" />
+    <result column="identitynum" jdbcType="VARCHAR" property="identitynum" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="legalPerson" jdbcType="VARCHAR" property="legalperson" />
+    <result column="signPic" jdbcType="VARCHAR" property="signpic" />
+    <result column="crtTime" jdbcType="DATE" property="crttime" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="network" jdbcType="VARCHAR" property="network" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="payType" jdbcType="INTEGER" property="paytype" />
+    <result column="payMoney" jdbcType="REAL" property="paymoney" />
+    <result column="networkareacode" jdbcType="VARCHAR" property="networkareacode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="contractPath" jdbcType="VARCHAR" property="contractpath" />
+    <result column="contractStartTime" jdbcType="DATE" property="contractstarttime" />
+    <result column="contractEndTime" jdbcType="DATE" property="contractendtime" />
+    <result column="delFlage" jdbcType="INTEGER" property="delflage" />
+    <result column="checkUserId" jdbcType="INTEGER" property="checkuserid" />
+    <result column="checkTime" jdbcType="TIMESTAMP" property="checktime" />
+    <result column="default1" jdbcType="VARCHAR" property="default1" />
+    <result column="default2" jdbcType="VARCHAR" property="default2" />
+
+    <collection property="eforcesBankPayInfo" resultMap="org.kuaidi.dao.EforcesBankPayInfoMapper.BaseResultMap"></collection>
+    <collection property="eforcesPaydetai" resultMap="org.kuaidi.dao.EforcesPaydetaiMapper.BaseResultMap"></collection>
+    <collection property="eforcesIncment" resultMap="org.kuaidi.dao.EforcesIncmentMapper.BaseResultMap"></collection>
+
+
+  </resultMap>
+
+
+  <!-- 查询省、市、县、网点 -->
+  <select id="selectProvinces"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * from eforces_netsign WHERE province=#{province} AND city=#{city} AND network=#{network} AND county=#{county}
+  </select>
+
+  <!-- 查询我的合同 -->
+  <select id="selectPath" resultMap="BaseResultMap">
+    select netsign.contractPath from eforces_netsign netsign where netsign.IncNumber = #{incNumber}
+  </select>
+
+
+
+  <sql id="Base_Column_List">
+    id, IncNumber, signType, identityfont, identityback,identitynum, companyName, legalPerson, signPic, 
+    crtTime, province, city, network, county, userId, payType, payMoney, networkareacode, 
+    status,contractPath,contractStartTime,contractEndTime, delFlage, checkUserId, 
+    checkTime, default1, default2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_netsign
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update  eforces_netsign  set delFlage = 1 
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesNetsign">
+    insert into eforces_netsign (id, IncNumber, signType, 
+      identityfont, identityback, identitynum, 
+      companyName, legalPerson, signPic, 
+      crtTime, province, city, 
+      network, county, userId, 
+      payType, payMoney, networkareacode, 
+      status, contractPath, contractStartTime, 
+      contractEndTime, delFlage, checkUserId, 
+      checkTime, default1, default2
+      )
+    values (#{id,jdbcType=INTEGER}, #{incnumber,jdbcType=VARCHAR}, #{signtype,jdbcType=INTEGER}, 
+      #{identityfont,jdbcType=VARCHAR}, #{identityback,jdbcType=VARCHAR}, #{identitynum,jdbcType=VARCHAR}, 
+      #{companyname,jdbcType=VARCHAR}, #{legalperson,jdbcType=VARCHAR}, #{signpic,jdbcType=VARCHAR}, 
+      #{crttime,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{network,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{paytype,jdbcType=INTEGER}, #{paymoney,jdbcType=REAL}, #{networkareacode,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{contractpath,jdbcType=VARCHAR}, #{contractstarttime,jdbcType=DATE}, 
+      #{contractendtime,jdbcType=DATE}, #{delflage,jdbcType=INTEGER}, #{checkuserid,jdbcType=INTEGER}, 
+      #{checktime,jdbcType=TIMESTAMP}, #{default1,jdbcType=VARCHAR}, #{default2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesNetsign"   keyProperty="id" useGeneratedKeys="true">
+    insert into eforces_netsign
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="incnumber != null">
+        IncNumber,
+      </if>
+      <if test="signtype != null">
+        signType,
+      </if>
+      <if test="identityfont != null">
+        identityfont,
+      </if>
+      <if test="identityback != null">
+        identityback,
+      </if>
+      <if test="identitynum != null">
+        identitynum,
+      </if>
+      <if test="companyname != null">
+        companyName,
+      </if>
+      <if test="legalperson != null">
+        legalPerson,
+      </if>
+      <if test="signpic != null">
+        signPic,
+      </if>
+      <if test="crttime != null">
+        crtTime,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="network != null">
+        network,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="paytype != null">
+        payType,
+      </if>
+      <if test="paymoney != null">
+        payMoney,
+      </if>
+      <if test="networkareacode != null">
+        networkareacode,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="contractpath != null">
+        contractPath,
+      </if>
+      <if test="contractstarttime != null">
+        contractStartTime,
+      </if>
+      <if test="contractendtime != null">
+        contractEndTime,
+      </if>
+      <if test="delflage != null">
+        delFlage,
+      </if>
+      <if test="checkuserid != null">
+        checkUserId,
+      </if>
+      <if test="checktime != null">
+        checkTime,
+      </if>
+      <if test="default1 != null">
+        default1,
+      </if>
+      <if test="default2 != null">
+        default2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="incnumber != null">
+        #{incnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="signtype != null">
+        #{signtype,jdbcType=INTEGER},
+      </if>
+      <if test="identityfont != null">
+        #{identityfont,jdbcType=VARCHAR},
+      </if>
+      <if test="identityback != null">
+        #{identityback,jdbcType=VARCHAR},
+      </if>
+      <if test="identitynum != null">
+        #{identitynum,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="legalperson != null">
+        #{legalperson,jdbcType=VARCHAR},
+      </if>
+      <if test="signpic != null">
+        #{signpic,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null">
+        #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null">
+        #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="paymoney != null">
+        #{paymoney,jdbcType=REAL},
+      </if>
+      <if test="networkareacode != null">
+        #{networkareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contractpath != null">
+        #{contractpath,jdbcType=VARCHAR},
+      </if>
+      <if test="contractstarttime != null">
+        #{contractstarttime,jdbcType=DATE},
+      </if>
+      <if test="contractendtime != null">
+        #{contractendtime,jdbcType=DATE},
+      </if>
+      <if test="delflage != null">
+        #{delflage,jdbcType=INTEGER},
+      </if>
+      <if test="checkuserid != null">
+        #{checkuserid,jdbcType=INTEGER},
+      </if>
+      <if test="checktime != null">
+        #{checktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="default1 != null">
+        #{default1,jdbcType=VARCHAR},
+      </if>
+      <if test="default2 != null">
+        #{default2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateStatusById">
+    update eforces_netsign set status=#{status} where id =#{id}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesNetsign">
+    update eforces_netsign
+    <set>
+      <if test="incnumber != null">
+        IncNumber = #{incnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="signtype != null">
+        signType = #{signtype,jdbcType=INTEGER},
+      </if>
+      <if test="identityfont != null">
+        identityfont = #{identityfont,jdbcType=VARCHAR},
+      </if>
+      <if test="identityback != null">
+        identityback = #{identityback,jdbcType=VARCHAR},
+      </if>
+      <if test="identitynum != null">
+        identitynum = #{identitynum,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        companyName = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="legalperson != null">
+        legalPerson = #{legalperson,jdbcType=VARCHAR},
+      </if>
+      <if test="signpic != null">
+        signPic = #{signpic,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        crtTime = #{crttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null">
+        network = #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null">
+        payType = #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="paymoney != null">
+        payMoney = #{paymoney,jdbcType=REAL},
+      </if>
+      <if test="networkareacode != null">
+        networkareacode = #{networkareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contractpath != null">
+        contractPath = #{contractpath,jdbcType=VARCHAR},
+      </if>
+      <if test="contractstarttime != null">
+        contractStartTime = #{contractstarttime,jdbcType=DATE},
+      </if>
+      <if test="contractendtime != null">
+        contractEndTime = #{contractendtime,jdbcType=DATE},
+      </if>
+      <if test="delflage != null">
+        delFlage = #{delflage,jdbcType=INTEGER},
+      </if>
+      <if test="checkuserid != null">
+        checkUserId = #{checkuserid,jdbcType=INTEGER},
+      </if>
+      <if test="checktime != null">
+        checkTime = #{checktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="default1 != null">
+        default1 = #{default1,jdbcType=VARCHAR},
+      </if>
+      <if test="default2 != null">
+        default2 = #{default2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesNetsign">
+    update eforces_netsign
+    set IncNumber = #{incnumber,jdbcType=VARCHAR},
+      signType = #{signtype,jdbcType=INTEGER},
+      identityfont = #{identityfont,jdbcType=VARCHAR},
+      identityback = #{identityback,jdbcType=VARCHAR},
+      identitynum = #{identitynum,jdbcType=VARCHAR},
+      companyName = #{companyname,jdbcType=VARCHAR},
+      legalPerson = #{legalperson,jdbcType=VARCHAR},
+      signPic = #{signpic,jdbcType=VARCHAR},
+      crtTime = #{crttime,jdbcType=TIMESTAMP},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      network = #{network,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      payType = #{paytype,jdbcType=INTEGER},
+      payMoney = #{paymoney,jdbcType=REAL},
+      networkareacode = #{networkareacode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      contractPath = #{contractpath,jdbcType=VARCHAR},
+      contractStartTime = #{contractstarttime,jdbcType=DATE},
+      contractEndTime = #{contractendtime,jdbcType=DATE},
+      delFlage = #{delflage,jdbcType=INTEGER},
+      checkUserId = #{checkuserid,jdbcType=INTEGER},
+      checkTime = #{checktime,jdbcType=TIMESTAMP},
+      default1 = #{default1,jdbcType=VARCHAR},
+      default2 = #{default2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectNetsignSort" resultMap="BaseResultMap">
+    select * from eforces_netsign
+    <where>
+      delFlage = 0 
+      <if test="id != null">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="incnumber != null">
+        and incnumber = #{incnumber,jdbcType=VARCHAR}
+      </if>
+      <if test="signtype != null">
+        and signtype = #{signtype,jdbcType=INTEGER}
+      </if>
+      <if test="identityfont != null">
+        and identityfont = #{identityfont,jdbcType=VARCHAR}
+      </if>
+      <if test="identityback != null">
+        and identityback = #{identityback,jdbcType=VARCHAR}
+      </if>
+      <if test="identitynum != null">
+        and identitynum = #{identitynum,jdbcType=VARCHAR}
+      </if>
+      <if test="companyname != null">
+        and companyname = #{companyname,jdbcType=VARCHAR}
+      </if>
+      <if test="legalperson != null">
+        and legalperson = #{legalperson,jdbcType=VARCHAR}
+      </if>
+      <if test="signpic != null">
+        and signpic = #{signpic,jdbcType=VARCHAR}
+      </if>
+      <if test="crttime != null">
+        and crttime = #{crttime,jdbcType=DATE}
+      </if>
+      <if test="province != null">
+        and province = #{province,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null">
+        and city = #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="network != null">
+        and network = #{network,jdbcType=VARCHAR}
+      </if>
+      <if test="county != null">
+        and county = #{county,jdbcType=VARCHAR}
+      </if>
+      <if test="userid != null">
+        and userid = #{userid,jdbcType=INTEGER}
+      </if>
+      <if test="paytype != null">
+        and paytype = #{paytype,jdbcType=INTEGER}
+      </if>
+      <if test="paymoney != null">
+        and paymoney = #{paymoney,jdbcType=REAL}
+      </if>
+      <if test="networkareacode != null">
+        and networkareacode = #{networkareacode,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectBySort"  resultMap="BaseResultMap1">
+    select * from eforces_netsign n
+    LEFT JOIN eforces_bankpayinfo b
+    on n.id=b.signId
+    LEFT JOIN eforces_paydetai p
+    on n.id=p.netSignId
+    INNER JOIN eforces_incment i
+    on n.IncNumber=i.number
+    <where>
+      delFlage = 0 
+      <if test="id != null">
+        and n.id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="incnumber != null">
+        and n.incnumber = #{incnumber,jdbcType=VARCHAR}
+      </if>
+      <if test="signtype != null">
+        and n.signtype = #{signtype,jdbcType=INTEGER}
+      </if>
+      <if test="identityfont != null">
+        and n.identityfont = #{identityfont,jdbcType=VARCHAR}
+      </if>
+      <if test="identityback != null">
+        and n.identityback = #{identityback,jdbcType=VARCHAR}
+      </if>
+      <if test="identitynum != null">
+        and n.identitynum = #{identitynum,jdbcType=VARCHAR}
+      </if>
+      <if test="companyname != null">
+        and n.companyname = #{companyname,jdbcType=VARCHAR}
+      </if>
+      <if test="legalperson != null">
+        and n.legalperson = #{legalperson,jdbcType=VARCHAR}
+      </if>
+      <if test="signpic != null">
+        and n.signpic = #{signpic,jdbcType=VARCHAR}
+      </if>
+      <if test="crttime != null">
+        and n.crttime = #{crttime,jdbcType=DATE}
+      </if>
+      <if test="province != null">
+        and n.province = #{province,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null">
+        and n.city = #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="network != null">
+        and n.network = #{network,jdbcType=VARCHAR}
+      </if>
+      <if test="county != null">
+        and n.county = #{county,jdbcType=VARCHAR}
+      </if>
+      <if test="userid != null">
+        and n.userid = #{userid,jdbcType=INTEGER}
+      </if>
+      <if test="paytype != null">
+        and n.paytype = #{paytype,jdbcType=INTEGER}
+      </if>
+      <if test="paymoney != null">
+        and n.paymoney = #{paymoney,jdbcType=REAL}
+      </if>
+      <if test="networkareacode != null">
+        and n.networkareacode = #{networkareacode,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and n.status = #{status,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesDefaultBankInfoMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesDefaultBankInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bankCustomer" jdbcType="VARCHAR" property="bankcustomer" />
+    <result column="bankNumber" jdbcType="VARCHAR" property="banknumber" />
+    <result column="bankType" jdbcType="VARCHAR" property="banktype" />
+    <result column="crtTime" jdbcType="TIMESTAMP" property="crttime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bankCustomer, bankNumber, bankType, crtTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_defaultBankInfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllBankInfo"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_defaultBankInfo
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_defaultBankInfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesDefaultBankInfo">
+    insert into eforces_defaultBankInfo (id, bankCustomer, bankNumber, 
+      bankType, crtTime)
+    values (#{id,jdbcType=INTEGER}, #{bankcustomer,jdbcType=VARCHAR}, #{banknumber,jdbcType=VARCHAR}, 
+      #{banktype,jdbcType=VARCHAR}, #{crttime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesDefaultBankInfo">
+    insert into eforces_defaultBankInfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankcustomer != null">
+        bankCustomer,
+      </if>
+      <if test="banknumber != null">
+        bankNumber,
+      </if>
+      <if test="banktype != null">
+        bankType,
+      </if>
+      <if test="crttime != null">
+        crtTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankcustomer != null">
+        #{bankcustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="banknumber != null">
+        #{banknumber,jdbcType=VARCHAR},
+      </if>
+      <if test="banktype != null">
+        #{banktype,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        #{crttime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesDefaultBankInfo">
+    update eforces_defaultBankInfo
+    <set>
+      <if test="bankcustomer != null">
+        bankCustomer = #{bankcustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="banknumber != null">
+        bankNumber = #{banknumber,jdbcType=VARCHAR},
+      </if>
+      <if test="banktype != null">
+        bankType = #{banktype,jdbcType=VARCHAR},
+      </if>
+      <if test="crttime != null">
+        crtTime = #{crttime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesDefaultBankInfo">
+    update eforces_defaultBankInfo
+    set bankCustomer = #{bankcustomer,jdbcType=VARCHAR},
+      bankNumber = #{banknumber,jdbcType=VARCHAR},
+      bankType = #{banktype,jdbcType=VARCHAR},
+      crtTime = #{crttime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

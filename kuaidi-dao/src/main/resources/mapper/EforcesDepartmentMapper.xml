@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesDepartmentMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesDepartment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="depaName" jdbcType="VARCHAR" property="depaname" />
+    <result column="jiazhang" jdbcType="INTEGER" property="jiazhang" />
+    <result column="leaderidlist" jdbcType="VARCHAR" property="leaderidlist" />
+    <result column="incId" jdbcType="INTEGER" property="incid" />
+    <result column="depanumber" jdbcType="VARCHAR" property="depanumber" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.kuaidi.bean.domain.EforcesDepartment">
+    <result column="depaHelp" jdbcType="LONGVARCHAR" property="depahelp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, depaName, jiazhang, leaderidlist, incId, depanumber
+  </sql>
+  <sql id="Blob_Column_List">
+    depaHelp
+  </sql>
+
+  <!-- 查询企业部门管理 -->
+  <select id="getList" resultMap="ResultMapWithBLOBs">
+    select * from eforces_department where isDelete = 0
+  </select>
+
+  <!-- 删除企业部门管理 -->
+  <update id="removeUpdate">
+    update
+    eforces_department
+    set
+    isDelete=1
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from eforces_department
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_department
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesDepartment">
+    insert into eforces_department (id, depaName, jiazhang, 
+      leaderidlist, incId, depanumber, 
+      depaHelp)
+    values (#{id,jdbcType=INTEGER}, #{depaname,jdbcType=VARCHAR}, #{jiazhang,jdbcType=INTEGER}, 
+      #{leaderidlist,jdbcType=VARCHAR}, #{incid,jdbcType=INTEGER}, #{depanumber,jdbcType=VARCHAR}, 
+      #{depahelp,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesDepartment">
+    insert into eforces_department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="depaname != null">
+        depaName,
+      </if>
+      <if test="jiazhang != null">
+        jiazhang,
+      </if>
+      <if test="leaderidlist != null">
+        leaderidlist,
+      </if>
+      <if test="incid != null">
+        incId,
+      </if>
+      <if test="depanumber != null">
+        depanumber,
+      </if>
+      <if test="depahelp != null">
+        depaHelp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="depaname != null">
+        #{depaname,jdbcType=VARCHAR},
+      </if>
+      <if test="jiazhang != null">
+        #{jiazhang,jdbcType=INTEGER},
+      </if>
+      <if test="leaderidlist != null">
+        #{leaderidlist,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        #{incid,jdbcType=INTEGER},
+      </if>
+      <if test="depanumber != null">
+        #{depanumber,jdbcType=VARCHAR},
+      </if>
+      <if test="depahelp != null">
+        #{depahelp,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesDepartment">
+    update eforces_department
+    <set>
+      <if test="depaname != null">
+        depaName = #{depaname,jdbcType=VARCHAR},
+      </if>
+      <if test="jiazhang != null">
+        jiazhang = #{jiazhang,jdbcType=INTEGER},
+      </if>
+      <if test="leaderidlist != null">
+        leaderidlist = #{leaderidlist,jdbcType=VARCHAR},
+      </if>
+      <if test="incid != null">
+        incId = #{incid,jdbcType=INTEGER},
+      </if>
+      <if test="depanumber != null">
+        depanumber = #{depanumber,jdbcType=VARCHAR},
+      </if>
+      <if test="depahelp != null">
+        depaHelp = #{depahelp,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="org.kuaidi.bean.domain.EforcesDepartment">
+    update eforces_department
+    set depaName = #{depaname,jdbcType=VARCHAR},
+      jiazhang = #{jiazhang,jdbcType=INTEGER},
+      leaderidlist = #{leaderidlist,jdbcType=VARCHAR},
+      incId = #{incid,jdbcType=INTEGER},
+      depanumber = #{depanumber,jdbcType=VARCHAR},
+      depaHelp = #{depahelp,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesDepartment">
+    update eforces_department
+    set depaName = #{depaname,jdbcType=VARCHAR},
+      jiazhang = #{jiazhang,jdbcType=INTEGER},
+      leaderidlist = #{leaderidlist,jdbcType=VARCHAR},
+      incId = #{incid,jdbcType=INTEGER},
+      depanumber = #{depanumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

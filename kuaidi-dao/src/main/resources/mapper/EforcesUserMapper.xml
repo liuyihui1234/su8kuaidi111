@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesUserMapper">
+    <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesUser">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="Number" jdbcType="VARCHAR" property="number"/>
+        <result column="Password" jdbcType="VARCHAR" property="password"/>
+        <result column="Name" jdbcType="VARCHAR" property="name"/>
+        <result column="Incnumber" jdbcType="VARCHAR" property="incnumber"/>
+        <result column="Incname" jdbcType="VARCHAR" property="incname"/>
+        <result column="Incid" jdbcType="VARCHAR" property="incid"/>
+        <result column="Departid" jdbcType="INTEGER" property="departid"/>
+        <result column="departname" jdbcType="VARCHAR" property="departname"/>
+        <result column="Mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="Tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="Businesshall" jdbcType="VARCHAR" property="businesshall"/>
+        <result column="Businesshallname" jdbcType="VARCHAR" property="businesshallname"/>
+        <result column="Address" jdbcType="VARCHAR" property="address"/>
+        <result column="Recipient" jdbcType="VARCHAR" property="recipient"/>
+        <result column="RecipientCode" jdbcType="VARCHAR" property="recipientcode"/>
+        <result column="Departadmin" jdbcType="VARCHAR" property="departadmin"/>
+        <result column="Departadminname" jdbcType="VARCHAR" property="departadminname"/>
+        <result column="Creattime" jdbcType="TIMESTAMP" property="creattime"/>
+        <result column="lastip" jdbcType="VARCHAR" property="lastip"/>
+        <result column="lasttime" jdbcType="TIMESTAMP" property="lasttime"/>
+        <result column="loginnumber" jdbcType="INTEGER" property="loginnumber"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="method" jdbcType="INTEGER" property="method"/>
+        <result column="portraitPath" jdbcType="VARCHAR" property="portraitpath"/>
+        <result column="identityNum" jdbcType="VARCHAR" property="identitynum"/>
+        <result column="identityFontpath" jdbcType="VARCHAR" property="identityfontpath"/>
+        <result column="identityBackPath" jdbcType="VARCHAR" property="identitybackpath"/>
+    </resultMap>
+
+    <select id="selectByDepartname" resultType="hashmap">
+    select
+    id AS value,
+    name AS title
+    from
+    eforces_user
+    where
+    departname=#{departname}
+    </select>
+
+    <!-- 登录查询Sql -->
+    <select id="selectUser" resultType="org.kuaidi.bean.domain.EforcesUser">
+    select * from eforces_user where Number = #{Number,jdbcType=VARCHAR} and isdelete = 0
+  </select>
+
+    <!-- 修改用户名、手机号 -->
+    <update id="updateMsg">
+    UPDATE eforces_user SET `Name` = #{Name},Mobile = #{Mobile} WHERE Id = #{id}
+  </update>
+
+    <sql id="Base_Column_List">
+    Id, Number, Password, Name, Incnumber, Incname, Incid, Departid, departname, Mobile, 
+    Tel, Businesshall, Businesshallname, Address, Recipient, RecipientCode, Departadmin, 
+    Departadminname, Creattime, lastip, lasttime, loginnumber, type, method
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+     a.*,group_concat(b.groupid) as groupid
+    from eforces_user a
+    left  join  eforces_usersgrouprele b on a.id = b.userid
+    where a.Id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_user where isdelete = 0
+    </select>
+    
+    <select id="selectCurrentMaxNumber" parameterType="java.lang.String" resultType="java.lang.String">
+  		SELECT  max(Number)  as Number  from eforces_user where incnumber = #{incNum,jdbcType=VARCHAR}
+  		and Number is not null and isdelete = 0
+  </select>
+
+    <select id="selectUserByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_user
+        where Mobile = #{Mobile,jdbcType=VARCHAR} and isdelete = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_user
+    where Id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <update id="deleteByid" >
+       update eforces_user
+       set isdelete = 1
+        where id
+        in
+        <foreach collection="list" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
+
+
+    <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesUser">
+    insert into eforces_user (Id, Number, Password,
+      Name, Incnumber, Incname,
+      Incid, Departid, departname,
+      Mobile, Tel, Businesshall,
+      Businesshallname, Address, Recipient,
+      RecipientCode, Departadmin, Departadminname,
+      Creattime, lastip, lasttime,
+      loginnumber, type, method,
+      portraitPath, identityNum, identityFontpath,
+      identityBackPath)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{incnumber,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR},
+      #{incid,jdbcType=VARCHAR}, #{departid,jdbcType=INTEGER}, #{departname,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{businesshall,jdbcType=VARCHAR},
+      #{businesshallname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{recipient,jdbcType=VARCHAR},
+      #{recipientcode,jdbcType=VARCHAR}, #{departadmin,jdbcType=VARCHAR}, #{departadminname,jdbcType=VARCHAR},
+      #{creattime,jdbcType=TIMESTAMP}, #{lastip,jdbcType=VARCHAR}, #{lasttime,jdbcType=TIMESTAMP},
+      #{loginnumber,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{method,jdbcType=INTEGER},
+      #{portraitpath,jdbcType=VARCHAR}, #{identitynum,jdbcType=VARCHAR}, #{identityfontpath,jdbcType=VARCHAR},
+      #{identitybackpath,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesUser" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into eforces_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="number != null">
+                Number,
+            </if>
+            <if test="password != null">
+                Password,
+            </if>
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="incnumber != null">
+                Incnumber,
+            </if>
+            <if test="incname != null">
+                Incname,
+            </if>
+            <if test="incid != null">
+                Incid,
+            </if>
+            <if test="departid != null">
+                Departid,
+            </if>
+            <if test="departname != null">
+                departname,
+            </if>
+            <if test="mobile != null">
+                Mobile,
+            </if>
+            <if test="tel != null">
+                Tel,
+            </if>
+            <if test="businesshall != null">
+                Businesshall,
+            </if>
+            <if test="businesshallname != null">
+                Businesshallname,
+            </if>
+            <if test="address != null">
+                Address,
+            </if>
+            <if test="recipient != null">
+                Recipient,
+            </if>
+            <if test="recipientcode != null">
+                RecipientCode,
+            </if>
+            <if test="departadmin != null">
+                Departadmin,
+            </if>
+            <if test="departadminname != null">
+                Departadminname,
+            </if>
+            <if test="creattime != null">
+                Creattime,
+            </if>
+            <if test="lastip != null">
+                lastip,
+            </if>
+            <if test="lasttime != null">
+                lasttime,
+            </if>
+            <if test="loginnumber != null">
+                loginnumber,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="portraitpath != null">
+                portraitPath,
+            </if>
+            <if test="identitynum != null">
+                identityNum,
+            </if>
+            <if test="identityfontpath != null">
+                identityFontpath,
+            </if>
+            <if test="identitybackpath != null">
+                identityBackPath,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="incnumber != null">
+                #{incnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="incname != null">
+                #{incname,jdbcType=VARCHAR},
+            </if>
+            <if test="incid != null">
+                #{incid,jdbcType=VARCHAR},
+            </if>
+            <if test="departid != null">
+                #{departid,jdbcType=INTEGER},
+            </if>
+            <if test="departname != null">
+                #{departname,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="businesshall != null">
+                #{businesshall,jdbcType=VARCHAR},
+            </if>
+            <if test="businesshallname != null">
+                #{businesshallname,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="recipient != null">
+                #{recipient,jdbcType=VARCHAR},
+            </if>
+            <if test="recipientcode != null">
+                #{recipientcode,jdbcType=VARCHAR},
+            </if>
+            <if test="departadmin != null">
+                #{departadmin,jdbcType=VARCHAR},
+            </if>
+            <if test="departadminname != null">
+                #{departadminname,jdbcType=VARCHAR},
+            </if>
+            <if test="creattime != null">
+                #{creattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastip != null">
+                #{lastip,jdbcType=VARCHAR},
+            </if>
+            <if test="lasttime != null">
+                #{lasttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginnumber != null">
+                #{loginnumber,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=INTEGER},
+            </if>
+            <if test="portraitpath != null">
+                #{portraitpath,jdbcType=VARCHAR},
+            </if>
+            <if test="identitynum != null">
+                #{identitynum,jdbcType=VARCHAR},
+            </if>
+            <if test="identityfontpath != null">
+                #{identityfontpath,jdbcType=VARCHAR},
+            </if>
+            <if test="identitybackpath != null">
+                #{identitybackpath,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesUser">
+        update eforces_user
+        <set>
+            <if test="number != null and number != ''">
+                Number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                Password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null and name != ''">
+                Name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="incnumber != null and incnumber != ''">
+                Incnumber = #{incnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="incname != null and incname != ''">
+                Incname = #{incname,jdbcType=VARCHAR},
+            </if>
+            <if test="incid != null and incid !=''">
+                Incid = #{incid,jdbcType=VARCHAR},
+            </if>
+            <if test="departid != null">
+                Departid = #{departid,jdbcType=INTEGER},
+            </if>
+            <if test="departname != null and departname !=''">
+                departname = #{departname,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                Mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                Tel = #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="businesshall != null">
+                Businesshall = #{businesshall,jdbcType=VARCHAR},
+            </if>
+            <if test="businesshallname != null">
+                Businesshallname = #{businesshallname,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                Address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="recipient != null">
+                Recipient = #{recipient,jdbcType=VARCHAR},
+            </if>
+            <if test="recipientcode != null">
+                RecipientCode = #{recipientcode,jdbcType=VARCHAR},
+            </if>
+            <if test="departadmin != null">
+                Departadmin = #{departadmin,jdbcType=VARCHAR},
+            </if>
+            <if test="departadminname != null">
+                Departadminname = #{departadminname,jdbcType=VARCHAR},
+            </if>
+            <if test="creattime != null">
+                Creattime = #{creattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastip != null">
+                lastip = #{lastip,jdbcType=VARCHAR},
+            </if>
+            <if test="lasttime != null">
+                lasttime = #{lasttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginnumber != null">
+                loginnumber = #{loginnumber,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                method = #{method,jdbcType=INTEGER},
+            </if>
+            <if test="portraitpath != null">
+                portraitPath = #{portraitpath,jdbcType=VARCHAR},
+            </if>
+            <if test="identitynum != null">
+                identityNum = #{identitynum,jdbcType=VARCHAR},
+            </if>
+            <if test="identityfontpath != null">
+                identityFontpath = #{identityfontpath,jdbcType=VARCHAR},
+            </if>
+            <if test="identitybackpath != null">
+                identityBackPath = #{identitybackpath,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesUser">
+    update eforces_user
+    set Number = #{number,jdbcType=VARCHAR},
+      Password = #{password,jdbcType=VARCHAR},
+      Name = #{name,jdbcType=VARCHAR},
+      Incnumber = #{incnumber,jdbcType=VARCHAR},
+      Incname = #{incname,jdbcType=VARCHAR},
+      Incid = #{incid,jdbcType=VARCHAR},
+      Departid = #{departid,jdbcType=INTEGER},
+      departname = #{departname,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR},
+      Tel = #{tel,jdbcType=VARCHAR},
+      Businesshall = #{businesshall,jdbcType=VARCHAR},
+      Businesshallname = #{businesshallname,jdbcType=VARCHAR},
+      Address = #{address,jdbcType=VARCHAR},
+      Recipient = #{recipient,jdbcType=VARCHAR},
+      RecipientCode = #{recipientcode,jdbcType=VARCHAR},
+      Departadmin = #{departadmin,jdbcType=VARCHAR},
+      Departadminname = #{departadminname,jdbcType=VARCHAR},
+      Creattime = #{creattime,jdbcType=TIMESTAMP},
+      lastip = #{lastip,jdbcType=VARCHAR},
+      lasttime = #{lasttime,jdbcType=TIMESTAMP},
+      loginnumber = #{loginnumber,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      method = #{method,jdbcType=INTEGER},
+      portraitPath = #{portraitpath,jdbcType=VARCHAR},
+      identityNum = #{identitynum,jdbcType=VARCHAR},
+      identityFontpath = #{identityfontpath,jdbcType=VARCHAR},
+      identityBackPath = #{identitybackpath,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
