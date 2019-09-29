@@ -44,4 +44,10 @@ public class EforcesProblemcauseServiceImpl implements IEforcesProblemcauseServi
     public int updateDelete(Integer[] ids) {
         return problemcauseMapper.updateDelete(ids);
     }
+
+	@Override
+	public List<EforcesProblemcause> selectAll() {
+		// TODO Auto-generated method stub
+		return problemcauseMapper.selectAll();
+	}
 }

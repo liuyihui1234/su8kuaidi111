@@ -57,6 +57,17 @@
         where a.id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="selectNextSyopByName"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+
+        from
+        eforces_incment
+        where
+        name=#{name}
+
+    </select>
+
     <select id="getprovinceid" parameterType="string" resultType="string">
           select
             code as province from eforces_province
@@ -80,8 +91,11 @@
         select
         <include refid="Base_Column_List"/>
         from eforces_incment where  isdelete = 0
-        <if test="_parameter!=null">
-         and name like concat('%',#{_parameter},'%') or number  like concat('%',#{_parameter},'%')
+        <if test="parameter!=null">
+         and (name like concat('%',#{parameter},'%') or number  like concat('%',#{parameter},'%') )
+        </if>
+        <if test = 'parentId != null  and parentId != "" '>
+        	and parentid = ${parentId}
         </if>
     </select>
 

@@ -25,11 +25,11 @@ public class ResultUtil {
 
     public static <T> PageVo<T> exec(int page, int size, long count, List<T> data) {
         PageVo pageVo = new PageVo();
-        if (count > 0) {
+      //  if (count > 0) {
             pageVo.setCode(1);
-        } else {
-            pageVo.setCode(0);
-        }
+      //  } else {
+      //      pageVo.setCode(1);
+       // }
         pageVo.setPage(page);
         pageVo.setSize(size);
         pageVo.setCount(count);
@@ -38,7 +38,6 @@ public class ResultUtil {
         } else {
             pageVo.setTotalpage(0);
         }
-        pageVo.setTotalpage(Integer.parseInt(count+""));
         pageVo.setData(data);
         pageVo.setMsg("");
         return pageVo;

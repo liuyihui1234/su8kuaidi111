@@ -14,7 +14,7 @@ public interface IEforcesRemovingBagScanService {
 	void addWeighingScan(EforcesRemovingBagScan record);
 
 
-	void deleteById(Integer[] id);
+	int deleteById(List<Integer> id);
 
 	void setById(EforcesRemovingBagScan record);
 

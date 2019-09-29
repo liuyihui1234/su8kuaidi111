@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesCustomerSign;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by Administrator on 2019/7/27 10:55
@@ -76,13 +79,13 @@ public class DistributedScanDubboService {
      * @param fannex
      * @return
      */
-    public ResultVo alterDistributed(String number,Integer id, String num,String touserSignature,String fannex,String description){
+    public ResultVo alterDistributed(HttpServletRequest request, String number, String num,String touserSignature,String fannex){
         try {
             if(num.equals(number)){
                 EforcesCustomerSign customer = customerSignService.selectByNumber(number);
-                if(customer == null || "".equals(customer)){
-
-                    EforcesUser user = userService.selectUserById(id);
+                if(customer == null){
+                	EforcesUser user = (EforcesUser)request.getAttribute("user");
+                    EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
 
                     EforcesCustomerSign customerSign = new EforcesCustomerSign();
                     customerSign.setNumber(num);
@@ -94,8 +97,8 @@ public class DistributedScanDubboService {
                     customerSign.setIncid(user.getIncid());
                     customerSign.setIncname(user.getIncname());
                     customerSign.setFannex(fannex);
-
-
+                    String description = "派件已【签收】,签收人是【%s】,签收网点【%s】"; 
+                    description =  String.format(description, touserSignature, incment.getName());
                     EforcesLogisticStracking logistic = new EforcesLogisticStracking();
                     logistic.setBillsnumber(num);
                     logistic.setDescription(description);
@@ -104,10 +107,8 @@ public class DistributedScanDubboService {
                     logistic.setIncid(user.getIncid());
                     logistic.setMark(6);
 
-                    int data2 = customerSignService.insertCustomerSign(customerSign);
-                    int data3 = logisticstrackingService.insertLogisticSelective(logistic);
-
-                    if(data2>0 && data3 >0){
+                    int data2 = customerSignService.insertCustomerSign(customerSign,logistic);
+                    if(data2 > 0){
                         return ResultUtil.exec(true,"成功签收",null);
                     }
                     return ResultUtil.exec(false,"签收失败",null);

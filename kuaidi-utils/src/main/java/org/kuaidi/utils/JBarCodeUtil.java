@@ -147,7 +147,7 @@ import org.jbarcode.util.ImageUtil;
 	        //测试  
 	        public static void main(String[] args) throws FileNotFoundException, IOException {  
 	            List<String> list=new ArrayList<String>();  
-	            list.add("3502339401241");  
+	            list.add("440114000000015");  
 //	            list.add("KJ4.1-0128-0001");  
 //	            list.add("KJ4.1-0129-0001");  
 //	            list.add("KJ4.1-0130-0001");  

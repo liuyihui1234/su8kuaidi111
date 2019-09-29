@@ -28,7 +28,7 @@
 		<result column="scantime" jdbcType="TIMESTAMP"
 			property="scantime" />
 		<result column="amount" jdbcType="INTEGER" property="amount" />
-		<result column="billsnumber" jdbcType="LONGVARCHAR"
+		<result column="billsnumber" jdbcType="VARCHAR"
 			property="billsnumber" />
 		<result column="bz" jdbcType="LONGVARCHAR" property="bz" />
 	</resultMap>
@@ -85,6 +85,7 @@
 		<include refid="Blob_Column_List" />
 		from eforces_distributedscan
 		where id = #{id,jdbcType=INTEGER}
+		and isdelete = 0
 	</select>
 
 	<select id="selectByCreateincnumber" 
@@ -99,7 +100,7 @@
 		bill.Number = distribute.billsnumber
 		where
 		Createincnumber = #{createincnumber,jdbcType=VARCHAR}
-
+		and isdelete = 0
 	</select>
 
 	<select id="selectNoByCreateincnumber"
@@ -116,11 +117,12 @@
 		eforces_distributedscan )
 		and
 		Createincnumber = #{number,jdbcType=VARCHAR}
+		and isdelete = 0
 	</select>
 
-	<select id="getAlldistribute" resultMap="BaseResultMap">
-		SELECT  <include refid="Base_Column_List"></include>
-		from eforces_distributedscan where 1=1 and isdelete = 1
+	<select id="getAlldistribute" resultType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		SELECT  *
+		from eforces_distributedscan WHERE isdelete = 0
 		<if test="_parameter != null">
 			and  incId like CONCAT(#{_parameter},'%')
 		</if>
@@ -386,9 +388,23 @@
 		INNER JOIN eforces_order o
 		on d.billsnumber = o.number
 		where postmanid = #{postmanid,jdbcType=VARCHAR}
-		and billsnumber not in
-		<foreach collection="number" item="number" index="index" open="(" close=")" separator=",">
-			#{number}
-		</foreach>
+		<if test="number.size() > 0"> 
+			and billsnumber not in
+			<foreach collection="number" item="number" index="index" open="(" close=")" separator=",">
+				#{number}
+			</foreach>
+		</if>
 	</select>
+
+	<update id="deleteByid"
+			parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		update eforces_distributedscan
+		set isdelete = 1
+		where id in
+		<foreach collection="list" item="id" index="index" open="("
+				 close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+
 </mapper>

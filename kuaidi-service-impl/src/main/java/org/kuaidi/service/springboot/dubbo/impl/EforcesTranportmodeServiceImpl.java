@@ -67,4 +67,10 @@ public class EforcesTranportmodeServiceImpl implements IEforcesTransportmodeServ
     public EforcesTransportmode selectByPrimaryKey(Integer id) {
         return tranpsoDao.selectByPrimaryKey(id);
     }
+
+	@Override
+	public List<EforcesTransportmode> getAllListTran() {
+		// TODO Auto-generated method stub
+		return tranpsoDao.getListTran();
+	}
 }

@@ -2,13 +2,18 @@ package org.kuaidi.web.springboot.appcontroller;
 
 import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONObject;
 import org.kuaidi.bean.Config;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
@@ -18,6 +23,9 @@ import org.kuaidi.iservice.IEforcesReceivedscanService;
 import org.kuaidi.iservice.IEforcesSentscanService;
 import org.kuaidi.iservice.IEforceslogisticstrackingService;
 import org.kuaidi.utils.JBarCodeUtil;
+import org.kuaidi.web.springboot.core.authorization.Authorization;
+import org.kuaidi.web.springboot.util.redis.OrderUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +45,9 @@ public class AppOrderController {
 	
 	@Reference(version = "1.0.0")
 	IEforceslogisticstrackingService  strackingService;
-    
-//    @Autowired
-//	private RedisUtil  redisUtil;
+
+	@Autowired
+	OrderUtil orderUtil;
 
     @Value("${file.baseDir}")
     private String baseDir;
@@ -96,7 +104,8 @@ public class AppOrderController {
 	 */
 	@RequestMapping("NohadPostPackage")
 	@ResponseBody
-	public PageVo NohadPostPackage(Integer pageNum, Integer  pageSize, String  incNum) throws IOException {
+	@Authorization
+	public PageVo NohadPostPackage(HttpServletRequest  request,Integer pageNum, Integer  pageSize) throws IOException {
 		try {
 			if(pageSize == null ||  pageSize <= 0 ){
 				pageSize = Config.pageSize;
@@ -104,7 +113,9 @@ public class AppOrderController {
 			if(pageNum == null || pageNum <= 0 ){
 				pageNum = 1;
 			}
-			PageInfo<EforcesOrder> pageInfo = orderService.getNotPostPackage(pageNum , pageSize , incNum);
+			EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+			EforcesIncment  incMent = (EforcesIncment)request.getAttribute("inc");
+			PageInfo<EforcesOrder> pageInfo = orderService.getNotPostPackage(pageNum , pageSize ,userInfo.getNumber() ,incMent.getNumber(), incMent.getLevel());
 			return ResultUtil.exec(pageNum,pageSize,pageInfo.getTotal(), pageInfo.getList());
 		}catch (Exception e){
 			e.printStackTrace();
@@ -320,25 +331,6 @@ public class AppOrderController {
 	}
 
 	/**
-	 * 寄/派件运单管理
-	 * @param page
-	 * @return
-	 */
-	@GetMapping("order")
-	@ResponseBody
-	@CrossOrigin
-	public PageVo getListMsg(QueryPageVo page){
-		try {
-			PageInfo<EforcesOrder> pageInfo = orderService.getAllMsg(page.getPage(),page.getLimit());
-			return ResultUtil.exec(pageInfo.getPageNum(),pageInfo.getPageSize(),pageInfo.getTotal(),pageInfo.getList());
-		}catch (Exception e){
-			e.printStackTrace();
-			return ResultUtil.exec(page.getPage(),page.getLimit(),0,null);
-		}
-	}
-
-
-	/**
 	 * 删除寄/派件运单管理
 	 * @param id
 	 * @return
@@ -373,5 +365,19 @@ public class AppOrderController {
 		}
 	}
 
-
+	@RequestMapping("insertOrder")
+	@CrossOrigin
+	public ResultVo insertOrder(EforcesOrder record){
+		try {
+			record.setNumber(orderUtil.getOrderNumber(record.getFromareastreet()));
+			int result = orderService.insertSelective(record);
+			 if(result>0){
+				 return ResultUtil.exec(true,"添加成功",result);
+			 }
+			return ResultUtil.exec(false,"添加失败",result);
+		}catch (Exception e){
+			e.printStackTrace();
+			return ResultUtil.exec(false,"操作失败",null);
+		}
+	}
 }

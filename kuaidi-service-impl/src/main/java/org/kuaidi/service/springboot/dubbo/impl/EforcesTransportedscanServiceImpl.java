@@ -75,17 +75,17 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
     }
 
     @Override
-    public EforcesTransportedscan selectByNextnumber(String nextnumber) {
-        return transportedscan.selectByNextnumber(nextnumber);
-    }
-
-    @Override
     public int updateByPrimaryKeySelective(EforcesTransportedscan record) {
         return transportedscan.updateByPrimaryKeySelective(record);
     }
 
     @Override
-    public int updateState(List<String> billsNumber) {
-        return transportedscan.updateState(billsNumber);
+    public int updateState1(List<String> billsNumber) {
+        return transportedscan.updateState1(billsNumber);
+    }
+
+    @Override
+    public int updateState2(List<String> billsNumber) {
+        return transportedscan.updateState2(billsNumber);
     }
 }

@@ -49,4 +49,10 @@ public interface IEforcesProblemcauseService {
      * @return
      */
     int updateDelete(Integer[] ids);
+    
+    /**
+              * 展示所有信息列表
+     * @return
+     */
+    List<EforcesProblemcause> selectAll();
 }

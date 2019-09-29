@@ -2,17 +2,14 @@ package org.kuaidi.web.springboot.controller.maintainance;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import java.util.List;
 import org.kuaidi.bean.maintainance.EforcesProblemcause;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
-import org.kuaidi.iservice.maintainance.IEforcesDetypeService;
 import org.kuaidi.iservice.maintainance.IEforcesProblemcauseService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Administrator on 2019/8/10 17:42
@@ -25,6 +22,7 @@ public class ProblemcauseController {
     IEforcesProblemcauseService problemcauseService;
 
     @RequestMapping("selectOne")
+    @ResponseBody
     @CrossOrigin
     public ResultVo selectOne(Integer id){
         try {
@@ -39,7 +37,8 @@ public class ProblemcauseController {
         }
     }
 
-    @RequestMapping("selectAll")
+    @GetMapping("Problemcause")
+    @ResponseBody
     @CrossOrigin
     public PageVo<EforcesProblemcause> selectAll(QueryPageVo page){
         try {
@@ -51,7 +50,8 @@ public class ProblemcauseController {
         }
     }
 
-    @RequestMapping("insertOne")
+    @PostMapping("Problemcause")
+    @ResponseBody
     @CrossOrigin
     public ResultVo insertOne(EforcesProblemcause problemcause){
         try {
@@ -66,7 +66,8 @@ public class ProblemcauseController {
         }
     }
 
-    @RequestMapping("updateOne")
+    @PutMapping("Problemcause")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateOne(EforcesProblemcause problemcause){
         try {
@@ -86,6 +87,7 @@ public class ProblemcauseController {
     }
 
     @RequestMapping("updateDelete")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(Integer id){
         try {
@@ -105,7 +107,8 @@ public class ProblemcauseController {
         }
     }
 
-    @RequestMapping("updateDeletes")
+    @DeleteMapping("Problemcause")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(@RequestBody Integer[] ids){
         try {
@@ -119,4 +122,18 @@ public class ProblemcauseController {
             return ResultUtil.exec(false,"操作失败",null);
         }
     }
+    
+    @RequestMapping("selectAllProblemCause")
+    @ResponseBody
+    @CrossOrigin
+    public ResultVo selectAllProblemCause(){
+        try {
+            List<EforcesProblemcause> problemList = problemcauseService.selectAll();
+            return ResultUtil.exec(true, "问题原因查询成功！", problemList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "问题原因查询失败！", null);
+        }
+    }
+    
 }

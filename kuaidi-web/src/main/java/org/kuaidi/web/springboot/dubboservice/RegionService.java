@@ -1,6 +1,5 @@
 package org.kuaidi.web.springboot.dubboservice;
 
-import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.StringUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesArea;
 import org.kuaidi.bean.domain.EforcesCity;
@@ -233,15 +234,42 @@ public class RegionService {
 	 */
 	public PageVo getlist(QueryPageVo page){
 		try {
-			String parentCode = page.getInfo1();
-			
-			
-			PageInfo<EforcesRegion> pageInfo = regionService.getListMsg(page.getPage(),page.getLimit(), parentCode);
+			String name = page.getInfo1();
+			String parentCode = page.getInfo2();
+			PageInfo<EforcesRegion> pageInfo = regionService.getListMsg(page.getPage(),page.getLimit(),name,parentCode);
 			return ResultUtil.exec(pageInfo.getPageNum(),pageInfo.getPageSize(),pageInfo.getTotal(),pageInfo.getList());
 		}catch (Exception e){
 			e.printStackTrace();
 			return ResultUtil.exec(page.getPage(),page.getLimit(),0,null);
 		}
+	}
+	
+	/**
+	 *      省市区管理
+	 * @return
+	 */
+	public ResultVo getRegionByParentCode(String parentCode){
+		try {
+			List<EforcesRegion> regionList = regionService.selectRegionByCode(parentCode);
+			return ResultUtil.exec(true,"查询地区信息成功！",regionList);
+		}catch (Exception e){
+			e.printStackTrace();
+			return ResultUtil.exec(false,"查询地区信息失败！",null);
+		}
+	}
+	
+	// 将code 
+	private String convertCodeToLen(String code , int toLen) {
+		if(StringUtil.isEmpty(code)) {
+			return code; 
+		}
+		if(code.length() >= toLen) {
+			return code.substring(0, toLen);
+		}
+		while(code.length() < toLen) {
+			code = "0" + code;
+		}
+		return code; 
 	}
 
 	/**
@@ -251,8 +279,75 @@ public class RegionService {
 	 */
 	public ResultVo addRegion(EforcesRegion region){
 		try {
-			int result = regionService.insertSelective(region);
-			return ResultUtil.exec(true,"添加成功",result);
+			String parentCode = region.getParentCode();
+			if(StringUtil.isEmpty(parentCode) || StringUtils.equals(parentCode,"0")){ //传的值如果是0就代表添加省
+				String maxCode= regionService.selectMaxCodeByParent(parentCode);//得到最大值的code
+				if(StringUtil.isNotEmpty(parentCode)) {
+					String front = maxCode.substring(0,2); //取出来最大值code前两位
+					int front1 = Integer.parseInt(front)+1;
+					String code = front1+"0000"; //追加后缀
+					//code 需要转化成规定的格式。
+					code = convertCodeToLen(code, 6);
+					region.setCode(code);
+					region.setLevel(1);
+					region.setParentCode("0");
+				}
+				int result = regionService.insertSelective(region);
+				return ResultUtil.exec(true,"添加成功",result);
+			}else{
+				EforcesRegion result =regionService.getBycode(parentCode);
+				if(result.getLevel() < 4){
+					if(result.getLevel() == 1){ //说明添加的是市
+						String maxCode= regionService.selectMaxCodeByParent(result.getCode());//得到最大值的code
+						String code = "";
+						if(StringUtil.isNotEmpty(maxCode)) {
+							maxCode = maxCode.substring(0,4);
+							int  maxCode1 = Integer.parseInt(maxCode) + 1;
+							code = maxCode1+ "00" ;
+						}else {
+							code =  parentCode.substring(0,2) + "0100";
+						}
+						code = convertCodeToLen(code, 6);
+						region.setCode(code);
+						region.setLevel(2);
+						int result1 = regionService.insertSelective(region);
+						return ResultUtil.exec(true,"添加成功",result1);
+					}else if(result.getLevel() == 2){//说明添加的是区县
+						String maxCode= regionService.selectMaxCodeByParent(result.getCode());//得到最大值的code
+						String code = "";
+						if(StringUtils.isNotEmpty(maxCode)) {
+							maxCode = maxCode.substring(0,6);
+							int maxCode1=Integer.parseInt(maxCode) + 1 ;
+							code =maxCode1 + "";
+						}else {
+							code =parentCode.substring(0,4) + "01";
+						}
+						code = convertCodeToLen(code, 6);
+						region.setCode(code);
+						region.setLevel(3);
+						int result1 = regionService.insertSelective(region);
+						return ResultUtil.exec(true,"添加成功",result1);
+					}else if(result.getLevel() == 3) {
+						String maxCode= regionService.selectMaxCodeByParent(result.getCode());
+						String  code = "";
+						if(StringUtils.isNotEmpty(maxCode) && maxCode.length() >= 8  ) {
+							maxCode = maxCode.substring(0,8);
+							int maxCode1=Integer.parseInt(maxCode) + 1 ;
+							code =maxCode1 + "";
+						}else {
+							code = parentCode + "01";
+						}
+						code = convertCodeToLen(code, 8);
+						region.setCode(code);
+						region.setLevel(4);
+						int result1 = regionService.insertSelective(region);
+						return ResultUtil.exec(true,"添加成功",result1);
+					}
+				}else {
+					return ResultUtil.exec(false,"参数有误不能再添加",0);
+				}
+			}
+			return ResultUtil.exec(false,"添加失败",0);
 		}catch (Exception e){
 			e.printStackTrace();
 			return ResultUtil.exec(false,"添加失败",0);
@@ -266,6 +361,7 @@ public class RegionService {
 	 */
 	public ResultVo updateRegion(EforcesRegion region){
 		try {
+			System.out.println(region.getCode());
 			int result = regionService.updateByPrimaryKeySelective(region);
 			return ResultUtil.exec(true,"修改成功",result);
 		}catch (Exception e){
@@ -281,7 +377,6 @@ public class RegionService {
 	 */
 	public ResultVo removeUpdate(@RequestBody Integer[] code){
 		try {
-
 			int result = regionService.removeUpdate(code);
 			return ResultUtil.exec(true,"删除成功",result);
 		}catch (Exception e){
@@ -291,11 +386,12 @@ public class RegionService {
 	}
 
 
-/*	*//**
+    /**
 	 * 单条删除省市区管理
 	 * @param code
 	 * @return
-	 *//*
+	 */
+	/*
 	public ResultVo removeUpdates(Integer code){
 		try {
 			Integer[] array = {code};

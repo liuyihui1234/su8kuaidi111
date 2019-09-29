@@ -1,0 +1,2 @@
+11:16:01.087 [main] INFO  o.k.web.springboot.WebApplication - Starting WebApplication on P28L16WHKK06LW8 with PID 9848 (D:\javaTool\su8kuaidi\kuaidi-web\target\classes started by Administrator in D:\javaTool\su8kuaidi\kuaidi-web)
+11:16:01.088 [main] INFO  o.k.web.springboot.WebApplication - No active profile set, falling back to default profiles: default

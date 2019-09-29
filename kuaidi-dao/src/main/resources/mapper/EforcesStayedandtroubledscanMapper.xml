@@ -229,6 +229,32 @@
       #{causeId,jdbcType=VARCHAR}, 
       #{bz,jdbcType=LONGVARCHAR})
   </insert>
+
+
+    <!-- 批量将收件信息插入数据库 -->
+    <insert id="insertList" parameterType="java.util.List">
+        insert into eforces_stayedandtroubledscan
+        ( id, billsnumber,
+        flightsnumber, troubledtype, scantype,
+        sacnners, sacnnerid, incname,
+        incid, amount, causeId,
+        bz)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id,jdbcType=INTEGER}, #{item.billsnumber,jdbcType=VARCHAR},
+            #{item.flightsnumber,jdbcType=VARCHAR}, #{item.troubledtype,jdbcType=VARCHAR}, #{item.scantype,jdbcType=VARCHAR},
+            #{item.sacnners,jdbcType=VARCHAR}, #{item.sacnnerid,jdbcType=VARCHAR}, #{item.incname,jdbcType=VARCHAR},
+            #{item.incid,jdbcType=VARCHAR}, #{item.amount,jdbcType=INTEGER},
+            #{item.causeId,jdbcType=VARCHAR},
+            #{item.bz,jdbcType=LONGVARCHAR}
+            )
+        </foreach>
+    </insert>
+
+
+
+
     <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesStayedandtroubledscan">
         insert into eforces_stayedandtroubledscan
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -29,6 +29,8 @@ public class EforcesNetsign implements Serializable {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date crttime;
+	
+	private String createTime; 
 
     private String province;
 
@@ -314,4 +316,14 @@ public class EforcesNetsign implements Serializable {
     public void setDefault2(String default2) {
         this.default2 = default2 == null ? null : default2.trim();
     }
+	
+	public String getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+    
+	
 }

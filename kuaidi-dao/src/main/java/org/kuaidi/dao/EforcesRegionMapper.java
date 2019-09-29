@@ -38,7 +38,7 @@ public interface EforcesRegionMapper {
      * 省市区管理
      * @return
      */
-    List<EforcesRegion> getListMsg();
+    List<EforcesRegion> getListMsg(@Param("name") String name, @Param("parentCode")String parentCode);
 
     /**
      * 添加省市区管理
@@ -67,4 +67,12 @@ public interface EforcesRegionMapper {
      * @return
      */
     EforcesRegion selectByPrimaryKey(String code);
+
+
+    /**
+     * 添加时查询
+     * @param code
+     * @return
+     */
+    EforcesRegion getBycode(String code);
 }

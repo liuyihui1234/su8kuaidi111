@@ -9,6 +9,8 @@ import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.iservice.IEforcesCustomerSignService;
 import org.kuaidi.iservice.IEforcesOrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +27,7 @@ public class AppAchievementController {
 	@Reference(version = "1.0.0")
 	IEforcesOrderService  orderService;
 	
+	private static final Logger logger = LoggerFactory.getLogger(AppAchievementController.class);
 	
 	@RequestMapping("getByCreateUserId")
 	@ResponseBody
@@ -40,6 +43,7 @@ public class AppAchievementController {
 			return ResultUtil.exec(pageNum,pageSize,pageInfo.getTotal(), pageInfo.getList());
 		}catch (Exception e){
 			e.printStackTrace();
+			logger.debug(e.getMessage());
 			return ResultUtil.exec(pageNum, pageSize, 0,null);
 		}
 	}
@@ -58,6 +62,7 @@ public class AppAchievementController {
 			return ResultUtil.exec(pageNum,pageSize,pageInfo.getTotal(), pageInfo.getList());
 		}catch (Exception e){
 			e.printStackTrace();
+			logger.debug(e.getMessage());
 			return ResultUtil.exec(pageNum, pageSize, 0,null);
 		}
 	}

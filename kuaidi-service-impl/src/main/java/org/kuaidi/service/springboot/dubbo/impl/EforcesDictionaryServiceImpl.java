@@ -68,4 +68,10 @@ public class EforcesDictionaryServiceImpl implements IEforcesDictionaryService {
     public EforcesDictionary selectByPrimaryKey(Integer id) {
         return dictionaryMapper.selectByPrimaryKey(id);
     }
+
+	@Override
+	public List<EforcesDictionary> selectByParentId(Integer parentId) {
+		// TODO Auto-generated method stub
+		return dictionaryMapper.getByParentId(parentId);
+	}
 }

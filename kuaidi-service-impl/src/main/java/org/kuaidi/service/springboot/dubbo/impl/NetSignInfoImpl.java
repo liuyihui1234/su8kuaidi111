@@ -1,5 +1,6 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class NetSignInfoImpl implements NetSignInfo {
 		// TODO Auto-generated method stub
 		netSign.setCrttime(new Date());
 		int rst = netSignDao.insertSelective(netSign);
-		System.out.println(rst);
 		if (rst > 0) {
 			return netSign.getId();
 		}
@@ -61,12 +61,16 @@ public class NetSignInfoImpl implements NetSignInfo {
         return netSignDao.selectProvinces(eforcesNetsign);
     }
 	
-	public PageInfo<EforcesNetsign> selectNetsignSort(Integer pageNum , EforcesNetsign record) {
+	public PageInfo<EforcesNetsign> selectNetsignSort(Integer pageNum , Integer rows, EforcesNetsign record) {
 		if(pageNum == null || pageNum == 0 ) {
-			PageHelper.startPage(1, Config.pageSize);
-		}else {
-            PageHelper.startPage(pageNum, Config.pageSize);
+			pageNum = 1 ; 
 		}
+		
+		if(rows == null || rows == 0 ) {
+			rows = Config.pageSize;
+		}
+		
+		PageHelper.startPage(pageNum, rows);
 		List<EforcesNetsign> list = netSignDao.selectNetsignSort(record);
         final PageInfo<EforcesNetsign> pageInfo=new PageInfo<>(list);
         return pageInfo;
@@ -100,5 +104,30 @@ public class NetSignInfoImpl implements NetSignInfo {
 	@Override
 	public List<EforcesNetsign> selectPath(String incNumber) {
 		return netSignDao.selectPath(incNumber);
+	}
+
+	@Override
+	public Integer delNetSignByIds(String ids) {
+		// TODO Auto-generated method stub
+		Integer rstFlage = 0 ; 
+		if(ids == null || ids.length() == 0 ) {
+			return rstFlage;
+		}
+		String []sections = ids.split(",");
+		if(sections != null && sections.length > 0 ) {
+			List <Integer> idList = new ArrayList<Integer>();
+			for(int i = 0 ; i < sections.length  ; i++) {
+				String idItem = sections[i];
+				if(idItem != null && idItem.matches("\\d+")) {
+					Integer id = Integer.parseInt(idItem);
+					idList.add(id);
+				}
+			}
+			if(idList.size() > 0 ) {
+				rstFlage = netSignDao.delNetSignByIds(idList);
+			}
+		}
+		System.out.println(rstFlage);
+		return rstFlage; 
 	}
 }

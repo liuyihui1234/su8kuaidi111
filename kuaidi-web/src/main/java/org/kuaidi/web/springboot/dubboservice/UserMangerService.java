@@ -47,9 +47,9 @@ public class UserMangerService {
         }
     }
 
-    public PageVo getAllUser(QueryPageVo page) {
+    public PageVo getAllUser(QueryPageVo page,EforcesUser record) {
         try {
-            PageInfo<EforcesUser> eforcesUsers = userService.selectAllUser(page.getPage(),page.getLimit());
+            PageInfo<EforcesUser> eforcesUsers = userService.selectAllUser(page.getPage(),page.getLimit(),record);
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();

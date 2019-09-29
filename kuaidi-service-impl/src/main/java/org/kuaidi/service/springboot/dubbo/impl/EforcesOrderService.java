@@ -21,7 +21,7 @@ import java.util.List;
 
 
 
-@Service(version = "1.0.0")
+@Service(version = "1.0.0",timeout=120000)
 public class EforcesOrderService implements IEforcesOrderService {
 
 	@Autowired
@@ -56,9 +56,16 @@ public class EforcesOrderService implements IEforcesOrderService {
 	 * @return
 	 */
 	@Override
-	public PageInfo<EforcesOrder> getNotPostPackage(Integer pageNum, Integer pageSize, String incNum) {
+	public PageInfo<EforcesOrder> getNotPostPackage(Integer pageNum, Integer pageSize,
+			String userNum ,String incNum, Integer incLevel) {
 		PageHelper.startPage(pageNum,pageSize);
-		List<EforcesOrder> list = orderDao.notHadPostPackage(incNum);
+		List<EforcesOrder> list =  null;
+		if(incLevel == 4) {
+			// 如果是街道级别的话，
+			list = orderDao.notHadPostPackage1(userNum,incNum); ; 
+		}else {
+			list = orderDao.notHadPostPackage(userNum,incNum);
+		}
 		final PageInfo<EforcesOrder> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
@@ -181,9 +188,9 @@ public class EforcesOrderService implements IEforcesOrderService {
 	 * @return
 	 */
 	@Override
-	public PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size) {
+	public PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size, EforcesOrder order) {
 		PageHelper.startPage(page,size);
-		List<EforcesOrder> list = orderDao.getAllMsg();
+		List<EforcesOrder> list = orderDao.getAllMsg(order);
 		final PageInfo<EforcesOrder> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
@@ -239,5 +246,31 @@ public class EforcesOrderService implements IEforcesOrderService {
 	@Override
 	public List<EforcesOrder> getAllNumberMsg(List<String> list) {
 		return orderDao.getAllNumberMsg(list);
+	}
+
+	/**
+	 * 物流跟踪详细查询
+	 * @param name
+	 * @return
+	 */
+	@Override
+	public EforcesOrder getOrder(String Number) {
+		return orderDao.getOrderMsg(Number);
+	}
+
+	/**
+	 * 查询详细信息
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public EforcesOrder getByid(Integer id) {
+		return orderDao.getByid(id);
+	}
+	
+	@Override
+	public List<EforcesOrder> getNumberByOpenId(String openId) {
+		// TODO Auto-generated method stub
+		return orderDao.getNumbersByOpenId(openId);
 	}
 }

@@ -16,6 +16,7 @@ public class QueryPageVo implements Serializable{
     private String destinationname;
     private String access_token;
 
+
     public String getAccess_token() {
         return access_token;
     }
@@ -84,14 +85,17 @@ public class QueryPageVo implements Serializable{
 		this.destinationname = destinationname;
 	}
 
-	@Override
-	public String toString() {
-		return "QueryPageVo [page=" + page + ", limit=" + limit + ", id=" + id + ", recipientname=" + recipientname
-				+ ", destinationname=" + destinationname + "]";
-	}
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "QueryPageVo{" +
+                "page=" + page +
+                ", limit=" + limit +
+                ", id=" + id +
+                ", info1='" + info1 + '\'' +
+                ", info2='" + info2 + '\'' +
+                ", recipientname='" + recipientname + '\'' +
+                ", destinationname='" + destinationname + '\'' +
+                ", access_token='" + access_token + '\'' +
+                '}';
+    }
 }

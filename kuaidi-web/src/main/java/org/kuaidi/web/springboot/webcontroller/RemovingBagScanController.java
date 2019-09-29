@@ -6,19 +6,21 @@ package org.kuaidi.web.springboot.webcontroller;
 import java.util.Date;
 import java.util.List;
 
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesRemovingBagScan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesRemovingBagScanService;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.dubboservice.RemovingBagScanService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/web/removingBagScan/")
@@ -28,7 +30,7 @@ public class RemovingBagScanController {
 
 	@Autowired
 	RemovingBagScanService dubboScanService;
-	@RequestMapping("getAll")
+	@GetMapping("scan")
 	@CrossOrigin
 	public PageVo getAll(QueryPageVo page) {
 		PageVo rst = null;
@@ -38,7 +40,6 @@ public class RemovingBagScanController {
 
 
 	@RequestMapping("getById")
-
 	@CrossOrigin public ResultVo getById(Integer id) { 
 		try { 
 			EforcesRemovingBagScan result = scanService.getById(id); 
@@ -52,52 +53,41 @@ public class RemovingBagScanController {
 
 
 
-	@RequestMapping("addRecord")
-	@CrossOrigin public ResultVo addRecord(EforcesRemovingBagScan record) {
-		try { 
-			record.setScantime(new Date());
-			scanService.addWeighingScan(record); 
-			return ResultUtil.exec(true, "添加成功", null); 
-		}
-		catch (Exception e) { 
-			e.printStackTrace(); 
-			return ResultUtil.exec(true, "添加失败", null);
-		} 
-	}
-
-
-
-	@RequestMapping("deleteById")
-
-	@CrossOrigin 
-	public ResultVo deleteById(Integer id) {
-		try 
-		{ Integer[] array={id};
-		scanService.deleteById(array);
-		return ResultUtil.exec(true, "删除成功",null); 
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-			return  ResultUtil.exec(false,"删除失败",null);
-		} 
-	}
-
-
-
-	@RequestMapping("deleteByIds")	  
+	@PostMapping("scan")
 	@CrossOrigin
-	public ResultVo deleteByIds(@RequestBody Integer[] array) {
-		try{ 
-			scanService.deleteById(array); 
-			return ResultUtil.exec(true, "删除成功", null);
-		} catch (Exception e) { 
-			e.printStackTrace(); 
-			return ResultUtil.exec(false,"删除失败",null);
-		} 
+	@NeedUserInfo
+	public ResultVo addRecord(EforcesRemovingBagScan record, HttpServletRequest request) {
+		 ResultVo rst;
+		EforcesUser user = (EforcesUser) request.getAttribute("user");
+		EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+		System.err.println("user:"+user);
+		System.err.println("inc:"+inc);
+		rst=dubboScanService.removeBagScan(record,user,inc);
+		return rst;
+	}
 
+
+
+
+
+
+
+	@DeleteMapping("scan")
+	@CrossOrigin
+	public ResultVo deleteByIds(@RequestBody List<Integer> array) {
+		try {
+			int i=scanService.deleteById(array);
+			if(i>0){
+				return ResultUtil.exec(true, "删除成功", null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtil.exec(false,"删除失败",null);
+		}
+		return ResultUtil.exec(false, "删除失败！", null);
 	}
 	
-	@RequestMapping("setById")	  
+	@PutMapping("scan")
 	@CrossOrigin
 	public ResultVo setById(EforcesRemovingBagScan record) {
 		try{ 

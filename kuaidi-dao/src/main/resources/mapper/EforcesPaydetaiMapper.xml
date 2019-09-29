@@ -16,7 +16,7 @@
   </insert>-->
 
   <!-- 支付后回调的时候修改表里状态 并添加流水交易号 -->
-  <update id="upderinfo" >
+  <update id="" >
     UPDATE eforces_paydetai SET `status` = 2 ,trade_no = #{tradeNo,jdbcType=VARCHAR} WHERE out_trade_no=#{outTradeNo,jdbcType=VARCHAR}
   </update>
 

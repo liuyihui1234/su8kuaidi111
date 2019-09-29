@@ -32,6 +32,25 @@
         <result column="identityBackPath" jdbcType="VARCHAR" property="identitybackpath"/>
     </resultMap>
 
+
+    <select id="selectByThree" resultMap="BaseResultMap">
+        select
+        *
+        from
+        eforces_users
+        where
+        isdelete=0
+        <if test="record!=null">
+            and
+            name=#{name}
+            or
+            incname=#{incname}
+            or
+            departname=#{departname}
+        </if>
+
+    </select>
+
     <select id="selectByDepartname" resultType="hashmap">
     select
     id AS value,
@@ -64,10 +83,22 @@
     left  join  eforces_usersgrouprele b on a.id = b.userid
     where a.Id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="selectAllUser" resultMap="BaseResultMap">
+    <select id="selectAllUser" resultMap="BaseResultMap" parameterType="org.kuaidi.bean.domain.EforcesUser">
         select
         <include refid="Base_Column_List"/>
         from eforces_user where isdelete = 0
+        <if test="name != null and name != ''">
+            and
+            Name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="incname !=null and incname != ''">
+            and
+            incname like CONCAT('%',#{incname},'%')
+        </if>
+        <if test="departname !=null and departname != ''">
+            and
+            departname like CONCAT('%',#{departname},'%')
+        </if>
     </select>
     
     <select id="selectCurrentMaxNumber" parameterType="java.lang.String" resultType="java.lang.String">

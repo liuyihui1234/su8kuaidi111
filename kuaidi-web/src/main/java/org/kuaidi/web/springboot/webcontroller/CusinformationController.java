@@ -77,7 +77,6 @@ public class CusinformationController {
 	@CrossOrigin
 	public ResultVo updateById(EforcesCusinformation record) {
 		try {
-			
 			mationService.updateById(record);
 			return ResultUtil.exec(true, "修改成功", null);
 		} catch (Exception e) {

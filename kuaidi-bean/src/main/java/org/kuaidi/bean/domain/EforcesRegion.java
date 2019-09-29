@@ -16,6 +16,8 @@ public class EforcesRegion implements Serializable{
 
     private Integer bigZoneId;
 
+    private int level;
+
     public String getCode() {
         return code;
     }
@@ -56,4 +58,11 @@ public class EforcesRegion implements Serializable{
 		this.bigZoneId = bigZoneId;
 	}
 
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 }

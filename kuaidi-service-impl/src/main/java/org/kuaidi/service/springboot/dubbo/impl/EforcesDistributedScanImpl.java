@@ -42,7 +42,7 @@ public class EforcesDistributedScanImpl implements IEforcesDistributedScanServic
 	}
 
 	@Override
-	public PageInfo<EforcesDistributedScan> getAlldistribute(Integer pageNum, Integer pageSize,Integer incid) {
+	public PageInfo<EforcesDistributedScan> getAlldistribute(Integer pageNum, Integer pageSize,String incid) {
 		 PageHelper.startPage(pageNum,pageSize);
 		List<EforcesDistributedScan> alldistribute = ScanMapper.getAlldistribute(incid);
 		final  PageInfo<EforcesDistributedScan> pageInfo = new PageInfo<>(alldistribute);
@@ -62,6 +62,11 @@ public class EforcesDistributedScanImpl implements IEforcesDistributedScanServic
 	@Override
 	public int updateByPrimaryKeySelective(EforcesDistributedScan record) {
 		return ScanMapper.updateByPrimaryKeySelective(record);
+	}
+
+	@Override
+	public int deleteByid(List<Integer> list) {
+		return ScanMapper.deleteByid(list);
 	}
 
 

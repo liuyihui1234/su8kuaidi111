@@ -2,8 +2,6 @@ package org.kuaidi.web.springboot.dubboservice;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-
 import com.aliyuncs.exceptions.ClientException;
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.Config;
@@ -54,7 +52,7 @@ public class UserLoginService {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	public ResultVo UserdoLogin(EforcesUser user) {
+	public ResultVo UserdoLogin(EforcesUser user ,Integer type) {
 		try {
 			String password = Md5Util.encode(user.getPassword()); //把客服端的密码传过来加密
 			EforcesUser user1 = userService.selectUser(user.getNumber());
@@ -71,12 +69,15 @@ public class UserLoginService {
 					String token = UUIDUtil.getUUID();
 					user1.setToken(token);
 					JSONObject userInfo = JSONObject.fromObject(user1);
+					EforcesIncment incment =  incentService.selectByNumber(user1.getIncnumber());
+					if((type != null && type == 2) && (incment != null && incment.getLevel() != 4) ) {
+						return ResultUtil.exec(false, "不是快递员账号，请确定！", null);
+					}
 					JSONObject data = new JSONObject();
 					data.put("userInfo", userInfo);
-					EforcesIncment incment =  incentService.selectByNumber(user1.getIncnumber());
 					JSONObject incInfo = JSONObject.fromObject(incment);
 					data.put("incInfo", incInfo);
-					redisUtil.set(Config.REDISAPPLOGINPREX +  token, data.toString(), 40);
+					redisUtil.set(Config.REDISAPPLOGINPREX +  token, data.toString(), 20*60);
 					return ResultUtil.exec(true, "登录成功！", user1);
 				} else {
 					return ResultUtil.exec(false, "密码错误！", null);
@@ -93,14 +94,14 @@ public class UserLoginService {
 	 * @param mobile
 	 * @return
 	 */
-	public ResultVo smsCoudeLogin(String mobile) throws ClientException {
+	public ResultVo smsCodeLogin(String mobile) throws ClientException {
 
 		String s = redisUtil.get(Config.redisPhonelimt + mobile);
 		if(StringUtils.isNotEmpty(s)){
 			return ResultUtil.exec(false,"验证码一分钟之内只能发一次",null);
 		}
 		List<EforcesUser> listCDate = userService.selectUserByPhone(mobile);
-		if(listCDate.size()!=0 || !listCDate.isEmpty()){
+		if(listCDate  != null && listCDate.size()!=0 || !listCDate.isEmpty()){
 				String verifyCode = phoneCode.sendCode(mobile);
 				redisUtil.set(Config.redisPhonePrex+mobile,verifyCode,300);
 				redisUtil.set(Config.redisPhonelimt+mobile,1,60);
@@ -433,10 +434,9 @@ public class UserLoginService {
 	 * @param user
 	 * @return
 	 */
-	public ResultVo updateUseMsg(int id,String name ,String portraitpath,String identitynum,
+	public ResultVo updateUseMsg(EforcesUser user1 ,String name ,String portraitpath,String identitynum,
 			String identityfontpath, String identitybackpath){
 		try {
-			EforcesUser user1 = userService.selectUserById(id);
 			/**
 			 * 头像
 			 */
@@ -458,14 +458,12 @@ public class UserLoginService {
 				String path = AppReplaceOSSUtil.string2Image(identitybackpath);
 				user1.setIdentitybackpath(Config.oosUrlPath+path);
 			}
-
 			/**
 			 * 用户名
 			 */
 			if(StringUtils.isNotEmpty(name)){
 				user1.setName(name);
 			}
-
 			/**
 			 * 身份证号
 			 */

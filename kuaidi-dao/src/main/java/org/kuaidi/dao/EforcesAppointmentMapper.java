@@ -19,6 +19,11 @@ public interface EforcesAppointmentMapper {
 
     EforcesAppointment selectByPrimaryKey(Integer id);
 
+    /**
+     * 修改预约订单信息
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(EforcesAppointment record);
 
     int updateByPrimaryKey(EforcesAppointment record);
@@ -28,7 +33,7 @@ public interface EforcesAppointmentMapper {
      * @param recipient
      * @return
      */
-    List selectAppointmentByRecipient(List<String> recipient);
+    List selectAppointmentByRecipient(List<String> causeIds);
 
     /**
      * 根据快递员所属的街道 查找对应的预约单

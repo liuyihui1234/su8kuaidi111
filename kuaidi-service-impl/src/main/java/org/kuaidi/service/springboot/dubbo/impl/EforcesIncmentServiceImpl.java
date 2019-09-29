@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesSentScan;
 import org.kuaidi.dao.EforcesIncmentMapper;
 import org.kuaidi.iservice.IEforcesIncmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,9 @@ public class EforcesIncmentServiceImpl implements IEforcesIncmentService {
         return incmentMapper.deleteByid(array);
     }
 
-    public PageInfo<EforcesIncment> selectAllIcrment(Integer curr, Integer nums,String parameter) {
+    public PageInfo<EforcesIncment> selectAllIcrment(Integer curr, Integer nums,String parameter, String parentId) {
         PageHelper.startPage(curr,nums);
-        List<EforcesIncment> eforcesIncments = incmentMapper.selectAllIcrment(parameter);
+        List<EforcesIncment> eforcesIncments = incmentMapper.selectAllIcrment(parameter, parentId);
         final PageInfo<EforcesIncment> info = new PageInfo<>(eforcesIncments);
         return info ;
     }
@@ -97,6 +98,11 @@ public class EforcesIncmentServiceImpl implements IEforcesIncmentService {
 		// TODO Auto-generated method stub
 		return incmentMapper.statisticsIncmentByNumber(numbers);
 	}
+
+    @Override
+    public EforcesIncment getByNextStopName(String name) {
+        return incmentMapper.selectNextSyopByName(name);
+    }
 
 
 }

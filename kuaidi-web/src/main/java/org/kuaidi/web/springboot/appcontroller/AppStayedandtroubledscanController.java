@@ -7,13 +7,17 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.kuaidi.bean.Config;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesStayedandtroubledscan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.iservice.IEforcesStayedandtroubledscanService;
+import org.kuaidi.web.springboot.core.authorization.Authorization;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.service.HandlingOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/app/Stayedandtrouble/")
@@ -181,10 +187,13 @@ public class AppStayedandtroubledscanController {
      */
     @RequestMapping("sentDestoryedPackage")
     @ResponseBody
-    public ResultVo sentDestoryedPackage(String billNumber,Integer userId){
+    @Authorization
+    public ResultVo sentDestoryedPackage(HttpServletRequest  request,String billNumber){
         try {
+        	EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+    		EforcesIncment  incMent = (EforcesIncment)request.getAttribute("inc");
             List<Integer> causeIds = new ArrayList<Integer>();
-            ResultVo rst = handlingService.sentOrder(billNumber, userId);
+            ResultVo rst = handlingService.sentOrder(billNumber, userInfo, incMent);
             // 删除掉destory表中的数据。
             if(rst.getCode() == 1) {
             	int rmCount = stayedandtroubledscanService.deleteDestoryBill(billNumber);

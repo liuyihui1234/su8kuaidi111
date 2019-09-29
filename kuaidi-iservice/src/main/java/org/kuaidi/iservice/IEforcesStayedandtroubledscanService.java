@@ -17,9 +17,9 @@ public interface IEforcesStayedandtroubledscanService {
      */
     PageInfo<EforcesStayedandtroubledscan> getIssue(Integer pageNum, Integer pageSize, String incid, List<Integer> causeIds);
 
-    PageInfo<EforcesStayedandtroubledscan> getAllIssue(Integer pageNum, Integer pageSize, Integer incid);
+    PageInfo<EforcesStayedandtroubledscan> getAllIssue(Integer pageNum, Integer pageSize, String incid);
 
-    int insertSelective(EforcesStayedandtroubledscan record);
+    int insertList(List<EforcesStayedandtroubledscan> list);
 
     int updateByPrimaryKeySelective(EforcesStayedandtroubledscan record);
 

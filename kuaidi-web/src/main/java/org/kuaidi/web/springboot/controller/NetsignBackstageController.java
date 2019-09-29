@@ -21,10 +21,10 @@ public class NetsignBackstageController {
     @RequestMapping("selectnetsign")
     @CrossOrigin
     @ResponseBody
-    public PageVo doSelectNetsignSort(Integer pageNum , EforcesNetsign record){
+    public PageVo doSelectNetsignSort(Integer pageNum ,Integer rows , EforcesNetsign record){
         PageVo rst = null;
         try {
-            rst = netSignService.doSelectNetsignSort(pageNum,record);
+            rst = netSignService.doSelectNetsignSort(pageNum, rows, record);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,6 +61,15 @@ public class NetsignBackstageController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return rst;
+    }
+    
+    @RequestMapping("delNetSignByIds")
+    @CrossOrigin
+    @ResponseBody
+    public ResultVo delNetSignByIds(String ids){
+        ResultVo rst = null;
+        rst = netSignService.deleteByIds(ids);
         return rst;
     }
 }

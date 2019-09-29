@@ -2,6 +2,9 @@ package org.kuaidi.web.springboot.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+
 import org.kuaidi.bean.maintainance.EforcesShift;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
@@ -22,7 +25,7 @@ public class EforcesShiftController {
      * @param page
      * @return
      */
-    @RequestMapping("getListShift")
+    @GetMapping("Shift")
     @ResponseBody
     @CrossOrigin
     public PageVo getListShift(QueryPageVo page) {
@@ -123,4 +126,23 @@ public class EforcesShiftController {
             return ResultUtil.exec(false,"查询失败",null);
         }
     }
+    
+    
+    /**
+            * 查询班次管理
+     * @return
+     */
+    @RequestMapping("getAllShift")
+    @ResponseBody
+    @CrossOrigin
+    public ResultVo getAllShift() {
+        try {
+            List<EforcesShift> listShift = service.selectByShiftlist();
+            return ResultUtil.exec(true, "查询班次管理成功！", listShift);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  ResultUtil.exec(false, "查询班次管理失败！", null);
+        }
+    }
+    
 }

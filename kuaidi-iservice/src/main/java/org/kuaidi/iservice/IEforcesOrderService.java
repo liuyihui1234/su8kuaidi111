@@ -49,7 +49,8 @@ public interface IEforcesOrderService {
      * @param incNum
      * @return
      */
-    PageInfo<EforcesOrder> getNotPostPackage(Integer pageNum, Integer pageSize, String incNum);
+    PageInfo<EforcesOrder> getNotPostPackage(Integer pageNum, Integer pageSize,  String userNum 
+    		,String incNum, Integer incLevel);
 
     /**
      * 动态插入一条数据
@@ -102,7 +103,7 @@ public interface IEforcesOrderService {
 	 * @param size
 	 * @return
 	 */
-	PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size);
+	PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size, EforcesOrder order);
 
 	/**
 	 * 删除寄/派件运单管理
@@ -131,5 +132,24 @@ public interface IEforcesOrderService {
 	 * @return
 	 */
 	List<EforcesOrder> getAllNumberMsg (List<String> list);
+
+	/**
+	 * 物流跟踪详细查询
+	 * @param Number
+	 * @return
+	 */
+	EforcesOrder getOrder (String Number);
+
+	/**
+	 * 查询详情信息
+	 * @param id
+	 * @return
+	 */
+	EforcesOrder getByid (Integer id);
+	
+	/*
+	  * 根据派单用户的openId 查询订单信息
+	 */
+	List<EforcesOrder> getNumberByOpenId(String openId);
 	
 }

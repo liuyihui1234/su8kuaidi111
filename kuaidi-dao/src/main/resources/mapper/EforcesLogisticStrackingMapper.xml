@@ -21,14 +21,17 @@
 
   <!-- 物流跟踪记录 -->
   <select id="getListStracking" resultMap="BaseResultMap">
-    select * from eforces_logisticstracking where isDelete=1
+    select * from eforces_logisticstracking where isDelete=0
+    <if test="_parameter !=null">
+      and billsnumber =#{_parameter}
+    </if>
   </select>
 <!-- 删除 -->
   <update id="deleteLogisticStraking">
     update
     eforces_logisticstracking
     set
-    isDelete=0
+    isDelete=1
     where
     id
     in
@@ -60,6 +63,13 @@
   <select id="selectMaxTime" parameterType="java.lang.String" resultType="date">
     select
     MAX(operationtime)
+    from eforces_logisticstracking
+    where BillsNumber = #{billsnumber,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectMaxMark" parameterType="java.lang.String" resultType="String">
+    select
+    MAX(mark)
     from eforces_logisticstracking
     where BillsNumber = #{billsnumber,jdbcType=VARCHAR}
   </select>

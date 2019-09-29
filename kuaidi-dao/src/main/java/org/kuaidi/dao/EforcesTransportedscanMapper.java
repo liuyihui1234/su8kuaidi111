@@ -49,8 +49,6 @@ public interface EforcesTransportedscanMapper {
      */
     EforcesTransportedscan selectByBillsnumber(String billsnumber);
 
-    EforcesTransportedscan selectByNextnumber(String nextnumber);
-
     /**
      * 根据主键 动态修改对应的转运记录详情
      * g
@@ -62,9 +60,16 @@ public interface EforcesTransportedscanMapper {
     int updateByPrimaryKey(EforcesTransportedscan record);
 
     /**
+     * 把订单转态更改为（State=1）已添加到第三方平台
+     * @param billsNumber
+     * @return
+     */
+    int updateState1(List<String> billsNumber);
+
+    /**
      * 把订单转态更改为（State=1）转运完成
      * @param billsNumber
      * @return
      */
-    int updateState(List<String> billsNumber);
+    int updateState2(List<String> billsNumber);
 }

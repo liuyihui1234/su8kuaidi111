@@ -33,4 +33,5 @@
 /*.classpath
 /target/
 /kuaidi-service-impl/*.log
-/kuaidi-bean/.settings
+/kuaidi-service-impl/.settings
+/kuaidi-service-impl/*.classpath

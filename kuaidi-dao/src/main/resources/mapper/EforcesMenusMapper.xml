@@ -1,58 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kuaidi.dao.EforcesMenusMapper">
-	<resultMap id="BaseResultMap"
-		type="org.kuaidi.bean.domain.EforcesMenus">
-		<id column="id" jdbcType="INTEGER" property="id" />
-		<result column="parentid" jdbcType="VARCHAR"
-			property="parentid" />
-		<result column="text" jdbcType="VARCHAR" property="text" />
-		<result column="leaf" jdbcType="VARCHAR" property="leaf" />
-		<result column="iconcls" jdbcType="VARCHAR" property="iconcls" />
-		<result column="number" jdbcType="INTEGER" property="number" />
-		<result column="url" jdbcType="VARCHAR" property="url" />
-		<result column="isDelete" jdbcType="INTEGER"
-			property="isDelete" />
-	</resultMap>
-	<sql id="Base_Column_List">
+    <resultMap id="BaseResultMap"
+               type="org.kuaidi.bean.domain.EforcesMenus">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parentid" jdbcType="VARCHAR"
+                property="parentid"/>
+        <result column="text" jdbcType="VARCHAR" property="text"/>
+        <result column="leaf" jdbcType="VARCHAR" property="leaf"/>
+        <result column="iconcls" jdbcType="VARCHAR" property="iconcls"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="isDelete" jdbcType="INTEGER"
+                property="isDelete"/>
+    </resultMap>
+    <sql id="Base_Column_List">
 		id, parentid, text, leaf, iconcls, number, url
 	</sql>
 
 
+    <resultMap type="org.kuaidi.bean.domain.EforcesTreeMenus"
+               id="treeMenu">
+        <id column="id" property="id"/>
+        <result column="text" property="title"/>
+        <collection property="children" select="getSubMenu"
+                    column="id">
+        </collection>
+    </resultMap>
 
-	<resultMap type="org.kuaidi.bean.domain.EforcesTreeMenus"
-		id="treeMenu">
-		<id column="id" property="id" />
-		<result column="text" property="name" />
-		<result column="url" property="url" />
-		<result column="path" property="path" />
-		<result column="auth" property="auth" />
-		<collection property="subMenus" select="getSubMenu"
-			column="id">
+    <resultMap type="org.kuaidi.bean.domain.EforcesTreeMenusGroup"
+               id="treeMenu_group">
+        <id column="id" property="id"/>
+        <result column="text" property="title"/>
+        <collection property="children" select="getMenuTree_group"
+                    column="id">
+        </collection>
+    </resultMap>
 
-		</collection>
-	</resultMap>
-	
-	<select id="selectMaxNumberByParentId" resultType="java.lang.Integer">
+
+    <select id="selectActionIdByMenuId" resultType="java.lang.Integer">
+		select
+		c.id
+		from eforces_menus a
+		LEFT JOIN eforces_userspermis b on a.id = b.menuid
+		LEFT JOIN eforces_usersaction c on c.id = b.actionid
+		where a.id=#{id}
+	</select>
+
+    <select id="selectMaxNumberByParentId" resultType="java.lang.Integer">
 	select
 	max(number)
 	from
 	eforces_menus
 	where
 	parentid=#{parentid}
-	
-	
 	</select>
-	
-	<select id="getAllMenuTree" resultType="hashmap">
+   <!--用户登录查询树形菜单-->
+    <select id="getAllMenuTree" resultType="hashmap">
 		SELECT
 		id,
 		CASE
 		WHEN (parentid REGEXP '[^0-9.]') = 1 THEN
-		- 1
+		0
 		ELSE
 		parentid
-		END AS parentid,
+		END AS pid,
+		CASE
+		WHEN (
+			SELECT
+				count(*)
+			FROM
+				eforces_usersgrouprele a
+			LEFT JOIN eforces_usersgroup b ON a.groupid = b.id
+			WHERE
+				a.userid = #{userid}
+			AND b.issuperadmin = 1
+		) > 0 THEN 1
+        WHEN
+    	id in(SELECT  DISTINCT b.menuid FROM eforces_userspermisgrouprele a
+			  LEFT JOIN eforces_userspermis b ON a.permisid = b.id
+			 WHERE groupid in(SELECT groupid from  eforces_usersgrouprele WHERE USERid = #{userid})
+			 and permisid  in (SELECT id FROM eforces_userspermis where actionid = 5)
+			  ORDER BY b.menuid)
+		then 1
+		ELSE 0
+		END AS isshow,
 		text,
 		CASE
 		WHEN leaf = 'true' THEN
@@ -64,22 +96,105 @@
 		eforces_menus
 		WHERE
 		parentid != '-1'
+		and  isdelete = 0
+		order  by number
 	</select>
 
-
-	<select id="getMenuTree" resultMap="treeMenu">
+    <select id="getMenuTree" resultMap="treeMenu">
 		SELECT
-		id ,text,url,path,auth
+		id ,text
 		FROM
 		eforces_menus
 		WHERE
-		leaf = 'false'
-		AND parentid != '-1'
+		parentid LIKE '%menu'
+		and isdelete = 0
 	</select>
 
-	<select id="getSubMenu"
-		resultType="org.kuaidi.bean.domain.EforcesTreeMenus">
-		select a.id,a.text, GROUP_CONCAT(c.actionname) actionname
+    <select id="getMenuTree_group" resultMap="treeMenu_group">
+			    SELECT
+					a.id,
+					a.text,
+				 case
+                  WHEN (parentid REGEXP '[^0-9.]') = 1 THEN
+		            0
+		         ELSE
+		         parentid end as parentid,
+					b.actionid,
+					CASE
+				WHEN (
+					SELECT
+						count(*)
+					FROM
+						eforces_usersgrouprele a
+					LEFT JOIN eforces_usersgroup b ON a.groupid = b.id
+					WHERE
+						a.userid = #{userid}
+					AND b.issuperadmin = 1
+				) > 0 THEN
+					1
+				WHEN a.id IN (
+					SELECT DISTINCT
+						permisid
+					FROM
+						eforces_userspermisgrouprele
+					WHERE
+						groupid IN (
+							SELECT
+								groupid
+							FROM
+								eforces_usersgrouprele
+							WHERE
+								USERid = #{userid}
+						)
+					AND permisid IN (
+						SELECT
+							id
+						FROM
+							eforces_menus
+						WHERE
+							parentid LIKE '%menu'
+					)
+				) THEN
+					TRUE
+				ELSE
+					FALSE
+				END AS auth
+				FROM
+					eforces_menus a
+				LEFT JOIN (
+					SELECT
+						*
+					FROM
+						eforces_userspermis
+					WHERE
+						actionid = 5
+				) b ON b.menuid = a.id
+				WHERE
+					a.parentid LIKE '%menu'
+				AND a.parentid != '-1'
+				ORDER BY
+					a.id
+	</select>
+
+
+    <select id="getSubMenu_group"
+            resultType="org.kuaidi.bean.domain.EforcesTreeMenus">
+			SELECT
+				a.id,
+				a.text,
+				a.parentid
+			FROM
+				eforces_menus a
+			WHERE
+				a.parentid = #{id}
+			ORDER BY
+				a.number
+	</select>
+
+
+    <select id="getSubMenu"
+            resultType="org.kuaidi.bean.domain.EforcesTreeMenus">
+		select a.id,a.text as title, GROUP_CONCAT(c.actionname) actionname
 		from eforces_menus a
 		LEFT JOIN eforces_userspermis b on a.id = b.menuid
 		LEFT JOIN eforces_usersaction c on c.id = b.actionid
@@ -88,48 +203,70 @@
 		ORDER BY a.number
 	</select>
 
+	<select id="getSubMenu_auth"
+			resultType="org.kuaidi.bean.domain.EforcesTreeMenus">
+		select a.id,a.text as title, GROUP_CONCAT(c.actionname) actionname
+		from eforces_menus a
+		LEFT JOIN eforces_userspermis b on a.id = b.menuid
+		LEFT JOIN eforces_usersaction c on c.id = b.actionid
+		where a.parentid = #{id}
+		GROUP BY a.text
+		ORDER BY a.number
+	</select>
 
-	<insert id="addPermis">
-		INSERT INTO
+    <delete id="deleteVoByMenuid">
+		delete
+		from
 		eforces_userspermis
-		(menuid,actionid)
-		VALUES
-		(#{menuid},#{actionid})
-	</insert>
-
-	<update id="updateIsDeleteById">
-		update
-		eforces_menus
-		set
-		isDelete=0
 		where
-		id
-		in
-		<foreach collection="list" index="index" item="ids" open="("
-			separator="," close=")">
-			#{ids}
-		</foreach>
+		menuid=#{menuid}
+	</delete>
+
+    <insert id="addPermis" parameterType="list">
+        INSERT INTO
+        eforces_userspermis
+        (menuid,actionid)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+            #{item.menuid},#{item.actionid}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateIsDeleteById">
+        update
+        eforces_menus
+        set
+        isDelete=0
+        where
+        id
+        in
+        <foreach collection="list" index="index" item="ids" open="("
+                 separator="," close=")">
+            #{ids}
+        </foreach>
 
 
-	</update>
+    </update>
 
-	<!--设置系统权限管理是否删除 -->
-	<update id="updatePermiIsDeleteById">
-		update
-		eforces_userspermis
-		set
-		isDelete=0
-		where
-		id
-		in
-		<foreach collection="list" index="index" item="ids" open="("
-			separator="," close=")">
-			#{ids}
-		</foreach>
+    <!--设置系统权限管理是否删除 -->
+    <update id="updatePermiIsDeleteById">
+        update
+        eforces_userspermis
+        set
+        isDelete=0
+        where
+        id
+        in
+        <foreach collection="list" index="index" item="ids" open="("
+                 separator="," close=")">
+            #{ids}
+        </foreach>
 
-	</update>
+    </update>
 
-	<update id="updateById">
+    <update id="updateById">
 		update
 		eforces_menus
 		set
@@ -141,8 +278,8 @@
 		id=#{id}
 	</update>
 
-	<select id="selectVoByPermisId"
-		resultType="org.kuaidi.bean.domain.MenusUsersActionVo">
+    <select id="selectVoByPermisId"
+            resultType="org.kuaidi.bean.domain.MenusUsersActionVo">
 		SELECT b.id,a.text,c.actionname AS actionName
 		FROM
 		eforces_menus a
@@ -159,9 +296,9 @@
 	</select>
 
 
-	<!--查询系统权限管理 -->
-	<select id="selectAllVo"
-		resultType="org.kuaidi.bean.domain.MenusUsersActionVo">
+    <!--查询系统权限管理 -->
+    <select id="selectAllVo"
+            resultType="org.kuaidi.bean.domain.MenusUsersActionVo">
 		SELECT b.id,a.text,c.actionname AS actionName
 		FROM
 		eforces_menus a
@@ -179,7 +316,7 @@
 		b.isDelete=1
 	</select>
 
-	<select id="selectById" resultMap="BaseResultMap">
+    <select id="selectById" resultMap="BaseResultMap">
 		select
 		*
 		from
@@ -188,7 +325,7 @@
 		id=#{id}
 	</select>
 
-	<select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
 		select
 		id, parentid, text, 
 		CASE leaf
@@ -201,21 +338,21 @@
 		where
 		isDelete=1
 	</select>
-	<select id="selectByPrimaryKey"
-		parameterType="java.lang.Integer" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from eforces_menus
-		where id = #{id,jdbcType=INTEGER}
-	</select>
-	<delete id="deleteByPrimaryKey"
-		parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey"
+            parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from eforces_menus
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey"
+            parameterType="java.lang.Integer">
 		delete from eforces_menus
 		where id =
 		#{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert"
-		parameterType="org.kuaidi.bean.domain.EforcesMenus">
+    <insert id="insert"
+            parameterType="org.kuaidi.bean.domain.EforcesMenus">
 		insert into eforces_menus ( parentid, text,
 		leaf,
 		iconcls, number,
@@ -226,83 +363,83 @@
 		#{iconcls,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER},
 		#{url,jdbcType=VARCHAR})
 	</insert>
-	<insert id="insertSelective"
-		parameterType="org.kuaidi.bean.domain.EforcesMenus">
-		insert into eforces_menus
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				id,
-			</if>
-			<if test="parentid != null">
-				parentid,
-			</if>
-			<if test="text != null">
-				text,
-			</if>
-			<if test="leaf != null">
-				leaf,
-			</if>
-			<if test="iconcls != null">
-				iconcls,
-			</if>
-			<if test="number != null">
-				number,
-			</if>
-			<if test="url != null">
-				url,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">
-				#{id,jdbcType=INTEGER},
-			</if>
-			<if test="parentid != null">
-				#{parentid,jdbcType=VARCHAR},
-			</if>
-			<if test="text != null">
-				#{text,jdbcType=VARCHAR},
-			</if>
-			<if test="leaf != null">
-				#{leaf,jdbcType=VARCHAR},
-			</if>
-			<if test="iconcls != null">
-				#{iconcls,jdbcType=VARCHAR},
-			</if>
-			<if test="number != null">
-				#{number,jdbcType=INTEGER},
-			</if>
-			<if test="url != null">
-				#{url,jdbcType=VARCHAR},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective"
-		parameterType="org.kuaidi.bean.domain.EforcesMenus">
-		update eforces_menus
-		<set>
-			<if test="parentid != null">
-				parentid = #{parentid,jdbcType=VARCHAR},
-			</if>
-			<if test="text != null">
-				text = #{text,jdbcType=VARCHAR},
-			</if>
-			<if test="leaf != null">
-				leaf = #{leaf,jdbcType=VARCHAR},
-			</if>
-			<if test="iconcls != null">
-				iconcls = #{iconcls,jdbcType=VARCHAR},
-			</if>
-			<if test="number != null">
-				number = #{number,jdbcType=INTEGER},
-			</if>
-			<if test="url != null">
-				url = #{url,jdbcType=VARCHAR},
-			</if>
-		</set>
-		where id = #{id,jdbcType=INTEGER}
-	</update>
-	<update id="updateByPrimaryKey"
-		parameterType="org.kuaidi.bean.domain.EforcesMenus">
+    <insert id="insertSelective"
+            parameterType="org.kuaidi.bean.domain.EforcesMenus">
+        insert into eforces_menus
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentid != null">
+                parentid,
+            </if>
+            <if test="text != null">
+                text,
+            </if>
+            <if test="leaf != null">
+                leaf,
+            </if>
+            <if test="iconcls != null">
+                iconcls,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="parentid != null">
+                #{parentid,jdbcType=VARCHAR},
+            </if>
+            <if test="text != null">
+                #{text,jdbcType=VARCHAR},
+            </if>
+            <if test="leaf != null">
+                #{leaf,jdbcType=VARCHAR},
+            </if>
+            <if test="iconcls != null">
+                #{iconcls,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="org.kuaidi.bean.domain.EforcesMenus">
+        update eforces_menus
+        <set>
+            <if test="parentid != null">
+                parentid = #{parentid,jdbcType=VARCHAR},
+            </if>
+            <if test="text != null">
+                text = #{text,jdbcType=VARCHAR},
+            </if>
+            <if test="leaf != null">
+                leaf = #{leaf,jdbcType=VARCHAR},
+            </if>
+            <if test="iconcls != null">
+                iconcls = #{iconcls,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="org.kuaidi.bean.domain.EforcesMenus">
 		update eforces_menus
 		set parentid =
 		#{parentid,jdbcType=VARCHAR},

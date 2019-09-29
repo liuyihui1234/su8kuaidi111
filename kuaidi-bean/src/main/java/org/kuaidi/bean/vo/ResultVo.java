@@ -2,7 +2,9 @@ package org.kuaidi.bean.vo;
 
 import org.kuaidi.bean.Config;
 
-public class ResultVo {
+import java.io.Serializable;
+
+public class ResultVo implements Serializable {
 	
 	private int code = Config.OK ; 
 	

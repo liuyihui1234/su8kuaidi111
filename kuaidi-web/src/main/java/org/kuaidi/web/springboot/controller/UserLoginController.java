@@ -14,7 +14,9 @@ import org.kuaidi.bean.vo.TokenVo;
 import org.kuaidi.iservice.IEforcesIncmentService;
 import org.kuaidi.iservice.UserService;
 import org.kuaidi.utils.Md5Util;
+import org.kuaidi.utils.SendPhoneCode;
 import org.kuaidi.utils.UUIDUtil;
+import org.kuaidi.web.springboot.core.authorization.Authorization;
 import org.kuaidi.web.springboot.dubboservice.UserLoginService;
 import org.kuaidi.web.springboot.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +50,8 @@ public class UserLoginController {
     @RequestMapping("dologin")
     @CrossOrigin
     @ResponseBody
-    public ResultVo doLogin(EforcesUser user) {
-        return userLoginService.UserdoLogin(user);
+    public ResultVo doLogin(EforcesUser user, Integer type) {
+        return userLoginService.UserdoLogin(user, type );
     }
 
 
@@ -57,14 +59,50 @@ public class UserLoginController {
     @CrossOrigin
     @ResponseBody
     public ResultVo LoginOut(Integer uuid) {
-        redisUtil.del(Config.REDISWEBLOGINPREX+uuid);
+        redisUtil.del(Config.REDISWEBLOGINPREX + uuid);
         return ResultUtil.exec(true, "退出成功！", null);
     }
 
 
     /**
+     * web端页面首页首次打开判断token是否有效
+     * @return
+     */
+    @RequestMapping("checktoken")
+    @CrossOrigin
+    @ResponseBody
+    public ResultVo Login(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        boolean exist = redisUtil.isExist(Config.REDISWEBLOGINPREX + token);
+        String str = exist ? "验证通过" : "登录过期,请重新登录";
+        return ResultUtil.exec(exist, str, null);
+    }
+
+
+    /**
+     * web端修改密码
+     * @return
+     */
+    @RequestMapping("modifywebpsw")
+    @CrossOrigin
+    @ResponseBody
+    public ResultVo modify(String number, String psw, String newpsw) {
+        EforcesUser eforcesUser = userService.selectUser(number);
+        if (!eforcesUser.getPassword().equals(Md5Util.encode(psw))) {
+            return ResultUtil.exec(false, "原密码错误", null);
+        }
+        EforcesUser user = new EforcesUser();
+        user.setPassword(Md5Util.encode(newpsw));
+        user.setId(eforcesUser.getId());
+        Integer info = userService.updateUserInfo(user);
+        if(info==0){
+            ResultUtil.exec(false, "修改密码失败", null);
+        }
+        return ResultUtil.exec(true, "修改密码成功", null);
+    }
+
+    /**
      * web端登录
-     *
      * @param user
      * @return
      */
@@ -72,7 +110,6 @@ public class UserLoginController {
     @CrossOrigin
     @ResponseBody
     public ResultVo Login(EforcesUser user) {
-    	System.err.println(user);
         TokenVo tokenVo = new TokenVo();
         //校验验证码
         String s = redisUtil.get(Config.WEBCODE + user.getAccess_token());
@@ -83,9 +120,7 @@ public class UserLoginController {
             return ResultUtil.exec(false, "验证码错误！", null);
         }
         String password = Md5Util.encode(user.getPassword());
-        System.err.println(password);
         EforcesUser user1 = userService.selectUser(user.getNumber());
-        System.err.println(user1);
         if (user1 == null) {
             List<EforcesUser> userList = userService.selectUserByPhone(user.getNumber());
             if (userList != null && userList.size() > 0) {
@@ -96,19 +131,50 @@ public class UserLoginController {
             return ResultUtil.exec(false, "账户不存在！", null);
         } else {
             if (user1.getPassword() != null && StringUtils.equals(user1.getPassword(), password)) {
-                String uuid = UUIDUtil.getUUID();
-                user1.setAccess_token(uuid);
+                String encode = Md5Util.encode(user.getNumber() + user.getId());
+                user1.setAccess_token(encode);
                 JSONObject userInfo = JSONObject.fromObject(user1);
                 JSONObject data = new JSONObject();
                 data.put("userInfo", userInfo);
-                EforcesIncment incment =  incentService.selectByNumber(user1.getIncnumber());
+                EforcesIncment incment = incentService.selectByNumber(user1.getIncnumber());
+                if (StringUtils.isNotEmpty(incment.getLevel() + "")) {
+                    incment.setNumber(incment.getNumber().substring(0, incment.getLevel() * 2));
+                }
                 JSONObject incInfo = JSONObject.fromObject(incment);
                 data.put("incInfo", incInfo);
-                redisUtil.set(Config.REDISWEBLOGINPREX+uuid, data.toString(), Config.EXPIRETIME);
+                redisUtil.set(Config.REDISWEBLOGINPREX + encode, data.toString(), Config.EXPIRETIME);
                 return ResultUtil.exec(true, "登录成功！", user1);
             } else {
                 return ResultUtil.exec(false, "密码错误！", null);
             }
+        }
+    }
+
+    @RequestMapping("modifyPwd")
+    @ResponseBody
+    public ResultVo addUserInfo(String phoneNum, String smsCode, String newPwd) {
+        try {
+            if (StringUtils.isEmpty(smsCode)) {
+                return ResultUtil.exec(false, "验证码不能为空！", null);
+            }
+            String validateCode = redisUtil.get(Config.redisPhonePrex + phoneNum);
+            if (StringUtils.isEmpty(validateCode) || !StringUtils.equals(validateCode, smsCode)) {
+                return ResultUtil.exec(false, "验证码错误！", null);
+            }
+            List<EforcesUser> userList = userService.selectUserByPhone(phoneNum);
+            if (userList == null || userList.size() == 0) {
+                return ResultUtil.exec(false, "用户信息不存在！", null);
+            }
+            EforcesUser userInfo = userList.get(0);
+            userInfo.setPassword(Md5Util.encode(newPwd));
+            Integer rst = userService.updateUserInfo(userInfo);
+            if (rst > 0) {
+                return ResultUtil.exec(true, "修改密码正确！", null);
+            }
+            return ResultUtil.exec(false, "修改密码异常！", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "修改密码异常！", null);
         }
     }
 
@@ -172,15 +238,26 @@ public class UserLoginController {
 
     /**
      * 修改用户名、手机号
-     *
-     * @param id 条件
      * @return
      */
     @RequestMapping("updateUserIdentity")
     @ResponseBody
-    public ResultVo updateUserIdentity(int id, String name, String portraitpath, String identitynum,
-                                       String identityfontpath, String identitybackpath) {
-        return userLoginService.updateUseMsg(id, name, portraitpath, identitynum, identityfontpath, identitybackpath);
+    public ResultVo updateUserIdentity(HttpServletRequest request, String name, String portraitpath, String identitynum,
+                                       String identityfontpath, String identitybackpath, String smsCode) {
+        String token = request.getHeader("token");
+        String userData = redisUtil.get(Config.REDISAPPLOGINPREX + token);
+        if (StringUtils.isEmpty(userData)) {
+            return ResultUtil.exec(false, "用户请先登录！", null);
+        }
+        JSONObject data = JSONObject.fromObject(userData);
+        JSONObject userInfo = data.getJSONObject("userInfo");
+        EforcesUser eforcesUser = (EforcesUser) JSONObject.toBean(userInfo, EforcesUser.class);
+        String mobile = eforcesUser.getMobile();
+        String oldSmsCode = redisUtil.get(Config.redisPhonePrex + mobile);
+        if (oldSmsCode == null || !StringUtils.equals(oldSmsCode, smsCode)) {
+            return ResultUtil.exec(false, "验证码错误！", null);
+        }
+        return userLoginService.updateUseMsg(eforcesUser, name, portraitpath, identitynum, identityfontpath, identitybackpath);
     }
 
 
@@ -189,4 +266,141 @@ public class UserLoginController {
     public ResultVo updateUserMsg(int id, String Name, String Mobile, String portraitpath) {
         return userLoginService.updateMsg(id, Name, Mobile, portraitpath);
     }
+
+    /**
+     * 短信验证码测试(登录后才能调用的页面)
+     *
+     * @param telephone
+     */
+//    @RequestMapping("sendSMS/SendPhone")
+//    @ResponseBody
+//    @Authorization
+//    public ResultVo testSms(HttpServletRequest request, String telephone) {
+//        // 根据userid  user  table 查询记录
+//        // 传的手机号和保存的手机号是否一致。
+//        SendPhoneCode phoneCode = new SendPhoneCode();
+//        String verCode = "";
+//        try {
+//            String token = request.getHeader("token");
+//            System.out.println(token);
+//            String userData = redisUtil.get(Config.REDISAPPLOGINPREX + token);
+//            if (StringUtils.isEmpty(userData)) {
+//                return ResultUtil.exec(false, "请先登录！", "");
+//            }
+//
+//            if (StringUtils.isEmpty(userData)) {
+//                return ResultUtil.exec(false, "用户请先登录！", null);
+//            }
+//            JSONObject data = JSONObject.fromObject(userData);
+//            JSONObject userInfo = data.getJSONObject("userInfo");
+//            EforcesUser eforcesUser = (EforcesUser) JSONObject.toBean(userInfo, EforcesUser.class);
+//            String mobile = eforcesUser.getMobile();
+//
+//            if (mobile == null || !StringUtils.equals(mobile, telephone)) {
+//                return ResultUtil.exec(false, "手机号错误！", null);
+//            }
+//            verCode = phoneCode.sendCode(telephone);
+//            // 十分钟有效
+//            if (StringUtils.isNotEmpty(verCode)) {
+//                redisUtil.set(Config.redisPhonePrex + telephone, verCode, 10 * 60);
+//            }
+//            // 验证一下用户信息。
+//        } catch (com.aliyuncs.exceptions.ClientException e) {
+//            e.printStackTrace();
+//            return ResultUtil.exec(false, "发送验证码失败！", "");
+//        }
+//        return ResultUtil.exec(true, "发送验证码成功！", verCode);
+//    }
+
+
+    /**
+     * 短信验证码测试
+     *
+     * @param telephone
+     */
+    @RequestMapping("modifyPWD/sendSMS")
+    @ResponseBody
+    public ResultVo SendPhone1(String telephone) {
+        // 根据userid  user  table 查询记录
+        // 传的手机号和保存的手机号是否一致。
+        SendPhoneCode phoneCode = new SendPhoneCode();
+        String verCode = "";
+        try {
+            List<EforcesUser> userList = userService.selectUserByPhone(telephone);
+            if (userList == null || userList.size() == 0) {
+                return ResultUtil.exec(false, "用户信息不存在！", null);
+            }
+            EforcesUser userInfo = userList.get(0);
+            if (userInfo != null) {
+                verCode = phoneCode.sendCode(telephone);
+            }
+            // 十分钟有效
+            if (StringUtils.isNotEmpty(verCode)) {
+                redisUtil.set(Config.redisPhonePrex + telephone, verCode, 10 * 60);
+            }
+            // 验证一下用户信息。
+        } catch (com.aliyuncs.exceptions.ClientException e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "发送验证码失败！", "");
+        }
+        return ResultUtil.exec(true, "发送验证码成功！", verCode);
+    }
+    
+    @RequestMapping("appLoginOut")
+    @CrossOrigin
+    @ResponseBody
+    @Authorization
+    public ResultVo appLoginOut(HttpServletRequest request) {
+    	EforcesUser  userInfo = (EforcesUser)request.getAttribute("user");
+    	String token = userInfo.getToken();
+        redisUtil.del(Config.REDISAPPLOGINPREX+token);
+        return ResultUtil.exec(true, "退出成功！", null);
+    }
+    
+    @RequestMapping("sendSMS/SendPhone")
+    @CrossOrigin
+    @ResponseBody
+    public ResultVo  SendPhone(HttpServletRequest  request, String telephone ,Integer type){
+    	// 如果实名制认证为空或者为 1 的时候， 
+    	if(type == null  || type == 1 ) {
+    		// 表示已经登录了
+    		EforcesUser  userInfo = (EforcesUser)request.getAttribute("user");
+    		if(userInfo == null ) {
+    			return ResultUtil.exec(false, "请用户先登录！", null);
+    		}
+    		if(StringUtils.equals(userInfo.getMobile(), telephone)) {
+    			SendPhoneCode  sendPhone = new SendPhoneCode();
+    			String validateCode = null;
+				try {
+					validateCode = sendPhone.sendCode(telephone);
+					redisUtil.set(Config.redisPhonePrex + telephone, validateCode, 10*60);
+	    			return ResultUtil.exec(true, "发送验证码成功！", validateCode);
+				} catch (ClientException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return ResultUtil.exec(false, "验证码发送失败！", null);
+				}
+    		}else {
+    			return ResultUtil.exec(false, "请输入正确的手机号！", null);
+    		}
+    	}else if(type == 2 ){
+    		List<EforcesUser> userList = userService.selectUserByPhone(telephone);
+    		if(userList != null && userList.size() > 0 ) {
+    			return ResultUtil.exec(false, "手机号已经存在，不能重复设置！", null);
+    		}
+    		SendPhoneCode  sendPhone = new SendPhoneCode();
+    		String validateCode = null;
+			try {
+				validateCode = sendPhone.sendCode(telephone);
+				redisUtil.set(Config.redisPhonePrex + telephone, validateCode, 12000);
+				return ResultUtil.exec(true, "发送验证码成功！", validateCode);
+			} catch (ClientException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				ResultUtil.exec(false, "验证码发送失败！", null);
+			}
+    	}
+    	return ResultUtil.exec(false, "参数错误！", null);
+    }
+
 }

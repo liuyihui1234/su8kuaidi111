@@ -51,5 +51,8 @@ public interface IEforcesDetypeService {
      */
     int updateDelete(Integer[] ids);
 
-
+    /*
+            * 查询全部记录
+     */
+    List<EforcesDetype> selectAll();
 }

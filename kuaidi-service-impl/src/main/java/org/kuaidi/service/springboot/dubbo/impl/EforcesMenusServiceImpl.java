@@ -74,8 +74,14 @@ public class EforcesMenusServiceImpl implements IEforcesMenusService {
 	}
 
 	@Override
-	public void newPermis(Integer menuid, Integer actionid) {
-		daoMapper.addPermis(menuid, actionid);
+	public void newPermis(List<MenusUsersActionVo> list) {
+		daoMapper.deleteVoByMenuid(list.get(0).getMenuid());
+		daoMapper.addPermis(list);
+	}
+
+	@Override
+	public List<Integer> getActionIdByMenuId(Integer id) {
+		return daoMapper.selectActionIdByMenuId(id);
 	}
 
 	@Override
@@ -84,8 +90,8 @@ public class EforcesMenusServiceImpl implements IEforcesMenusService {
 	}
 
 	@Override
-	public List<HashMap> getAllMenuTree() {
-		return daoMapper.getAllMenuTree();
+	public List<HashMap> getAllMenuTree(String userid) {
+		return daoMapper.getAllMenuTree(userid);
 	}
 
 	@Override

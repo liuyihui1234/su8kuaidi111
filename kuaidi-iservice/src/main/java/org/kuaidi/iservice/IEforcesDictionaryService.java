@@ -1,6 +1,9 @@
 package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+
 import org.kuaidi.bean.domain.EforcesDictionary;
 public interface IEforcesDictionaryService {
 
@@ -38,4 +41,9 @@ public interface IEforcesDictionaryService {
      * @return
      */
     EforcesDictionary selectByPrimaryKey(Integer id);
+    
+    /*
+     * 根据父节点查询所有下属的方法
+     */
+    List<EforcesDictionary>  selectByParentId(Integer parentId);
 }

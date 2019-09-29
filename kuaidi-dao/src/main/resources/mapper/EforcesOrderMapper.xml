@@ -152,6 +152,11 @@
     SELECT * from eforces_order where Number=#{Number}
   </select>
 
+<!--  查询详细信息 -->
+  <select id="getByid" resultMap="BaseResultMap">
+    SELECT * from eforces_order where id=#{id}
+  </select>
+
   <!-- 获取已支付订单信息 -->
   <select id="yetPayment"  parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from eforces_distributedscan
@@ -186,7 +191,11 @@
 
   <!-- 寄/派件运单管理-->
   <select id="getAllMsg" resultMap="BaseResultMap">
-    select  * from eforces_order where isDelete = 1
+    	select  * from eforces_order where isDelete = 0
+  </select>
+  
+  <select id="getNumbersByOpenId" parameterType="java.lang.String"  resultMap="BaseResultMap">
+  		select * from eforces_order  where openid = ${openId, ,jdbcType=VARCHAR}
   </select>
 
   <!-- 删除 -->
@@ -194,7 +203,7 @@
     update
     eforces_order
     set
-    isDelete=0
+    isDelete=1
     where
     id
     in
@@ -253,18 +262,38 @@
     	SELECT bill.* from eforces_order bill join  eforces_sentscan  sent  on bill.Number =  sent.billsnumber  where  bill.isDelete = 0  and sent.incid = #{incid}
   </select>
 
-  <select id="notHadPostPackage" resultMap="BaseResultMap">
-		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
+  <!-- 
+  		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
   			where  bill.isDelete = 0  and receive.incid = #{incid}	and 
 		 receive.billsnumber  not  in (
 			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}
 			Union 
 			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid}
-		)  
+		) 
+   -->
+  <select id="notHadPostPackage" resultMap="BaseResultMap">
+		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
+  			where  bill.isDelete = 0  and receive.incid = #{incid}	and receive.scannerid = #{userNum}
+		 and receive.billsnumber  not  in (
+			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}  and sent.scannerid = #{userNum}
+			Union 
+			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid} and  transport.scannerid = #{userNum}
+		) 
+  </select>
+  
+  
+  <select id="notHadPostPackage1" resultMap="BaseResultMap">
+		SELECT  bill.* from eforces_order bill JOIN eforces_rectoorder  recto on bill.number = recto.Number  
+  			where  bill.isDelete = 0  and recto.DepartId  = #{incid}	and recto.ScanManId = #{userNum}
+		and  recto.Number  not  in (
+			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}  and sent.scannerid = #{userNum}
+			Union 
+			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid} and  transport.scannerid = #{userNum}
+		)		 
   </select>
 
   <select id="getHadFinishPackage" parameterType="java.lang.String" resultMap="BaseResultMap">
-	   SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan receive on bill.number = receive.billsnumber   where bill.isDelete = 0  and receive.incid = #{incid}  and  bill.number not in (
+	   SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan receive on bill.number = receive.billsnumber   where bill.isDelete = 0  and receive.incid = #{incid}  and  bill.number in (
  			SELECT number  from eforces_customersign  
 		) 
   </select>

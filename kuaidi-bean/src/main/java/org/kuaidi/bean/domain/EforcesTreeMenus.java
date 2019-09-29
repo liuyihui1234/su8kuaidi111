@@ -11,22 +11,18 @@ public class EforcesTreeMenus implements Serializable {
 
     private Integer id;
 
-    private String name;
+    private String title;
 
-    private String auth;
+    private String actionname;
 
-    private String url;
+    private List<EforcesTreeMenus> children;
 
-    private String path;
-
-    private List<EforcesTreeMenus> subMenus;
-
-    public String getPath() {
-        return path;
+    public String getActionname() {
+        return actionname;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setActionname(String actionname) {
+        this.actionname = actionname;
     }
 
     public Integer getId() {
@@ -37,35 +33,19 @@ public class EforcesTreeMenus implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getAuth() {
-        return auth;
+    public List<EforcesTreeMenus> getChildren() {
+        return children;
     }
 
-    public void setAuth(String auth) {
-        this.auth = auth;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public List<EforcesTreeMenus> getSubMenus() {
-        return subMenus;
-    }
-
-    public void setSubMenus(List<EforcesTreeMenus> subMenus) {
-        this.subMenus = subMenus;
+    public void setChildren(List<EforcesTreeMenus> children) {
+        this.children = children;
     }
 }

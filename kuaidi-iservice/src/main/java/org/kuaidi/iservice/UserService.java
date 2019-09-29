@@ -11,7 +11,7 @@ public interface UserService {
 
 
 
-    PageInfo<EforcesUser> selectAllUser(Integer page,Integer size);
+    PageInfo<EforcesUser> selectAllUser(Integer page,Integer size,EforcesUser record);
 
     /**
      *User登录
@@ -64,6 +64,8 @@ public interface UserService {
     String getNextNumber(String  incNum);
     
     List<EforcesUser>  selectUserByPhone(String phone);
+
+    List<EforcesUser> getByThree(EforcesUser record);
     
     
     List<HashMap> getByDepartName(String departName);
@@ -81,5 +83,6 @@ public interface UserService {
      */
 
     int deleteByid(List<Integer> array);
+
 
 }

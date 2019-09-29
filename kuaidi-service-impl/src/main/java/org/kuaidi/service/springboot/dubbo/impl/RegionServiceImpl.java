@@ -9,11 +9,9 @@ import org.kuaidi.bean.domain.EforcesRegion;
 import org.kuaidi.dao.EforcesRegionMapper;
 import org.kuaidi.iservice.IRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 
-@Service(version = "1.0.0")
+@Service(version = "1.0.0",timeout=120000)
 public class RegionServiceImpl implements IRegionService {
 
 	@Autowired
@@ -56,15 +54,9 @@ public class RegionServiceImpl implements IRegionService {
 	 * @param pageSize
 	 * @return
 	 */
-	@Override
-	public PageInfo<EforcesRegion> getListMsg(Integer pageNum, Integer pageSize, String parentCode) {
+	public PageInfo<EforcesRegion> getListMsg(Integer pageNum, Integer pageSize, String name,String parentCode) {
 		PageHelper.startPage(pageNum,pageSize);
-		List<EforcesRegion> listResult = null ; 
-		if(StringUtils.isNotEmpty(parentCode)) {
-			listResult = eforcesRegionDao.selectRegionByParent(parentCode);
-		}else {
-			listResult = eforcesRegionDao.getListMsg();
-		}
+		List<EforcesRegion> listResult = eforcesRegionDao.getListMsg(name, parentCode) ;
 		final PageInfo<EforcesRegion> pageInfo = new PageInfo<>(listResult);
 		return pageInfo;
 	}
@@ -107,6 +99,22 @@ public class RegionServiceImpl implements IRegionService {
 	@Override
 	public EforcesRegion selectByPrimaryKey(String code) {
 		return eforcesRegionDao.selectByPrimaryKey(code);
+	}
+
+	/**
+	 * 添加时查询
+	 * @param code
+	 * @return
+	 */
+	@Override
+	public EforcesRegion getBycode(String code) {
+		return eforcesRegionDao.getBycode(code);
+	}
+
+	@Override
+	public List<EforcesRegion> getRegionListByParentCode(String parentCode) {
+		// TODO Auto-generated method stub
+		return eforcesRegionDao.selectRegionByParent(parentCode);
 	}
 
 }

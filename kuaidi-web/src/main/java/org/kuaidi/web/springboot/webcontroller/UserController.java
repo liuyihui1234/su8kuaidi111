@@ -3,6 +3,7 @@ package org.kuaidi.web.springboot.webcontroller;
 import java.util.HashMap;
 import java.util.List;
 
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.UserService;
@@ -17,6 +18,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 @RequestMapping("/web/user/")
 public class UserController {
 
+
 	@Reference(version = "1.0.0")
 	UserService userService;
 	
@@ -25,6 +27,7 @@ public class UserController {
 	@CrossOrigin
 	public ResultVo getByDepartName(@RequestBody String departName) {
 		try {
+			System.err.println(departName);
 			List<HashMap> list = userService.getByDepartName(departName.replaceAll("\"", ""));
 			return ResultUtil.exec(true, "查询成功", list);
 		} catch (Exception e) {
@@ -33,5 +36,18 @@ public class UserController {
 
 		}
 		
+	}
+
+
+	@RequestMapping("getByThree")
+	@CrossOrigin
+	public ResultVo  getByThree(EforcesUser record){
+		try {
+			List<EforcesUser> list=userService.getByThree(record);
+			return ResultUtil.exec(true, "查询成功", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultUtil.exec(false, "查询失败", null);
+		}
 	}
 }

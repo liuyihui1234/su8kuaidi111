@@ -18,4 +18,53 @@ public class EforcesVersioninfoServiceImpl implements IEforcesVersioninfoService
     public List<EforcesVersioninfo> getlist(int type){
        return versioninfoMapper.getlist(type);
     }
+
+    /**
+     * 后台管理查询版本信息
+     * @return
+     */
+    @Override
+    public List<EforcesVersioninfo> getListMsg() {
+        return versioninfoMapper.getListMsg();
+    }
+
+    /**
+     * 后台管理修改版本信息
+     * @param record
+     * @return
+     */
+    @Override
+    public int updateByPrimaryKeySelective(EforcesVersioninfo record) {
+        return versioninfoMapper.updateByPrimaryKeySelective(record);
+    }
+
+    /**
+     * 后台管理增加版本信息
+     * @param record
+     * @return
+     */
+    @Override
+    public int insertSelective(EforcesVersioninfo record) {
+        return versioninfoMapper.insertSelective(record);
+    }
+
+    /**
+     * 后台管理删除版本信息
+     * @param id
+     * @return
+     */
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        return versioninfoMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 后台管理删除版本信息
+     * @param id
+     * @return
+     */
+    @Override
+    public int delete(Integer[] id) {
+        return versioninfoMapper.delete(id);
+    }
 }

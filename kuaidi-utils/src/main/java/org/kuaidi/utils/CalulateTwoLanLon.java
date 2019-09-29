@@ -42,21 +42,6 @@ public class CalulateTwoLanLon
     }
     public static void main(String[] args)
     {
-//        String distance = getDistance(34.2675560000, 108.9534750000,
-//                34.2464320000, 108.9534750000);
-//        System.out.println("距离"+distance+"公里");
-
-//    	DecimalFormat    df   = new DecimalFormat("######0.00");   
-//
-//    	double d1 = 3.23456 ; 
-//    	double d2 = 0.0;
-//    	double d3 = 2.0;
-//    	String rst = df.format(d1); 
-//    	System.out.println(rst);
-//    	rst = df.format(d2); 
-//    	System.out.println(rst);
-//    	rst = df.format(d3); 
-//    	System.out.println(rst);
     }
     
     

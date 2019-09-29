@@ -18,13 +18,16 @@ public class ValidateCode {
 	}
 	
 	/*
-	 * 手机短信验证码
+	 * 手机验证码
 	 */
 	public static String getSMSCode(){
 		String validateCode = "";
 		int i = 0 ; 
 		while ( i < 4 ) {
 			int random=(int)(Math.random()*10); 
+			if(validateCode.length() == 0 && random == 0 ) {
+				continue;
+			}
 			validateCode = validateCode + random;
 			i++;
 		} 
@@ -32,9 +35,10 @@ public class ValidateCode {
 	}
 	
 	public static void main(String [] args){
-		String validate = ValidateCode.getSMSCode();
-		System.out.println(validate);
-
+		for(int i = 0 ; i < 100 ; i++) {
+			String validate = ValidateCode.getSMSCode();
+			System.out.println(validate);
+		}
 	}
 
 }

@@ -40,9 +40,9 @@ public class EforceslogisticstrackingServiceImpl implements IEforceslogisticstra
 	 * @return
 	 */
 	@Override
-	public PageInfo<EforcesLogisticStracking> getListStracking(Integer page, Integer size) {
+	public PageInfo<EforcesLogisticStracking> getListStracking(Integer page, Integer size,String billsnumber) {
 		PageHelper.startPage(page,size);
-		List<EforcesLogisticStracking> list = strackingMapper.getListStracking();
+		List<EforcesLogisticStracking> list = strackingMapper.getListStracking(billsnumber);
 		final PageInfo<EforcesLogisticStracking> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
@@ -63,12 +63,17 @@ public class EforceslogisticstrackingServiceImpl implements IEforceslogisticstra
 	 * @return
 	 */
 	@Override
-	public List<EforcesLogisticStracking> getListBillsNumber(Integer[] billsNumber) {
+	public List<EforcesLogisticStracking> getListBillsNumber(String[] billsNumber) {
 		return strackingMapper.getListBillsNumber(billsNumber);
 	}
 
 	@Override
 	public Date selectMaxTime(String billsNumber) {
 		return strackingMapper.selectMaxTime(billsNumber);
+	}
+
+	@Override
+	public String selectMaxMark(String billsNumber) {
+		return strackingMapper.selectMaxMark(billsNumber);
 	}
 }

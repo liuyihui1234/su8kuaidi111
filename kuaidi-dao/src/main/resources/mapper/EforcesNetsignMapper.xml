@@ -97,6 +97,16 @@
     update  eforces_netsign  set delFlage = 1 
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+  <delete id="delNetSignByIds" >
+  	update eforces_netsign  set delFlage = 1  where 
+  	id in 
+  	<foreach collection="list" item="id"
+           index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </delete>
+  
   <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesNetsign">
     insert into eforces_netsign (id, IncNumber, signType, 
       identityfont, identityback, identitynum, 
@@ -466,6 +476,9 @@
       <if test="status != null">
         and status = #{status,jdbcType=INTEGER}
       </if>
+      <if test="createTime != null and createTime != '' ">
+      	 and date_format(crtTime,'%Y-%m-%d') = #{createTime,jdbcType=VARCHAR}
+      </if>
     </where>
   </select>
 
@@ -499,10 +512,10 @@
         and n.identitynum = #{identitynum,jdbcType=VARCHAR}
       </if>
       <if test="companyname != null">
-        and n.companyname = #{companyname,jdbcType=VARCHAR}
+        and companyname like CONCAT('%',#{companyname,jdbcType=VARCHAR},'%')     
       </if>
       <if test="legalperson != null">
-        and n.legalperson = #{legalperson,jdbcType=VARCHAR}
+        and legalperson like CONCAT('%',#{legalperson,jdbcType=VARCHAR},'%')
       </if>
       <if test="signpic != null">
         and n.signpic = #{signpic,jdbcType=VARCHAR}

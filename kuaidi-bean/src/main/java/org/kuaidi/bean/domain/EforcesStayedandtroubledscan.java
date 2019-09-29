@@ -170,5 +170,26 @@ public class EforcesStayedandtroubledscan implements Serializable {
 	public void setIsDelete(Integer isDelete) {
 		this.isDelete = isDelete;
 	}
-    
+
+    @Override
+    public String toString() {
+        return "EforcesStayedandtroubledscan{" +
+                "id=" + id +
+                ", billsnumber='" + billsnumber + '\'' +
+                ", createtime=" + createtime +
+                ", flightsnumber='" + flightsnumber + '\'' +
+                ", troubledtype='" + troubledtype + '\'' +
+                ", scantype='" + scantype + '\'' +
+                ", sacnners='" + sacnners + '\'' +
+                ", sacnnerid='" + sacnnerid + '\'' +
+                ", incname='" + incname + '\'' +
+                ", incid='" + incid + '\'' +
+                ", scantime=" + scantime +
+                ", amount=" + amount +
+                ", bz='" + bz + '\'' +
+                ", causeId=" + causeId +
+                ", isDelete=" + isDelete +
+                ", order=" + order +
+                '}';
+    }
 }

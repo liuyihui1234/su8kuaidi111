@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EforcesHomepagepic implements Serializable {
+public class EforcesHomepagepic implements Serializable{
 
     private static final long serialVersionUID = -6759150898317263144L;
-
     private Integer id;
 
     private Integer type;

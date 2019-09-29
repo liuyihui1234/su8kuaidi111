@@ -127,7 +127,7 @@
     Remark, fwyq
   </sql>
 
-  <!-- 预约单管理 -->
+  <!-- 管理 -->
   <select id="getlistAllMsg" resultMap="BaseResultMap">
     SELECT * from eforces_appointment where isDelete =0
   </select>

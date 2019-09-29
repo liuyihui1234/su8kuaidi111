@@ -27,6 +27,7 @@ public interface IEforcesPaytypeService {
      */
     PageInfo<EforcesPaytype> selectAll(Integer page, Integer size);
 
+    
     /**
      * 动态添加一条数据
      * g
@@ -50,4 +51,13 @@ public interface IEforcesPaytypeService {
      * @return
      */
     int updateDelete(Integer[] ids);
+    
+    
+    /**
+             * 展示所有信息列表
+     * @param page
+     * @param size
+     * @return
+     */
+    List<EforcesPaytype> selectAll();
 }

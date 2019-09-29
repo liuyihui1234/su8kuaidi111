@@ -16,7 +16,10 @@
   <select id="getlist" parameterType="org.kuaidi.bean.domain.EforcesDictionary" resultMap="BaseResultMap">
     select * from eforces_dictionary where isDelete = 0
     <if test="name!=null">
-      and parent in (select id from eforces_dictionary where name like concat('%',#{name},'%')) or name like concat('%',#{name},'%')
+      and  name like concat('%',#{name},'%')
+    </if>
+    <if test="parent != null">
+      and parent = #{parent,jdbcType=INTEGER}
     </if>
   </select>
 
@@ -37,7 +40,13 @@
 
   <!-- 获取所属父级别 -->
   <select id="getParent" resultMap="BaseResultMap">
-    select * from eforces_dictionary where parent = 0
+    	select * from eforces_dictionary where isDelete = 0 and parent = 0
+  </select>
+  
+  <!-- 根据父节点查询子节点 -->
+  <select id="getByParentId" parameterType ="java.lang.Integer" resultMap="BaseResultMap">
+    select * from eforces_dictionary where isDelete = 0
+    and parent = ${parentId}
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

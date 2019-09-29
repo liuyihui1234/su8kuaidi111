@@ -29,7 +29,7 @@ public class EforcesDetypeServiceImpl implements IEforcesDetypeService {
         PageHelper.startPage(page,size);
         List<EforcesDetype> list = detypeMapper.selectAll();
         final PageInfo<EforcesDetype> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return pageInfo ;
     }
 
     @Override
@@ -46,4 +46,10 @@ public class EforcesDetypeServiceImpl implements IEforcesDetypeService {
     public int updateDelete(Integer[] ids) {
         return detypeMapper.updateDelete(ids);
     }
+
+	@Override
+	public List<EforcesDetype> selectAll() {
+		// TODO Auto-generated method stub
+		return detypeMapper.selectAll();
+	}
 }

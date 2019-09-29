@@ -23,12 +23,12 @@ public class LogisticstrackingController {
      * @param page
      * @return
      */
-    @RequestMapping("getlogisticstracking")
+    @GetMapping("logisticstracking")
     @ResponseBody
     @CrossOrigin
-    public PageVo logisticstracking(QueryPageVo page) {
+    public PageVo logisticstracking(QueryPageVo page,String billsnumber) {
         try {
-            PageInfo<EforcesLogisticStracking> result = service.getListStracking(page.getPage(),page.getLimit());
+            PageInfo<EforcesLogisticStracking> result = service.getListStracking(page.getPage(),page.getLimit(),billsnumber);
             return ResultUtil.exec(result.getPageNum(),result.getSize(),result.getTotal(),result.getList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,12 +36,12 @@ public class LogisticstrackingController {
         }
     }
 
-    /**
+/*    *//**
      * 删除物流跟踪记录
      * @param id
      * @return
-     */
-    @RequestMapping("deleteLogistics")
+     *//*
+    @DeleteMapping("logisticstracking")
     @CrossOrigin
     public ResultVo deleteDistributedScan(Integer id){
         try {
@@ -52,10 +52,15 @@ public class LogisticstrackingController {
             e.printStackTrace();
             return ResultUtil.exec(false,"删除失败",null);
         }
-    }
+    }*/
 
 
-    @RequestMapping("insertLogisticSelective")
+    /**
+     * 添加物流跟踪
+     * @param record
+     * @return
+     */
+    @PostMapping("logisticstracking")
     @CrossOrigin
     public ResultVo insertLogisticSelective(EforcesLogisticStracking record){
         try {
@@ -69,14 +74,14 @@ public class LogisticstrackingController {
 
     /**
      * 删除物流跟踪记录
-     * @param array
+     * @param id
      * @return
      */
-    @RequestMapping("deleteLogisticss")
+    @DeleteMapping("logisticstracking")
     @CrossOrigin
-    public ResultVo deleteDistributedScans(@RequestBody Integer[] array){
+    public ResultVo deleteDistributedScans(@RequestBody Integer[] id){
         try {
-            int result = service.deleteLogisticStraking(array);
+            int result = service.deleteLogisticStraking(id);
             return ResultUtil.exec(true,"删除成功",result);
         }catch (Exception e){
             e.printStackTrace();
@@ -89,13 +94,14 @@ public class LogisticstrackingController {
      * 根据多个运单编号查询
      * @param billsNumber
      * @return
+     *
      */
-    @RequestMapping("getlistbillsNumber")
+    @RequestMapping("logisticstracking")
     @CrossOrigin
-    public ResultVo getlistbillsNumber(Integer billsNumber){
+    public ResultVo getlistbillsNumber(@RequestBody String billsNumber){
         try {
-            Integer[] array = {billsNumber};
-            List<EforcesLogisticStracking> result = service.getListBillsNumber(array);
+            String[] split = billsNumber.split("\\s+");
+            List<EforcesLogisticStracking> result = service.getListBillsNumber(split);
             return ResultUtil.exec(true,"查询成功",result);
         }catch (Exception e){
             e.printStackTrace();

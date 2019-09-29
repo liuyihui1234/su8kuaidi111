@@ -1,6 +1,9 @@
 package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+
 import org.kuaidi.bean.maintainance.EforcesTransportmode;
 public interface IEforcesTransportmodeService {
     /**
@@ -35,4 +38,10 @@ public interface IEforcesTransportmodeService {
      * @return
      */
     EforcesTransportmode selectByPrimaryKey(Integer id);
+    
+    /**
+         * 获取所有运输方式
+     * @return
+     */
+    List<EforcesTransportmode> getAllListTran();
 }

@@ -4,15 +4,10 @@ import org.kuaidi.bean.domain.EforcesVersioninfo;
 import java.util.List;
 
 public interface EforcesVersioninfoMapper {
-    int deleteByPrimaryKey(Integer id);
 
     int insert(EforcesVersioninfo record);
 
-    int insertSelective(EforcesVersioninfo record);
-
     EforcesVersioninfo selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(EforcesVersioninfo record);
 
     int updateByPrimaryKey(EforcesVersioninfo record);
 
@@ -21,4 +16,33 @@ public interface EforcesVersioninfoMapper {
      * @return
      */
     List<EforcesVersioninfo> getlist(int type);
+
+    /**
+     * 后台管理查询版本信息
+     * @return
+     */
+    List<EforcesVersioninfo> getListMsg();
+
+    /**
+     * 后台管理修改版本信息
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKeySelective(EforcesVersioninfo record);
+
+    /**
+     * 后台管理增加版本信息
+     * @param record
+     * @return
+     */
+    int insertSelective(EforcesVersioninfo record);
+
+    int deleteByPrimaryKey(Integer id);
+
+    /**
+     * 后台管理删除版本信息
+     * @param id
+     * @return
+     */
+    int delete(Integer[] id);
 }

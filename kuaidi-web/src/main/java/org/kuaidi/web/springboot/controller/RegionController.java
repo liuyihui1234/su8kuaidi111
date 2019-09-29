@@ -96,9 +96,9 @@ public class RegionController {
 	@GetMapping("Regioninfo")
 	@ResponseBody
 	@CrossOrigin
-	public PageVo getlist(QueryPageVo page){
-		return regionService.getlist(page);
-	}
+	public PageVo getlist(QueryPageVo page) {
+        return regionService.getlist(page);
+    }
 
 
 	/**
@@ -107,7 +107,6 @@ public class RegionController {
 	 * @return
 	 */
 	@PostMapping("Regioninfo")
-	@ResponseBody
 	@CrossOrigin
 	public ResultVo addRegion(EforcesRegion region){
 	return regionService.addRegion(region);
@@ -149,8 +148,15 @@ public class RegionController {
 	public ResultVo updateRegion(EforcesRegion region){
 		return regionService.updateRegion(region);
 	}
+	
+	@RequestMapping("getRegioninfoList")
+	@ResponseBody
+	@CrossOrigin
+	public ResultVo getRegioninfoList(String parentCode) {
+        return regionService.getRegionByParentCode(parentCode);
+    }
 
-/*	*//**
+	/**
 	 * 查询修改的数据
 	 * @param code
 	 * @return
@@ -161,5 +167,4 @@ public class RegionController {
 	public ResultVo showRegionMsg(String code){
 		return regionService.showRegionMsg(code);
 	}*/
-
 }

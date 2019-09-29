@@ -170,7 +170,7 @@ public class IncmentService {
           
     public PageVo getAllIncment(QueryPageVo page){
         try {
-            PageInfo<EforcesIncment> info = iEforcesIncmentService.selectAllIcrment(page.getPage(),page.getLimit(),page.getInfo1());
+            PageInfo<EforcesIncment> info = iEforcesIncmentService.selectAllIcrment(page.getPage(),page.getLimit(),page.getInfo1(),page.getInfo2());
             return ResultUtil.exec(info.getPageNum(),info.getSize(),info.getTotal(), info.getList());
         } catch (Exception e) {
             return ResultUtil.exec(1, 10 ,0, null);

@@ -1,6 +1,4 @@
 package org.kuaidi.web.springboot.util.AliyunOSS;
-
-import org.kuaidi.utils.SendPhoneCode;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,14 +37,14 @@ public class UploadController {
                     os.write(file.getBytes());
                     os.close();
                     os.flush();
-//                    file.transferTo(newFile);
+                    file.transferTo(newFile);
                     //上传到OSS
                     String uploadUrl = AliyunOSSUtil.upload(newFile);
 
                     //上传图片的时候图片会保留在本地项目
                     File file1 = new File("");
                     String s = file1.getAbsolutePath();
-//                    DeleteFileUtil.delete(s + "\\" + filename);
+                    DeleteFileUtil.delete(s + "\\" + filename);
                     logger.info("上传图片路径"+uploadUrl);
                     //return "上传成功";
                 }

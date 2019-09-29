@@ -62,5 +62,10 @@ public interface EforcesNetsignMapper {
      * @return
      */
     List<EforcesNetsign> selectPath(String incNumber);
+	
+	/*
+     * 根据ID删除
+     */
+    Integer  delNetSignByIds(List<Integer>list);
 
 }

@@ -18,7 +18,7 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
     EforcesBaggingScanMapper scanMapper;
 
 	@Override
-	public PageInfo<EforcesBaggingScan> getAll(Integer page, Integer size,Integer incid) {
+	public PageInfo<EforcesBaggingScan> getAll(Integer page, Integer size,String incid) {
 		PageHelper.startPage(page,size);
 		List<EforcesBaggingScan> sentScan = scanMapper.selectAll(incid);
 		final  PageInfo<EforcesBaggingScan> pageInfo = new PageInfo<>(sentScan);
@@ -32,8 +32,8 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
 	}
 
 	@Override
-	public void deleteById(Integer[] id) {
-		scanMapper.updateById(id);
+	public int deleteById(List<Integer> ids) {
+		return scanMapper.updateById(ids);
 	}
 
 	@Override

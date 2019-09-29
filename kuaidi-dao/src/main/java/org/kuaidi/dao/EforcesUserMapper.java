@@ -2,6 +2,7 @@ package org.kuaidi.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesUser;
@@ -54,7 +55,9 @@ public interface EforcesUserMapper {
 
 	List<EforcesUser> selectUserByPhone(String phone);
 
-    List<EforcesUser> selectAllUser();
+    List<EforcesUser> selectAllUser(EforcesUser record );
+
+    List<EforcesUser> selectByThree(EforcesUser record);
     
     
     List<HashMap> selectByDepartname(String departname);

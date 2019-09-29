@@ -25,8 +25,6 @@ public class Tracker {
         Map headerparams = new HashMap();
         headerparams.put("Trackingmore-Api-Key", Apikey);
         headerparams.put("Content-Type", "application/json");
-        
-        
         //---bodyParams
         List bodyParams = new ArrayList();
         String result =null;
@@ -236,24 +234,14 @@ public class Tracker {
     }
 
     public static void main(String [] args) {
-//    	String  urlStr =null;
-//    	String requestData="[{\"tracking_number\":\"3502339401241\",\"carrier_code\":\"bestex\"},{\"tracking_number\":\"350233940124\",\"carrier_code\":\"bestex\"}]";
-//    	try {
-//    		String result = new Tracker().orderOnlineByJson(requestData,urlStr,"delete");
-//			System.out.println(result);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-    	
-    	String urlStr ="/bestex/3502339401241";
+    	String  urlStr ="?page=1&limit=3";
     	String requestData=null;
     	try {
-    		String result = new Tracker().orderOnlineByJson(requestData,urlStr,"codeNumberDelete");
-    		System.out.println(result);
+            String result = new Tracker().orderOnlineByJson(requestData,urlStr,"get");
+			System.out.println(result);
 		} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     }
 }

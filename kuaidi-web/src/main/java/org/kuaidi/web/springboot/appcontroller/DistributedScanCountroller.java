@@ -1,5 +1,7 @@
 package org.kuaidi.web.springboot.appcontroller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kuaidi.bean.domain.EforcesDistributedScan;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultVo;
@@ -27,7 +29,7 @@ public class DistributedScanCountroller {
 
     @RequestMapping("alterDistributed")
     @CrossOrigin
-    public ResultVo doalterDistributed(String number,Integer id, String num,String touserSignature,String fannex,String description){
-        return distributedDubbo.alterDistributed(number,id,num,touserSignature,fannex,description);
+    public ResultVo doalterDistributed(HttpServletRequest  request ,String number, String num,String touserSignature,String fannex){
+        return distributedDubbo.alterDistributed(request, number,num,touserSignature,fannex);
     }
 }

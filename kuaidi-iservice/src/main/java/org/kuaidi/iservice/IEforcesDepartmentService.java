@@ -3,7 +3,16 @@ package org.kuaidi.iservice;
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesDepartment;
 
+import java.util.List;
+
 public interface IEforcesDepartmentService {
+
+    /**
+     * 显示企业部门管理 不分页
+     * @return
+     */
+    List<EforcesDepartment> getListTwo();
+
     /**
      * 显示企业部门管理
      * @return

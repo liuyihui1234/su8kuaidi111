@@ -22,7 +22,7 @@ public interface EforcesRemovingBagScanMapper {
     
     List<EforcesRemovingBagScan> selectAll(Integer incid);
     
-    int updateIsDeleteById(Integer[] id);
+    int updateIsDeleteById(List<Integer> id);
     /*
      * 批量删除拆包记录。
      */

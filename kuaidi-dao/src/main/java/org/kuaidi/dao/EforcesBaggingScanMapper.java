@@ -19,9 +19,9 @@ public interface EforcesBaggingScanMapper {
 
     int updateByPrimaryKey(EforcesBaggingScan record);
     
-    List<EforcesBaggingScan> selectAll(Integer paramter);
+    List<EforcesBaggingScan> selectAll(String paramter);
     
-    int updateById(Integer[] id);
+    int updateById(List<Integer>id);
     
     int insertBatch(List<EforcesBaggingScan> list);
     

@@ -32,7 +32,7 @@ public interface IEforceslogisticstrackingService {
 	 * @param size
 	 * @return
 	 */
-	PageInfo<EforcesLogisticStracking> getListStracking(Integer page,Integer size);
+	PageInfo<EforcesLogisticStracking> getListStracking(Integer page,Integer size,String billsnumber);
 
 	/**
 	 * 删除物流跟踪记录
@@ -46,7 +46,7 @@ public interface IEforceslogisticstrackingService {
 	 * @param billsNumber
 	 * @return
 	 */
-	List<EforcesLogisticStracking> getListBillsNumber(Integer[] billsNumber);
+	List<EforcesLogisticStracking> getListBillsNumber(String[] billsNumber);
 
 	/**
 	 * 根据订单编号查询对应的最后一条物流信息的创建时间
@@ -55,4 +55,6 @@ public interface IEforceslogisticstrackingService {
 	 * @return
 	 */
 	Date selectMaxTime(String billsNumber);
+
+	String  selectMaxMark(String billsNumber);
 }

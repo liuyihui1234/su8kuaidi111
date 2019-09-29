@@ -7,7 +7,6 @@ import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.dao.EforcesAppointmentMapper;
 import org.kuaidi.iservice.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
 //注册为 Dubbo 服务
@@ -83,5 +82,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Integer deleteAppointment(Integer[] id) {
         return appointment.deleteAppointment(id);
+    }
+
+    /**
+     * 修改预约订单
+     * @param record
+     * @return
+     */
+    @Override
+    public int updateByPrimaryKeySelective(EforcesAppointment record) {
+        return appointment.updateByPrimaryKeySelective(record);
     }
 }

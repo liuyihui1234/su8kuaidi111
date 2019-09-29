@@ -2,7 +2,6 @@ package org.kuaidi.bean.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class EforcesVersioninfo implements Serializable {
@@ -16,6 +15,10 @@ public class EforcesVersioninfo implements Serializable {
     private String version;
 
     private String downloadurl;
+    
+    private Integer forceUpdateFlage ; 
+    
+    private String remark; 
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date crttime;
@@ -70,4 +73,21 @@ public class EforcesVersioninfo implements Serializable {
     public void setValidtime(Date validtime) {
         this.validtime = validtime;
     }
+
+	public Integer getForceUpdateFlage() {
+		return forceUpdateFlage;
+	}
+
+	public void setForceUpdateFlage(Integer forceUpdateFlage) {
+		this.forceUpdateFlage = forceUpdateFlage == null ? 0 : forceUpdateFlage;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+    
 }

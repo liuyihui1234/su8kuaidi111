@@ -87,4 +87,19 @@ public class TimeDayUtil {
         System.out.println("过去一年："+year);
         return year;
     }
+    
+    /*
+            * 获得明天的某个时间
+     */
+    public static String getNextDay(int index){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        //过去一年
+        c.setTime(new Date());
+        c.add(c.DATE,1);
+        Date y = c.getTime();
+        String year = format.format(y);
+        System.out.println("明天："+year);
+        return year;
+    }
 }

@@ -2,16 +2,16 @@ package org.kuaidi.web.springboot.controller.maintainance;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+
 import org.kuaidi.bean.maintainance.EforcesDetype;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.maintainance.IEforcesDetypeService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Administrator on 2019/8/10 13:55
@@ -22,7 +22,21 @@ public class DetypeController {
     @Reference(version = "1.0.0")
     IEforcesDetypeService detypeService;
 
+    @GetMapping("Detype")
+    @ResponseBody
+    @CrossOrigin
+    public PageVo<EforcesDetype> selectAll(QueryPageVo page){
+        try {
+            PageInfo<EforcesDetype> pageInfo = detypeService.selectAll(page.getPage(), page.getLimit());
+            return ResultUtil.exec(pageInfo.getPageNum(), pageInfo.getSize(), pageInfo.getTotal(), pageInfo.getList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(1, 10, 0, null);
+        }
+    }
+
     @RequestMapping("selectOne")
+    @ResponseBody
     @CrossOrigin
     public ResultVo selectOne(Integer id){
         try {
@@ -37,19 +51,8 @@ public class DetypeController {
         }
     }
 
-    @RequestMapping("selectAll")
-    @CrossOrigin
-    public PageVo<EforcesDetype> selectAll(QueryPageVo page){
-        try {
-            PageInfo<EforcesDetype> pageInfo = detypeService.selectAll(page.getPage(), page.getLimit());
-            return ResultUtil.exec(pageInfo.getPageNum(), pageInfo.getSize(), pageInfo.getTotal(), pageInfo.getList());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultUtil.exec(1, 10, 0, null);
-        }
-    }
-
-    @RequestMapping("insertOne")
+    @PostMapping("Detype")
+    @ResponseBody
     @CrossOrigin
     public ResultVo insertOne(EforcesDetype detype){
         try {
@@ -64,7 +67,8 @@ public class DetypeController {
         }
     }
 
-    @RequestMapping("updateOne")
+    @PutMapping("Detype")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateOne(EforcesDetype detype){
         try {
@@ -84,6 +88,7 @@ public class DetypeController {
     }
 
     @RequestMapping("updateDelete")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(Integer id){
         try {
@@ -103,7 +108,8 @@ public class DetypeController {
         }
     }
 
-    @RequestMapping("updateDeletes")
+    @DeleteMapping("Detype")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(@RequestBody Integer[] ids){
         try {
@@ -115,6 +121,19 @@ public class DetypeController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(false,"操作失败",null);
+        }
+    }
+    
+    @RequestMapping("getAllRecord")
+    @ResponseBody
+    @CrossOrigin
+    public ResultVo getAllRecord(QueryPageVo page){
+        try {
+            List<EforcesDetype> detyList = detypeService.selectAll();
+            return ResultUtil.exec(true,"查询物品类型成功！",detyList );
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false,"查询物品类型失败！",null);
         }
     }
 }

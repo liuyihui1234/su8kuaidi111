@@ -19,9 +19,9 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public PageInfo<EforcesUser> selectAllUser(Integer page,Integer size) {
+	public PageInfo<EforcesUser> selectAllUser(Integer page,Integer size,EforcesUser record) {
 		PageHelper.startPage(page,size);
-		List<EforcesUser> eforcesUser = UserDao.selectAllUser();
+		List<EforcesUser> eforcesUser = UserDao.selectAllUser( record);
 		final  PageInfo<EforcesUser> pageInfo = new PageInfo<>(eforcesUser);
 		return pageInfo;
 	}
@@ -104,6 +104,11 @@ public class UserServiceImpl implements UserService {
 	public List<EforcesUser> selectUserByPhone(String phone) {
 		// TODO Auto-generated method stub
 		return UserDao.selectUserByPhone(phone);
+	}
+
+	@Override
+	public List<EforcesUser> getByThree(EforcesUser record) {
+		return UserDao.selectByThree(record);
 	}
 
 	@Override

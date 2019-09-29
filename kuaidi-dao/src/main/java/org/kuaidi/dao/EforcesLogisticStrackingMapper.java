@@ -28,14 +28,14 @@ public interface EforcesLogisticStrackingMapper {
     int updateByPrimaryKeySelective(EforcesLogisticStracking record);
 
     int updateByPrimaryKey(EforcesLogisticStracking record);
-
+    String  selectMaxMark(String billsNumber);
 
     /**
      * 物流跟踪记录
      * @param
      * @return
      */
-    List<EforcesLogisticStracking> getListStracking();
+    List<EforcesLogisticStracking> getListStracking(String billsnumber);
 
     /**
      * 删除物流跟踪记录
@@ -49,7 +49,7 @@ public interface EforcesLogisticStrackingMapper {
      * @param billsNumber
      * @return
      */
-    List<EforcesLogisticStracking> getListBillsNumber(Integer[] billsNumber);
+    List<EforcesLogisticStracking> getListBillsNumber(String[] billsNumber);
 
 
 }

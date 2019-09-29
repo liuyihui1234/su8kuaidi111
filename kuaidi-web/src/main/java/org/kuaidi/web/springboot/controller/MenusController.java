@@ -1,10 +1,13 @@
 package org.kuaidi.web.springboot.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesMenus;
 import org.kuaidi.bean.domain.EforcesTreeMenus;
+import org.kuaidi.bean.domain.EforcesTreeMenus2;
 import org.kuaidi.bean.domain.MenusUsersActionVo;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
@@ -146,13 +149,22 @@ public class MenusController {
 
 	@PostMapping("authority")
 	@CrossOrigin
-	public ResultVo newPermis(@RequestParam("menuid")Integer menuid,@RequestParam("actionid")Integer actionid) {
+	public ResultVo newPermis(@RequestParam("menuid")String menuid,@RequestParam("actionid")String actionid) {
 		try {
-			menusService.newPermis(menuid, actionid);
-			return ResultUtil.exec(true, "查询成功", null);
+			String [] parameter=actionid.split(",");
+			List<MenusUsersActionVo> list=new ArrayList<>();
+			for(int i=0;i<parameter.length;i++){
+				MenusUsersActionVo  Vo=new MenusUsersActionVo();
+				Vo.setMenuid(menuid);
+				Vo.setActionid(parameter[i]);
+				list.add(Vo);
+			}
+			System.err.println(list.size());
+			menusService.newPermis(list);
+			return ResultUtil.exec(true, "添加成功", null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultUtil.exec(false, "查询失败", null);		
+			return ResultUtil.exec(false, "添加失败", null);
 		}
 	}
 
@@ -175,8 +187,35 @@ public class MenusController {
 	@CrossOrigin
 	public ResultVo getTreeMenu() {
 		try {
+			List<List<EforcesTreeMenus>> list  =null;
 			List<EforcesTreeMenus> menuTree = menusService.getMenuTree();
-			return ResultUtil.exec(true, "查询成功", menuTree);
+			List<EforcesTreeMenus2> menuTree2 = new ArrayList<EforcesTreeMenus2>();
+			List<EforcesTreeMenus2> menuTree3 = new ArrayList<EforcesTreeMenus2>();
+
+			for (EforcesTreeMenus menus:
+				 menuTree) {
+				List<EforcesTreeMenus> children = menus.getChildren();
+				for (EforcesTreeMenus menus2:
+					 children) {
+					String actionname = menus2.getActionname();
+					EforcesTreeMenus2 tree = new EforcesTreeMenus2();
+					if(StringUtils.isNotEmpty(actionname)){
+						String[] split = actionname.split(",");
+						for (String str:
+								split) {
+							EforcesTreeMenus2 tree2 = new EforcesTreeMenus2();
+							if("菜单查看".equals(str)){
+								break;
+							}
+							tree2.setTitle(str);
+							menuTree2.add(tree);
+						}
+					  tree.setChildren(menuTree2);
+					}
+				}
+				//menuTree3.add(tree);
+			}
+			return ResultUtil.exec(true, "查询成功", menuTree2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResultUtil.exec(false, "查询失败", null);
@@ -184,9 +223,9 @@ public class MenusController {
 	}
 	@RequestMapping("getAllTreeMenu")
 	@CrossOrigin
-	public ResultVo getAllTreeMenu() {
+	public ResultVo getAllTreeMenu(String userid) {
 		try {
-			List<HashMap> allMenuTree = menusService.getAllMenuTree();
+			List<HashMap> allMenuTree = menusService.getAllMenuTree(userid);
 			return ResultUtil.exec(false, "查询成功", allMenuTree);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,6 +233,20 @@ public class MenusController {
 		}
 	}
 
+	@RequestMapping("getActionIdByMenuId")
+	@CrossOrigin
+	public ResultVo getActionIdByMenuId(  Integer id){
+		try {
+			System.err.println("id:"+id);
+			List<Integer> array=menusService.getActionIdByMenuId(id);
+			return ResultUtil.exec(false, "查询成功", array);
+		}catch (Exception e){
+			e.printStackTrace();
+			return ResultUtil.exec(false, "查询失败", null);
+		}
 
-	
+	}
+
+
+
 }

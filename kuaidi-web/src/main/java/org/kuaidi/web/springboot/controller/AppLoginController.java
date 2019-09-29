@@ -20,7 +20,5 @@ public class AppLoginController {
 	public String doLogin(EforcesUsers users, Map<String,Object> map) {
 		return consumerService.doLogin(users, map);
 	}
-	
-	
 
 }

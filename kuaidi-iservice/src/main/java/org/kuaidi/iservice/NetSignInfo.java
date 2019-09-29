@@ -17,7 +17,7 @@ public interface NetSignInfo {
 
 	EforcesNetsign selectProvinces(EforcesNetsign eforcesNetsign);
 
-	 PageInfo<EforcesNetsign> selectNetsignSort(Integer pageNum , EforcesNetsign record);
+	 PageInfo<EforcesNetsign> selectNetsignSort(Integer pageNum , Integer rows , EforcesNetsign record);
 
      EforcesNetsign selectNetsignById(Integer id);
 
@@ -31,4 +31,6 @@ public interface NetSignInfo {
 	 * @return
 	 */
 	List<EforcesNetsign> selectPath(String incNumber);
+	
+	Integer  delNetSignByIds(String ids);
 }

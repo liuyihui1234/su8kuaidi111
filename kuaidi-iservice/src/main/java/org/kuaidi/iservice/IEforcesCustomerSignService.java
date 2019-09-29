@@ -3,6 +3,7 @@ package org.kuaidi.iservice;
 import java.util.List;
 
 import org.kuaidi.bean.domain.EforcesCustomerSign;
+import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface IEforcesCustomerSignService {
      * @param customerSign
      * @return
      */
-    int insertCustomerSign(EforcesCustomerSign customerSign);
+    int insertCustomerSign(EforcesCustomerSign customerSign, EforcesLogisticStracking logistic );
 
     /**
      * 根据订单号查询该签收订单的详情
@@ -48,7 +49,7 @@ public interface IEforcesCustomerSignService {
      * @param incid
      * @return
      */
-    PageInfo<EforcesCustomerSign> getAllSign(Integer page,Integer limit, Integer incid);
+    PageInfo<EforcesCustomerSign> getAllSign(Integer page,Integer limit, String incid);
 
     /**
      * 根据id查询签收信息
@@ -59,4 +60,8 @@ public interface IEforcesCustomerSignService {
     EforcesCustomerSign selectByPrimaryKey(Integer id);
 
     int insertCustomer(EforcesCustomerSign record);
+
+    int updateByPrimaryKeySelective(EforcesCustomerSign record);
+
+    int DeleteById(List<Integer> id);
 }

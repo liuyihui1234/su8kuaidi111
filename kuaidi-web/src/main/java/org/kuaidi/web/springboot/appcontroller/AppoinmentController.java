@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
+import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.AppointmentService;
 import org.kuaidi.web.springboot.service.AppointmentDubboService;
@@ -59,37 +60,25 @@ public class AppoinmentController {
         return appointmentDubboService.alterStatus2AddOrder(id);
     }
 
-
-    /**
-     * 预约单管理
-     * @param
-     * @return
-     */
-    @RequestMapping("getlistmsg")
-    @ResponseBody
+    @RequestMapping("updateByPrimaryKeySelective")
     @CrossOrigin
-    public PageVo getAllMsg(QueryPageVo page) throws IOException {
-       return appointmentDubboService.getMsg(page);
+    public ResultVo doUpdateByPrimaryKeySelective(EforcesAppointment record){
+        return appointmentDubboService.updateByPrimaryKeySelective(record);
     }
-    /**
-     * 删除预约单管理
-     * @param
-     * @return
-     */
-    @RequestMapping("deleteappointment")
+    
+    @RequestMapping("getAppointmentById")
     @CrossOrigin
-    public ResultVo removeUpdate(Integer id){
-        return appointmentDubboService.deleteappointment(id);
+    public ResultVo getAppointmentById(Integer id){
+    	try {
+    		EforcesAppointment appointment =  service.selectAppointmentByPrimaryKey(id);
+        	if(appointment != null ) {
+        		return ResultUtil.exec(true, "获得待接单信息成功！", appointment);
+        	}
+        	return ResultUtil.exec(false, "获得待接单信息为空！", null);
+    	}catch(Exception e ) {
+    		e.printStackTrace();
+    		return ResultUtil.exec(false, "查询异常！", null);
+    	}
+    	
     }
-    /**
-     * 删除预约单管理
-     * @param
-     * @return
-     */
-    @RequestMapping("deleteappointments")
-    @CrossOrigin
-    public ResultVo removeUpdates(@RequestBody Integer[] array){
-        return appointmentDubboService.deleteappointments(array);
-    }
-
 }

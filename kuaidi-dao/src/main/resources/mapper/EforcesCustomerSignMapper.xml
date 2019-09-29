@@ -23,8 +23,9 @@
 
   <select id="getAllSign" resultMap="BaseResultMap">
     SELECT  <include refid="Base_Column_List"></include> from eforces_customersign
+    where  isdelete = 0
     <if test="_parameter != null">
-      where  incId like CONCAT(#{_parameter},'%')
+      and  incId like CONCAT(#{_parameter},'%')
     </if>
   </select>
 
@@ -47,6 +48,7 @@
     <include refid="Base_Column_List" />
     from eforces_customersign
     where Id = #{id,jdbcType=INTEGER}
+    and isdelete = 0
   </select>
 
   <select id="selectByNumber" resultMap="BaseResultMap">
@@ -195,6 +197,16 @@
       Operators = #{operators,jdbcType=VARCHAR},
       OperatorId = #{operatorid,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="DeleteById" parameterType="org.kuaidi.bean.domain.EforcesCustomerSign">
+    update eforces_customersign
+    set isdelete = 1
+    where Id in
+    <foreach collection="list" item="id" index="index" open="("
+             close=")" separator=",">
+      #{id}
+    </foreach>
   </update>
 
   <select id="selectByOperatorId" resultMap="BaseResultMap">

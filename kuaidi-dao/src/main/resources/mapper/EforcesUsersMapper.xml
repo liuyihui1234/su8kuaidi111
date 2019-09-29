@@ -22,6 +22,9 @@
     <result column="ShowModule" jdbcType="LONGVARCHAR" property="showmodule" />
   </resultMap>
 
+
+
+
   <!-- 查询 -->
   <select id="selectUsers" resultType="org.kuaidi.bean.domain.EforcesUsers">
         select * from eforces_users where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR};
@@ -33,17 +36,15 @@
   </insert>
 
   <sql id="Base_Column_List">
-    uid, username, password, lastip, lasttime, loginnumber, name, depaid, Points, cardid, 
-    CardNumber, incmentid, type, ismac, gongxian
+    Id, Number, Password, Name, Incnumber, Incname, Incid, Departid, departname, Mobile, 
+    Tel, Businesshall, Businesshallname, Address, Recipient, RecipientCode, Departadmin, 
+    Departadminname, Creattime, lastip, lasttime, loginnumber, type, method,portraitPath,
+    identityNum,identityFontpath,identityBackPath
   </sql>
-  <sql id="Blob_Column_List">
-    ShowModule
-  </sql>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from eforces_users
     where uid = #{uid,jdbcType=INTEGER}
   </select>

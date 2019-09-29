@@ -1,15 +1,19 @@
 package org.kuaidi.web.springboot.webcontroller;
 
 
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesSentScan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.*;
 import org.kuaidi.iservice.IEforcesSentscanService;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.dubboservice.SentScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -73,18 +77,12 @@ public class SentScanController {
 	
 	@PostMapping("scan")
 	@CrossOrigin
-	public ResultVo addSentScan(EforcesSentScan sentScan) {
-		try {
+	@NeedUserInfo
+	public ResultVo addSentScan(EforcesSentScan sentScan, HttpServletRequest request) {
+			EforcesUser user = (EforcesUser) request.getAttribute("user");
+			EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+			return 	dubboSentscanService.sentOrder(sentScan,user,inc);
 
-			DubboMsgVO   msgVo=sentScanService.addSentScan(sentScan,null);
-			if(msgVo  != null && msgVo.isRstFlage()) {
-				return ResultUtil.exec(true,"添加成功！",null);
-			}else {
-				return ResultUtil.exec(false,"添加失败！",null);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResultUtil.exec(false,"添加异常",null);
-		}
+
 	}
 }

@@ -31,7 +31,7 @@ public interface IEforcesDistributedScanService {
 	 * 获取所有派件信息
 	 * @return
 	 */
-	PageInfo<EforcesDistributedScan> getAlldistribute(Integer pageNum, Integer pageSize, Integer incid);
+	PageInfo<EforcesDistributedScan> getAlldistribute(Integer pageNum, Integer pageSize, String incid);
 
 	/**
 	 * 根据id获取派件信息
@@ -43,5 +43,7 @@ public interface IEforcesDistributedScanService {
 	int insertSelective(EforcesDistributedScan record);
 
 	int updateByPrimaryKeySelective(EforcesDistributedScan record);
+
+	int deleteByid(List<Integer> list);
 
 }

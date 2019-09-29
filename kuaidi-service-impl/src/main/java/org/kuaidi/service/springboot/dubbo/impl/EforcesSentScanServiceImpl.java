@@ -102,6 +102,8 @@ public class EforcesSentScanServiceImpl implements IEforcesSentscanService {
 	 */
 	@Override
 	public int listinsert(List<EforcesSentScan> list) {
-		return sentscanMapper.listinsert(list);
+		return sentscanMapper.insertList(list);
 	}
+
+
 }

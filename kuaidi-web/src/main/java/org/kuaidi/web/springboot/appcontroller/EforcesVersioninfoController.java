@@ -22,7 +22,11 @@ public class EforcesVersioninfoController {
     public ResultVo getlistDasy(int type){
      if(type>=0){
          List<EforcesVersioninfo> dispaly = versioninfoService.getlist(type);
-         return ResultUtil.exec(true,"查詢成功",dispaly);
+         if(dispaly != null && dispaly.size() > 0 ) {
+        	 return ResultUtil.exec(true,"查詢成功",dispaly.get(0));
+         }
+         
+         return ResultUtil.exec(false,"没有找到对应类型的更新信息！",null);
      }else{
          return ResultUtil.exec(false,"查詢失敗",null);
      }

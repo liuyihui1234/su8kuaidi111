@@ -56,9 +56,8 @@ public class HandlingOrdersService {
 	@Reference(version= "1.0.0")
 	private IEforcesRemovingBagScanService  removeBageService; 
 	
-	public ResultVo sentOrder(String billNumber , Integer userId){
+	public ResultVo sentOrder(String billNumber , EforcesUser userInfo ,EforcesIncment currentStop){
 		try {
-        	EforcesUser userInfo = userService.selectUserById(userId);
     		List<EforcesOrder> orderList =  orderService.getByNumber(billNumber);
     		if(orderList == null || orderList.size() == 0 ) {
     			return ResultUtil.exec(false,"订单号错误，请确定！",null);
@@ -87,7 +86,6 @@ public class HandlingOrdersService {
     			return ResultUtil.exec(false,"没有找到下一站的编号，确定一下是否发错了！",null);
     		}
     		EforcesIncment nextStop =  incmentService.selectByNumber(nextIncNum);
-    		EforcesIncment currentStop = incmentService.selectByNumber(userInfo.getIncnumber());
     		EforcesSentScan sentScan = createSentScanInfo(userInfo, orderInfo, nextStop, currentStop,0);
     		/*
     		 * 封装物流信息
@@ -103,11 +101,11 @@ public class HandlingOrdersService {
     		if(msgVo  != null && msgVo.isRstFlage()) {
         		return ResultUtil.exec(true,"发单扫描成功！",null);
         	}else {
-        		return ResultUtil.exec(false,"发单扫描失败！",null);
-        	}
+				return ResultUtil.exec(false,"发单扫描失败！",null);
+			}
         }catch (Exception e){
-            e.printStackTrace();
-            return ResultUtil.exec(false,"发单扫描异常！",null);
+				e.printStackTrace();
+				return ResultUtil.exec(false,"发单扫描异常！",null);
         }
 	}
 
@@ -128,6 +126,7 @@ public class HandlingOrdersService {
 			sentScan.setNextstopname(""); 
 		}
 		sentScan.setScantype("发件扫描");
+
 		sentScan.setScanners(userInfo.getName());
 		sentScan.setScannerid(userInfo.getNumber());
 		sentScan.setIncname(currentStop.getName());
@@ -175,24 +174,19 @@ public class HandlingOrdersService {
 	 * @param billNumber
 	 * @return
 	 */
-	public ResultVo receiveOrder(String billNumber , int userId ){
+	public ResultVo receiveOrder(String billNumber ,  EforcesUser userInfo, EforcesIncment currentStop){
 		try {
-			EforcesUser userInfo = userService.selectUserById(userId);
     		List<EforcesOrder> orderList =  orderService.getByNumber(billNumber);
     		if(orderList == null || orderList.size() == 0 ) {
-    			return ResultUtil.exec(false,"订单号错误，请确定！",null);
+			return ResultUtil.exec(false,"订单号错误，请确定！",null);
     		}
-    		if(userInfo == null ) {
-    			return ResultUtil.exec(false,"用户信息错误，请确定！",null);
-    		}
-    		EforcesIncment currentStop = incmentService.selectByNumber(userInfo.getIncnumber());
     		String preIncNum =  getPreIncNumber(userInfo, orderList.get(0));
     		/*
     		 * 没有上个节点的接单，只有一种情况，就是业务员收单。（单独处理）
-    		 * */ 
+    		 **/ 
     		if(preIncNum.length() == 0 ) {
-    			return ResultUtil.exec(false,"收件失败, 没有来源网站的单子请确定！",null);
-    		}
+				return ResultUtil.exec(false,"用户信息错误，请确定！",null);
+			}
     		EforcesIncment preStop = incmentService.selectByNumber(preIncNum);
     		// 判断邮件发送地方是否错误。
     		EforcesOrder  result = orderList.get(0);
@@ -204,16 +198,14 @@ public class HandlingOrdersService {
 
     		DubboMsgVO msgVo  = receivedscanService.insertSelective(scan, stracking);
 			if(msgVo != null && msgVo.isRstFlage() ) {
-				return ResultUtil.exec(true,"收件扫描失败！",null);
+				return ResultUtil.exec(true,"收件扫描成功！",null);
 			}
-			return ResultUtil.exec(true,"收件成功",null);
+			return ResultUtil.exec(false,"收件成功失败",null);
 		}catch (Exception e){
 			e.printStackTrace();
 			return ResultUtil.exec(false,"收件失败",null);
 		}
 	}
-
-
 
 	/*
 	 *根据当前用户信息，和订单信息，查询订单来自哪里 

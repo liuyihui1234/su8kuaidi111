@@ -1,5 +1,6 @@
 package org.kuaidi.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesDictionary;
 
 import java.util.List;
@@ -50,5 +51,8 @@ public interface EforcesDictionaryMapper {
      * @return
      */
     List<EforcesDictionary> getParent();
+    
+    
+    List<EforcesDictionary>  getByParentId(@Param("parentId") Integer parentId);
 
 }

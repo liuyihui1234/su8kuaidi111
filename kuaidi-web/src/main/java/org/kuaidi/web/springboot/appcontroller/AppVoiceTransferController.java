@@ -5,6 +5,8 @@ import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.web.springboot.util.FileTransJavaDemo;
 import org.kuaidi.web.springboot.util.AliyunOSS.AppReplaceOSSUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,9 @@ import net.sf.json.JSONObject;
 @RequestMapping("/app/voicetransfer/")
 public class AppVoiceTransferController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(AppVoiceTransferController.class);
+	
+	
 	@RequestMapping("transferToWord")
     @ResponseBody
     public ResultVo insertFeedback(String voiceImg, String sufName) {
@@ -24,17 +29,17 @@ public class AppVoiceTransferController {
         // 第一步：提交录音文件识别请求，获取任务ID用于后续的识别结果轮询
         String taskId = demo.submitFileTransRequest(voicePath);
         if (taskId != null) {
-            System.out.println("录音文件识别请求成功，task_id: " + taskId);
+        	logger.warn("录音文件识别请求成功，task_id: " + taskId);
         }else {
-            System.out.println("录音文件识别请求失败！");
+        	logger.warn("录音文件识别请求失败！");
             return ResultUtil.exec(false, "录音文件识别失败,请重新录音！", null);
         }
         // 第二步：根据任务ID轮询识别结果
         String result = demo.getFileTransResult(taskId);
         if (result != null) {
-            System.out.println("录音文件识别结果查询成功：" + result);
+        	logger.info("录音文件识别结果查询成功：" + result);
         }else {
-            System.out.println("录音文件识别结果查询失败！");
+        	logger.info("录音文件识别结果查询失败！");
             return ResultUtil.exec(false, "录音文件识别失败,请重新录音！", null);
         }
         JSONObject  data = JSONObject.fromObject(result);

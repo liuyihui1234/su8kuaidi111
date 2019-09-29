@@ -38,8 +38,8 @@ public class EforcesRemovingBagScanServiceImpl implements IEforcesRemovingBagSca
 	}
 
 	@Override 
-	public void deleteById(Integer[] id) {
-		scanDao.updateIsDeleteById(id); 
+	public int deleteById(List<Integer> id) {
+		return scanDao.updateIsDeleteById(id);
 		
 	}
 

@@ -1,8 +1,12 @@
 package org.kuaidi.web.springboot.appcontroller;
 
 
+import javax.servlet.http.HttpServletRequest;
+import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
+import org.kuaidi.web.springboot.core.authorization.Authorization;
 import org.kuaidi.web.springboot.service.HandlingOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +29,11 @@ public class SentAndReceivePackageController {
 	 * */
 	@RequestMapping("incSentPackageToNext")
     @ResponseBody
-    public ResultVo incSentPackageToNext(String billNumber,Integer userId){
-        return handlingService.sentOrder(billNumber, userId);
+    @Authorization
+    public ResultVo incSentPackageToNext(HttpServletRequest request, String billNumber){
+		EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+		EforcesIncment  incMent = (EforcesIncment)request.getAttribute("inc");
+        return handlingService.sentOrder(billNumber,userInfo, incMent);
     }
 	
 	/*
@@ -36,9 +43,12 @@ public class SentAndReceivePackageController {
 	 * */
 	@RequestMapping("incReceivePackage")
     @ResponseBody
-    public ResultVo incReceivePackage(String billNumber,Integer userId){
+    @Authorization
+    public ResultVo incReceivePackage(HttpServletRequest request, String billNumber){
         try {
-            return handlingService.receiveOrder(billNumber,userId);
+        	EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+    		EforcesIncment  incMent = (EforcesIncment)request.getAttribute("inc");
+            return handlingService.receiveOrder(billNumber,userInfo, incMent);
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.exec(false,"收单异常！",null);

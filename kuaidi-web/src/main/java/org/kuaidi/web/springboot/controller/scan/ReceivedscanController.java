@@ -2,17 +2,18 @@ package org.kuaidi.web.springboot.controller.scan;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesReceivedscanService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,9 +26,11 @@ public class ReceivedscanController {
     @Reference(version = "1.0.0")
     IEforcesReceivedscanService receivedscanService;
 
-    @RequestMapping("getAllOrderSelective")
+    @GetMapping("Receivedscan")
+    @ResponseBody
     @CrossOrigin
     public PageVo doGetAllOrderSelective(QueryPageVo page){
+
 
         try {
             PageInfo<EforcesReceivedScan> pageInfo = receivedscanService.getAllOrderSelective(page.getPage(), page.getLimit(), page.getId());
@@ -38,7 +41,8 @@ public class ReceivedscanController {
         }
     }
 
-    @RequestMapping("updateSelective")
+    @PutMapping("Receivedscan")
+    @ResponseBody
     @CrossOrigin
     public ResultVo doUpdateByPrimaryKeySelective(EforcesReceivedScan receivedScan){
         try {
@@ -53,7 +57,20 @@ public class ReceivedscanController {
         }
     }
 
+    @PostMapping("Receivedscan")
+    @ResponseBody
+    @CrossOrigin
+    @NeedUserInfo
+    public ResultVo newSelective(EforcesReceivedScan receivedScan, HttpServletRequest request){
+        ResultVo rst;
+        EforcesUser user = (EforcesUser) request.getAttribute("user");
+        EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+       rst=receivedscanService.receiveOrder(receivedScan,user,inc);
+       return rst;
+    }
+
     @RequestMapping("selectOne")
+    @ResponseBody
     @CrossOrigin
     public ResultVo doSelectByPrimaryKey(Integer id){
         try {
@@ -77,10 +94,10 @@ public class ReceivedscanController {
     @RequestMapping("selectreceiveOrder")
     @ResponseBody
     @CrossOrigin
-    public ResultVo getreceiveOrder(String number){
-        try {
-            List<HashMap> receivedScan = receivedscanService.getreceiveOrder(number);
-            return ResultUtil.exec(true,"查询成功",receivedScan);
+            public ResultVo getreceiveOrder(String number){
+                try {
+                    List<HashMap> receivedScan = receivedscanService.getreceiveOrder(number);
+                    return ResultUtil.exec(true,"查询成功",receivedScan);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(false,"查询失败",null);

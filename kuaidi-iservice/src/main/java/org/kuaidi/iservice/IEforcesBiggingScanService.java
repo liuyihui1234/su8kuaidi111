@@ -7,9 +7,9 @@ import com.github.pagehelper.PageInfo;
 public interface IEforcesBiggingScanService {
 	EforcesBaggingScan getById(Integer id);
 	
-	PageInfo<EforcesBaggingScan > getAll(Integer page, Integer size,Integer incid);
+	PageInfo<EforcesBaggingScan > getAll(Integer page, Integer size,String incid);
 	
-	void deleteById(Integer[] id);
+	int deleteById(List<Integer> ids);
 	
 	void updateById(EforcesBaggingScan record);
 	

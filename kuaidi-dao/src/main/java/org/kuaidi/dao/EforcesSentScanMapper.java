@@ -26,11 +26,11 @@ public interface EforcesSentScanMapper {
      * @return
      */
     int selectCount(String incid);
-    
+
     List<EforcesSentScan> selectAll(Integer paramter);
-    
+
     int deleteByIds(List<Integer>ids);
-    
+
     List<EforcesSentScan>  selectByNumber(@Param("billsNumber") String billsNumber, @Param("incNumber") String incNumber);
 
     /**
@@ -38,5 +38,7 @@ public interface EforcesSentScanMapper {
      * @param list
      * @return
      */
-    int listinsert (List<EforcesSentScan> list);
+    int insertList (List<EforcesSentScan> list);
+
+
 }

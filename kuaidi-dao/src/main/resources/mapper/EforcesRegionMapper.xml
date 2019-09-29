@@ -12,9 +12,15 @@
   <sql id="Base_Column_List">
     code, name, parentCode, remark, bigZoneId
   </sql>
+
+  <!-- 添加时查询 -->
+  <select id="getBycode" parameterType="java.lang.String"  resultMap ="BaseResultMap">
+    select * from eforces_region where code = #{code}
+  </select>
+
     <!-- 查询省 -->
-    <select id="selectMaxCodeByParent" parameterType="java.lang.String">
-        select MAX(`code`)  from eforces_region where parentCode=#{code,jdbcType=VARCHAR}
+    <select id="selectMaxCodeByParent" parameterType="java.lang.String"   resultType="string">
+        select MAX(`code`) as code from eforces_region where parentCode=#{code,jdbcType=VARCHAR}
     </select>
 
     <!-- 查询市 -->
@@ -25,8 +31,14 @@
     </select>
 
     <!-- 市区县管理 -->
-    <select id="getListMsg" resultMap="BaseResultMap">
+    <select id="getListMsg" resultMap="BaseResultMap" parameterType="java.lang.String">
         select * from eforces_region where isDelete = 0
+        <if test="name!=null">
+          and  name like   concat('%',#{name,jdbcType=VARCHAR},'%')
+        </if>
+        <if test='parentCode != null and parentCode != ""'>
+        	and parentCode  = #{parentCode,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <!-- 删除 -->
@@ -127,6 +139,9 @@
       <if test="bigZoneId != null">
         bigZoneId,
       </if>
+      <if test="level != null">
+        level,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="code != null">
@@ -143,6 +158,9 @@
       </if>
       <if test="bigZoneId != null">
         #{bigZoneId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

@@ -2,7 +2,6 @@ package org.kuaidi.iservice;
 
 import java.util.List;
 import java.util.Map;
-
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesRegion;
 
@@ -41,7 +40,7 @@ public interface IRegionService {
 	 * @param pageSize
 	 * @return
 	 */
-	PageInfo<EforcesRegion> getListMsg(Integer pageNum,Integer pageSize, String parentCode);
+	PageInfo<EforcesRegion> getListMsg(Integer pageNum,Integer pageSize,String name, String parentCode);
 
 	/**
 	 * 添加省市区管理
@@ -59,7 +58,7 @@ public interface IRegionService {
 
 	/**
 	 * 删除省市区管理
-	 * @param id
+	 * @param
 	 * @return
 	 */
 	Integer removeUpdate(Integer[] code);
@@ -70,4 +69,19 @@ public interface IRegionService {
 	 * @return
 	 */
 	EforcesRegion selectByPrimaryKey(String code);
+
+	/**
+	 * 添加时查询
+	 * @param code
+	 * @return
+	 */
+	EforcesRegion getBycode(String code);
+	
+	/*
+	 * 根据父节点查询所在的地区
+	 * @param  parentCode
+	 * @return 
+	 */
+	List<EforcesRegion>  getRegionListByParentCode(String parentCode);
+	
 }

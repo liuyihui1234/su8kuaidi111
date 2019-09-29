@@ -33,7 +33,7 @@ public class EforcesStayedandtroubledscanServiceImpl implements IEforcesStayedan
     }
 
     @Override
-    public PageInfo<EforcesStayedandtroubledscan> getAllIssue(Integer pageNum, Integer pageSize,Integer incid) {
+    public PageInfo<EforcesStayedandtroubledscan> getAllIssue(Integer pageNum, Integer pageSize,String incid) {
         PageHelper.startPage(pageNum,pageSize);
         List<EforcesStayedandtroubledscan> allIssue = stayedandtroubledscanMapper.getAllIssue(incid);
         final PageInfo<EforcesStayedandtroubledscan> pageInfo = new PageInfo<>(allIssue);
@@ -41,9 +41,10 @@ public class EforcesStayedandtroubledscanServiceImpl implements IEforcesStayedan
     }
 
     @Override
-    public int insertSelective(EforcesStayedandtroubledscan record) {
-        return stayedandtroubledscanMapper.insertSelective(record);
+    public int insertList(List<EforcesStayedandtroubledscan> list) {
+        return stayedandtroubledscanMapper.insertList(list);
     }
+
 
     @Override
     public int updateByPrimaryKeySelective(EforcesStayedandtroubledscan record) {

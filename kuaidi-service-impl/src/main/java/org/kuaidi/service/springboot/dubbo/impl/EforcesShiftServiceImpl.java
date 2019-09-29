@@ -67,4 +67,10 @@ public class EforcesShiftServiceImpl implements IEforcesShiftService {
     public EforcesShift selectByPrimaryKey(Integer id) {
         return shiftDao.selectByPrimaryKey(id);
     }
+
+	@Override
+	public List<EforcesShift> selectByShiftlist() {
+		// TODO Auto-generated method stub
+		return shiftDao.selectByShiftlist();
+	}
 }

@@ -26,14 +26,16 @@ public interface IEforcesMenusService {
     PageInfo<MenusUsersActionVo> getAllVo(Integer page,Integer size);
     
     MenusUsersActionVo  getVoByPermisId(Integer id);
-    
+
     int setPermiIsDeleteById(List<Integer> ids);
 
-    void newPermis(Integer menuid,Integer actionid);
+    void newPermis(List<MenusUsersActionVo>list);
+
+    List<Integer> getActionIdByMenuId(Integer  id);
 
     List<EforcesTreeMenus> getMenuTree();
 
-    List<HashMap> getAllMenuTree();
+    List<HashMap> getAllMenuTree(String userid);
     
     int getMaxNumberByParentId(String parentId);
 

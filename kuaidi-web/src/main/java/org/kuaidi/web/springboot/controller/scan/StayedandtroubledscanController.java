@@ -2,7 +2,11 @@ package org.kuaidi.web.springboot.controller.scan;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesStayedandtroubledscan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.domain.EforcesWeighingScan;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
@@ -10,10 +14,13 @@ import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesStayedandtroubledscanService;
 import org.kuaidi.iservice.IEforcesWeighingScanService;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 @RestController
 @RequestMapping("/web/stayedandtroubledscan/")
@@ -23,17 +30,17 @@ public class StayedandtroubledscanController {
 
     @GetMapping("scan")
     @CrossOrigin
-    public PageVo getAll(QueryPageVo page) {
+    @NeedUserInfo
+    public PageVo getAll(QueryPageVo page, HttpServletRequest request) {
         try {
-            PageInfo<EforcesStayedandtroubledscan> eforcesUsers = scanService.getAllIssue(page.getPage(), page.getLimit(), page.getId());
-            System.out.println(eforcesUsers);
+            EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+            PageInfo<EforcesStayedandtroubledscan> eforcesUsers = scanService.getAllIssue(page.getPage(), page.getLimit(), inc.getNumber());
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(), eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(1, 10, 0, null);
         }
     }
-
 
     @RequestMapping("getById")
     @CrossOrigin
@@ -47,7 +54,6 @@ public class StayedandtroubledscanController {
         }
     }
 
-
     /**
      * 添加
      *
@@ -57,10 +63,43 @@ public class StayedandtroubledscanController {
 
     @PostMapping("scan")
     @CrossOrigin
-    public ResultVo addWeighingScan(EforcesStayedandtroubledscan record) {
+    @NeedUserInfo
+    public ResultVo addWeighingScan(EforcesStayedandtroubledscan record, HttpServletRequest request) {
         try {
-            int i = scanService.insertSelective(record);
-            return ResultUtil.exec(true, "添加成功", i);
+            EforcesUser user = (EforcesUser) request.getAttribute("user");
+            EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+            String billsnumber = record.getBillsnumber();
+            String[] split = {};
+            if(StringUtils.isNotEmpty(billsnumber)){
+               split = billsnumber.split("\\s+");
+            }else {
+                return ResultUtil.exec(false, "运单号不能为空", null);
+            }
+            System.out.println(split);
+            Set<String> set = new HashSet<String>();
+            for (String str : split
+            ) {
+                if(StringUtils.isNotEmpty(str)){
+                    set.add(str);
+                }
+            }
+            List<EforcesStayedandtroubledscan> list = new ArrayList<>();
+            for (String str1 :
+                    set) {
+                EforcesStayedandtroubledscan scan = new EforcesStayedandtroubledscan();
+                scan.setScantype("问题件扫描");
+                scan.setSacnners(user.getName());
+                scan.setFlightsnumber(record.getFlightsnumber());
+                scan.setBillsnumber(str1);
+                scan.setSacnnerid(user.getNumber());
+                scan.setIncname(user.getIncname());
+                scan.setTroubledtype(record.getTroubledtype());
+                scan.setIncid(user.getIncid());
+                list.add(scan);
+            }
+            System.out.println(list);
+            int i = scanService.insertList(list);
+            return ResultUtil.exec(true, "添加成功", set.size());
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(true, "添加失败", null);
@@ -68,7 +107,7 @@ public class StayedandtroubledscanController {
     }
 
     /**
-     *修改
+     * 修改
      *
      * @return
      */
@@ -78,15 +117,16 @@ public class StayedandtroubledscanController {
     public ResultVo updateScan(EforcesStayedandtroubledscan record) {
         try {
             int i = scanService.updateByPrimaryKeySelective(record);
-            return ResultUtil.exec(true, "添加成功", i);
+            return ResultUtil.exec(true, "修改成功", i);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.exec(true, "添加失败", null);
+            return ResultUtil.exec(true, "修改失败", null);
         }
     }
 
     /**
      * 删除
+     *
      * @return
      */
     @DeleteMapping("scan")
@@ -100,9 +140,6 @@ public class StayedandtroubledscanController {
             return ResultUtil.exec(true, "删除失败", null);
         }
     }
-
-
-
 
 }
 

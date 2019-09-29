@@ -29,11 +29,11 @@
   update
   eforces_removingbagscan
   set
-  isDelete=0
+  isDelete=1
   where
   id
   in
-  <foreach collection="array" index="index" item="id"
+  <foreach collection="list" index="index" item="id"
   open="(" close=")" separator=",">
   #{id}
   </foreach>
@@ -44,7 +44,7 @@
   from
   eforces_removingbagscan
   where
-  isDelete=1
+  isDelete=0
   <if test="_parameter!=null">
   and incid like CONCAT(#{_parameter},'%')
   </if>

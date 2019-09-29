@@ -59,14 +59,6 @@ public interface IEforcesTransportedscanService {
     EforcesTransportedscan selectByBillsnumber(String billsnumber);
 
     /**
-     * 根据转运后的订单号 查找对应的转运记录详细
-     * g
-     * @param nextnumber
-     * @return
-     */
-    EforcesTransportedscan selectByNextnumber(String nextnumber);
-
-    /**
      * 根据主键 动态修改对应的转运记录详情
      * g
      * @param record
@@ -74,5 +66,17 @@ public interface IEforcesTransportedscanService {
      */
     int updateByPrimaryKeySelective(EforcesTransportedscan record);
 
-    int updateState(List<String> billsNumber);
+    /**
+     * 把订单转态更改为（State=1）已添加到第三方平台
+     * @param billsNumber
+     * @return
+     */
+    int updateState1(List<String> billsNumber);
+
+    /**
+     * 把订单转态更改为（State=2）转运完成
+     * @param billsNumber
+     * @return
+     */
+    int updateState2(List<String> billsNumber);
 }

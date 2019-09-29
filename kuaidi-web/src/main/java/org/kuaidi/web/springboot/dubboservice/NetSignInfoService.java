@@ -328,9 +328,9 @@ public class NetSignInfoService {
         return rst;
     }
 
-	public PageVo doSelectNetsignSort(Integer pageNum, EforcesNetsign record){
+	public PageVo doSelectNetsignSort(Integer pageNum, Integer rows, EforcesNetsign record){
         try {
-        	PageInfo<EforcesNetsign> pageInfo = netSignService.selectNetsignSort(pageNum, record);
+        	PageInfo<EforcesNetsign> pageInfo = netSignService.selectNetsignSort(pageNum, rows,record);
             return ResultUtil.exec(pageInfo.getPageNum(), pageInfo.getPageSize(),
             		pageInfo.getTotal(), pageInfo.getList());
         } catch (Exception e) {
@@ -407,6 +407,22 @@ public class NetSignInfoService {
 		}else{
 			return ResultUtil.exec(false,"没有找到对应的数据",null);
 		}
+	}
+	
+	public ResultVo deleteByIds(String ids) {
+		if(ids == null || ids.length() == 0 ) {
+			return ResultUtil.exec(false, "参数错误", null);
+		}
+		try {
+			Integer num = netSignService.delNetSignByIds(ids);
+			if(num > 0 ) {
+				return ResultUtil.exec(true, "删除数据成功", num);
+			}
+		}catch(Exception e ) {
+			e.printStackTrace();
+			return ResultUtil.exec(false, "操作异常！", null);
+		}
+		return ResultUtil.exec(false, "没有删除的数据", null);
 	}
 
 }

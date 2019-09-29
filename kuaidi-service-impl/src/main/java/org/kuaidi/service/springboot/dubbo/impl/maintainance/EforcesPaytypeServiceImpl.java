@@ -45,4 +45,10 @@ public class EforcesPaytypeServiceImpl implements IEforcesPaytypeService {
     public int updateDelete(Integer[] ids) {
         return paytypeMapper.updateDelete(ids);
     }
+
+	@Override
+	public List<EforcesPaytype> selectAll() {
+		// TODO Auto-generated method stub
+		return paytypeMapper.selectAll();
+	}
 }

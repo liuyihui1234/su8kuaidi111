@@ -21,7 +21,6 @@ public class UsersServiceImpl implements UsersService {
     }
 
     public EforcesUsers selectUsers(String username, String password){
-       System.out.println(username+ " "+password);
        return UsersDao.selectUsers(username,password);
    }
 }

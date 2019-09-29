@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesCustomerAddressMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesCustomerAddress">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="channelSource" jdbcType="VARCHAR" property="channelsource" />
+    <result column="addressId" jdbcType="VARCHAR" property="addressid" />
+    <result column="memType" jdbcType="VARCHAR" property="memtype" />
+    <result column="contactName" jdbcType="VARCHAR" property="contactname" />
+    <result column="contactTel" jdbcType="VARCHAR" property="contacttel" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="provinceCode" jdbcType="VARCHAR" property="provincecode" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="cityCode" jdbcType="VARCHAR" property="citycode" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="countyCode" jdbcType="VARCHAR" property="countycode" />
+    <result column="areaStreet" jdbcType="VARCHAR" property="areastreet" />
+    <result column="areaStreetCode" jdbcType="VARCHAR" property="areastreetcode" />
+    <result column="locationCode" jdbcType="VARCHAR" property="locationcode" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="contactSpell" jdbcType="VARCHAR" property="contactspell" />
+    <result column="postCode" jdbcType="VARCHAR" property="postcode" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="contactPhone" jdbcType="VARCHAR" property="contactphone" />
+    <result column="countryCode" jdbcType="VARCHAR" property="countrycode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, openid, channelSource, addressId, memType, contactName, contactTel, country, 
+    province, provinceCode, city, cityCode, county, countyCode, areaStreet, areaStreetCode,
+    locationCode, latitude, 
+    longitude, address, companyName, contactSpell, postCode, type, contactPhone, countryCode
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_customeraddress
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  		select 
+    <include refid="Base_Column_List" />
+    from eforces_customeraddress
+    where openid = #{openId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateAddressByOpenId" parameterType="java.lang.String">
+  	update eforces_customeraddress
+    	set type = '1'
+    where openId = #{openId,jdbcType=VARCHAR}  
+  </update>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_customeraddress
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesCustomerAddress">
+    insert into eforces_customeraddress (id, openid, channelSource, 
+      addressId, memType, contactName, 
+      contactTel, country, province, 
+      provinceCode, city, cityCode, 
+      county, countyCode, areaStreet,
+      areaStreetCode ,locationCode, 
+      latitude, longitude, address, 
+      companyName, contactSpell, postCode, 
+      type, contactPhone, countryCode
+      )
+    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{channelsource,jdbcType=VARCHAR}, 
+      #{addressid,jdbcType=VARCHAR}, #{memtype,jdbcType=VARCHAR}, #{contactname,jdbcType=VARCHAR}, 
+      #{contacttel,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{provincecode,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{citycode,jdbcType=VARCHAR}, 
+      #{county,jdbcType=VARCHAR}, #{countycode,jdbcType=VARCHAR}, #{areastreet,jdbcType=VARCHAR}, 
+      #{areastreetcode,jdbcType=VARCHAR}, #{locationcode,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=DECIMAL}, #{longitude,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
+      #{companyname,jdbcType=VARCHAR}, #{contactspell,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{contactphone,jdbcType=VARCHAR}, #{countrycode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesCustomerAddress">
+    insert into eforces_customeraddress
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="channelsource != null">
+        channelSource,
+      </if>
+      <if test="addressid != null">
+        addressId,
+      </if>
+      <if test="memtype != null">
+        memType,
+      </if>
+      <if test="contactname != null">
+        contactName,
+      </if>
+      <if test="contacttel != null">
+        contactTel,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="provincecode != null">
+        provinceCode,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="citycode != null">
+        cityCode,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="countycode != null">
+        countyCode,
+      </if>
+      <if test="areastreet != null">
+        areaStreet,
+      </if>
+      <if test="areastreetcode != null">
+        careaStreetCode,
+      </if>
+      <if test="locationcode != null">
+        locationCode,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="companyname != null">
+        companyName,
+      </if>
+      <if test="contactspell != null">
+        contactSpell,
+      </if>
+      <if test="postcode != null">
+        postCode,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="contactphone != null">
+        contactPhone,
+      </if>
+      <if test="countrycode != null">
+        countryCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsource != null">
+        #{channelsource,jdbcType=VARCHAR},
+      </if>
+      <if test="addressid != null">
+        #{addressid,jdbcType=VARCHAR},
+      </if>
+      <if test="memtype != null">
+        #{memtype,jdbcType=VARCHAR},
+      </if>
+      <if test="contactname != null">
+        #{contactname,jdbcType=VARCHAR},
+      </if>
+      <if test="contacttel != null">
+        #{contacttel,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="provincecode != null">
+        #{provincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="countycode != null">
+        #{countycode,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreet != null">
+        #{areastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreetcode != null">
+         #{areastreetcode,jdbcType=VARCHAR},
+      </if>
+      <if test="locationcode != null">
+        #{locationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="contactspell != null">
+        #{contactspell,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="contactphone != null">
+        #{contactphone,jdbcType=VARCHAR},
+      </if>
+      <if test="countrycode != null">
+        #{countrycode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesCustomerAddress">
+    update eforces_customeraddress
+    <set>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="channelsource != null">
+        channelSource = #{channelsource,jdbcType=VARCHAR},
+      </if>
+      <if test="addressid != null">
+        addressId = #{addressid,jdbcType=VARCHAR},
+      </if>
+      <if test="memtype != null">
+        memType = #{memtype,jdbcType=VARCHAR},
+      </if>
+      <if test="contactname != null">
+        contactName = #{contactname,jdbcType=VARCHAR},
+      </if>
+      <if test="contacttel != null">
+        contactTel = #{contacttel,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="provincecode != null">
+        provinceCode = #{provincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        cityCode = #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="countycode != null">
+        countyCode = #{countycode,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreet != null">
+        areaStreet = #{areastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreetcode != null">
+         areaStreetCode = #{areastreetcode,jdbcType=VARCHAR},
+      </if>
+      <if test="locationcode != null">
+        locationCode = #{locationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        companyName = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="contactspell != null">
+        contactSpell = #{contactspell,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        postCode = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="contactphone != null">
+        contactPhone = #{contactphone,jdbcType=VARCHAR},
+      </if>
+      <if test="countrycode != null">
+        countryCode = #{countrycode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesCustomerAddress">
+    update eforces_customeraddress
+    set openid = #{openid,jdbcType=VARCHAR},
+      channelSource = #{channelsource,jdbcType=VARCHAR},
+      addressId = #{addressid,jdbcType=VARCHAR},
+      memType = #{memtype,jdbcType=VARCHAR},
+      contactName = #{contactname,jdbcType=VARCHAR},
+      contactTel = #{contacttel,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      provinceCode = #{provincecode,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      cityCode = #{citycode,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      countyCode = #{countycode,jdbcType=VARCHAR},
+      areaStreet = #{areastreet,jdbcType=VARCHAR},
+      areaStreetCode = #{areastreetcode,jdbcType=VARCHAR},
+      locationCode = #{locationcode,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR},
+      companyName = #{companyname,jdbcType=VARCHAR},
+      contactSpell = #{contactspell,jdbcType=VARCHAR},
+      postCode = #{postcode,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      contactPhone = #{contactphone,jdbcType=VARCHAR},
+      countryCode = #{countrycode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

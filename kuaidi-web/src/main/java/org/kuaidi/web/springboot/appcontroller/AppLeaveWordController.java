@@ -7,10 +7,11 @@ import org.kuaidi.bean.domain.EforcesLeaveword;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.iservice.IEforcesLeaveWordService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -19,6 +20,8 @@ public class AppLeaveWordController {
 
     @Reference(version = "1.0.0")
     IEforcesLeaveWordService leaveWordService;
+    
+    Logger logger = LoggerFactory.getLogger(AppLeaveWordController.class);
 
     @RequestMapping("getListLeaveMsg")
     @ResponseBody
@@ -44,6 +47,7 @@ public class AppLeaveWordController {
             }
             return ResultUtil.exec(pageNum,pageSize,pageInfo.getTotal(),resultDate);
         }catch (Exception e){
+        	logger.error(e.getMessage());
             return ResultUtil.exec(pageNum,pageSize,0,null);
         }
     }

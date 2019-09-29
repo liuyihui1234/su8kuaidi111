@@ -123,7 +123,7 @@ public class AppointmentDubboService {
     }
 
     /**
-     * 快递员接单，根据订单id修改订单状态为已接单（status为1）
+           * 快递员接单，根据订单id修改订单状态为已接单（status为1）
      * @param id
      * @param acceptid
      * @param acceptname
@@ -304,6 +304,19 @@ public class AppointmentDubboService {
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.exec(false,"删除失败",null);
+        }
+    }
+
+    public ResultVo updateByPrimaryKeySelective(EforcesAppointment record){
+        try {
+            int a = appointmentService.updateByPrimaryKeySelective(record);
+            if(a > 0){
+                return ResultUtil.exec(true,"修改成功",null);
+            }
+            return ResultUtil.exec(false,"修改失败",null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.exec(false,"操作失败",null);
         }
     }
 }

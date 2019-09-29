@@ -8,10 +8,7 @@ import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.maintainance.IEforcesProductcategoryService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Administrator on 2019/8/10 17:42
@@ -23,6 +20,7 @@ public class ProductcategoryController {
     IEforcesProductcategoryService productcategoryService;
 
     @RequestMapping("selectOne")
+    @ResponseBody
     @CrossOrigin
     public ResultVo selectOne(Integer id){
         try {
@@ -37,7 +35,8 @@ public class ProductcategoryController {
         }
     }
 
-    @RequestMapping("selectAll")
+    @GetMapping("Productcategory")
+    @ResponseBody
     @CrossOrigin
     public PageVo<EforcesProductcategory> selectAll(QueryPageVo page){
         try {
@@ -49,7 +48,8 @@ public class ProductcategoryController {
         }
     }
 
-    @RequestMapping("insertOne")
+    @PostMapping("Productcategory")
+    @ResponseBody
     @CrossOrigin
     public ResultVo insertOne(EforcesProductcategory productcategory){
         try {
@@ -64,7 +64,8 @@ public class ProductcategoryController {
         }
     }
 
-    @RequestMapping("updateOne")
+    @PutMapping("Productcategory")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateOne(EforcesProductcategory productcategory){
         try {
@@ -84,6 +85,7 @@ public class ProductcategoryController {
     }
 
     @RequestMapping("updateDelete")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(Integer id){
         try {
@@ -103,7 +105,8 @@ public class ProductcategoryController {
         }
     }
 
-    @RequestMapping("updateDeletes")
+    @DeleteMapping("Productcategory")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(@RequestBody Integer[] ids){
         try {

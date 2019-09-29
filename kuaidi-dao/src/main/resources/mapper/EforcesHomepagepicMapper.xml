@@ -13,6 +13,22 @@
     id, type, picPath, sort, crtTime, remark
   </sql>
 
+  <!-- 删除 -->
+  <delete id="delete">
+    delete from eforces_homePagePic where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--后台管理查询显示轮播图 -->
+  <select id="getListMsg" resultMap="BaseResultMap">
+    select * from eforces_homePagePic
+  </select>
+
   <select id="selectByDivide" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from eforces_homePagePic where type=#{type} order by sort asc
   </select>

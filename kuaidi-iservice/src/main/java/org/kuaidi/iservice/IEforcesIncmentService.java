@@ -2,6 +2,7 @@ package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesSentScan;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface IEforcesIncmentService {
 
      int deleteByid(List<Integer> array);
 
-    PageInfo<EforcesIncment> selectAllIcrment(Integer curr, Integer nums,String parameter);
+    PageInfo<EforcesIncment> selectAllIcrment(Integer curr, Integer nums,String parameter, String parentId);
 
     EforcesIncment selectByPrimaryKey(Integer id);
 
@@ -57,4 +58,6 @@ public interface IEforcesIncmentService {
              * 根据 节点的编号，统计自己一个月发送订单的数量
      */
     List<Map<String,Object>> statisticsByNumber(List<String> numbers);
+
+    EforcesIncment getByNextStopName(String name);
 }

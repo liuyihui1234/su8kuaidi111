@@ -8,10 +8,13 @@ import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesMenus;
 import org.kuaidi.bean.domain.EforcesTreeMenus;
+import org.kuaidi.bean.domain.EforcesTreeMenusGroup;
 import org.kuaidi.bean.domain.MenusUsersActionVo;
 
 public interface EforcesMenusMapper {
     int deleteByPrimaryKey(Integer id);
+
+    void deleteVoByMenuid(String menuid);
 
     int insert(EforcesMenus record);
 
@@ -24,7 +27,9 @@ public interface EforcesMenusMapper {
     int updateByPrimaryKey(EforcesMenus record);
     
     List<EforcesMenus> selectAll();
-    
+
+    List<Integer> selectActionIdByMenuId(Integer id);
+
     
     EforcesMenus selectById(Integer id);
     
@@ -39,13 +44,13 @@ public interface EforcesMenusMapper {
     int updatePermiIsDeleteById(List<Integer> ids);
     
     
-    int  addPermis(@Param("menuid")Integer menuid,@Param("actionid")Integer actionid);
+    int  addPermis(List<MenusUsersActionVo> list);
 
     List<EforcesTreeMenus> getMenuTree();
     @MapKey("id")
-    List<HashMap> getAllMenuTree();
+    List<HashMap> getAllMenuTree(String userid);
     
     Integer  selectMaxNumberByParentId(String parentId);
 
-
+    List<EforcesTreeMenusGroup> getMenuTree_group(String userid);
 }

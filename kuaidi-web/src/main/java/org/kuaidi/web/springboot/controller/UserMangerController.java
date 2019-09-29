@@ -39,11 +39,10 @@ public class UserMangerController {
 
     @GetMapping("user")
     @CrossOrigin
-    public PageVo getAllUser(QueryPageVo page) {
+    public PageVo getAllUser(QueryPageVo page,EforcesUser record) {
         PageVo rst = null;
-        System.out.println(page);
-
-        rst = userMangerService.getAllUser(page);
+        System.err.println(record);
+        rst = userMangerService.getAllUser(page,record);
         return rst;
     }
 
@@ -92,6 +91,8 @@ public class UserMangerController {
        rst = userMangerService.deleteUserByID(array);
         return rst;
     }
+
+
 
 
 

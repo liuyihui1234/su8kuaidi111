@@ -73,4 +73,11 @@ public interface AppointmentService {
      */
     Integer deleteAppointment(Integer[] id);
 
+    /**
+     * 修改预约订单信息
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKeySelective(EforcesAppointment record);
+
 }

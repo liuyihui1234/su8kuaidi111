@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesPriceMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesPrice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fromProvinceId" jdbcType="VARCHAR" property="fromprovinceid" />
+    <result column="toProvinceId" jdbcType="VARCHAR" property="toprovinceid" />
+    <result column="firstweight" jdbcType="DECIMAL" property="firstweight" />
+    <result column="firstPrice" jdbcType="DECIMAL" property="firstprice" />
+    <result column="continueweight" jdbcType="DECIMAL" property="continueweight" />
+    <result column="continueprice" jdbcType="DECIMAL" property="continueprice" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, fromProvinceId, toProvinceId, firstweight, firstPrice, continueweight, continueprice, 
+    type
+  </sql>
+
+  <!-- 分页查询地区价格表 -->
+  <select id="getByPrice" resultMap="BaseResultMap">
+    select * from eforces_price where isDelete = 0
+  </select>
+
+  <!-- 修改删除状态为已删除 -->
+  <update id="removeByPrice">
+    update
+    eforces_price
+    set
+    isDelete=1
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByProvinceCodes"   resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>
+    from eforces_price
+    where  type = #{status,jdbcType=VARCHAR}  and fromProvinceId  = #{fromProvinceId,jdbcType=VARCHAR}  and 
+    toProvinceId  = #{toProvinceId,jdbcType=VARCHAR} 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesPrice">
+    insert into eforces_price (id, fromProvinceId, toProvinceId, 
+      firstweight, firstPrice, continueweight, 
+      continueprice, type)
+    values (#{id,jdbcType=INTEGER}, #{fromprovinceid,jdbcType=VARCHAR}, #{toprovinceid,jdbcType=VARCHAR}, 
+      #{firstweight,jdbcType=DECIMAL}, #{firstprice,jdbcType=DECIMAL}, #{continueweight,jdbcType=DECIMAL}, 
+      #{continueprice,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesPrice">
+    insert into eforces_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fromprovinceid != null">
+        fromProvinceId,
+      </if>
+      <if test="toprovinceid != null">
+        toProvinceId,
+      </if>
+      <if test="firstweight != null">
+        firstweight,
+      </if>
+      <if test="firstprice != null">
+        firstPrice,
+      </if>
+      <if test="continueweight != null">
+        continueweight,
+      </if>
+      <if test="continueprice != null">
+        continueprice,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fromprovinceid != null">
+        #{fromprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovinceid != null">
+        #{toprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="firstweight != null">
+        #{firstweight,jdbcType=DECIMAL},
+      </if>
+      <if test="firstprice != null">
+        #{firstprice,jdbcType=DECIMAL},
+      </if>
+      <if test="continueweight != null">
+        #{continueweight,jdbcType=DECIMAL},
+      </if>
+      <if test="continueprice != null">
+        #{continueprice,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesPrice">
+    update eforces_price
+    <set>
+      <if test="fromprovinceid != null">
+        fromProvinceId = #{fromprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovinceid != null">
+        toProvinceId = #{toprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="firstweight != null">
+        firstweight = #{firstweight,jdbcType=DECIMAL},
+      </if>
+      <if test="firstprice != null">
+        firstPrice = #{firstprice,jdbcType=DECIMAL},
+      </if>
+      <if test="continueweight != null">
+        continueweight = #{continueweight,jdbcType=DECIMAL},
+      </if>
+      <if test="continueprice != null">
+        continueprice = #{continueprice,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesPrice">
+    update eforces_price
+    set fromProvinceId = #{fromprovinceid,jdbcType=VARCHAR},
+      toProvinceId = #{toprovinceid,jdbcType=VARCHAR},
+      firstweight = #{firstweight,jdbcType=DECIMAL},
+      firstPrice = #{firstprice,jdbcType=DECIMAL},
+      continueweight = #{continueweight,jdbcType=DECIMAL},
+      continueprice = #{continueprice,jdbcType=DECIMAL},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

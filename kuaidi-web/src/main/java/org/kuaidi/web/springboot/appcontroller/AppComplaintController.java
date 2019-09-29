@@ -17,7 +17,6 @@ public class AppComplaintController {
 
     @Reference(version = "1.0.0")
     IEforcesComplaintService complaintService;
-
     /**
            * 投诉记录
      * @param incNumber

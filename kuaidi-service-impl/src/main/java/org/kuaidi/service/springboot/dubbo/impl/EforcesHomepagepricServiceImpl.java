@@ -23,4 +23,43 @@ public class EforcesHomepagepricServiceImpl implements IEforcesHomepagepicServic
     public List<EforcesHomepagepic> selectByDivide(Integer id) {
         return homepagepicMapper.selectByDivide(id);
     }
+
+    /**
+     * 后台管理查询显示轮播图
+     * @return
+     */
+    @Override
+    public List<EforcesHomepagepic> getListMsg() {
+        return homepagepicMapper.getListMsg();
+    }
+
+    /**
+     * 后台管理添加轮播图
+     * @param record
+     * @return
+     */
+    @Override
+    public int insertSelective(EforcesHomepagepic record) {
+        return homepagepicMapper.insertSelective(record);
+    }
+
+    /**
+     * 后台管理修改轮播图
+     * @param record
+     * @return
+     */
+    @Override
+    public int updateByPrimaryKeySelective(EforcesHomepagepic record) {
+        return homepagepicMapper.updateByPrimaryKeySelective(record);
+    }
+
+    /**
+     * 后台管理删除轮播图
+     * @param id
+     * @return
+     */
+    @Override
+    public int delete(Integer[] id) {
+        return homepagepicMapper.delete(id);
+    }
 }

@@ -40,11 +40,20 @@ public interface EforcesOrderMapper {
     List<EforcesOrder> getHadPostPackage(String incid);
 
     /**
-     * 未派件
+            * 未派件
      * @param incid
      * @return
      */
-    List<EforcesOrder> notHadPostPackage(String incid);
+    List<EforcesOrder> notHadPostPackage(@Param("userNum")String userNum , @Param("incid") String incid);
+    
+    
+    /**
+	     * 未派件(街道的未派单)
+	* @param incid
+	* @return
+	*/
+	List<EforcesOrder> notHadPostPackage1(@Param("userNum")String userNum , @Param("incid") String incid);
+
     
     /**
      * 已完成订单
@@ -87,10 +96,10 @@ public interface EforcesOrderMapper {
     List<EforcesOrder> getListAddressee(String incid);
 
     /**
-     * 寄/派件运单管理
+               * 寄/派件运单管理
      * @return
      */
-    List<EforcesOrder> getAllMsg();
+    List<EforcesOrder> getAllMsg(EforcesOrder order);
 
     /**
      * 删除寄/派件运单管理
@@ -116,5 +125,16 @@ public interface EforcesOrderMapper {
      * @return
      */
 	List<EforcesOrder> getAllNumberMsg (List<String> list);
-	
+
+    /**
+     * 查询详情信息
+     * @param id
+     * @return
+     */
+    EforcesOrder getByid (Integer id);
+    
+    /*
+	 * 根据发单人的openId 查询他发送的订单信息。
+	 */
+	List<EforcesOrder> getNumbersByOpenId(String openId);
 }

@@ -15,6 +15,12 @@ public class EforcesDepartmentServiceImpl implements IEforcesDepartmentService {
     @Autowired
     EforcesDepartmentMapper departmentMapper;
 
+    @Override
+    public List<EforcesDepartment> getListTwo() {
+        List<EforcesDepartment> listResult = departmentMapper.getList();
+        return listResult;
+    }
+
     /**
      * 显示部门管理
      * @param pageNum

@@ -10,6 +10,9 @@ public interface EforcesStayedandtroubledscanMapper {
 
     int insert(EforcesStayedandtroubledscan record);
 
+    int insertList(List<EforcesStayedandtroubledscan> list);
+
+
     int insertSelective(EforcesStayedandtroubledscan record);
 
     EforcesStayedandtroubledscan selectByPrimaryKey(Integer id);
@@ -30,7 +33,7 @@ public interface EforcesStayedandtroubledscanMapper {
      */
     List<EforcesStayedandtroubledscan> getIssue(@Param("incid") String incid, @Param("causeIds") List<Integer> causeIds);
 
-    List<EforcesStayedandtroubledscan> getAllIssue(Integer incid);
+    List<EforcesStayedandtroubledscan> getAllIssue(String incid);
 
     /*
      * 根据订单号删除问题件
@@ -39,6 +42,7 @@ public interface EforcesStayedandtroubledscanMapper {
 
     /**
      * 根据id删除
+     *
      * @param list
      * @return
      */

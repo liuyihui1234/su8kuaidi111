@@ -2,31 +2,39 @@ package org.kuaidi.web.springboot.controller.scan;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesCustomerSign;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesStayedandtroubledscan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesCustomerSignService;
 import org.kuaidi.iservice.IEforcesStayedandtroubledscanService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.kuaidi.iservice.IEforceslogisticstrackingService;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/CustomSign/")
+@RequestMapping("/web/")
 public class CustomSignController {
     @Reference(version = "1.0.0")
     IEforcesCustomerSignService scanService;
+    @Reference(version = "1.0.0")
+    IEforceslogisticstrackingService logisticstrackingService;
 
-    @RequestMapping("getAll")
+    @GetMapping("customsign")
     @CrossOrigin
-    public PageVo getAll(QueryPageVo page) {
+    @NeedUserInfo
+    public PageVo getAll(QueryPageVo page,HttpServletRequest request) {
         try {
-            PageInfo<EforcesCustomerSign> allSign = scanService.getAllSign(page.getPage(), page.getLimit(), page.getId());
+            EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+            PageInfo<EforcesCustomerSign> allSign = scanService.getAllSign(page.getPage(), page.getLimit(),"44");
             return ResultUtil.exec(allSign.getPageNum(), allSign.getSize(), allSign.getTotal(), allSign.getList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,45 +42,60 @@ public class CustomSignController {
         }
     }
 
+    /**
+     * 添加用户签收
+     * @param record
+     * @return
+     */
 
-    @RequestMapping("getById")
+    @PostMapping("customsign")
     @CrossOrigin
-    public ResultVo getById(Integer id) {
+    @NeedUserInfo
+    public ResultVo addScan(EforcesCustomerSign record, HttpServletRequest request) {
         try {
-            EforcesCustomerSign eforcesCustomerSign = scanService.selectByPrimaryKey(id);
-            return ResultUtil.exec(true, "查询成功", eforcesCustomerSign);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultUtil.exec(true, "查询失败", null);
-        }
-    }
-
-    @RequestMapping("addCustomSign")
-    @CrossOrigin
-    public ResultVo addWeighingScan(EforcesCustomerSign record) {
-        try {
+            EforcesUser user = (EforcesUser) request.getAttribute("user");
+            EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+            //判断当前单号是否已经是到件后的状态
+            String s = logisticstrackingService.selectMaxMark(record.getNumber());
+            if(StringUtils.isEmpty(s)){
+                return ResultUtil.exec(false, "单号错误", null);
+            }else if(Integer.parseInt(s)<4){
+                return ResultUtil.exec(false, "运单状态不正确", null);
+            }
+            record.setIncname(inc.getName());
+            record.setIncid(user.getIncid());
             int i = scanService.insertCustomer(record);
             return ResultUtil.exec(true, "添加成功", i);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.exec(true, "添加失败", null);
+            return ResultUtil.exec(false, "添加失败", null);
         }
     }
 
-//
-//
-//
-//
-//    @RequestMapping("addstayedandtroubledscan")
-//    @CrossOrigin
-//    public ResultVo addWeighingScan(EforcesStayedandtroubledscan record) {
-//        try {
-//            int i = scanService.insertSelective(record);
-//            return ResultUtil.exec(true, "添加成功", i);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResultUtil.exec(true, "添加失败", null);
-//        }
-//    }
+
+    @PutMapping("customsign")
+    @CrossOrigin
+    public ResultVo pdateScan(EforcesCustomerSign record) {
+        try {
+            int i = scanService.updateByPrimaryKeySelective(record);
+            return ResultUtil.exec(true, "修改成功", i);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "修改失败", null);
+        }
+    }
+
+    @DeleteMapping("customsign")
+    @CrossOrigin
+    public ResultVo deleteScan(@RequestBody List<Integer> list) {
+        try {
+            int i = scanService.DeleteById(list);
+            return ResultUtil.exec(true, "删除成功", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "删除失败", null);
+        }
+    }
+
 
 }

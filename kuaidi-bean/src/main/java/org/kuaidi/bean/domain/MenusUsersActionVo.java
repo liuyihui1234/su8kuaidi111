@@ -10,7 +10,26 @@ public class MenusUsersActionVo  implements Serializable{
 	private static final long serialVersionUID = -8899719112277499404L;
 	private Integer id;
 	private String  text;
+	private String menuid;
+	private String actionid;
 	private String 	actionName;
+
+	public String getMenuid() {
+		return menuid;
+	}
+
+	public void setMenuid(String menuid) {
+		this.menuid = menuid;
+	}
+
+	public String getActionid() {
+		return actionid;
+	}
+
+	public void setActionid(String actionid) {
+		this.actionid = actionid;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -29,10 +48,18 @@ public class MenusUsersActionVo  implements Serializable{
 	public void setActionName(String actionName) {
 		this.actionName = actionName;
 	}
+
 	@Override
 	public String toString() {
-		return "MenusUsersActionVo [id=" + id + ", text=" + text + ", actionName=" + actionName + "]";
+		return "MenusUsersActionVo{" +
+				"id=" + id +
+				", text='" + text + '\'' +
+				", menuid=" + menuid +
+				", actionid=" + actionid +
+				", actionName='" + actionName + '\'' +
+				'}';
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -55,6 +55,9 @@
 	</sql>
 
 
+
+
+
 	<!-- 批量将发件信息插入数据库 -->
 	<insert id="insertList" parameterType="java.util.List">
 		insert into eforces_sentscan
@@ -126,7 +129,7 @@
 		from
 		eforces_sentscan
 		where
-		isDelete=1
+		isDelete=0
 		<if test="billsNumber != null">
 			and billsnumber  =  #{billsNumber,jdbcType=VARCHAR}
 		</if>

@@ -8,10 +8,28 @@
     <result column="downloadurl" jdbcType="VARCHAR" property="downloadurl" />
     <result column="crtTime" jdbcType="TIMESTAMP" property="crttime" />
     <result column="validTime" jdbcType="TIMESTAMP" property="validtime" />
+    <result column="forceUpdateFlage" jdbcType="INTEGER" property="forceUpdateFlage" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, version, downloadurl, crtTime, validTime
+    id, type, version, downloadurl, crtTime, validTime,forceUpdateFlage,remark
   </sql>
+
+  <!-- 后台管理查询版本信息 -->
+  <select id="getListMsg" resultMap="BaseResultMap">
+    select * from eforces_versionInfo
+  </select>
+
+  <!-- 删除 -->
+  <delete id="delete">
+    delete from eforces_versionInfo where
+    id
+    in
+    <foreach collection="array" item="id"
+             index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </delete>
 
   <select id="getlist" resultMap="BaseResultMap">
     select * from eforces_versionInfo where type = #{type}
@@ -29,10 +47,11 @@
   </delete>
   <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesVersioninfo">
     insert into eforces_versionInfo (id, type, version, 
-      downloadurl, crtTime, validTime
+      downloadurl, crtTime, validTime,forceUpdateFlage,remark
       )
     values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR}, 
-      #{downloadurl,jdbcType=VARCHAR}, #{crttime,jdbcType=TIMESTAMP}, #{validtime,jdbcType=TIMESTAMP}
+      #{downloadurl,jdbcType=VARCHAR}, #{crttime,jdbcType=TIMESTAMP}, #{validtime,jdbcType=TIMESTAMP},
+      #{forceUpdateFlage,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesVersioninfo">
@@ -56,6 +75,12 @@
       <if test="validtime != null">
         validTime,
       </if>
+      <if test="forceUpdateFlage != null">
+        forceUpdateFlage,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -75,6 +100,12 @@
       </if>
       <if test="validtime != null">
         #{validtime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="forceUpdateFlage != null">
+        #{forceUpdateFlage,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},,
       </if>
     </trim>
   </insert>
@@ -96,6 +127,12 @@
       <if test="validtime != null">
         validTime = #{validtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="forceUpdateFlage != null">
+        forceUpdateFlage = #{forceUpdateFlage,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -105,7 +142,9 @@
       version = #{version,jdbcType=VARCHAR},
       downloadurl = #{downloadurl,jdbcType=VARCHAR},
       crtTime = #{crttime,jdbcType=TIMESTAMP},
-      validTime = #{validtime,jdbcType=TIMESTAMP}
+      validTime = #{validtime,jdbcType=TIMESTAMP},
+      forceUpdateFlage = #{forceUpdateFlage,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

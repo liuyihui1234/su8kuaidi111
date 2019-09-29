@@ -30,13 +30,15 @@ public interface IEforcesSentscanService {
     void setById(EforcesSentScan sentScan);
     
     List <EforcesSentScan> getSentScanByNumber(String billsNumber, String incNumber);
-    
+
     Integer updateSentScan(EforcesSentScan record);
 
     /**
      * 批量将发件信息插入数据库
      * @param list
      * @return
-     */
+             */
     int listinsert (List<EforcesSentScan> list);
+
+
 }

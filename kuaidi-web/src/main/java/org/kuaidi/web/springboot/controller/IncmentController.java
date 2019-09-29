@@ -8,8 +8,6 @@ import org.kuaidi.iservice.IEforcesIncmentService;
 import org.kuaidi.web.springboot.dubboservice.IncmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -133,4 +131,22 @@ public class IncmentController {
         }
         return rst;
     }
+    
+    @RequestMapping("getIncByParent")
+    @CrossOrigin
+    @ResponseBody
+    public ResultVo getIncByParent(String parentCode) {
+        ResultVo rst = null;
+        try {
+        	if(StringUtils.isEmpty(parentCode)) {
+        		parentCode = "0";
+        	}
+        	rst = incmentDubboService.findIncmentByParentNumber(parentCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rst;
+    }
+    
+    
 }

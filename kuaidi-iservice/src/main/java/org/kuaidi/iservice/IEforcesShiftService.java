@@ -40,4 +40,12 @@ public interface IEforcesShiftService {
      * @return
      */
     EforcesShift selectByPrimaryKey(Integer id);
+    
+    
+    /**
+     * 查询班次管理
+     * @param
+     * @return
+     */
+    List<EforcesShift> selectByShiftlist();
 }

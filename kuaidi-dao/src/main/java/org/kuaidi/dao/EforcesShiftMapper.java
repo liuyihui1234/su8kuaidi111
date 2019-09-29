@@ -13,7 +13,7 @@ public interface EforcesShiftMapper {
     int updateByPrimaryKey(EforcesShift record);
 
     /**
-     * 查询班次管理
+     * 查询
      * @param
      * @return
      */

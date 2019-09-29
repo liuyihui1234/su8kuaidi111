@@ -1,6 +1,8 @@
 package org.kuaidi.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesSentScan;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,7 @@ public interface EforcesIncmentMapper {
 
     int insertSelective(EforcesIncment record);
 
-    List<EforcesIncment> selectAllIcrment(String parameter);
+    List<EforcesIncment> selectAllIcrment(@Param("parameter") String parameter, @Param("parentId") String parentId);
 
     EforcesIncment selectByPrimaryKey(Integer id);
 
@@ -53,4 +55,6 @@ public interface EforcesIncmentMapper {
     List<Map<String, Object>> statisticsIncmentByNumber(List<String> number);
 
     int deleteByid(List<Integer> array);
+
+    EforcesIncment selectNextSyopByName(String name);
 }

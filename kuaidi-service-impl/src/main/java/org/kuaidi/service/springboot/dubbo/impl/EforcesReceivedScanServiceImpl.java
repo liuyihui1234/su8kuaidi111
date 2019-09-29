@@ -1,27 +1,55 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.kuaidi.bean.domain.EforcesLogisticStracking;
-import org.kuaidi.bean.domain.EforcesReceivedScan;
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuaidi.bean.domain.*;
 import org.kuaidi.bean.vo.DubboMsgVO;
+import org.kuaidi.bean.vo.ResultUtil;
+import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
 import org.kuaidi.dao.EforcesReceivedScanMapper;
-import org.kuaidi.iservice.IEforcesReceivedscanService;
+import org.kuaidi.iservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 
 @Service(version = "1.0.0",interfaceClass=IEforcesReceivedscanService.class)
 public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanService {
+    @Reference(version = "1.0.0")
+    private UserService userService;
+
+    @Reference(version = "1.0.0")
+    private IEforcesOrderService orderService;
+
+    @Reference(version = "1.0.0")
+    private IEforcesSentscanService sentScanService;
+
+    @Reference(version = "1.0.0")
+    private IEforceslogisticstrackingService logisticstrackingService;
+
+    @Reference(version = "1.0.0")
+    private IEforcesIncmentService  incmentService ;
+
+    @Reference(version = "1.0.0")
+    private IEforcesReceivedscanService receivedscanService;
+
+    @Reference(version = "1.0.0")
+    private IEforcesBiggingScanService  biggingScanService;
+
+    @Reference(version= "1.0.0")
+    private IEforcesRemovingBagScanService  removeBageService;
 
     @Autowired
     EforcesReceivedScanMapper receivedscanMapper;
-    
+
     @Autowired
-    private EforcesLogisticStrackingMapper  logisticStrackingMapper; 
+    private EforcesLogisticStrackingMapper  logisticStrackingMapper;
 
     /**
      * 查询派收件总数量
@@ -111,13 +139,226 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
         return receivedscanMapper.insertList(list);
     }
 
-    /*    *//**
-     * 收件，根据订单号在订单表查到数据增加到扫描表内
-     * @param receivedScan
+    /**
+     * 收件 根据订单号查询一条订单信息，并存入扫描表内
+     *
      * @return
-     *//*
-    @Override
-    public int addOrderMsg(EforcesReceivedScan receivedScan) {
-        return receivedscanMapper.addOrderMsg(receivedScan);
-    }*/
+     */
+    public ResultVo receiveOrder( EforcesReceivedScan scan, EforcesUser userInfo, EforcesIncment currentStop){
+        int i=0;
+        try {
+            String[] split = {};
+            if(StringUtils.isNotEmpty(scan.getBillsnumber())){
+                split = scan.getBillsnumber().split("\\s+");
+            }else {
+                return ResultUtil.exec(false, "运单号不能为空", null);
+            }
+            Set<String> set = new HashSet<String>();
+            for(String str:split){
+                if(StringUtils.isNotEmpty(str)){
+                    set.add(str);
+                }
+            }
+            for(String billNumber:set) {
+                List<EforcesOrder> orderList = orderService.getByNumber(billNumber);
+                if (orderList == null || orderList.size() == 0) {
+                    return ResultUtil.exec(false, "订单号错误，请确定！", null);
+                }
+                if (userInfo == null) {
+                    return ResultUtil.exec(false, "用户信息错误，请确定！", null);
+                }
+                String preIncNum = getPreIncNumber(userInfo, orderList.get(0));
+                /*
+                 * 没有上个节点的接单，只有一种情况，就是业务员收单。（单独处理）
+                 * */
+                if (preIncNum.length() == 0) {
+                    return ResultUtil.exec(false, "收件失败, 没有来源网站的单子请确定！", null);
+                }
+                EforcesIncment preStop = incmentService.selectByNumber(preIncNum);
+                // 判断邮件发送地方是否错误。
+                EforcesOrder result = orderList.get(0);
+                EforcesIncment nextStop = incmentService.getByNextStopName(scan.getLaststopname());
+                System.err.println(nextStop);
+                if(nextStop==null){
+                    return  ResultUtil.exec(false,"到件扫描失败！请输入正确的目的地",null);
+                }
+                EforcesReceivedScan parameter = createReceiveScan(scan,userInfo, nextStop, currentStop, result, 0);
+                System.err.println("currentStop:"+currentStop);
+                String description = "快件到达【%s】，上一站是【%s】,扫描员是【%s】";
+                description = String.format(description, currentStop.getName(), "", userInfo.getName());
+                EforcesLogisticStracking stracking = getLogisticstracking(billNumber, description, userInfo.getName(), currentStop.getName(), currentStop.getNumber(), 4);
+
+                DubboMsgVO msgVo = insertSelective(parameter, stracking);
+                if(msgVo != null && msgVo.isRstFlage() ) {
+                    i++;
+                }
+
+            }
+            if(i==split.length){
+                return ResultUtil.exec(true,"到件扫描成功！",null);
+            }else {
+                return ResultUtil.exec(false, "到件扫描失败！", null);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.exec(false,"到件扫描失败",null);
+        }
+    }
+
+
+
+
+    /*
+     *根据当前用户信息，和订单信息，查询订单来自哪里
+     * */
+    private String  getPreIncNumber(EforcesUser userInfo,EforcesOrder orderInfo) {
+        String preIncNumber = "";
+        if(orderInfo != null) {
+            int sameZoneLeve = getSameLevelByOrder(orderInfo);
+            /*
+             * provincePrexIncNum, 这个变量是用来标识现在是在 fromXXX  的路上，还是在  toXXX 的位置。
+             */
+            String userIncNum = userInfo.getIncnumber().trim();
+            String provincePrexIncNum = "";
+            if(StringUtils.isNotEmpty(userIncNum) && userIncNum.length() > 2) {
+                provincePrexIncNum = userIncNum.substring(0, 2);
+            }
+            // 在from的线上
+            if(StringUtils.isNotEmpty(orderInfo.getFromarea())  &&
+                    orderInfo.getFromarea().trim().startsWith(provincePrexIncNum)) {
+                if(StringUtils.isNotEmpty(orderInfo.getFromprovince()) &&
+                        userIncNum.startsWith(orderInfo.getFromprovince().trim())
+                ) {
+                    preIncNumber = orderInfo.getFromcity();
+                }
+                if(StringUtils.isNotEmpty(orderInfo.getFromcity())   &&
+                        userIncNum.startsWith(orderInfo.getFromcity().trim())
+                ) {
+                    preIncNumber = orderInfo.getFromarea();
+                }else if(StringUtils.isNotEmpty(orderInfo.getFromarea()) &&
+                        userIncNum.startsWith(orderInfo.getFromarea().trim())
+                ){
+                    preIncNumber = orderInfo.getFromareastreet();
+                }
+            }else  if(StringUtils.isNotEmpty(orderInfo.getToarea())  &&
+                    orderInfo.getToarea().trim().startsWith(provincePrexIncNum)) {
+                if(StringUtils.isNotEmpty(orderInfo.getToprovince()) &&
+                        userIncNum.startsWith(orderInfo.getToprovince().trim())
+                ) {
+                    preIncNumber = orderInfo.getFromprovince();
+                }else if(StringUtils.isNotEmpty(orderInfo.getTocity()) &&
+                        userIncNum.startsWith(orderInfo.getTocity().trim())
+                ) {
+                    preIncNumber = orderInfo.getToprovince();
+                }else if(StringUtils.isNotEmpty(orderInfo.getToarea()) &&
+                        userIncNum.startsWith(orderInfo.getToarea().trim())
+                ) {
+                    preIncNumber = orderInfo.getTocity();
+                }else if(StringUtils.isNotEmpty(orderInfo.getToareastreet()) &&
+                        userIncNum.startsWith(orderInfo.getToareastreet().trim())
+                ) {
+                    preIncNumber = orderInfo.getToarea();
+                }
+            }
+
+            if(sameZoneLeve == 3 &&  StringUtils.isNotEmpty(orderInfo.getToareastreet()) &&
+                    userIncNum.startsWith(orderInfo.getToareastreet().trim())
+            ) {
+                if(StringUtils.isEmpty(orderInfo.getFromarea())) {
+                    preIncNumber = orderInfo.getFromarea().trim();
+                }
+            }else if(sameZoneLeve == 2 && StringUtils.isNotEmpty(orderInfo.getToarea()) &&
+                    userIncNum.startsWith(orderInfo.getToarea().trim())
+            ) {
+                if(StringUtils.isEmpty(orderInfo.getFromcity())) {
+                    preIncNumber = orderInfo.getFromcity().trim();
+                }
+            }else if(sameZoneLeve == 1 && StringUtils.isNotEmpty(orderInfo.getTocity()) &&
+                    userIncNum.startsWith(orderInfo.getTocity().trim())
+            ) {
+                preIncNumber = orderInfo.getFromprovince().trim();
+            }
+        }
+        if(preIncNumber.length() > 0 ) {
+            preIncNumber = preIncNumber + "00";
+        }
+        return preIncNumber;
+    }
+
+    /*
+     * 通过订单查询这个快递，在哪个地区等级上是相同的。
+     */
+    private int getSameLevelByOrder(EforcesOrder orderInfo) {
+        boolean sameZoneFlage = false;
+        int sameZoneLeve = 0 ;
+        if(StringUtils.isNotEmpty(orderInfo.getFromprovince()) &&
+                StringUtils.isNotEmpty(orderInfo.getToprovince())
+                && StringUtils.equals(orderInfo.getFromprovince().trim(), orderInfo.getToprovince().trim())
+        ) {
+            sameZoneFlage = true;
+            sameZoneLeve = 1;
+        }else {
+            sameZoneFlage = false;
+        }
+        if(sameZoneFlage &&  StringUtils.isNotEmpty(orderInfo.getFromcity()) &&
+                StringUtils.isNotEmpty(orderInfo.getTocity())
+                && StringUtils.equals(orderInfo.getFromcity().trim(), orderInfo.getTocity().trim())
+        ) {
+            sameZoneLeve = 2;
+        }else {
+            sameZoneFlage = false;
+        }
+
+        if(sameZoneFlage &&  StringUtils.isNotEmpty(orderInfo.getFromarea()) &&
+                StringUtils.isNotEmpty(orderInfo.getToarea())
+                && StringUtils.equals(orderInfo.getFromarea().trim(), orderInfo.getFromarea().trim())
+        ) {
+            sameZoneLeve = 3;
+        }else {
+            sameZoneFlage = false;
+        }
+        return sameZoneLeve;
+    }
+
+    private EforcesReceivedScan createReceiveScan( EforcesReceivedScan parameter,EforcesUser userInfo,EforcesIncment preIncment, EforcesIncment currentStop,
+                                                  EforcesOrder result , Integer isBagBill) {
+        EforcesReceivedScan scan = new EforcesReceivedScan();
+        scan.setBillsnumber(result.getNumber());
+        scan.setGoodstype(parameter.getGoodstype());
+        scan.setExpresstype(parameter.getExpresstype());
+        scan.setExpressid(1);
+        // lastStop 需要查找一下。
+        scan.setFlightsnumber(parameter.getFlightsnumber());
+        scan.setScanners(userInfo.getName());
+        scan.setScannerid(userInfo.getNumber());
+        scan.setLaststop(preIncment.getNumber());
+        scan.setLaststopname(parameter.getLaststopname());
+        scan.setIncid(userInfo.getIncnumber());
+        scan.setIncname(currentStop.getName());
+        scan.setAmount(0);
+        scan.setBz(parameter.getBz());
+        scan.setCreatetime(new Date());
+        scan.setScantime(new Date());
+        scan.setTranname(parameter.getTranname());
+        scan.setIsBagBill(isBagBill);
+        return scan;
+    }
+
+    /*
+     * 保存物流信息。
+     * mark : 3 : 表示发送
+     * 		  4 ：  表示接收
+     */
+    public EforcesLogisticStracking  getLogisticstracking(String billsNumber, String description,
+                                                          String operator, String incName, String incId, Integer mark) {
+        EforcesLogisticStracking strackingInfo = new EforcesLogisticStracking();
+        strackingInfo.setBillsnumber(billsNumber);
+        strackingInfo.setDescription(description);
+        strackingInfo.setOperators(operator);
+        strackingInfo.setIncname(incName);
+        strackingInfo.setIncid(incId);
+        strackingInfo.setMark(mark);
+        return strackingInfo;
+    }
 }

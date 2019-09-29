@@ -43,7 +43,7 @@ public class SendPhoneCode {
 
 	public static void main(String[] args) throws ClientException {
 		SendPhoneCode d = new SendPhoneCode();
-		String dada = d.sendCode("13838351484");
+		String dada = d.sendCode("17737230279");
 		System.out.println(dada);
 	}
 }

@@ -19,10 +19,10 @@ public class JPushUtil {
 
     // 在极光注册上传应用的 appKey 和 masterSecret
     // 必填，例如466f7032ac604e02fb7bda89
-    private static final String appKey = "fdf6abefe1ed4ccb40696e4d";
+    private static final String appKey = "3c11e63e8e97f88c87d1e542";
 
     // 必填，每个应用都对应一个masterSecret
-    private static final String masterSecret = "17194381b43dd9695e7a63a6";
+    private static final String masterSecret = "3e7e2d08723fab948d4f7faf";
     
     private final static Logger logger = LoggerFactory.getLogger(JPushUtil.class);
 

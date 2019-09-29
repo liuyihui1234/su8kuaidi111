@@ -2,16 +2,16 @@ package org.kuaidi.web.springboot.controller.maintainance;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+
 import org.kuaidi.bean.maintainance.EforcesPaytype;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.maintainance.IEforcesPaytypeService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -24,6 +24,7 @@ public class PaytypeController {
     IEforcesPaytypeService paytypeService;
 
     @RequestMapping("selectOne")
+    @ResponseBody
     @CrossOrigin
     public ResultVo selectOne(Integer id){
         try {
@@ -38,7 +39,8 @@ public class PaytypeController {
         }
     }
 
-    @RequestMapping("selectAll")
+    @GetMapping("Paytype")
+    @ResponseBody
     @CrossOrigin
     public PageVo<EforcesPaytype> selectAll(QueryPageVo page){
         try {
@@ -50,7 +52,8 @@ public class PaytypeController {
         }
     }
 
-    @RequestMapping("insertOne")
+    @PostMapping("Paytype")
+    @ResponseBody
     @CrossOrigin
     public ResultVo insertOne(EforcesPaytype paytype){
         try {
@@ -65,7 +68,8 @@ public class PaytypeController {
         }
     }
 
-    @RequestMapping("updateOne")
+    @PutMapping("Paytype")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateOne(EforcesPaytype paytype){
         try {
@@ -85,6 +89,7 @@ public class PaytypeController {
     }
 
     @RequestMapping("updateDelete")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(Integer id){
         try {
@@ -105,7 +110,8 @@ public class PaytypeController {
     }
 
 
-    @RequestMapping("updateDeletes")
+    @DeleteMapping("Paytype")
+    @ResponseBody
     @CrossOrigin
     public ResultVo updateDelete(@RequestBody Integer[] ids){
         try {
@@ -117,6 +123,19 @@ public class PaytypeController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(false,"操作失败",null);
+        }
+    }
+    
+    @RequestMapping("selectAllPayType")
+    @ResponseBody
+    @CrossOrigin
+    public ResultVo selectAllPayType(){
+        try {
+            List<EforcesPaytype> payTypeList = paytypeService.selectAll();
+            return ResultUtil.exec(true, "获得付费方式成功！", payTypeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false,"获得付费方式失败！",null);
         }
     }
 

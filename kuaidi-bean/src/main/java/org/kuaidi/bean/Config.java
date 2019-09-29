@@ -38,6 +38,7 @@ public class Config {
 	// web图形验证码前缀
 	public static final String WEBCODE = "WEB:CODE:";
 
-	public static final int EXPIRETIME = 60*60;
+	public static final int EXPIRETIME = 2*60*60;
+
 
 }

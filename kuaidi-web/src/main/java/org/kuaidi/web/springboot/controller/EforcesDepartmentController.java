@@ -10,6 +10,8 @@ import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesDepartmentService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/web/Department/")
 @RestController
 public class EforcesDepartmentController {
@@ -34,6 +36,24 @@ public class EforcesDepartmentController {
         }
         return ResultUtil.exec(page.getPage(),page.getLimit(),0,null);
     }
+
+    /**
+     *  不分页
+     *
+     */
+    @RequestMapping("getListTwo")
+    @ResponseBody
+    @CrossOrigin
+    public ResultVo getListTwo(){
+        try {
+            List<EforcesDepartment> list=Department.getListTwo();
+            return ResultUtil.exec(true, "查询成功",list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "查询失败",null);
+        }
+    }
+
 
     /**
      * 添加企业部门管理

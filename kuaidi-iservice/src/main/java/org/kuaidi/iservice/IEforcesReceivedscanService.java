@@ -2,9 +2,12 @@ package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
 
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.DubboMsgVO;
+import org.kuaidi.bean.vo.ResultVo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,5 +79,8 @@ public interface IEforcesReceivedscanService {
      * @return
      */
     int insertList (List<EforcesReceivedScan> list);
+
+
+    ResultVo receiveOrder(EforcesReceivedScan scan, EforcesUser userInfo, EforcesIncment currentStop);
 
 }
