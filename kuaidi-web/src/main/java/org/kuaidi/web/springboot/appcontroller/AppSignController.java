@@ -3,6 +3,7 @@ package org.kuaidi.web.springboot.appcontroller;
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesSignName;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.domain.EforcesUserPoint;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultUtil;
@@ -21,6 +22,8 @@ import net.sf.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/app/sign/")
@@ -202,7 +205,8 @@ public class AppSignController {
 	 */
 	@RequestMapping("CountDate")
 	@ResponseBody
-    public PageVo getCountDate(Integer userid, Integer pageNum, Integer pageSize){
+	@Authorization
+    public PageVo getCountDate(HttpServletRequest request, Integer pageNum, Integer pageSize){
     	try {
 			if(pageSize == null ||  pageSize <= 0 ){
 				pageSize = Config.pageSize;
@@ -210,7 +214,9 @@ public class AppSignController {
 			if(pageNum == null || pageNum <= 0 ){
 				pageNum = 1;
 			}
-			PageInfo<EforcesUserPoint> resultDate =  userPointService.getCountDate(userid,pageNum,pageSize);
+			EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+			
+			PageInfo<EforcesUserPoint> resultDate =  userPointService.getCountDate(userInfo.getId() , pageNum,pageSize);
 			List<EforcesUserPoint>  pointList = resultDate.getList();
 			if(pointList != null && pointList.size() > 0 ) {
 				for(int i = 0 ; i < pointList.size() ; i++) {
@@ -236,9 +242,10 @@ public class AppSignController {
 	@Authorization
 	@RequestMapping("getTotalPoints")
 	@ResponseBody
-    public ResultVo getTotalPoints(Integer userid){
+    public ResultVo getTotalPoints(HttpServletRequest  request){
     	try {
-    		Integer sunPoint = userPointService.getPointsByUserId(userid);
+    		EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+    		Integer sunPoint = userPointService.getPointsByUserId(userInfo.getId());
     		JSONObject data = new JSONObject(); 
     		data.put("sunPoint", sunPoint);
     		return ResultUtil.exec(true,"获取用户总积分成功！",data);
