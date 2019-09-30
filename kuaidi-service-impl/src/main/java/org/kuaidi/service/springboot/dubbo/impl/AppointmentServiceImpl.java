@@ -67,9 +67,8 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return
      */
     @Override
-    public PageInfo<EforcesAppointment> getlistAllMsg(Integer page, Integer size) {
-        PageHelper.startPage(page,size);
-        List<EforcesAppointment> list = appointment.getlistAllMsg();
+    public PageInfo<EforcesAppointment> getlistAllMsg(EforcesAppointment Eforces) {
+        List<EforcesAppointment> list = appointment.getlistAllMsg(Eforces);
         final PageInfo<EforcesAppointment> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }

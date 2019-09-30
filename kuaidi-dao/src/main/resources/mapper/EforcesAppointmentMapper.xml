@@ -130,6 +130,18 @@
   <!-- 管理 -->
   <select id="getlistAllMsg" resultMap="BaseResultMap">
     SELECT * from eforces_appointment where isDelete =0
+        <if test="fromname != null and fromname != ''">
+            and
+            fromname like CONCAT('%',#{fromname},'%')
+        </if>
+        <if test="fromname !=null and fromname != ''">
+            and
+            fromname like CONCAT('%',#{fromname},'%')
+        </if>
+        <if test="number !=null and number != ''">
+            and
+            number = #{number}
+        </if>
   </select>
 
   <!-- 删除 -->

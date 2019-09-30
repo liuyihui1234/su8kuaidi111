@@ -64,7 +64,7 @@ public interface AppointmentService {
      * @param size
      * @return
      */
-    PageInfo<EforcesAppointment> getlistAllMsg(Integer page,Integer size);
+    PageInfo<EforcesAppointment> getlistAllMsg(EforcesAppointment Eforces);
 
     /**
      * 删除预约单管理
