@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesUser;
-import org.kuaidi.bean.domain.EforcesUser1;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.bean.vo.TokenVo;
@@ -15,12 +14,10 @@ import org.kuaidi.iservice.IEforcesIncmentService;
 import org.kuaidi.iservice.UserService;
 import org.kuaidi.utils.Md5Util;
 import org.kuaidi.utils.SendPhoneCode;
-import org.kuaidi.utils.UUIDUtil;
 import org.kuaidi.web.springboot.core.authorization.Authorization;
 import org.kuaidi.web.springboot.dubboservice.UserLoginService;
 import org.kuaidi.web.springboot.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,15 +49,6 @@ public class UserLoginController {
     @ResponseBody
     public ResultVo doLogin(EforcesUser user, Integer type) {
         return userLoginService.UserdoLogin(user, type );
-    }
-
-
-    @RequestMapping("loginOut")
-    @CrossOrigin
-    @ResponseBody
-    public ResultVo LoginOut(Integer uuid) {
-        redisUtil.del(Config.REDISWEBLOGINPREX + uuid);
-        return ResultUtil.exec(true, "退出成功！", null);
     }
 
 
@@ -169,7 +157,7 @@ public class UserLoginController {
             userInfo.setPassword(Md5Util.encode(newPwd));
             Integer rst = userService.updateUserInfo(userInfo);
             if (rst > 0) {
-                return ResultUtil.exec(true, "修改密码正确！", null);
+                return ResultUtil.exec(true, "修改密码成功！", null);
             }
             return ResultUtil.exec(false, "修改密码异常！", null);
         } catch (Exception e) {
@@ -268,52 +256,6 @@ public class UserLoginController {
     }
 
     /**
-     * 短信验证码测试(登录后才能调用的页面)
-     *
-     * @param telephone
-     */
-//    @RequestMapping("sendSMS/SendPhone")
-//    @ResponseBody
-//    @Authorization
-//    public ResultVo testSms(HttpServletRequest request, String telephone) {
-//        // 根据userid  user  table 查询记录
-//        // 传的手机号和保存的手机号是否一致。
-//        SendPhoneCode phoneCode = new SendPhoneCode();
-//        String verCode = "";
-//        try {
-//            String token = request.getHeader("token");
-//            System.out.println(token);
-//            String userData = redisUtil.get(Config.REDISAPPLOGINPREX + token);
-//            if (StringUtils.isEmpty(userData)) {
-//                return ResultUtil.exec(false, "请先登录！", "");
-//            }
-//
-//            if (StringUtils.isEmpty(userData)) {
-//                return ResultUtil.exec(false, "用户请先登录！", null);
-//            }
-//            JSONObject data = JSONObject.fromObject(userData);
-//            JSONObject userInfo = data.getJSONObject("userInfo");
-//            EforcesUser eforcesUser = (EforcesUser) JSONObject.toBean(userInfo, EforcesUser.class);
-//            String mobile = eforcesUser.getMobile();
-//
-//            if (mobile == null || !StringUtils.equals(mobile, telephone)) {
-//                return ResultUtil.exec(false, "手机号错误！", null);
-//            }
-//            verCode = phoneCode.sendCode(telephone);
-//            // 十分钟有效
-//            if (StringUtils.isNotEmpty(verCode)) {
-//                redisUtil.set(Config.redisPhonePrex + telephone, verCode, 10 * 60);
-//            }
-//            // 验证一下用户信息。
-//        } catch (com.aliyuncs.exceptions.ClientException e) {
-//            e.printStackTrace();
-//            return ResultUtil.exec(false, "发送验证码失败！", "");
-//        }
-//        return ResultUtil.exec(true, "发送验证码成功！", verCode);
-//    }
-
-
-    /**
      * 短信验证码测试
      *
      * @param telephone
@@ -355,52 +297,6 @@ public class UserLoginController {
     	String token = userInfo.getToken();
         redisUtil.del(Config.REDISAPPLOGINPREX+token);
         return ResultUtil.exec(true, "退出成功！", null);
-    }
-    
-    @RequestMapping("sendSMS/SendPhone")
-    @CrossOrigin
-    @ResponseBody
-    public ResultVo  SendPhone(HttpServletRequest  request, String telephone ,Integer type){
-    	// 如果实名制认证为空或者为 1 的时候， 
-    	if(type == null  || type == 1 ) {
-    		// 表示已经登录了
-    		EforcesUser  userInfo = (EforcesUser)request.getAttribute("user");
-    		if(userInfo == null ) {
-    			return ResultUtil.exec(false, "请用户先登录！", null);
-    		}
-    		if(StringUtils.equals(userInfo.getMobile(), telephone)) {
-    			SendPhoneCode  sendPhone = new SendPhoneCode();
-    			String validateCode = null;
-				try {
-					validateCode = sendPhone.sendCode(telephone);
-					redisUtil.set(Config.redisPhonePrex + telephone, validateCode, 10*60);
-	    			return ResultUtil.exec(true, "发送验证码成功！", validateCode);
-				} catch (ClientException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return ResultUtil.exec(false, "验证码发送失败！", null);
-				}
-    		}else {
-    			return ResultUtil.exec(false, "请输入正确的手机号！", null);
-    		}
-    	}else if(type == 2 ){
-    		List<EforcesUser> userList = userService.selectUserByPhone(telephone);
-    		if(userList != null && userList.size() > 0 ) {
-    			return ResultUtil.exec(false, "手机号已经存在，不能重复设置！", null);
-    		}
-    		SendPhoneCode  sendPhone = new SendPhoneCode();
-    		String validateCode = null;
-			try {
-				validateCode = sendPhone.sendCode(telephone);
-				redisUtil.set(Config.redisPhonePrex + telephone, validateCode, 12000);
-				return ResultUtil.exec(true, "发送验证码成功！", validateCode);
-			} catch (ClientException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				ResultUtil.exec(false, "验证码发送失败！", null);
-			}
-    	}
-    	return ResultUtil.exec(false, "参数错误！", null);
     }
 
 }

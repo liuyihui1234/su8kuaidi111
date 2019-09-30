@@ -74,7 +74,8 @@
     <sql id="Base_Column_List">
     Id, Number, Password, Name, Incnumber, Incname, Incid, Departid, departname, Mobile, 
     Tel, Businesshall, Businesshallname, Address, Recipient, RecipientCode, Departadmin, 
-    Departadminname, Creattime, lastip, lasttime, loginnumber, type, method
+    Departadminname, Creattime, lastip, lasttime, loginnumber, type, method,portraitPath,
+    identityFontpath,identityBackPath,isdelete
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
