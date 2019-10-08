@@ -69,7 +69,7 @@ public interface EforcesAppointmentMapper {
      * 预约单管理
      * @return
      */
-   List<EforcesAppointment> getlistAllMsg();
+   List<EforcesAppointment> getlistAllMsg(EforcesAppointment Eforces);
 
     /**
      * 删除预约单管理

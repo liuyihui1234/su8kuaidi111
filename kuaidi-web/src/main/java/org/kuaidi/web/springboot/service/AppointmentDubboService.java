@@ -267,7 +267,7 @@ public class AppointmentDubboService {
      */
     public PageVo getMsg(QueryPageVo page)throws IOException{
         try {
-            PageInfo<EforcesAppointment> pageInfo = appointmentService.getlistAllMsg(page.getPage(),page.getLimit());
+            PageInfo<EforcesAppointment> pageInfo = appointmentService.getlistAllMsg(null);
 
             return ResultUtil.exec(pageInfo.getPageNum(), page.getLimit(),pageInfo.getTotal(),pageInfo.getList());
         } catch (Exception e) {

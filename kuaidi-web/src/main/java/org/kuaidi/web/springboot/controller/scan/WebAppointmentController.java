@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 @RestController
@@ -23,12 +24,12 @@ public class WebAppointmentController {
 	/*
 	   * 查询所有的订单。
 	 */
-	@RequestMapping("getAppointment")
-	@ResponseBody
-	@CrossOrigin
-	public PageVo getAppointment(QueryPageVo page){
+	@GetMapping("getAppointment")
+    @CrossOrigin
+	public PageVo getAppointment(QueryPageVo page,EforcesAppointment Eforces){
 		try {
-			PageInfo<EforcesAppointment> pageInfo = appointService.getlistAllMsg(page.getPage(),page.getLimit());
+			PageHelper.startPage(page.getPage(),page.getLimit());
+			PageInfo<EforcesAppointment> pageInfo = appointService.getlistAllMsg(Eforces);
 			return ResultUtil.exec(pageInfo.getPageNum(),pageInfo.getPageSize(),pageInfo.getTotal(),pageInfo.getList());
 		}catch (Exception e){
 			e.printStackTrace();
