@@ -83,12 +83,27 @@
     <include refid="Blob_Column_List" />
     from eforces_receivedscan
     <where>
-      flag = 0
+      isDelete = 0 
       <if test="_parameter != null">
         and incId like CONCAT(#{_parameter},'%')
       </if>
     </where>
   </select>
+  
+  <update id="updateById">
+		update
+		eforces_receivedscan
+		set
+		isDelete = 1
+		where
+		id
+		in
+		<foreach collection="list" index="index" open="(" close=")"
+			item="id" separator=",">
+			#{id}
+		</foreach>
+	</update>
+  
 
 <!--  &lt;!&ndash; 收件添加扫描信息 &ndash;&gt;
   <insert id="addOrderMsg" parameterType="org.kuaidi.bean.domain.EforcesReceivedScan">

@@ -79,10 +79,8 @@ public class SentScanController {
 	@CrossOrigin
 	@NeedUserInfo
 	public ResultVo addSentScan(EforcesSentScan sentScan, HttpServletRequest request) {
-			EforcesUser user = (EforcesUser) request.getAttribute("user");
-			EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
-			return 	dubboSentscanService.sentOrder(sentScan,user,inc);
-
-
+		EforcesUser user = (EforcesUser) request.getAttribute("user");
+		EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
+		return 	dubboSentscanService.sentOrder(sentScan,user,inc);
 	}
 }

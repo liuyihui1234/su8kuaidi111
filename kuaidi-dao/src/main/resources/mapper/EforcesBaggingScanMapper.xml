@@ -52,10 +52,11 @@
 		from
 		eforces_baggingscan
 		where
-		isDelete=0
+		isDelete = 0
 		<if test="_parameter!=null">
 			and incid like CONCAT(#{_parameter},'%')
 		</if>
+		 ORDER BY createtime desc 
 	</select>
 	
 	<select id="selectByBagNumber" resultMap= "BaseResultMap">

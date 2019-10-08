@@ -81,4 +81,11 @@ public interface EforcesReceivedScanMapper {
      * @return
      */
     int insertList (List<EforcesReceivedScan> list);
+
+    /*
+              * 假删除
+     */
+	int updateById(List<Integer> ids);
+    
+    
 }

@@ -274,6 +274,8 @@ public class ReceivePackageController {
                         if(listOrder == null || listOrder.getNumber() == null ||"".equals(listOrder.getNumber())){
                             return ResultUtil.exec(false,"订单号错误，请确定",null);
                         }
+                        
+                        
                         //如果不为空则在订单表里查到数据了 拿出第一条
                         EforcesOrder orderInfo = listOrder;
                         String preNumber = getPreIncNumber(eforcesUser,orderInfo);

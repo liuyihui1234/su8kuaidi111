@@ -5,8 +5,6 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.*;
 import org.kuaidi.bean.vo.DubboMsgVO;
 import org.kuaidi.bean.vo.ResultUtil;
@@ -167,9 +165,10 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
                 if (userInfo == null) {
                     return ResultUtil.exec(false, "用户信息错误，请确定！", null);
                 }
+                
                 String preIncNum = getPreIncNumber(userInfo, orderList.get(0));
                 /*
-                 * 没有上个节点的接单，只有一种情况，就是业务员收单。（单独处理）
+                                                   * 没有上个节点的接单，只有一种情况，就是业务员收单。（单独处理）
                  * */
                 if (preIncNum.length() == 0) {
                     return ResultUtil.exec(false, "收件失败, 没有来源网站的单子请确定！", null);
@@ -361,4 +360,10 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
         strackingInfo.setMark(mark);
         return strackingInfo;
     }
+
+	@Override
+	public int deleteById(List<Integer> ids) {
+		// TODO Auto-generated method stub
+		return receivedscanMapper.updateById(ids);
+	}
 }

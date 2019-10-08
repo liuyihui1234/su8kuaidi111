@@ -40,14 +40,13 @@ public class RectoorderDubboService {
      * @param page
      * @return
      */
-    public PageVo<EforcesRectoOrder> getAll(QueryPageVo page,String incNum) {
+    public PageVo<EforcesRectoOrder> getAll(QueryPageVo page) {
         try {
-        	// 获得用户的incNum        	
-            PageInfo<EforcesRectoOrder> eforcesUsers = rectoOrderService.getAll(page.getPage(),page.getLimit(),incNum);
+            PageInfo<EforcesRectoOrder> eforcesUsers = rectoOrderService.getAll(page.getPage(),page.getLimit(),page.getId());
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.exec(page.getPage(), page.getLimit() ,0, null);
+            return ResultUtil.exec(1, 10 ,0, null);
         }
     }
 

@@ -45,5 +45,11 @@ public class EforcesWeighingScanServiceImpl implements IEforcesWeighingScanServi
 		scanDao.updateByPrimaryKeySelective(record);
 	}
 
+	@Override
+	public List<EforcesWeighingScan> getWeightScanByParam(String incNum, String number) {
+		// TODO Auto-generated method stub
+		return scanDao.getWeightScanByParam(incNum, number);
+	}
+
 
 }

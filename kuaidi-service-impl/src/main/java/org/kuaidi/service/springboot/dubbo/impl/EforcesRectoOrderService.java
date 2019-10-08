@@ -24,7 +24,7 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 	}
 
 	@Override
-	public PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,String incid) {
+	public PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,Integer incid) {
 		PageHelper.startPage(page,size);
 		List<EforcesRectoOrder>list=rectoOrderDao.selectAll(incid);
 		final  PageInfo<EforcesRectoOrder> pageInfo = new PageInfo<>(list);
@@ -51,6 +51,12 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 	public void setById(EforcesRectoOrder record) {
 		rectoOrderDao.updateByPrimaryKeySelective(record);
 		
+	}
+
+	@Override
+	public List<EforcesRectoOrder> getRectoOrderByNumber(String incNum, String Number) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getRectoOrderByNumber(incNum, Number);
 	}
 
 }

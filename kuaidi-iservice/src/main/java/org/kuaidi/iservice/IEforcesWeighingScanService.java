@@ -2,9 +2,7 @@ package org.kuaidi.iservice;
 
 
 import org.kuaidi.bean.domain.EforcesWeighingScan;
-
 import com.github.pagehelper.PageInfo;
-
 import java.util.List;
 
 public interface IEforcesWeighingScanService {
@@ -17,6 +15,9 @@ public interface IEforcesWeighingScanService {
 	Integer deleteById(List<Integer> list);
 	
 	void setById(EforcesWeighingScan record);
+	
+	List<EforcesWeighingScan> getWeightScanByParam(String incNum,
+			 String number);
 
 }
  
