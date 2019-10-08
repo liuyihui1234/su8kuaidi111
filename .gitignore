@@ -35,3 +35,4 @@
 /kuaidi-service-impl/*.log
 /kuaidi-service-impl/.settings
 /kuaidi-service-impl/*.classpath
+/kuaidi-web/logs
