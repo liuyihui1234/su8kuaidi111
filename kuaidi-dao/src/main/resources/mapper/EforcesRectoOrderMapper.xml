@@ -70,15 +70,15 @@
 		from
 		eforces_rectoorder
 		where
-		isDelete=1
+		isDelete = 0
 		<if test="_parameter!=null">
-			and incid like CONCAT(#{_parameter},'%')
+			and DepartId like CONCAT(#{_parameter},'%')
 		</if>
+		order by scanTime desc 
 	</select>
 
-
 	<select id="selectByPrimaryKey"
-		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from eforces_rectoorder

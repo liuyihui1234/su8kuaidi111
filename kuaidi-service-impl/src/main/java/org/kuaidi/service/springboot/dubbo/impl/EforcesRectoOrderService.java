@@ -24,7 +24,7 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 	}
 
 	@Override
-	public PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,Integer incid) {
+	public PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,String incid) {
 		PageHelper.startPage(page,size);
 		List<EforcesRectoOrder>list=rectoOrderDao.selectAll(incid);
 		final  PageInfo<EforcesRectoOrder> pageInfo = new PageInfo<>(list);

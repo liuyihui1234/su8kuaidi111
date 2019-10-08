@@ -3,12 +3,17 @@ package org.kuaidi.web.springboot.webcontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesRectoOrderService;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.dubboservice.RectoorderDubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,10 +44,11 @@ public class RectoorderController {
 
 	@GetMapping("scan")
 	@CrossOrigin
-	public PageVo getAll(QueryPageVo page) {
-		System.err.println("2222222");
-		PageVo rst = null;
-		rst = rectoorderDubboService.getAll(page);
+	@NeedUserInfo
+	public PageVo getAll(HttpServletRequest request , QueryPageVo page) {
+		EforcesUser userInfo =  (EforcesUser)request.getAttribute("user");
+		String incNumber = userInfo.getIncid();
+		PageVo rst = rectoorderDubboService.getAll(page,incNumber);
 		return rst;
 	}
 
@@ -75,9 +81,22 @@ public class RectoorderController {
 	
 	@PostMapping("scan")
 	@CrossOrigin
-	public ResultVo addRectoOrder(EforcesRectoOrder record) { 
+	@NeedUserInfo
+	public ResultVo addRectoOrder(HttpServletRequest request,EforcesRectoOrder record) { 
 		try {
-			System.err.println(record);
+			EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+			EforcesIncment  incMent = (EforcesIncment)request.getAttribute("inc");
+			 record.setNum(1);
+			 record.setScantypename("收件交单");
+			 record.setScantypeid(0);
+			 record.setGoodsid(0);
+			 record.setScanman(userInfo.getName());
+			 record.setScanmanid(userInfo.getNumber());
+			 record.setCreateid(userInfo.getNumber());
+			 record.setCreatename(userInfo.getName());
+			 record.setDepartid(incMent.getNumber());
+			 record.setDepartname(incMent.getName());
+			 
 			 orderService.addRectoOrder(record);
 			return ResultUtil.exec(true, "添加成功", null);
 		} catch (Exception e) {

@@ -12,7 +12,7 @@ public interface IEforcesRectoOrderService {
 	
 	EforcesRectoOrder getById(Integer id);
 	
-	PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,Integer incid);
+	PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,String incid);
 	
 	Integer deleteById(List<Integer> id);
 	

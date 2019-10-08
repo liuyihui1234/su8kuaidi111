@@ -30,7 +30,7 @@ public interface EforcesRectoOrderMapper {
                * 查询全部扫描订单
      * @return
      */
-    List<EforcesRectoOrder> selectAll(Integer paramter);
+    List<EforcesRectoOrder> selectAll(String paramter);
     
     
     
