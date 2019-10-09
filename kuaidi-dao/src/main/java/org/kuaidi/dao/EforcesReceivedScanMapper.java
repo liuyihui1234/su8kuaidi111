@@ -1,5 +1,6 @@
 package org.kuaidi.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
 
 import java.util.HashMap;
@@ -86,6 +87,11 @@ public interface EforcesReceivedScanMapper {
               * 假删除
      */
 	int updateById(List<Integer> ids);
+	
+	/*
+	 * 查找已收的订单
+	 */
+	List<EforcesReceivedScan> getHadReceiveOrder(@Param("incNum")String incNum , @Param("billNumList")List<String>billNumList);
     
     
 }

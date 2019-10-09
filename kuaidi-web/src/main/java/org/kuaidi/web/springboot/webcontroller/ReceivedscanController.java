@@ -63,8 +63,6 @@ public class ReceivedscanController {
         ResultVo rst;
         EforcesUser user = (EforcesUser) request.getAttribute("user");
         EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
-        System.out.println(receivedScan.getLaststop());
-        System.out.println(receivedScan.getLaststopname());
         rst=receivedscanService.receiveOrder(receivedScan,user,inc);
         return rst;
     }

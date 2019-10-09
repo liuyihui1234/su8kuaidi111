@@ -1,6 +1,5 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,39 +8,23 @@ import org.kuaidi.bean.domain.*;
 import org.kuaidi.bean.vo.DubboMsgVO;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
+import org.kuaidi.dao.EforcesIncmentMapper;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
+import org.kuaidi.dao.EforcesOrderMapper;
 import org.kuaidi.dao.EforcesReceivedScanMapper;
 import org.kuaidi.iservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 
 @Service(version = "1.0.0",interfaceClass=IEforcesReceivedscanService.class)
 public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanService {
-    @Reference(version = "1.0.0")
-    private UserService userService;
-
-    @Reference(version = "1.0.0")
-    private IEforcesOrderService orderService;
-
-    @Reference(version = "1.0.0")
-    private IEforcesSentscanService sentScanService;
-
-    @Reference(version = "1.0.0")
-    private IEforceslogisticstrackingService logisticstrackingService;
-
-    @Reference(version = "1.0.0")
-    private IEforcesIncmentService  incmentService ;
-
-    @Reference(version = "1.0.0")
-    private IEforcesReceivedscanService receivedscanService;
-
-    @Reference(version = "1.0.0")
-    private IEforcesBiggingScanService  biggingScanService;
-
-    @Reference(version= "1.0.0")
-    private IEforcesRemovingBagScanService  removeBageService;
+    
+    @Autowired
+	private EforcesOrderMapper  orderService; 
+    
+    @Autowired
+    private EforcesIncmentMapper incmentService; 
 
     @Autowired
     EforcesReceivedScanMapper receivedscanMapper;
@@ -115,7 +98,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
     public EforcesReceivedScan selectByPrimaryKey(Integer id) {
         return receivedscanMapper.selectByPrimaryKey(id);
     }
-
+    
     /**
      * 寄/派件运单管理
      * @param number
@@ -139,7 +122,6 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
 
     /**
      * 收件 根据订单号查询一条订单信息，并存入扫描表内
-     *
      * @return
      */
     public ResultVo receiveOrder( EforcesReceivedScan scan, EforcesUser userInfo, EforcesIncment currentStop){
@@ -157,48 +139,69 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
                     set.add(str);
                 }
             }
+            EforcesIncment preStop = incmentService.selectNextSyopByName(scan.getLaststopname());
+            System.err.println(preStop);
+            if(preStop==null){
+                return  ResultUtil.exec(false,"到件扫描失败！请输入正确的目的地",null);
+            }
+            
+            /*
+             * 判断订单是否存在无效的记录
+             **/
+            List<String> billNumList = new ArrayList<String>();
             for(String billNumber:set) {
-                List<EforcesOrder> orderList = orderService.getByNumber(billNumber);
+            	billNumList.add(billNumber);
+            }
+            List<EforcesOrder> billList = orderService.getAllNumberMsg(billNumList);
+            Map<String , EforcesOrder> billMap = new HashMap<String , EforcesOrder>();
+            for(EforcesOrder  billInfo : billList) {
+            	billMap.put(billInfo.getNumber(), billInfo);
+            }
+            boolean flage = false ; 
+            for(String billNumber:set) {
+            	if(!billMap.containsKey(billNumber)) {
+            		flage = true ;
+            		break;
+            	}
+            }
+            if(flage) {
+            	return ResultUtil.exec(false, "订单中有不正确的订单号，请确定！", null);
+            }
+            
+            /*
+             * 判断订单号中是否有已经接收过的订单号
+             */
+
+            List<EforcesReceivedScan> receiveList = receivedscanMapper.getHadReceiveOrder(userInfo.getIncid() , billNumList);
+            if(receiveList != null && receiveList.size() > 0 ) {
+            	return ResultUtil.exec(false, "订单列表中有已经接收过的订单信息！", null);
+            }
+            
+            for(String billNumber:set) {
+                List<EforcesOrder> orderList = orderService.selectLikeByNumber(billNumber);
                 if (orderList == null || orderList.size() == 0) {
                     return ResultUtil.exec(false, "订单号错误，请确定！", null);
                 }
                 if (userInfo == null) {
                     return ResultUtil.exec(false, "用户信息错误，请确定！", null);
                 }
-                
-                String preIncNum = getPreIncNumber(userInfo, orderList.get(0));
-                /*
-                                                   * 没有上个节点的接单，只有一种情况，就是业务员收单。（单独处理）
-                 * */
-                if (preIncNum.length() == 0) {
-                    return ResultUtil.exec(false, "收件失败, 没有来源网站的单子请确定！", null);
-                }
-                EforcesIncment preStop = incmentService.selectByNumber(preIncNum);
                 // 判断邮件发送地方是否错误。
-                EforcesOrder result = orderList.get(0);
-                EforcesIncment nextStop = incmentService.getByNextStopName(scan.getLaststopname());
-                System.err.println(nextStop);
-                if(nextStop==null){
-                    return  ResultUtil.exec(false,"到件扫描失败！请输入正确的目的地",null);
-                }
-                EforcesReceivedScan parameter = createReceiveScan(scan,userInfo, nextStop, currentStop, result, 0);
+                EforcesOrder result = orderList.get(0);                
+                EforcesReceivedScan parameter = createReceiveScan(scan,userInfo, preStop, currentStop, result, 0);
                 System.err.println("currentStop:"+currentStop);
                 String description = "快件到达【%s】，上一站是【%s】,扫描员是【%s】";
                 description = String.format(description, currentStop.getName(), "", userInfo.getName());
                 EforcesLogisticStracking stracking = getLogisticstracking(billNumber, description, userInfo.getName(), currentStop.getName(), currentStop.getNumber(), 4);
-
                 DubboMsgVO msgVo = insertSelective(parameter, stracking);
                 if(msgVo != null && msgVo.isRstFlage() ) {
                     i++;
                 }
-
             }
             if(i==split.length){
                 return ResultUtil.exec(true,"到件扫描成功！",null);
             }else {
                 return ResultUtil.exec(false, "到件扫描失败！", null);
             }
-
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.exec(false,"到件扫描失败",null);
