@@ -36,3 +36,9 @@
 /kuaidi-service-impl/.settings
 /kuaidi-service-impl/*.classpath
 /kuaidi-web/logs
+/kuaidi-bean/*.project
+/kuaidi-dao/*.project
+/kuaidi-iservice/*.project
+/kuaidi-service-impl/*.project
+/kuaidi-utils/*.project
+/kuaidi-web/*.project
