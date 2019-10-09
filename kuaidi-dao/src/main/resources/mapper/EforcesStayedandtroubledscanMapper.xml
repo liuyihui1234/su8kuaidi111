@@ -155,8 +155,8 @@
     bz
   </sql>
 
-    <!-- 获取问题件 -->
-    <select id="getIssue" resultMap="ResultMapWithBLOBs">
+  <!-- 获取问题件 -->
+  <select id="getIssue" resultMap="ResultMapWithBLOBs">
     SELECT trouble.*, bill.*  from  eforces_stayedandtroubledscan    trouble
  	join  eforces_problemcause  cause on trouble.troubledtype = cause.Name 
     JOIN eforces_order bill on trouble.billsnumber=bill.Number
@@ -166,6 +166,17 @@
       #{id}
     </foreach>
   </select>
+  
+  <select id="getScanInfoByBillsNumbers"  resultMap="BaseResultMap">
+  		select * from eforces_stayedandtroubledscan  where  1= 1 
+  		<if test="billsNums != null ">
+  			and  billsnumber in 
+  			<foreach collection="billsNums" item="billNum" index="index" open="(" close=")" separator=",">
+		      #{billNum}
+		    </foreach>
+  		</if>
+  </select>
+  
     <!-- web获取所有问题件 -->
     <select id="getAllIssue" resultMap="BaseResultMap2">
         SELECT  <include refid="Base_Column_List"></include> from eforces_stayedandtroubledscan

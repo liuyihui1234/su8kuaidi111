@@ -10,6 +10,7 @@ import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.*;
 import org.kuaidi.utils.JBarCodeUtil;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.util.redis.OrderUtil;
 import org.kuaidi.web.springboot.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,6 @@ public class ReceivePackageController {
 /* 保存物流信息。
      * mark : 3 : 表示发送
      * 		  4 ：  表示接收*/
-
-
     public EforcesLogisticStracking  getLogisticstracking(String billsNumber, String description,
                                                           String operator, String incName, String incId, Integer mark) {
         EforcesLogisticStracking strackingInfo = new EforcesLogisticStracking();
@@ -139,14 +138,9 @@ public class ReceivePackageController {
         String nextIncNumber = "";
         if(orderInfo != null) {
             int sameZoneLeve = getSameLevelByOrder(orderInfo);
-
 /*              不可能出现两个街道都是一样的， 如果这样的话，直接就送了，不用发送给下一跳*/
-
-
             // 如果有分区的时候
              /** provincePrexIncNum, 这个变量是用来标识现在是在 fromXXX  的路上，还是在  toXXX 的位置。*/
-
-
             String userIncNum = userInfo.getIncnumber().trim();
             String provincePrexIncNum = "";
             if(StringUtils.isNotEmpty(userIncNum) && userIncNum.length() > 2) {
@@ -210,22 +204,18 @@ public class ReceivePackageController {
 
             }
         }
-        if(nextIncNumber.length() > 0 ) {
+        if(nextIncNumber.length() > 0 &&  nextIncNumber.length() < 8) {
             nextIncNumber = nextIncNumber + "00";
         }
         return nextIncNumber;
     }
-
-
-
+    
      /*收包操作（）*/
-
-
     @RequestMapping("receiveBag")
     @ResponseBody
     public ResultVo receiveBag(String token, String bagNumber) {
         Map<String,EforcesOrder> mapOrder = new HashMap<String,EforcesOrder>();
-/*		从token中拿出数据*/
+        /*从token中拿出数据*/
         String userData = redisUtil.get(Config.REDISWEBLOGINPREX + token);
         JSONObject data = JSONObject.fromObject(userData);
         JSONObject userInfo = data.getJSONObject("userInfo");
@@ -325,40 +315,30 @@ public class ReceivePackageController {
         }
     }
 
-
-/*
-     * 转包操作
-     * 认为所有的包的下一跳都是相同的（不同的下一跳，不可能不拆包）
-*/
-
-
-    public ResultVo sendBagScan(String token , String bagNumber) {
-
+	/*
+	     * 转包操作
+	     * 认为所有的包的下一跳都是相同的（不同的下一跳，不可能不拆包）
+	*/
+    @RequestMapping("sendBagScan")
+    @ResponseBody
+    @NeedUserInfo
+    public ResultVo sendBagScan(HttpServletRequest request , String bagNumber) {
         Map<String,EforcesOrder> map = new HashMap<String, EforcesOrder>();
         boolean flage = true;
-/*         * 根据token获得用户信息
-         **/
-
-        String userData = redisUtil.get(Config.REDISWEBLOGINPREX + token);
-        JSONObject data = JSONObject.fromObject(userData);
-        JSONObject userInfo = data.getJSONObject("userInfo");
-        EforcesUser eforcesUser = (EforcesUser) JSONObject.toBean(userInfo, EforcesUser.class);
-        JSONObject incInfo = data.getJSONObject("incInfo");
-        EforcesIncment eforcesIncment = (EforcesIncment)JSONObject.toBean(incInfo, EforcesIncment.class);
+        /**
+         * * 根据token获得用户信息
+         */
+        EforcesUser eforcesUser = (EforcesUser) request.getAttribute("user");
+        EforcesIncment eforcesIncment = (EforcesIncment)request.getAttribute("inc");
         try {
             // 根据包的编号查询出打包的订单
             List<EforcesBaggingScan> bagScanList =  biggingScanService.getBaggingScanByBagNum(bagNumber);
             if(bagScanList != null && bagScanList.size() > 0 ) {
-
                 List<EforcesSentScan>  sentScanList = new ArrayList<EforcesSentScan>();
-
-/*
-*
-                 * 判断根据编号查询出打包的订单的订单编号判断不为空，根据此单号循环查询所有信息
-                 * 多个单号，查询到放在map里面key是订单号valu是操磁订单号的信息
-*/
-
-
+				/*
+			                 * 判断根据编号查询出打包的订单的订单编号判断不为空，根据此单号循环查询所有信息
+			                 * 多个单号，查询到放在map里面key是订单号valu是操磁订单号的信息
+				*/
                 List<String> stringList = new ArrayList<String>();
                 for (int i = 0; i < bagScanList.size(); i++){
                     EforcesBaggingScan bagList = bagScanList.get(i);
@@ -376,10 +356,9 @@ public class ReceivePackageController {
                         map.put(orderValue.getNumber(),orderValue);
                     }
                 }
-/*
-                 * 拿出一张订单，查询下一跳的位置。
+				/*
+				  * 拿出一张订单，查询下一跳的位置。
                  **/
-
                 EforcesBaggingScan  bagScannInfo = bagScanList.get(0);
                 if(bagScannInfo != null) {
                     String billsNumber = bagScannInfo.getNumberlist();
@@ -398,14 +377,12 @@ public class ReceivePackageController {
                         EforcesIncment nextStop =  incmentService.selectByNumber(nextIncNum);
                         EforcesIncment currentStop = incmentService.selectByNumber(eforcesUser.getIncnumber());
                         EforcesSentScan sentScan = createSentScanInfo(eforcesUser, orderInfo, nextStop, currentStop,1);
-
                         if(sentScan != null ) {
                             sentScanList.add(sentScan);
                         }
-/*                         * 其余的地址要发的 用户，订单信息，nextStop下一跳站点 ， 当前站点， 都一样
-                         * 需要批量的查询订单。（对订单进行封装）
-                         **/
-
+						/** 其余的地址要发的 用户，订单信息，nextStop下一跳站点 ， 当前站点， 都一样
+						 * 需要批量的查询订单。（对订单进行封装）
+                        **/
                         for(int i = 1 ; i < bagScanList.size() ; i++) {
                             EforcesBaggingScan  bagScanInfo = bagScanList.get(i);
                             String billNumber = bagScanInfo.getNumberlist();
@@ -437,18 +414,14 @@ public class ReceivePackageController {
     }
 
 
-/*     *根据当前用户信息，和订单信息，查询订单来自哪里
+    /*
+               * 根据当前用户信息，和订单信息，查询订单来自哪里
      **/
 
     private String  getPreIncNumber(EforcesUser userInfo,EforcesOrder orderInfo) {
         String preIncNumber = "";
         if(orderInfo != null) {
             int sameZoneLeve = getSameLevelByOrder(orderInfo);
-/*
-             * provincePrexIncNum, 这个变量是用来标识现在是在 fromXXX  的路上，还是在  toXXX 的位置。
-*/
-
-
             String userIncNum = userInfo.getIncnumber().trim();
             String provincePrexIncNum = "";
             if(StringUtils.isNotEmpty(userIncNum) && userIncNum.length() > 2) {
@@ -515,11 +488,10 @@ public class ReceivePackageController {
         }
         return preIncNumber;
     }
-/*
-     * 通过订单查询这个快递，在哪个地区等级上是相同的。
-*/
-
-
+    
+	/*
+	     * 通过订单查询这个快递，在哪个地区等级上是相同的。
+	*/
     private int getSameLevelByOrder(EforcesOrder orderInfo) {
         boolean sameZoneFlage = false;
         int sameZoneLeve = 0 ;
@@ -552,12 +524,12 @@ public class ReceivePackageController {
         return sameZoneLeve;
     }
 
-/*
-*
-     * 收件 根据订单号查询一条订单信息，并存入扫描表内
-     * @param billNumber
-     * @return
-*/
+	/*
+	*
+	     * 收件 根据订单号查询一条订单信息，并存入扫描表内
+	     * @param billNumber
+	     * @return
+	*/
 
 
     @RequestMapping("Addressee")

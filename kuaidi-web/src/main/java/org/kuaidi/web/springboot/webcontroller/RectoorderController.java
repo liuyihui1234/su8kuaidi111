@@ -96,10 +96,9 @@ public class RectoorderController {
 			
 			if(incment != null) {
 				record.setDepartname(incment.getName());
-				
 			}
 			
-			
+			System.out.println(record.getPostmanid() + ">>>>");
 			String incNum = null ; 
 			EforcesUser user = (EforcesUser) request.getAttribute("user");
 			if(user != null ) {

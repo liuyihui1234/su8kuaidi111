@@ -1,7 +1,5 @@
 package org.kuaidi.web.springboot.controller;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesRegion;
 import org.kuaidi.bean.vo.PageVo;
@@ -57,24 +55,6 @@ public class RegionController {
 		return vo;
 	}
 	
-	
-	@RequestMapping("getRegionByCode")
-	public ResultVo getCityByCode(String code) {
-		ResultVo rst = null ;
-		try {
-			Map<String, Object> map = new HashMap<String,Object>();
-			if(StringUtils.isEmpty(code)) {
-				rst = regionService.getProvince();
-			}else if(code != null && code.endsWith("0000")) {
-				rst = regionService.getCityByCode(code, map);
-			}else {
-				rst = regionService.getAreaByCityCode(code);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return rst;
-	}
 
 	@RequestMapping("addRegionInfo")
 	@ResponseBody

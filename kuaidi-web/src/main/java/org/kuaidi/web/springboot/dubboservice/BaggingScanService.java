@@ -78,7 +78,9 @@ public class BaggingScanService {
             baggingScan.setCode(bagNumber);
             baggingScan.setNumberlist(str1);
             baggingScan.setNum(1);
-            baggingScan.setBaggingid(bagNumber);
+            //装袋用户的编号
+            //baggingScan.setBaggingid(bagNumber);
+
             baggingScan.setBaggingname(record.getBaggingname());
             baggingScan.setCreateid(eforcesUser.getNumber());
             baggingScan.setCreatename(eforcesUser.getName());

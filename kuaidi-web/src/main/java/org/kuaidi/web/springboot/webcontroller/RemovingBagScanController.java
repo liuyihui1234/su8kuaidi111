@@ -1,11 +1,6 @@
 package org.kuaidi.web.springboot.webcontroller;
 
-
-
-
-import java.util.Date;
 import java.util.List;
-
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesRemovingBagScan;
 import org.kuaidi.bean.domain.EforcesUser;
@@ -19,7 +14,6 @@ import org.kuaidi.web.springboot.dubboservice.RemovingBagScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.alibaba.dubbo.config.annotation.Reference;
-
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -30,6 +24,7 @@ public class RemovingBagScanController {
 
 	@Autowired
 	RemovingBagScanService dubboScanService;
+	
 	@GetMapping("scan")
 	@CrossOrigin
 	public PageVo getAll(QueryPageVo page) {
@@ -51,8 +46,6 @@ public class RemovingBagScanController {
 		} 
 	}
 
-
-
 	@PostMapping("scan")
 	@CrossOrigin
 	@NeedUserInfo
@@ -65,12 +58,6 @@ public class RemovingBagScanController {
 		rst=dubboScanService.removeBagScan(record,user,inc);
 		return rst;
 	}
-
-
-
-
-
-
 
 	@DeleteMapping("scan")
 	@CrossOrigin
@@ -97,10 +84,6 @@ public class RemovingBagScanController {
 			e.printStackTrace(); 
 			return ResultUtil.exec(false,"更改失败",null);
 		} 
-
 	}
-
-
-
 
 }

@@ -146,7 +146,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
             }
             
             /*
-             * 判断订单是否存在无效的记录
+                                     * 判断订单是否存在无效的记录
              **/
             List<String> billNumList = new ArrayList<String>();
             for(String billNumber:set) {
