@@ -28,6 +28,7 @@ public interface EforcesLogisticStrackingMapper {
     int updateByPrimaryKeySelective(EforcesLogisticStracking record);
 
     int updateByPrimaryKey(EforcesLogisticStracking record);
+    
     String  selectMaxMark(String billsNumber);
 
     /**

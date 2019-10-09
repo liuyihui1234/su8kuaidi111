@@ -1,14 +1,11 @@
 package org.kuaidi.web.springboot.webcontroller;
 
-import java.util.Date;
 
-import org.kuaidi.bean.domain.EforcesCusinformation;
 import org.kuaidi.bean.domain.EforcesSettlementquotation;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
-import org.kuaidi.iservice.IEforcesCusinformationService;
 import org.kuaidi.iservice.IEforcesSettlementquotationService;
 import org.kuaidi.web.springboot.dubboservice.SettlementquotationService;
 import org.springframework.beans.factory.annotation.Autowired;

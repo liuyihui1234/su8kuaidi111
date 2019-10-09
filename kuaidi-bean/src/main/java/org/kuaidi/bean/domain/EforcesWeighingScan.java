@@ -13,6 +13,7 @@ public class EforcesWeighingScan  implements Serializable{
 	private static final long serialVersionUID = -7493137090469795140L;
 
 	private Integer id;
+	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createtime;
 
@@ -45,6 +46,7 @@ public class EforcesWeighingScan  implements Serializable{
     private String incid;
 
     private Date scantime;
+    
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date entrytime;
 

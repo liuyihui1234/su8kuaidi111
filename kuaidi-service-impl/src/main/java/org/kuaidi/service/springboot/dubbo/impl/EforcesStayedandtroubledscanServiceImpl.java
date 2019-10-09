@@ -66,4 +66,10 @@ public class EforcesStayedandtroubledscanServiceImpl implements IEforcesStayedan
     public int deleteByid(List<Integer> list) {
         return stayedandtroubledscanMapper.deleteByid(list);
     }
+
+	@Override
+	public List<EforcesStayedandtroubledscan> getScanInfoByBillsNumbers(List<String> billsNums) {
+		// TODO Auto-generated method stub
+		return stayedandtroubledscanMapper.getScanInfoByBillsNumbers(billsNums);
+	}
 }

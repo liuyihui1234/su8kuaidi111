@@ -119,6 +119,8 @@
 		<if test="_parameter!=null">
 			and incid like CONCAT(#{_parameter},'%')
 		</if>
+		ORDER BY createtime DESC
+		
 	</select>
 	
 	<select id="selectByNumber" resultMap="BaseResultMap">

@@ -53,4 +53,10 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 		
 	}
 
+	@Override
+	public List<EforcesRectoOrder> getRectoOrderByNumber(String incNum, String Number) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getRectoOrderByNumber(incNum, Number);
+	}
+
 }

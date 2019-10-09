@@ -2,6 +2,7 @@ package org.kuaidi.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
 
 public interface EforcesRectoOrderMapper {
@@ -32,6 +33,7 @@ public interface EforcesRectoOrderMapper {
      */
     List<EforcesRectoOrder> selectAll(Integer paramter);
     
-    
+    List <EforcesRectoOrder> getRectoOrderByNumber(@Param("incNum") String incNum , @Param("Number")String Number);
+	
     
 }

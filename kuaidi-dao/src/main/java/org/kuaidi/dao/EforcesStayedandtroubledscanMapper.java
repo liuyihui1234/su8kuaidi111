@@ -46,8 +46,11 @@ public interface EforcesStayedandtroubledscanMapper {
      * @param list
      * @return
      */
-
     int deleteByid(List<Integer> list);
-
+    
+    /*
+              * 根据订单号查找问题订单。
+     */
+    List<EforcesStayedandtroubledscan> getScanInfoByBillsNumbers(List<String> billsNums);
 
 }

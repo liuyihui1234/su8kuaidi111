@@ -43,7 +43,6 @@ public class RectoorderDubboService {
     public PageVo<EforcesRectoOrder> getAll(QueryPageVo page) {
         try {
             PageInfo<EforcesRectoOrder> eforcesUsers = rectoOrderService.getAll(page.getPage(),page.getLimit(),page.getId());
-            
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,7 +1,6 @@
 package org.kuaidi.web.springboot.webcontroller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesHomepagepic;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
@@ -11,11 +10,9 @@ import org.kuaidi.web.springboot.util.AliyunOSS.DeleteFileUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -63,14 +60,9 @@ public class EforcesHomepagepicController {
     public ResultVo addHomePage(MultipartFile file,HttpServletRequest request){
         logger.info("============>文件上传");
         try {
-/*            if(homepagepic!=null){
-                System.out.println("1*******************************");
-            }*/
             if(file==null){
                 System.out.println("2*******************************");
             }
-
-
             if(file != null) {
                 String filename =file.getOriginalFilename(); //得到上传时的文件名
                 if(!"".equals(filename.trim())){ //判断文件名不是空的话去掉文件名两边的空格

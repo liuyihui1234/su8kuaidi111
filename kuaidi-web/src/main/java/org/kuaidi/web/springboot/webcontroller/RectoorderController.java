@@ -3,12 +3,20 @@ package org.kuaidi.web.springboot.webcontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
+import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
+import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.iservice.IEforcesRectoOrderService;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.dubboservice.RectoorderDubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,19 +36,16 @@ public class RectoorderController {
 
 	@Reference(version = "1.0.0")
 	IEforcesRectoOrderService orderService;
+	
+	@Reference(version = "1.0.0")
+	IEforcesOrderService orderDetailOrder; 
+	
 	@Autowired
 	RectoorderDubboService rectoorderDubboService;
-
-	//    @RequestMapping("addRectoorderService")
-	//    @CrossOrigin
-	//    public ResultVo doAddRectoorderService(String number){
-	//        return rectoorderDubboService.addRectoorderService(number);
-	//    }
 
 	@GetMapping("scan")
 	@CrossOrigin
 	public PageVo getAll(QueryPageVo page) {
-		System.err.println("2222222");
 		PageVo rst = null;
 		rst = rectoorderDubboService.getAll(page);
 		return rst;
@@ -75,10 +80,53 @@ public class RectoorderController {
 	
 	@PostMapping("scan")
 	@CrossOrigin
-	public ResultVo addRectoOrder(EforcesRectoOrder record) { 
+	@NeedUserInfo
+	public ResultVo addRectoOrder(HttpServletRequest request,EforcesRectoOrder record) { 
 		try {
-			System.err.println(record);
-			 orderService.addRectoOrder(record);
+			String billNum = record.getNumber();
+			if(billNum == null || StringUtils.equals(billNum, "") ) {
+				return ResultUtil.exec(false, "订单号不能为空！", null);
+			}
+			
+			List <EforcesOrder> orderList = orderDetailOrder.getByNumber(billNum);
+			if(orderList == null || orderList.size() == 0 ) {
+				return ResultUtil.exec(false, "订单号不正确，请确定！", null);
+			}
+			EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
+			
+			if(incment != null) {
+				record.setDepartname(incment.getName());
+			}
+			
+			System.out.println(record.getPostmanid() + ">>>>");
+			String incNum = null ; 
+			EforcesUser user = (EforcesUser) request.getAttribute("user");
+			if(user != null ) {
+				record.setDepartid(user.getIncid());
+				record.setCreateid(user.getNumber());
+				record.setCreatename(user.getName());
+				record.setScanmanid(user.getNumber());
+				record.setScanman(user.getName());
+				incNum = user.getIncid();
+			}
+			if(incNum == null ||  billNum == null ) {
+				return ResultUtil.exec(false, "参数错误，请确定！", null);
+			}
+			List <EforcesRectoOrder> list = orderService.getRectoOrderByNumber(incNum, billNum);
+			if(list != null && list.size() > 0  ) {
+				return ResultUtil.exec(false, "已经收件交单过了！", null);
+			}
+			if(record.getNum() == null) {
+				record.setNum(1);
+			}
+			if(record.getScantypeid() == null) {
+				record.setScantypeid(0);
+			}
+			if(record.getScantypename() == null) {
+				record.setScantypename("收件交单");
+			}
+			
+			orderService.addRectoOrder(record);
 			return ResultUtil.exec(true, "添加成功", null);
 		} catch (Exception e) {
 			e.printStackTrace();

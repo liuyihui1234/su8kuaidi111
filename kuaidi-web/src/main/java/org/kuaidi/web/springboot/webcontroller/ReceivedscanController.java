@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.controller.scan;
+package org.kuaidi.web.springboot.webcontroller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
@@ -30,8 +30,6 @@ public class ReceivedscanController {
     @ResponseBody
     @CrossOrigin
     public PageVo doGetAllOrderSelective(QueryPageVo page){
-
-
         try {
             PageInfo<EforcesReceivedScan> pageInfo = receivedscanService.getAllOrderSelective(page.getPage(), page.getLimit(), page.getId());
             return ResultUtil.exec(pageInfo.getPageNum(),pageInfo.getSize(),pageInfo.getTotal(),pageInfo.getList());
@@ -65,8 +63,20 @@ public class ReceivedscanController {
         ResultVo rst;
         EforcesUser user = (EforcesUser) request.getAttribute("user");
         EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
-       rst=receivedscanService.receiveOrder(receivedScan,user,inc);
-       return rst;
+        rst=receivedscanService.receiveOrder(receivedScan,user,inc);
+        return rst;
+    }
+    
+    @DeleteMapping("Receivedscan")
+    @ResponseBody
+    @CrossOrigin
+    @NeedUserInfo
+    public ResultVo deleteByIds(@RequestBody List<Integer> array){
+       int rst=receivedscanService.deleteById(array);
+       if(rst > 0 ) {
+    	   return ResultUtil.exec(true, "删除收件信息成功！", null);
+       }
+       return ResultUtil.exec(false, "删除收件信息失败！", null);
     }
 
     @RequestMapping("selectOne")

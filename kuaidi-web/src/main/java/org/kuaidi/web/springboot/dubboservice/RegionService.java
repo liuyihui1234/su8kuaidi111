@@ -5,84 +5,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuaidi.bean.domain.EforcesArea;
-import org.kuaidi.bean.domain.EforcesCity;
-import org.kuaidi.bean.domain.EforcesProvince;
 import org.kuaidi.bean.domain.EforcesRegion;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
-import org.kuaidi.iservice.CityDubboService;
 import org.kuaidi.iservice.IRegionService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import com.alibaba.dubbo.config.annotation.Reference;
-import net.sf.json.JSONArray;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Component
 public class RegionService {
 	
 	@Reference(version = "1.0.0")
-    CityDubboService cityDubboService;
-	
-	@Reference(version = "1.0.0")
 	IRegionService regionService;
-	
-	public ResultVo getCityByCode(String code, Map<String,Object> map) {
-		try {
-			List<EforcesCity> city = cityDubboService.getCityByCode(code);
-			JSONArray dataList = JSONArray.fromObject(city);
-			if(city != null && city.size() > 0 ) {
-				return ResultUtil.exec(true, "获得城市信息成功", dataList);
-			}else {
-				return ResultUtil.exec(false, "获得城市信息失败", null);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			return ResultUtil.exec(false, "获得城市信息失败", null);
-		}
-	}
 
-	public ResultVo getProvince() {
-		try {
-			List<EforcesProvince> provinceList = cityDubboService.getProvinceByParentCode();
-			
-			JSONArray dataList = JSONArray.fromObject(provinceList);
-			if(provinceList != null && provinceList.size() > 0 ) {
-				return ResultUtil.exec(true, "获得省份信息成功", dataList);
-			}else {
-				return ResultUtil.exec(false, "获得省份信息失败", null);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			return ResultUtil.exec(false, "获得省份信息失败", null);
-		}
-	}
-	
-	public ResultVo getAreaByCityCode(String cityCode) {
-		try {
-			List<EforcesArea> areaList = cityDubboService.getAreaByCityCode(cityCode);
-			JSONArray dataList = JSONArray.fromObject(areaList);
-			if(areaList != null && areaList.size() > 0 ) {
-				return ResultUtil.exec(true, "获得区县信息成功", dataList);
-			}else {
-				return ResultUtil.exec(false, "获得区县信息失败", null);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			return ResultUtil.exec(false, "获得区县信息失败", null);
-		}
-	}
 	
 	public ResultVo selectCityByCode(String parentCode) {
 		try {

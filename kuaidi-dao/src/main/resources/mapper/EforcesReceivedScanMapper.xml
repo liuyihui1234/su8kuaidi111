@@ -70,6 +70,20 @@
   <select id="getAllOrder" resultMap="BaseResultMap">
 		select * from eforces_receivedscan where incid = #{incid,jdbcType=VARCHAR}
   </select>
+  
+  <select id="getHadReceiveOrder" resultMap="BaseResultMap">
+  		select * from eforces_receivedscan  where  1 = 1 
+  		<if test="incNum != null" >
+  			and incid = #{incNum}
+  		</if>
+  		<if test="billNumList != null">
+  		   and billsnumber in 
+  		   <foreach collection="billNumList" index="index" open="(" close=")"
+				item="billnumber" separator=",">
+				#{billnumber}
+		    </foreach>
+  		</if>
+  </select>
 
   <!-- 寄/派件运单管理 -->
   <select id="getreceiveOrder" resultType="hashmap">
@@ -83,31 +97,26 @@
     <include refid="Blob_Column_List" />
     from eforces_receivedscan
     <where>
-      flag = 0
+      isDelete = 0 
       <if test="_parameter != null">
         and incId like CONCAT(#{_parameter},'%')
       </if>
     </where>
   </select>
-
-<!--  &lt;!&ndash; 收件添加扫描信息 &ndash;&gt;
-  <insert id="addOrderMsg" parameterType="org.kuaidi.bean.domain.EforcesReceivedScan">
-     insert into eforces_receivedscan (createtime, flightsnumber,
-      goodstype, expresstype, expressid,
-      laststop, laststopname, scantype,
-      scanners, scannerid, incname,
-      incid, scantime, amount,
-      Tranname, billsnumber, bz
-      )
-    values (#{createtime,jdbcType=TIMESTAMP}, #{flightsnumber,jdbcType=VARCHAR},
-      #{goodstype,jdbcType=VARCHAR}, #{expresstype,jdbcType=VARCHAR}, #{expressid,jdbcType=INTEGER},
-      #{laststop,jdbcType=VARCHAR}, #{laststopname,jdbcType=VARCHAR}, #{scantype,jdbcType=VARCHAR},
-      #{scanners,jdbcType=VARCHAR}, #{scannerid,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR},
-      #{incid,jdbcType=VARCHAR}, #{scantime,jdbcType=TIMESTAMP}, #{amount,jdbcType=INTEGER},
-      #{tranname,jdbcType=VARCHAR}, #{billsnumber,jdbcType=LONGVARCHAR}, #{bz,jdbcType=LONGVARCHAR}
-      )
-  </insert>-->
-
+  
+  <update id="updateById">
+		update
+		eforces_receivedscan
+		set
+		isDelete = 1
+		where
+		id
+		in
+		<foreach collection="list" index="index" open="(" close=")"
+			item="id" separator=",">
+			#{id}
+		</foreach>
+	</update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

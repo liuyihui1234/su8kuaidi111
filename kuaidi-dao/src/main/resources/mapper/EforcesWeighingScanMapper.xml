@@ -56,13 +56,24 @@
 		from
 		eforces_weighingscan
 		where
-		isDelete=1
+		isDelete= 0 
 		<if test="paramter!=null">
 		and incid like CONCAT(#{paramter},'%')
 		</if>
+		 ORDER BY createtime desc 	
 	</select>
-
-
+	
+	<select id="getWeightScanByParam"  resultMap="BaseResultMap">
+		select * from eforces_weighingscan
+		where isDelete = 0 
+		<if test="incNum != null and incNum.length() > 0 ">
+			and incid = #{incNum} 
+		</if>	
+		<if test="number != null and number.length() > 0 ">
+			and billsnumber = #{number} 
+		</if>	
+	</select>
+	
 	<select id="selectByPrimaryKey"
 		parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
@@ -76,7 +87,7 @@
 		update
 		eforces_weighingscan
 		set
-		isDelete=0
+		isDelete=1
 		where
 		id
 		in

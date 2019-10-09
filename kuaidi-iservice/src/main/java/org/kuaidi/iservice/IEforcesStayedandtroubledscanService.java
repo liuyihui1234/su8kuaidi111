@@ -28,5 +28,7 @@ public interface IEforcesStayedandtroubledscanService {
     int deleteDestoryBill(String billNumber);
 
     int deleteByid(List<Integer> list);
+    
+    List<EforcesStayedandtroubledscan> getScanInfoByBillsNumbers(List<String> billsNums);
 
 }

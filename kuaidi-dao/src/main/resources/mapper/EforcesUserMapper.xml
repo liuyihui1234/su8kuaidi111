@@ -54,7 +54,8 @@
     <select id="selectByDepartname" resultType="hashmap">
     select
     id AS value,
-    name AS title
+    name AS title,
+    Number As number
     from
     eforces_user
     where

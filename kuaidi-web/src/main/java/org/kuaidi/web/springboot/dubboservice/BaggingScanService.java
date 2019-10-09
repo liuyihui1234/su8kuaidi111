@@ -49,21 +49,15 @@ public class BaggingScanService {
         }
     }
 
-
     public ResultVo webMakeBagScan(EforcesBaggingScan record , EforcesIncment eforcesIncment, EforcesUser eforcesUser ) {
-
 //        // 生成包号
-
         String bagNumber;
-
         if(StringUtils.isEmpty(record.getCode())){
-
             bagNumber = orderUtil.getOrderNumber(eforcesUser.getIncid());
         }else{
             bagNumber=record.getCode();
         }
         String billsnumber = record.getNumberlist();
-
         String[] split = {};
         if(StringUtils.isNotEmpty(billsnumber)){
             split = billsnumber.split("\\s+");
@@ -84,18 +78,24 @@ public class BaggingScanService {
             baggingScan.setCode(bagNumber);
             baggingScan.setNumberlist(str1);
             baggingScan.setNum(1);
-            baggingScan.setBaggingid(bagNumber);
+            //装袋用户的编号
+            //baggingScan.setBaggingid(bagNumber);
+
             baggingScan.setBaggingname(record.getBaggingname());
             baggingScan.setCreateid(eforcesUser.getNumber());
             baggingScan.setCreatename(eforcesUser.getName());
-            baggingScan.setIncid(eforcesIncment.getNumber());
+            baggingScan.setIncid(eforcesUser.getIncid());
             baggingScan.setIncname(eforcesIncment.getName());
             list.add(baggingScan);
         }
         int rst = 0 ;
         if(list.size() > 0 ) {
             rst = biggingScanService.addRecordList(list);
-            return  ResultUtil.exec(true, "添加成功",bagNumber);
+            if(rst > 0 ) {
+            	return  ResultUtil.exec(true, "添加成功",bagNumber);
+            }else {
+            	return  ResultUtil.exec(false, "添加记录失败",null);
+            }
         }
        /* if(rst > 0 ) {
             JSONObject rstData = new JSONObject();
@@ -107,9 +107,4 @@ public class BaggingScanService {
         }*/
         return  ResultUtil.exec(false, "添加失败！", null);
     }
-
-
-
-
-
 }

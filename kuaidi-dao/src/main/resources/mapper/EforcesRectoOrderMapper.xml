@@ -54,13 +54,13 @@
 	update
 	eforces_rectoorder
 	set 
-	isDelete=0
+	isDelete= 1
 	where
 	id 
 	in
 	<foreach collection="list" index="index" item="ids"
-	open="(" close=")" separator=",">
-	#{ids}
+		open="(" close=")" separator=",">
+		#{ids}
 	</foreach>
 	</update>
 	
@@ -70,12 +70,12 @@
 		from
 		eforces_rectoorder
 		where
-		isDelete=1
+		isDelete= 0 
 		<if test="_parameter!=null">
 			and incid like CONCAT(#{_parameter},'%')
 		</if>
+		ORDER by scanTime DESC
 	</select>
-
 
 	<select id="selectByPrimaryKey"
 		parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -89,6 +89,21 @@
 		parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(*) from eforces_rectoorder where CreateId =
 		#{userNumber,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getRectoOrderByNumber" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List" />
+		from eforces_rectoorder
+		where  1 = 1 
+		<if test="incNum != null and  incNum.length() > 0 ">
+			and  Departid = ${incNum}
+		</if>
+		
+		<if test="Number != null and  Number.length() > 0 ">
+			and number = ${Number}
+		</if>
+		  
 	</select>
 
 

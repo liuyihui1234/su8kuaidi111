@@ -127,7 +127,6 @@ public class NetSignInfoImpl implements NetSignInfo {
 				rstFlage = netSignDao.delNetSignByIds(idList);
 			}
 		}
-		System.out.println(rstFlage);
 		return rstFlage; 
 	}
 }

@@ -83,4 +83,7 @@ public interface IEforcesReceivedscanService {
 
     ResultVo receiveOrder(EforcesReceivedScan scan, EforcesUser userInfo, EforcesIncment currentStop);
 
+    
+    int deleteById(List<Integer> ids);
+    
 }
