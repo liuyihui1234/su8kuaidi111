@@ -71,6 +71,7 @@ public class BaggingScanService {
                 set.add(str);
             }
         }
+        // 判断订单中是否已经有打包过的订单
         List<EforcesBaggingScan> list = new ArrayList<>();
         for (String str1 :
                 set) {
@@ -79,9 +80,8 @@ public class BaggingScanService {
             baggingScan.setNumberlist(str1);
             baggingScan.setNum(1);
             //装袋用户的编号
-            //baggingScan.setBaggingid(bagNumber);
-
             baggingScan.setBaggingname(record.getBaggingname());
+            baggingScan.setBaggingid(record.getBaggingid());
             baggingScan.setCreateid(eforcesUser.getNumber());
             baggingScan.setCreatename(eforcesUser.getName());
             baggingScan.setIncid(eforcesUser.getIncid());
@@ -97,14 +97,6 @@ public class BaggingScanService {
             	return  ResultUtil.exec(false, "添加记录失败",null);
             }
         }
-       /* if(rst > 0 ) {
-            JSONObject rstData = new JSONObject();
-            rstData.put("bagName", record.getBaggingname());
-            rstData.put("bagNumber", bagNumber);
-            String barPath = JBarCodeUtil.createBarcode(bagNumber, baseDir, "");
-            rstData.put("barPath",barPath);
-
-        }*/
         return  ResultUtil.exec(false, "添加失败！", null);
     }
 }

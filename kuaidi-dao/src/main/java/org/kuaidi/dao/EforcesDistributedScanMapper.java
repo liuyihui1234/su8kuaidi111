@@ -27,15 +27,18 @@ public interface EforcesDistributedScanMapper {
     int updateByPrimaryKey(EforcesDistributedScan record);
 
     /**
-     * 根据快递员员工编号查询待派送订单
+               *  根据快递员员工编号查询待派送订单
      * g
-     *
      * @param postmanid
      * @return
      */
     List<EforcesDistributedScan> selectDisByPostmanId(@Param("postmanid") String postmanid, @Param("number") List<String> number);
 
     List<EforcesDistributedScan> getAlldistribute(String incid);
-
-
+    
+    /*
+               * 根据订单号查询该订单是否派送
+     */
+	List<EforcesDistributedScan> selectByBillNumber(String billsNum);
+	
 }

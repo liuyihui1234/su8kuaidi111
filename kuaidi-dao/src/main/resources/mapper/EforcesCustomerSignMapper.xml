@@ -27,9 +27,8 @@
     <if test="_parameter != null">
       and  incId like CONCAT(#{_parameter},'%')
     </if>
+     ORDER BY signTime desc 
   </select>
-
-
   
   <select id="selectByDeliveryUserId" resultMap="BaseResultMap">
   select
@@ -213,6 +212,6 @@
     select
     <include refid="Base_Column_List" />
     from eforces_customersign
-    where operatorid = #{operatorid,jdbcType=VARCHAR}
+    where DeliveryUserId = #{operatorid,jdbcType=VARCHAR}
   </select>
 </mapper>

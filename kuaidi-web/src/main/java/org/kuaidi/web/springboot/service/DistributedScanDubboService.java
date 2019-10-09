@@ -86,7 +86,6 @@ public class DistributedScanDubboService {
                 if(customer == null){
                 	EforcesUser user = (EforcesUser)request.getAttribute("user");
                     EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
-
                     EforcesCustomerSign customerSign = new EforcesCustomerSign();
                     customerSign.setNumber(num);
                     customerSign.setTousersignature(touserSignature);
@@ -106,7 +105,6 @@ public class DistributedScanDubboService {
                     logistic.setIncname(user.getIncname());
                     logistic.setIncid(user.getIncid());
                     logistic.setMark(6);
-
                     int data2 = customerSignService.insertCustomerSign(customerSign,logistic);
                     if(data2 > 0){
                         return ResultUtil.exec(true,"成功签收",null);

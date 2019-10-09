@@ -70,4 +70,11 @@ public class EforcesDistributedScanImpl implements IEforcesDistributedScanServic
 	}
 
 
+	@Override
+	public List<EforcesDistributedScan> selectByBillNumber(String billsNum) {
+		// TODO Auto-generated method stub
+		return ScanMapper.selectByBillNumber(billsNum);
+	}
+
+
 }

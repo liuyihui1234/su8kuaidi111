@@ -79,4 +79,9 @@ public interface IEforcesTransportedscanService {
      * @return
      */
     int updateState2(List<String> billsNumber);
+    
+    /*
+               * 批量删除
+     */
+    int deleteByid(List<Integer> list);
 }

@@ -72,4 +72,11 @@ public interface EforcesTransportedscanMapper {
      * @return
      */
     int updateState2(List<String> billsNumber);
+    
+    /**
+               * 根据id删除
+     * @param list
+     * @return
+     */
+    int deleteByid(List<Integer> list);
 }

@@ -153,7 +153,7 @@ public class EforcesDictionController {
     }
 
     /**
-     * 查询修改数据
+                *  查询修改数据
      * @param id
      * @return
      */
@@ -172,6 +172,7 @@ public class EforcesDictionController {
     
     @RequestMapping("getAllCrop")
     @ResponseBody
+    @CrossOrigin
     public ResultVo getAllCrop(){
 		try {
 			List<EforcesCorp> list = corpService.getAllEforcesCorp();

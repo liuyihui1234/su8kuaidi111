@@ -2,26 +2,20 @@ package org.kuaidi.web.springboot.controller.scan;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesStayedandtroubledscan;
 import org.kuaidi.bean.domain.EforcesUser;
-import org.kuaidi.bean.domain.EforcesWeighingScan;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.iservice.IEforcesStayedandtroubledscanService;
-import org.kuaidi.iservice.IEforcesWeighingScanService;
 import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController

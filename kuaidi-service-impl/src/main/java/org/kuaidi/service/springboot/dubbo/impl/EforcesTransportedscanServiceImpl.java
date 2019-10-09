@@ -88,4 +88,10 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
     public int updateState2(List<String> billsNumber) {
         return transportedscan.updateState2(billsNumber);
     }
+
+	@Override
+	public int deleteByid(List<Integer> list) {
+		// TODO Auto-generated method stub
+		return transportedscan.deleteByid(list);
+	}
 }

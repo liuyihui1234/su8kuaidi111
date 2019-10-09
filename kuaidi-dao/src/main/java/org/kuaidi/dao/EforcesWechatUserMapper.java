@@ -3,6 +3,7 @@ package org.kuaidi.dao;
 import org.kuaidi.bean.domain.EforcesWechatUser;
 
 public interface EforcesWechatUserMapper {
+	
     int deleteByPrimaryKey(String openid);
 
     int insert(EforcesWechatUser record);
@@ -14,4 +15,5 @@ public interface EforcesWechatUserMapper {
     int updateByPrimaryKeySelective(EforcesWechatUser record);
 
     int updateByPrimaryKey(EforcesWechatUser record);
+    
 }
