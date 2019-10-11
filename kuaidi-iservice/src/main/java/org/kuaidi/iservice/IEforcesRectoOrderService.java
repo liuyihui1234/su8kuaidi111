@@ -2,9 +2,8 @@ package org.kuaidi.iservice;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
-
 import com.github.pagehelper.PageInfo;
 
 public interface IEforcesRectoOrderService {
@@ -17,7 +16,7 @@ public interface IEforcesRectoOrderService {
 	
 	Integer deleteById(List<Integer> id);
 	
-	void addRectoOrder(EforcesRectoOrder record);
+	void addRectoOrder(EforcesRectoOrder record,EforcesLogisticStracking  logisticStracking);
 	
 	void setById(EforcesRectoOrder record);
 	

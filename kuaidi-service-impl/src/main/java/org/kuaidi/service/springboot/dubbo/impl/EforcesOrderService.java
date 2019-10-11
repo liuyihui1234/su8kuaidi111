@@ -218,7 +218,6 @@ public class EforcesOrderService implements IEforcesOrderService {
 	@Override
 	public List<EforcesOrder> getOrderByNumbers(String numbers) {
 		// TODO Auto-generated method stub
-		
 		if(StringUtils.isEmpty(numbers)) {
 			return null ; 
 		}
@@ -245,7 +244,7 @@ public class EforcesOrderService implements IEforcesOrderService {
 	 */
 	@Override
 	public List<EforcesOrder> getAllNumberMsg(List<String> list) {
-		return orderDao.getAllNumberMsg(list);
+		return orderDao.getOrderByNumbers(list);
 	}
 
 	/**

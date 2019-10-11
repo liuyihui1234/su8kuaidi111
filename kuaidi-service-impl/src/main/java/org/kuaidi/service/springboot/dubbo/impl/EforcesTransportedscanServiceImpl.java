@@ -5,8 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
+import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesTransportedscan;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
+import org.kuaidi.dao.EforcesOrderMapper;
 import org.kuaidi.dao.EforcesTransportedscanMapper;
 import org.kuaidi.iservice.IEforcesTransportedscanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2019/8/7 15:03
  */
-@Service(version = "1.0.0",interfaceClass = IEforcesTransportedscanService.class)
+@Service(version = "1.0.0",interfaceClass = IEforcesTransportedscanService.class,timeout=12000)
 public class EforcesTransportedscanServiceImpl implements IEforcesTransportedscanService {
 
     @Autowired
@@ -24,6 +26,9 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
 
     @Autowired
     private EforcesLogisticStrackingMapper  logisticStrackingDao;
+    
+//    @Autowired
+//    private EforcesOrderMapper orderService; 
 
 
     @Override
@@ -31,7 +36,7 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
     public int insertSelective (EforcesTransportedscan record,EforcesLogisticStracking  strackingInfo) {
     	int rst = 0 ;
     	rst = transportedscan.insertSelective(record);
-    	if(rst >0 ) {
+    	if(rst > 0 ) {
     		rst = logisticStrackingDao.insertSelective(strackingInfo);
     	}
     	return rst ;

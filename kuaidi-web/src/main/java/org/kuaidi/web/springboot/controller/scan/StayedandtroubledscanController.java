@@ -84,6 +84,7 @@ public class StayedandtroubledscanController {
             for(String billNumber:set) {
             	billNumList.add(billNumber);
             }
+            
             List<EforcesOrder> billList = orderService.getAllNumberMsg(billNumList);
             Map<String , EforcesOrder> billMap = new HashMap<String , EforcesOrder>();
             for(EforcesOrder  billInfo : billList) {

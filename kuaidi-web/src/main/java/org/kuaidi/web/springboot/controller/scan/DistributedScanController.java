@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
 import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
@@ -12,7 +13,9 @@ import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesDistributedScanService;
 import org.kuaidi.iservice.IEforceslogisticstrackingService;
+import org.kuaidi.iservice.UserService;
 import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
+import org.kuaidi.web.springboot.util.LogisticStracking;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,11 +23,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/web/distributed/")
 public class DistributedScanController {
+	
     @Reference(version = "1.0.0")
     IEforcesDistributedScanService scanService;
+    
     @Reference(version = "1.0.0")
     IEforceslogisticstrackingService logisticstrackingService;
-
+    
+    @Reference(version = "1.0.0")
+    UserService userService; 
+    
+    
+    
     @GetMapping("distributedScan")
     @CrossOrigin
     @NeedUserInfo
@@ -63,12 +73,27 @@ public class DistributedScanController {
             if(list != null && list.size() > 0 ) {
             	return ResultUtil.exec(false, "订单已经派过，请确定！", null);
             }
+            
+            String postPhoneNum = ""; 
+            String postNum = record.getPostmanid();
+            if(postNum != null && !StringUtils.equals(postNum, "") ) {
+            	EforcesUser postUserInfo = userService.selectUser(postNum); 
+            	if(postUserInfo != null) {
+            		postPhoneNum = postUserInfo.getMobile();
+            	}
+            }
+            
             record.setScantype("派件扫描");
             record.setIncname(inc.getName());
             record.setIncid(user.getIncid());
             record.setScannerid(user.getNumber());
             record.setScanners(user.getName());
-            int i = scanService.insertSelective(record);
+            //添加派件物流信息
+            String description = "【%s】的【%s  手机【%s】】正在派件，扫描员是【%s】";
+        	description = String.format(description, inc.getName(), record.getPostman(), postPhoneNum ,user.getName());
+			EforcesLogisticStracking  logisticStracking = 
+					LogisticStracking.createStrackingInfo(user, inc, description, record.getBillsnumber(), 5);
+            int i = scanService.insertSelective(record, logisticStracking);
             return ResultUtil.exec(true, "添加成功", i);
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
+import org.kuaidi.bean.domain.EforcesLogisticStracking;
 
 public interface IEforcesDistributedScanService {
 	/**
@@ -39,8 +40,8 @@ public interface IEforcesDistributedScanService {
 	 */
 	EforcesDistributedScan selectById(Integer id);
 
-	int insertSelective(EforcesDistributedScan record);
-
+	int insertSelective(EforcesDistributedScan record,EforcesLogisticStracking  logisticStracking);
+		
 	int updateByPrimaryKeySelective(EforcesDistributedScan record);
 
 	int deleteByid(List<Integer> list);

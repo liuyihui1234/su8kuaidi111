@@ -45,10 +45,8 @@ public class EforcesSentScanServiceImpl implements IEforcesSentscanService {
 			if(stracking!=null) {
 				if (rst == 1) {
 					rst = logisticStrackingMapper.insertSelective(stracking);
-					msgVo.setMsg("添加转运成功！");
-
+					msgVo.setMsg("添加成功！");
 				}
-
 			}else{
 				msgVo.setMsg("添加成功");
 			}

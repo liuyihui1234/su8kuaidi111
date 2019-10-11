@@ -4,20 +4,25 @@ import java.util.List;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
-import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.dao.EforcesDistributedScanMapper;
+import org.kuaidi.dao.EforcesLogisticStrackingMapper;
+import org.kuaidi.iservice.IEforcesCustomerSignService;
 import org.kuaidi.iservice.IEforcesDistributedScanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 
-@Service(version = "1.0.0")
+@Service(version = "1.0.0",interfaceClass=IEforcesDistributedScanService.class)
 public class EforcesDistributedScanImpl implements IEforcesDistributedScanService {
 
 	@Autowired	
 	private EforcesDistributedScanMapper  ScanMapper;
+	
+	@Autowired
+	private EforcesLogisticStrackingMapper  logisticMapper; 
 	
 	
 	@Override
@@ -53,10 +58,16 @@ public class EforcesDistributedScanImpl implements IEforcesDistributedScanServic
 	public EforcesDistributedScan selectById(Integer id) {
 		return ScanMapper.selectByPrimaryKey(id);
 	}
-
+	
 	@Override
-	public int insertSelective(EforcesDistributedScan record) {
-		return ScanMapper.insertSelective(record);
+	@Transactional(rollbackFor = Exception.class)
+	public int insertSelective(EforcesDistributedScan record,
+			EforcesLogisticStracking  logisticStracking) {
+		int rst = ScanMapper.insertSelective(record);
+		if(rst > 0 ) {
+			rst = logisticMapper.insertSelective(logisticStracking);
+		}
+		return rst; 
 	}
 
 	@Override
