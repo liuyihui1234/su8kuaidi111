@@ -73,7 +73,7 @@
 		scantype, scanners, scannerid, incname,
 		incid, scantime, amount
 	</sql>
-	
+
 	<sql id="Blob_Column_List">
 		billsnumber, bz
 	</sql>
@@ -87,7 +87,17 @@
 		where id = #{id,jdbcType=INTEGER}
 		and isdelete = 0
 	</select>
-
+		
+	<select id="selectByBillNumber"  resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from eforces_distributedscan
+		where billsnumber = #{billsNum,jdbcType=INTEGER}
+		and isdelete = 0
+	</select>
+	
 	<select id="selectByCreateincnumber" 
 		parameterType="java.lang.String" resultType="org.kuaidi.bean.domain.EforcesDistributedScan">
 		SELECT
@@ -126,9 +136,8 @@
 		<if test="_parameter != null">
 			and  incId like CONCAT(#{_parameter},'%')
 		</if>
+		ORDER BY createtime desc 
 	</select>
-
-
 
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">

@@ -152,7 +152,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
             for(String billNumber:set) {
             	billNumList.add(billNumber);
             }
-            List<EforcesOrder> billList = orderService.getAllNumberMsg(billNumList);
+            List<EforcesOrder> billList = orderService.getOrderByNumbers(billNumList);
             Map<String , EforcesOrder> billMap = new HashMap<String , EforcesOrder>();
             for(EforcesOrder  billInfo : billList) {
             	billMap.put(billInfo.getNumber(), billInfo);

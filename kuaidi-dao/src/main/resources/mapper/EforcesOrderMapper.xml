@@ -135,18 +135,6 @@
     Remark, fwyq
   </sql>
 
-  <!-- 根据多个订单号查询订单信息 -->
-  <select id="getAllNumberMsg" parameterType="java.util.List" resultMap="BaseResultMap">
-    select * from eforces_order
-    where
-    number
-    in
-    <foreach collection="list" item="number"
-             index="index" open="(" close=")" separator="," >
-      #{number}
-    </foreach>
-  </select>
-
   <!-- 收件、根据Number订单编号查询数据添加到扫描表 -->
   <select id="getOrderMsg" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT * from eforces_order where Number=#{Number,jdbcType=VARCHAR}
@@ -251,26 +239,17 @@
   *
   FROM
   eforces_order
-  WHERE 
+  WHERE  isDelete = 0  and
   Number in  
 	 <foreach collection="billsNumber" item="id" index="index" open="(" close=")" separator=",">
       #{id}
     </foreach>
-    
   </select>
+  
   <select id="getHadPostPackage" parameterType="java.lang.String" resultMap="BaseResultMap">
     	SELECT bill.* from eforces_order bill join  eforces_sentscan  sent  on bill.Number =  sent.billsnumber  where  bill.isDelete = 0  and sent.incid = #{incid}
   </select>
 
-  <!-- 
-  		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
-  			where  bill.isDelete = 0  and receive.incid = #{incid}	and 
-		 receive.billsnumber  not  in (
-			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}
-			Union 
-			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid}
-		) 
-   -->
   <select id="notHadPostPackage" resultMap="BaseResultMap">
 		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
   			where  bill.isDelete = 0  and receive.incid = #{incid}	and receive.scannerid = #{userNum}
@@ -280,8 +259,7 @@
 			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid} and  transport.scannerid = #{userNum}
 		) 
   </select>
-  
-  
+
   <select id="notHadPostPackage1" resultMap="BaseResultMap">
 		SELECT  bill.* from eforces_order bill JOIN eforces_rectoorder  recto on bill.number = recto.Number  
   			where  bill.isDelete = 0  and recto.DepartId  = #{incid}	and recto.ScanManId = #{userNum}

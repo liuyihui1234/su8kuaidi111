@@ -166,7 +166,6 @@ public class NetSignInfoService {
 					}
 				}
 			}
-
 		}
 		try {
 			WordFileUtile.readFileByName(srcPath,baseDir ,contractPath,
@@ -176,7 +175,6 @@ public class NetSignInfoService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		String name = "" ;
 		String mnemonic =  "";
 		if(StringUtils.isNotEmpty(zoneName)) {
@@ -229,7 +227,6 @@ public class NetSignInfoService {
 	 */
 	public String  saveIncInfo(String province , String city , String area, int bigZoneId , String Name, String mnemonic, int regionLevel,String address){
 		EforcesIncment incment = new EforcesIncment();
-
 		String lagearea="";
 		if(bigZoneId==55){
 			lagearea="华北地区";
@@ -240,7 +237,6 @@ public class NetSignInfoService {
 		}else if(bigZoneId==56){
 			lagearea="华东地区";
 		}
-
 		String Provinces="";
 		if(area != null && !area.equals("")){
 			Provinces = area + "00";

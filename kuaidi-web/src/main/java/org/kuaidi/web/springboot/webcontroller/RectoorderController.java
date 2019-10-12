@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesIncment;
+import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
 import org.kuaidi.bean.domain.EforcesUser;
@@ -18,6 +19,7 @@ import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.iservice.IEforcesRectoOrderService;
 import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.dubboservice.RectoorderDubboService;
+import org.kuaidi.web.springboot.util.LogisticStracking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -125,8 +127,12 @@ public class RectoorderController {
 			if(record.getScantypename() == null) {
 				record.setScantypename("收件交单");
 			}
-			
-			orderService.addRectoOrder(record);
+			// 封装物流信息
+			String description = "%s已收件,扫描员是【%s】";
+        	description = String.format(description, incment.getName(), user.getName());
+			EforcesLogisticStracking  logisticStracking = 
+					LogisticStracking.createStrackingInfo(user, incment, description, record.getNumber(), 1);
+			orderService.addRectoOrder(record,logisticStracking);
 			return ResultUtil.exec(true, "添加成功", null);
 		} catch (Exception e) {
 			e.printStackTrace();

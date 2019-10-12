@@ -163,11 +163,12 @@
     <include refid="Base_Column_List" />
     from eforces_transportedscan
     <where>
-      flag = 0
+       flag = 0
       <if test="_parameter != null">
         and incId like CONCAT(#{_parameter},'%')
       </if>
     </where>
+    ORDER BY createtime desc    
   </select>
 
   <select id="selectState0" resultMap="BaseResultMap">
@@ -176,6 +177,18 @@
     from eforces_transportedscan
     WHERE state = 0
   </select>
+  
+  <update id="deleteByid" >
+        update eforces_transportedscan
+        set  flag = 1
+        where id
+        in
+        <foreach collection="list" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
 
   <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesTransportedscan">
     update eforces_transportedscan

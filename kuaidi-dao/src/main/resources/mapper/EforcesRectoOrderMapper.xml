@@ -95,23 +95,21 @@
 		select
 			<include refid="Base_Column_List" />
 		from eforces_rectoorder
-		where  1 = 1 
+		where  isDelete = 0  
 		<if test="incNum != null and  incNum.length() > 0 ">
 			and  Departid = ${incNum}
 		</if>
-		
 		<if test="Number != null and  Number.length() > 0 ">
 			and number = ${Number}
 		</if>
-		  
 	</select>
-
-
+	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
 		delete from eforces_rectoorder
 		where Id = #{id,jdbcType=INTEGER}
 	</delete>
+	
 	<insert id="insert"
 		parameterType="org.kuaidi.bean.domain.EforcesRectoOrder">
 		insert into eforces_rectoorder (Id, Number, OperationTime,
