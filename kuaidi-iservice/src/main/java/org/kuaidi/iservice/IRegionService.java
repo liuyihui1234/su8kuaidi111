@@ -84,4 +84,9 @@ public interface IRegionService {
 	 */
 	List<EforcesRegion>  getRegionListByParentCode(String parentCode);
 	
+	/*
+	 * 根据名字like查询
+	 */
+	List<EforcesRegion>  getRegionListByName(String name);
+	
 }
