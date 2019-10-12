@@ -105,7 +105,7 @@ public class WeiXinAddressController {
          *    首先一个Pattern实例订制了一个所用语法与PERL的类似的正则表达式经编译后的模式，然后一个Matcher实例在这个给定的Pattern实例的模式控制下进行字符串的匹配工作。
     	*/
 		JSONObject data = region.addressResolution(address);
-		if(data == null || data.size() == 0 ) {
+		if(data == null || data.size() < 8 ) {
 			return ResultUtil.exec(false, "数据解析错误，请重新输入地区信息", null);
 		}
 		return ResultUtil.exec(true, "地区解析成功！", data);       

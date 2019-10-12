@@ -410,6 +410,9 @@ public class RegionService {
 			county = null;
 			village = null;
 		}
+        if(address.length() < 2 ) {
+			return data; 
+		}
 		String provinceName = address.substring(0,2);
 		if(StringUtils.isEmpty(provinceName)) {
 			return data;
@@ -456,8 +459,10 @@ public class RegionService {
 		if(address.length() == 0 ) {
 			return data;
 		}
-		
 		//城市是必须能匹配上的
+		if(address.length() < 2 ) {
+			return data; 
+		}
 		String cityName = address.substring(0,2);
 		if(city != null && city.length() > 2) {
 			cityName = city.substring(0,2);
@@ -500,6 +505,9 @@ public class RegionService {
 			address.trim();
 		}
 		//判断县
+		if(address.length() < 2 ) {
+			return data; 
+		}
 		String countyName = address.substring(0,2);
 		if(county != null && county.length() > 2) {
 			countyName = county.substring(0,2);
@@ -539,6 +547,9 @@ public class RegionService {
 			}
 		}
 		//判断县
+		if(address.length() < 2 ) {
+			return data; 
+		}
 		String villageName = address.substring(0,2);
 		if(village != null && village.length() > 2) {
 			villageName = village.substring(0,2);
