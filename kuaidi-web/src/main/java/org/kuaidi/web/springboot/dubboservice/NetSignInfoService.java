@@ -191,7 +191,7 @@ public class NetSignInfoService {
 		//
 		EforcesUser userInfo = userService.selectUserById(userId);
 		if(userInfo != null ) {
-			String icmNum = saveIncInfo(province,city,area,bigZoneId, name ,mnemonic, regionLevel, userInfo.getAddress());
+			String icmNum = saveIncInfo(province,city,area,areaStreet,bigZoneId, name ,mnemonic, regionLevel, userInfo.getAddress());
 			userInfo.setIncid(icmNum);
 			userInfo.setIncnumber(icmNum);
 			userService.updateUserInfo(userInfo);
@@ -225,7 +225,7 @@ public class NetSignInfoService {
 	 * @param
 	 * @return  返回对应的number
 	 */
-	public String  saveIncInfo(String province , String city , String area, int bigZoneId , String Name, String mnemonic, int regionLevel,String address){
+	public String  saveIncInfo(String province , String city , String area, String areaStreet ,int bigZoneId , String Name, String mnemonic, int regionLevel,String address){
 		EforcesIncment incment = new EforcesIncment();
 		String lagearea="";
 		if(bigZoneId==55){
@@ -238,7 +238,9 @@ public class NetSignInfoService {
 			lagearea="华东地区";
 		}
 		String Provinces="";
-		if(area != null && !area.equals("")){
+		if(areaStreet != null && !StringUtils.equals(areaStreet, "")) {
+			Provinces = areaStreet.trim();
+		}else if(area != null && !area.equals("")){
 			Provinces = area + "00";
 		}else if(city != null &&!area.equals("")){
 			Provinces = city + "00";
@@ -261,12 +263,12 @@ public class NetSignInfoService {
 		}else if(regionLevel==4){
 			type="网点";
 		}
-
 		Name = Name.replace("\t","");
 		Name = "快8速递" + Name +"分公司";
 		incment.setProvince(province);
 		incment.setCity(city);
 		incment.setArea(area);
+		incment.setAreastreet(areaStreet);
 		incment.setLagearea(lagearea);
 		incment.setName(Name);
 		incment.setMnemonic(mnemonic);

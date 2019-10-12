@@ -17,10 +17,7 @@ import org.kuaidi.web.springboot.util.redis.OrderUtil;
 import org.kuaidi.web.springboot.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -265,9 +262,9 @@ public class AppointmentDubboService {
      * @param
      * @return
      */
-    public PageVo getMsg(QueryPageVo page)throws IOException{
+    public PageVo getMsg(QueryPageVo page, EforcesAppointment Eforces)throws IOException{
         try {
-            PageInfo<EforcesAppointment> pageInfo = appointmentService.getlistAllMsg(null);
+            PageInfo<EforcesAppointment> pageInfo = appointmentService.getlistAllMsg(page,Eforces);
 
             return ResultUtil.exec(pageInfo.getPageNum(), page.getLimit(),pageInfo.getTotal(),pageInfo.getList());
         } catch (Exception e) {

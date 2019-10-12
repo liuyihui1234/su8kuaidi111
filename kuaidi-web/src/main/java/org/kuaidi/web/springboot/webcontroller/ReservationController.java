@@ -1,5 +1,6 @@
 package org.kuaidi.web.springboot.webcontroller;
 
+import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultVo;
@@ -22,8 +23,8 @@ public class ReservationController {
      */
     @GetMapping("Reservation")
     @CrossOrigin
-    public PageVo getAllMsg(QueryPageVo page) throws IOException {
-        return appointmentDubboService.getMsg(page);
+    public PageVo getAllMsg(QueryPageVo page,EforcesAppointment Eforces) throws IOException {
+        return appointmentDubboService.getMsg(page,Eforces);
     }
     /**
      * 删除预约单管理
