@@ -137,7 +137,7 @@
 
   <!-- 收件、根据Number订单编号查询数据添加到扫描表 -->
   <select id="getOrderMsg" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT * from eforces_order where Number=#{Number}
+    SELECT * from eforces_order where Number=#{Number,jdbcType=VARCHAR}
   </select>
 
 <!--  查询详细信息 -->
@@ -183,7 +183,7 @@
   </select>
   
   <select id="getNumbersByOpenId" parameterType="java.lang.String"  resultMap="BaseResultMap">
-  		select * from eforces_order  where openid = ${openId, ,jdbcType=VARCHAR}
+  		select * from eforces_order  where isDelete=0 AND openid = #{openid,jdbcType=VARCHAR}
   </select>
 
   <!-- 删除 -->

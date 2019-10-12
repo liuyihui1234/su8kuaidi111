@@ -128,5 +128,5 @@ public interface EforcesOrderMapper {
     /*
 	 * 根据发单人的openId 查询他发送的订单信息。
 	 */
-	List<EforcesOrder> getNumbersByOpenId(String openId);
+	List<EforcesOrder> getNumbersByOpenId(String openid);
 }

@@ -7,6 +7,7 @@ import org.kuaidi.bean.domain.EforcesOrder;
 
 public interface IEforcesOrderService {
 		
+
 	int getUserOrderCount(String  userNum);
 	
 	/**
@@ -150,6 +151,8 @@ public interface IEforcesOrderService {
 	/*
 	  * 根据派单用户的openId 查询订单信息
 	 */
-	List<EforcesOrder> getNumberByOpenId(String openId);
+	List<EforcesOrder> getNumberByOpenId(String openid);
+	
+	int updateByPrimaryKeySelective(EforcesOrder record);
 	
 }
