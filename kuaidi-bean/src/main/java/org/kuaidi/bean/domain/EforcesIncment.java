@@ -33,6 +33,8 @@ public class EforcesIncment implements Serializable {
     private String city;
 
     private String area;
+    
+    private String areastreet;
 
     private String type;
 
@@ -231,7 +233,15 @@ public class EforcesIncment implements Serializable {
         this.area = area == null ? null : area.trim();
     }
 
-    public String getType() {
+    public String getAreastreet() {
+		return areastreet;
+	}
+
+	public void setAreastreet(String areastreet) {
+		this.areastreet = areastreet;
+	}
+
+	public String getType() {
         return type;
     }
 
