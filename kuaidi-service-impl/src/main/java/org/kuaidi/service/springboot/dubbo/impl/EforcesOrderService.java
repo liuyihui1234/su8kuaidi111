@@ -269,8 +269,12 @@ public class EforcesOrderService implements IEforcesOrderService {
 	}
 	
 	@Override
-	public List<EforcesOrder> getNumberByOpenId(String openId) {
+	public List<EforcesOrder> getNumberByOpenId(String openid) {
 		// TODO Auto-generated method stub
-		return orderDao.getNumbersByOpenId(openId);
+		return orderDao.getNumbersByOpenId(openid);
+	}
+	
+	public int updateByPrimaryKeySelective(EforcesOrder record) {
+		return orderDao.updateByPrimaryKeySelective(record);
 	}
 }
