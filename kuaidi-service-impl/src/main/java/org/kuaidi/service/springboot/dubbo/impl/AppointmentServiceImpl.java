@@ -3,7 +3,11 @@ package org.kuaidi.service.springboot.dubbo.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesAppointment;
+import org.kuaidi.bean.domain.EforcesCustomerSign;
+import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.dao.EforcesAppointmentMapper;
 import org.kuaidi.iservice.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +71,16 @@ public class AppointmentServiceImpl implements AppointmentService {
      * @return
      */
     @Override
-    public PageInfo<EforcesAppointment> getlistAllMsg(EforcesAppointment Eforces) {
+    public PageInfo<EforcesAppointment> getlistAllMsg(QueryPageVo page , EforcesAppointment Eforces) {
+    	Integer pageNum = page.getPage();
+    	Integer pageSize = page.getLimit();
+    	if(pageSize == null ) {
+    		pageNum = 1 ;
+    	}
+    	if(pageSize == null ) {
+    		pageSize = Config.pageSize;
+    	}
+    	PageHelper.startPage(pageNum, pageSize);
         List<EforcesAppointment> list = appointment.getlistAllMsg(Eforces);
         final PageInfo<EforcesAppointment> pageInfo = new PageInfo<>(list);
         return pageInfo;

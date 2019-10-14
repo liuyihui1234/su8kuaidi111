@@ -75,4 +75,11 @@ public interface EforcesRegionMapper {
      * @return
      */
     EforcesRegion getBycode(String code);
+    
+    /*
+     * 根据名字，模糊查询 
+     * @param code
+     */
+    List<EforcesRegion> getRegionListByName(String name);
+    
 }

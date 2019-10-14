@@ -2,6 +2,7 @@ package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesAppointment;
+import org.kuaidi.bean.vo.QueryPageVo;
 
 import java.util.List;
 
@@ -64,7 +65,7 @@ public interface AppointmentService {
      * @param size
      * @return
      */
-    PageInfo<EforcesAppointment> getlistAllMsg(EforcesAppointment Eforces);
+    PageInfo<EforcesAppointment> getlistAllMsg(QueryPageVo page, EforcesAppointment Eforces);
 
     /**
      * 删除预约单管理

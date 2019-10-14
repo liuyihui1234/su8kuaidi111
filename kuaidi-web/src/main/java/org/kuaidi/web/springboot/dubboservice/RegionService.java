@@ -2,11 +2,18 @@ package org.kuaidi.web.springboot.dubboservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
+
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesRegion;
 import org.kuaidi.bean.vo.PageVo;
@@ -359,5 +366,231 @@ public class RegionService {
 			return ResultUtil.exec(false,"查询失败",null);
 		}
 	}
+	
+	public JSONObject addressResolution(String address){
+		/* 
+		 * java.util.regex是一个用正则表达式所订制的模式来对字符串进行匹配工作的类库包。它包括两个类：Pattern和Matcher Pattern
+	     *    一个Pattern是一个正则表达式经编译后的表现模式。 Matcher
+	     *    一个Matcher对象是一个状态机器，它依据Pattern对象做为匹配模式对字符串展开匹配检查。
+         *    首先一个Pattern实例订制了一个所用语法与PERL的类似的正则表达式经编译后的模式，然后一个Matcher实例在这个给定的Pattern实例的模式控制下进行字符串的匹配工作。
+    	*/
+        String regex="(?<province>[^省]+自治区|.*?省|.*?行政区|.*?市)(?<city>[^市]+自治州|.*?地区|.*?行政单位|.+盟|市辖区|.*?市|.*?县)(?<county>[^县]+县|.+区|.+市|.+旗|.+海域|.+岛)?(?<town>[^区]+区|.+镇)?(?<village>.*)";
+        Matcher m=Pattern.compile(regex).matcher(address);
+        String province=null,city=null,county=null,town=null,village=null;
+        List<Map<String,String>> table=new ArrayList<Map<String,String>>();
+        Map<String,String> row=null;
+        while(m.find()){
+            row=new LinkedHashMap<String,String>();
+            province=m.group("province");
+            row.put("province", province==null?"":province.trim());
+            city=m.group("city");
+            row.put("city", city==null?"":city.trim());
+            county=m.group("county");
+            row.put("county", county==null?"":county.trim());
+            town=m.group("town");
+            row.put("town", town==null?"":town.trim());
+            village=m.group("village");
+            row.put("village", village==null?"":village.trim());
+            table.add(row);
+        }
+        
+        JSONObject data = new JSONObject();
+        /*
+         * 假定省市的名字是正确的，按照标准查找
+         **/
+        if(table.size() > 0 ) {
+        	Map<String,String>  map = table.get(0);
+        	province = map.get("province");
+        	city = map.get("city");
+        	county = map.get("county");
+        	village = map.get("village");
+		}else {
+			province = null;
+			city = null;
+			county = null;
+			village = null;
+		}
+        if(address.length() < 2 ) {
+			return data; 
+		}
+		String provinceName = address.substring(0,2);
+		if(StringUtils.isEmpty(provinceName)) {
+			return data;
+		}
+		if(province != null && province.length() > 2) {
+			provinceName = province.substring(0,2);
+		}
+		List <EforcesRegion> regionList=  regionService.getRegionListByName(provinceName);
+		if(regionList != null && regionList.size() > 0 ) {
+			String regionName = "";
+			String regionCode = "";
+			for(int i = 0 ; i < regionList.size() ; i ++) {
+				EforcesRegion  regionInfo = regionList.get(i);
+				if(regionInfo != null && regionInfo.getLevel() == 1) {
+					regionName = regionInfo.getName();
+					regionCode = regionInfo.getCode();
+					break;
+				}
+			}
+			if(regionName.length() == 0 ){
+				return data ; 
+			}
+			data.put("provinceName", regionName);
+			data.put("provinceCode", regionCode);
+			if(address.indexOf(regionName) == 0 ) {
+				address = address.substring(regionName.length());
+			}else {
+				int  provinceNameLen = regionName.length(); 
+				for(int i = provinceNameLen - 1 ; i >= 0 ; i-- ) {
+					String prexName = regionName.substring(0,i);
+					if(address.indexOf(prexName) > -1 ) {
+						address = address.substring(i);
+						if(address.length() > 0 ) {
+							address = address.trim();
+						}
+						break;
+					}
+				}
+			}
+			System.out.println(address);
+			// 城市判断
+		}
+		
+		if(address.length() == 0 ) {
+			return data;
+		}
+		//城市是必须能匹配上的
+		if(address.length() < 2 ) {
+			return data; 
+		}
+		String cityName = address.substring(0,2);
+		if(city != null && city.length() > 2) {
+			cityName = city.substring(0,2);
+		}
+		regionList=  regionService.getRegionListByName(cityName);
+		if(regionList != null && regionList.size() > 0 ) {
+			String regionName = "";
+			String regionCode = "";
+			for(int i = 0 ; i < regionList.size() ; i ++) {
+				EforcesRegion  regionInfo = regionList.get(i);
+				if(regionInfo != null && regionInfo.getLevel() == 2 && 
+						StringUtils.equals(regionInfo.getParentCode(), data.getString("provinceCode"))) {
+					regionName = regionInfo.getName();
+					regionCode = regionInfo.getCode();
+					break;
+				}
+			}
+			if(regionName.length() == 0 ){
+				return data ; 
+			}
+			data.put("cityName", regionName);
+			data.put("cityCode", regionCode);
+			if(address.indexOf(regionName) == 0 ) {
+				address = address.substring(regionName.length());
+			}else {
+				int  cityNameLen = regionName.length(); 
+				for(int i = cityNameLen - 1 ; i >= 0 ; i-- ) {
+					String prexName = regionName.substring(0,i);
+					if(address.indexOf(prexName) > -1 ) {
+						address = address.substring( i);
+						if(address.length() > 0 ) {
+							address = address.trim();
+						}
+						break;
+					}
+				}
+			}
+		}
+		if(address!= null && address.length() > 0 ) {
+			address.trim();
+		}
+		//判断县
+		if(address.length() < 2 ) {
+			return data; 
+		}
+		String countyName = address.substring(0,2);
+		if(county != null && county.length() > 2) {
+			countyName = county.substring(0,2);
+		}
+		regionList=  regionService.getRegionListByName(countyName);
+		if(regionList != null && regionList.size() > 0 ) {
+			String regionName = "";
+			String regionCode = "";
+			for(int i = 0 ; i < regionList.size() ; i ++) {
+				EforcesRegion  regionInfo = regionList.get(i);
+				if(regionInfo != null && regionInfo.getLevel() == 3 && 
+						StringUtils.equals(regionInfo.getParentCode(), data.getString("cityCode"))) {
+					regionName = regionInfo.getName();
+					regionCode = regionInfo.getCode();
+					break;
+				}
+			}
+			if(regionName.length() == 0 ){
+				return data ; 
+			}
+			data.put("countyName", regionName);
+			data.put("countyCode", regionCode);
+			if(address.indexOf(regionName) == 0 ) {
+				address = address.substring(regionName.length());
+			}else {
+				int  countyNameLen = regionName.length(); 
+				for(int i = countyNameLen - 1 ; i >= 0 ; i-- ) {
+					String prexName = regionName.substring(0,i);
+					if(address.indexOf(prexName) > -1 ) {
+						address = address.substring(i);
+						if(address.length() > 0 ) {
+							address = address.trim();
+						}
+						break;
+					}
+				}
+			}
+		}
+		//判断县
+		if(address.length() < 2 ) {
+			return data; 
+		}
+		String villageName = address.substring(0,2);
+		if(village != null && village.length() > 2) {
+			villageName = village.substring(0,2);
+		}
+		regionList=  regionService.getRegionListByName(villageName);
+		if(regionList != null && regionList.size() > 0 ) {
+			String regionName = "";
+			String regionCode = "";
+			for(int i = 0 ; i < regionList.size() ; i ++) {
+				EforcesRegion  regionInfo = regionList.get(i);
+				if(regionInfo != null && regionInfo.getLevel() == 4 && 
+						StringUtils.equals(regionInfo.getParentCode(), data.getString("countyCode"))) {
+					regionName = regionInfo.getName();
+					regionCode = regionInfo.getCode();
+					break;
+				}
+			}
+			if(regionName.length() == 0 ){
+				return data ; 
+			}
+			data.put("villageName", regionName);
+			data.put("villageCode", regionCode);
+			if(address.indexOf(regionName) == 0 ) {
+				address = address.substring(regionName.length());
+			}else {
+				int  villageNameLen = regionName.length(); 
+				for(int i = villageNameLen - 1 ; i >= 0 ; i-- ) {
+					String prexName = regionName.substring(0,i);
+					if(address.indexOf(prexName) > -1 ) {
+						address = address.substring(i);
+						if(address.length() > 0 ) {
+							address = address.trim();
+						}
+						break;
+					}
+				}
+			}
+		}
+		String  detailAddress = address;
+		data.put("detailAddress", detailAddress);
+        return data;
+    }
 
 }

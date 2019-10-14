@@ -17,6 +17,7 @@
         <result column="province" jdbcType="VARCHAR" property="province"/>
         <result column="city" jdbcType="VARCHAR" property="city"/>
         <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="areastreet" jdbcType="VARCHAR" property="areastreet"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="defaultsenda" jdbcType="VARCHAR" property="defaultsenda"/>
         <result column="financecenter" jdbcType="VARCHAR" property="financecenter"/>
@@ -37,14 +38,14 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, name, parentid, remark, leaderidlist, mnemonic, number, moneytype, tel, mobile, 
-    lagearea, regional, province, city, area, type, defaultsenda, financecenter, financecentername, 
+    lagearea, regional, province, city, area, areastreet , type, defaultsenda, financecenter, financecentername, 
     parentname, deliveryrange, deliveryrangename, weburl, featurescode, isfinancecenter, 
     istopay, istransfer, transfername, transfernumber, istariff,level, address
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
        a.id, a.name, a.parentid, a.remark, a.leaderidlist, a.mnemonic, a.number, a.moneytype, a.tel, a.mobile,
-    a.lagearea, a.regional, a.province, a.city, a.area, a.type, a.defaultsenda, a.financecenter, a.financecentername,
+    a.lagearea, a.regional, a.province, a.city, a.area,a.areastreet, a.type, a.defaultsenda, a.financecenter, a.financecentername,
     a.parentname, a.deliveryrange, a.deliveryrangename, a.weburl, a.featurescode, a.isfinancecenter,
     a.istopay, a.istransfer, a.transfername, a.transfernumber, a.istariff,a.level,
         b.name as provincename,
@@ -60,7 +61,6 @@
     <select id="selectNextSyopByName"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-
         from
         eforces_incment
         where
@@ -108,7 +108,7 @@
       remark, leaderidlist, mnemonic, 
       number, moneytype, tel, 
       mobile, lagearea, regional, 
-      province, city, area, 
+      province, city, area, areastreet,
       type, defaultsenda, financecenter, 
       financecentername, parentname, deliveryrange, 
       deliveryrangename, weburl, featurescode, 
@@ -119,7 +119,7 @@
       #{remark,jdbcType=VARCHAR}, #{leaderidlist,jdbcType=VARCHAR}, #{mnemonic,jdbcType=VARCHAR}, 
       #{number,jdbcType=VARCHAR}, #{moneytype,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{lagearea,jdbcType=VARCHAR}, #{regional,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{areastreet,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{defaultsenda,jdbcType=VARCHAR}, #{financecenter,jdbcType=VARCHAR}, 
       #{financecentername,jdbcType=VARCHAR}, #{parentname,jdbcType=VARCHAR}, #{deliveryrange,jdbcType=VARCHAR}, 
       #{deliveryrangename,jdbcType=VARCHAR}, #{weburl,jdbcType=VARCHAR}, #{featurescode,jdbcType=VARCHAR}, 
@@ -177,6 +177,9 @@
             <if test="area != null">
                 area,
             </if>
+            <if test="areastreet != null">
+                areastreet,
+            </if>           
             <if test="type != null">
                 type,
             </if>
@@ -274,6 +277,9 @@
             </if>
             <if test="area != null">
                 #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="areastreet != null">
+                #{areastreet,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
                 #{type,jdbcType=VARCHAR},
@@ -373,6 +379,9 @@
             <if test="area != null">
                 area = #{area,jdbcType=VARCHAR},
             </if>
+            <if test="areastreet != null">
+                areastreet = #{areastreet,jdbcType=VARCHAR},
+            </if>
             <if test="type != null">
                 type = #{type,jdbcType=VARCHAR},
             </if>
@@ -440,6 +449,7 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       area = #{area,jdbcType=VARCHAR},
+      areastreet = #{areastreet,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       defaultsenda = #{defaultsenda,jdbcType=VARCHAR},
       financecenter = #{financecenter,jdbcType=VARCHAR},
@@ -508,17 +518,15 @@
 		group by incment.name , incment.number
  </select>
 
-
-    <update id="deleteByid" >
-        update eforces_incment
-        set isdelete = 1
-        where id
-        in
-        <foreach collection="list" item="id" index="index" open="("
-                 close=")" separator=",">
-            #{id}
-        </foreach>
-
-    </update>
- 
+  <update id="deleteByid" >
+      update eforces_incment
+      set isdelete = 1
+      where id
+      in
+      <foreach collection="list" item="id" index="index" open="("
+               close=")" separator=",">
+          #{id}
+      </foreach>
+  </update>
+  
 </mapper>

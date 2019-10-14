@@ -134,16 +134,15 @@
             and
             fromname like CONCAT('%',#{fromname},'%')
         </if>
-        <if test="fromname !=null and fromname != ''">
+        <if test="fromtel !=null and fromtel != ''">
             and
-            fromname like CONCAT('%',#{fromname},'%')
+            fromtel like CONCAT('%',#{fromtel},'%')
         </if>
         <if test="number !=null and number != ''">
             and
             number = #{number}
         </if>
   </select>
-
   <!-- 删除 -->
   <update id="deleteAppointment">
     update

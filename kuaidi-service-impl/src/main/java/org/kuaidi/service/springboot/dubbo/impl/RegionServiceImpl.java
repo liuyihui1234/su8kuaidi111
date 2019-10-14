@@ -117,4 +117,13 @@ public class RegionServiceImpl implements IRegionService {
 		return eforcesRegionDao.selectRegionByParent(parentCode);
 	}
 
+	/*
+	 * 根据名字like查询
+	 */
+	@Override
+	public List<EforcesRegion> getRegionListByName(String name) {
+		// TODO Auto-generated method stub
+		return eforcesRegionDao.getRegionListByName(name);
+	}
+
 }

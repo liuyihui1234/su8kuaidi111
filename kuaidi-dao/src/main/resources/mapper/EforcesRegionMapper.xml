@@ -40,6 +40,13 @@
         	and parentCode  = #{parentCode,jdbcType=VARCHAR}
         </if>
     </select>
+    
+    <select id="getRegionListByName"  resultMap="BaseResultMap" >
+    	select * from eforces_region where isDelete = 0
+        <if test="_parameter!=null">
+          and  name  like   concat(#{_parameter,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
 
     <!-- 删除 -->
     <update id="removeUpdate">
