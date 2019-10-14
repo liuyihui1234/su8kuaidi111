@@ -43,4 +43,10 @@ public class EforcesAddressServiceImpl implements IEforcesAddressService {
 		return addressDao.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public EforcesCustomerAddress selectByPrimaryKey(Integer id) {
+		
+		return addressDao.selectByPrimaryKey(id);
+	}
+
 }

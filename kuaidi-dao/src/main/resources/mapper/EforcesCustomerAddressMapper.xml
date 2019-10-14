@@ -129,7 +129,7 @@
         areaStreet,
       </if>
       <if test="areastreetcode != null">
-        careaStreetCode,
+        areaStreetCode,
       </if>
       <if test="locationcode != null">
         locationCode,

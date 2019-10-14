@@ -10,5 +10,7 @@ public interface IEforcesAddressService {
 	Integer saveAddress(EforcesCustomerAddress  address);
 	
 	Integer deleteAddress(Integer id);
+	
+	EforcesCustomerAddress selectByPrimaryKey(Integer id);
 
 }

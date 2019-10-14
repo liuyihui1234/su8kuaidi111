@@ -13,6 +13,7 @@ import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesAddressService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 
@@ -84,6 +85,27 @@ public class WeiXinAddressController {
 		}
 	}
 	
+	@RequestMapping("getAddress")
+    @CrossOrigin
+    public ResultVo getAddress(Integer  id) {
+		if(id == null || id < 0 ) {
+			return  ResultUtil.exec(false, "参数错误！", null);
+		}
+		try {
+			EforcesCustomerAddress address = addressService.selectByPrimaryKey(id);
+			if(address==null) {
+				return  ResultUtil.exec(false, "选择地址信息失败！", null);
+			}else {
+				return  ResultUtil.exec(true, "选择地址信息失败！", address);
+			}
+			
+		}catch(Exception e ) {
+			e.printStackTrace();
+			return  ResultUtil.exec(false, "选择地址信息失败！", null);
+			
+		}
+	}
+	
 	
 	public static List<Map<String,String>> addressResolution(String address){
 		/* 
@@ -113,5 +135,28 @@ public class WeiXinAddressController {
         }
         return table;
     }
+	
+	@ResponseBody
+	@RequestMapping("myAddressList")
+	public ResultVo getCity(String type,String openId) {
+		try {
+			List<EforcesCustomerAddress> newList=new ArrayList<>();
+			List<EforcesCustomerAddress> list = addressService.getAllAddressByOpenId(openId);
+			if(list!=null&&list.size()>0) {
+				for (EforcesCustomerAddress eforcesCustomerAddress : list) {
+					if(eforcesCustomerAddress.getMemtype().equals(type)) {
+						newList.add(eforcesCustomerAddress);
+					}
+				}
+				return  ResultUtil.exec(true, "地址查询成功！", newList);
+			}else {
+				return  ResultUtil.exec(false, "地址库暂无信息！", null);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return  ResultUtil.exec(false, "地址查询错误！", null);
+		}
+	}
 
 }
