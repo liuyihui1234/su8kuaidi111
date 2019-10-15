@@ -7,6 +7,7 @@ import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.UserService;
 import org.kuaidi.utils.SendPhoneCode;
+import org.kuaidi.web.springboot.dubboservice.UserLoginService;
 import org.kuaidi.web.springboot.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,14 +29,22 @@ public class AppLoginController {
 	@Reference(version = "1.0.0")
     private UserService userService;
 	
+	@Autowired
+    private UserLoginService userLoginService;
+	
 	@RequestMapping("loginOut")
     @CrossOrigin
     @ResponseBody
     public ResultVo LoginOut(HttpServletRequest request) {
-		EforcesUser  userInfo = (EforcesUser)request.getAttribute("user");
-    	String token = userInfo.getToken();
-        redisUtil.del(Config.REDISAPPLOGINPREX+token);
-        return ResultUtil.exec(true, "退出成功！", null);
+		try {
+			EforcesUser  userInfo = (EforcesUser)request.getAttribute("user");
+	    	String token = userInfo.getToken();
+	        redisUtil.del(Config.REDISAPPLOGINPREX+token);
+	        return ResultUtil.exec(true, "退出成功！", null);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ResultUtil.exec(true, "退出成功！", null);
     }
 	
 	@RequestMapping("SendPhone")
@@ -43,6 +52,12 @@ public class AppLoginController {
     @ResponseBody
     public ResultVo  SendPhone(HttpServletRequest  request, String telephone ,Integer type){
     	// 如果实名制认证为空或者为 1 的时候， 
+		if(telephone == null || telephone.length() != 11) {
+    		return ResultUtil.exec(false, "手机号错误，请确定！", "") ;
+    	}
+    	if(redisUtil.get(Config.redisPhonePrex+telephone) != null ) {
+			return ResultUtil.exec(false, "十分钟之内不能重复的获得验证码！", "") ;
+		}
     	if(type == null  || type == 1 ) {
     		// 表示已经登录了
     		EforcesUser  userInfo = (EforcesUser)request.getAttribute("user");
@@ -82,6 +97,18 @@ public class AppLoginController {
 			}
     	}
     	return ResultUtil.exec(false, "参数错误！", null);
+    }
+	
+	/**
+               * 开通小号 获取验证码，判断手机号是否已经被注册，如果是则不能再注册、并把验证码和手机号存到Reids里面
+     * @param mobile
+     * @return 返回值为1表示成功，返回值为0则失败
+     * @throws ClientException
+     */
+    @RequestMapping("openTrumpetsmsCode")
+    @ResponseBody
+    public ResultVo openTrumpetsmsCode(String mobile) throws ClientException {
+        return userLoginService.openTrumpetsmsCode(mobile);
     }
 
 }

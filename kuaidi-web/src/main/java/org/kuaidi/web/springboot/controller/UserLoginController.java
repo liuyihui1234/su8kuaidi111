@@ -154,6 +154,9 @@ public class UserLoginController {
                 return ResultUtil.exec(false, "用户信息不存在！", null);
             }
             EforcesUser userInfo = userList.get(0);
+            if(userInfo != null && StringUtils.equals(userInfo.getPassword(), Md5Util.encode(newPwd))) {
+            	return ResultUtil.exec(false, "新密码不能和旧密码一样。", null);
+            }
             userInfo.setPassword(Md5Util.encode(newPwd));
             Integer rst = userService.updateUserInfo(userInfo);
             if (rst > 0) {
@@ -205,18 +208,6 @@ public class UserLoginController {
         return userLoginService.openTrumpet(userId, mobile, password, smsCode);
     }
 
-    /**
-     * 开通小号 获取验证码，判断手机号是否已经被注册，如果是则不能再注册、并把验证码和手机号存到Reids里面
-     *
-     * @param mobile
-     * @return 返回值为1表示成功，返回值为0则失败
-     * @throws ClientException
-     */
-    @RequestMapping("openTrumpetsmsCode")
-    @ResponseBody
-    public int openTrumpetsmsCode(String mobile) throws ClientException {
-        return userLoginService.openTrumpetsmsCode(mobile);
-    }
 
     @RequestMapping("findUserById")
     @ResponseBody
@@ -256,13 +247,20 @@ public class UserLoginController {
     }
 
     /**
-     * 短信验证码测试
+               * 短信验证码测试
+     *(实名制认证的时候用)
      *
      * @param telephone
      */
     @RequestMapping("modifyPWD/sendSMS")
     @ResponseBody
     public ResultVo SendPhone1(String telephone) {
+    	if(telephone == null || telephone.length() != 11) {
+    		return ResultUtil.exec(false, "手机号错误，请确定！", "") ;
+    	}
+    	if(redisUtil.get(Config.redisPhonePrex+telephone) != null ) {
+			return ResultUtil.exec(false, "十分钟之内不能重复的获得验证码！", "") ;
+		}
         // 根据userid  user  table 查询记录
         // 传的手机号和保存的手机号是否一致。
         SendPhoneCode phoneCode = new SendPhoneCode();

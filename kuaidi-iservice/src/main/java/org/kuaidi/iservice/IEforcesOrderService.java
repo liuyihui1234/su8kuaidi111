@@ -3,6 +3,7 @@ package org.kuaidi.iservice;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.vo.OrderInfoVO;
 
 
 public interface IEforcesOrderService {
@@ -104,7 +105,7 @@ public interface IEforcesOrderService {
 	 * @param size
 	 * @return
 	 */
-	PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size, EforcesOrder order);
+	PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size, OrderInfoVO order);
 
 	/**
 	 * 删除寄/派件运单管理

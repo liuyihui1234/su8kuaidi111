@@ -178,8 +178,38 @@
   </select>
 
   <!-- 寄/派件运单管理-->
-  <select id="getAllMsg" resultMap="BaseResultMap">
+  <select id="getAllMsg" resultMap="BaseResultMap" parameterType= "org.kuaidi.bean.vo.OrderInfoVO">
     	select  * from eforces_order where isDelete = 0
+    	<if test="billsNumberList != null and billsNumberList.size() > 0">
+			and Number in
+			<foreach collection="billsNumberList" item="number" index="index" open="(" close=")" separator=",">
+				#{number}
+			</foreach>
+		</if>
+    	<if test="sendStartTime != null and sendStartTime != ''">
+    		and date_format(begintime, '%Y-%m-%d') &gt;= #{sendStartTime,jdbcType=VARCHAR}
+    	</if>
+    	<if test="sendEndTime != null and sendEndTime != '' ">
+    		and date_format(begintime, '%Y-%m-%d') &lt;= #{sendEndTime,jdbcType=VARCHAR} 
+    	</if>
+    	<if test="inputStartTime != null and inputStartTime != ''">
+    		and date_format(createtime, '%Y-%m-%d') &gt;= #{inputStartTime,jdbcType=VARCHAR}
+    	</if>
+    	<if test="inputEndTime != null and inputEndTime != ''">
+    		and date_format(createtime, '%Y-%m-%d') &lt;= #{inputEndTime,jdbcType=VARCHAR}
+    	</if>
+    	<if test="remark != null and remark != '' ">
+    		and remark like CONCAT('%',#{remark},'%')
+    	</if>
+    	<if test="modeprice != null">
+    		and price = #{modeprice}
+    	</if>
+    	<if test = "fromname != null  and fromname != '' ">
+    		and fromname like concat('%' , #{fromname, jdbcType=VARCHAR},'%')
+    	</if>
+    	<if test = "toname != null and toname != ''">
+    		and toname like concat('%' , #{toname, jdbcType=VARCHAR},'%')
+    	</if>
   </select>
   
   <select id="getNumbersByOpenId" parameterType="java.lang.String"  resultMap="BaseResultMap">
@@ -252,24 +282,24 @@
 
   <select id="notHadPostPackage" resultMap="BaseResultMap">
 		SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan  receive on bill.number = receive.billsnumber  
-  			where  bill.isDelete = 0  and receive.incid = #{incid}	and receive.scannerid = #{userNum}
+  			where  bill.isDelete = 0  and receive.incid = #{incid}
 		 and receive.billsnumber  not  in (
-			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}  and sent.scannerid = #{userNum}
+			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid} 
 			Union 
-			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid} and  transport.scannerid = #{userNum}
+			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid}
 		) 
   </select>
-
+  
   <select id="notHadPostPackage1" resultMap="BaseResultMap">
 		SELECT  bill.* from eforces_order bill JOIN eforces_rectoorder  recto on bill.number = recto.Number  
-  			where  bill.isDelete = 0  and recto.DepartId  = #{incid}	and recto.ScanManId = #{userNum}
+  			where  bill.isDelete = 0  and recto.DepartId  = #{incid}
 		and  recto.Number  not  in (
-			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}  and sent.scannerid = #{userNum}
+			select DISTINCT sent.billsnumber from eforces_sentscan  sent  where sent.incid = #{incid}
 			Union 
-			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid} and  transport.scannerid = #{userNum}
+			SELECT DISTINCT transport.billsnumber from eforces_transportedscan transport where transport.incid = #{incid} 
 		)		 
   </select>
-
+  
   <select id="getHadFinishPackage" parameterType="java.lang.String" resultMap="BaseResultMap">
 	   SELECT  bill.* from eforces_order bill JOIN eforces_receivedscan receive on bill.number = receive.billsnumber   where bill.isDelete = 0  and receive.incid = #{incid}  and  bill.number in (
  			SELECT number  from eforces_customersign  

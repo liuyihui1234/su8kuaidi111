@@ -452,10 +452,7 @@ public class RegionService {
 					}
 				}
 			}
-			System.out.println(address);
-			// 城市判断
-		}
-		
+		}		
 		if(address.length() == 0 ) {
 			return data;
 		}
