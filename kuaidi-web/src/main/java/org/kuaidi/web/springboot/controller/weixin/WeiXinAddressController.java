@@ -103,7 +103,7 @@ public class WeiXinAddressController {
 			if(address==null) {
 				return  ResultUtil.exec(false, "选择地址信息失败！", null);
 			}else {
-				return  ResultUtil.exec(true, "选择地址信息失败！", address);
+				return  ResultUtil.exec(true, "soucess！", address);
 			}
 			
 		}catch(Exception e ) {
