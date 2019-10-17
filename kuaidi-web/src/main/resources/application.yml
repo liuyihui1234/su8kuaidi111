@@ -2,8 +2,13 @@
 wx:
   miniapp:
     configs:
-        - appid: wxb94da70014eab219
-          secret: 115ad2a79324a3599e9f1beaf32a8c95
+        #- appid: wxb94da70014eab219
+         # secret: 115ad2a79324a3599e9f1beaf32a8c95
+         # token: #微信小程序消息服务器配置的token
+          #aesKey: #微信小程序消息服务器配置的EncodingAESKey
+          #msgDataFormat: JSON
+        - appid: wx857e727629a90116
+          secret: 5187b1551e1c66e324c27925f13651e7
           token: #微信小程序消息服务器配置的token
           aesKey: #微信小程序消息服务器配置的EncodingAESKey
           msgDataFormat: JSON
