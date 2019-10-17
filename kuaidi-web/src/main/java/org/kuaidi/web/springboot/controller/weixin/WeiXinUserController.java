@@ -59,7 +59,9 @@ public class WeiXinUserController {
         params.put("grant_type", "authorization_code");
 		params.put("secret",properties.getConfigs().get(0).getSecret());
 		params.put("appid",properties.getConfigs().get(0).getAppid());
-		String result = HttpGet.get("https://api.weixin.qq.com/sns/jscode2session",params);		 
+		String result = HttpGet.get("https://api.weixin.qq.com/sns/jscode2session",params);
+		System.out.println(result);
+		 
 		JSONObject jsonObject = JSONObject.parseObject(result);
 		String session_key = jsonObject.getString("session_key").replace(" ","+");
 		try {
@@ -87,7 +89,6 @@ public class WeiXinUserController {
                 }else {
                 	return ResultUtil.exec(true, "用户授权失败", null);
                 }
-				
 			}else {//老用户
 				return ResultUtil.exec(true, "登录成功", user);
 			}
@@ -95,21 +96,5 @@ public class WeiXinUserController {
 			e.printStackTrace();
 			return ResultUtil.exec(true, "新用户授权失败", null);
 		}
-		
 	}
-    
-    @RequestMapping("addUser1234")
-    @CrossOrigin
-    public ResultVo add(){
-    	EforcesWechatUser userDo=new EforcesWechatUser();
-		userDo.setCity("410100");
-		userDo.setCountry("410101");
-		userDo.setHeadimgurl("www.baidu.com");
-		userDo.setOpenid("asdfasd");
-		userDo.setProvince("410000");
-		userDo.setNickname("刘");
-		Integer rst = eforcesWechatUserService.insertSelective(userDo);
-		return ResultUtil.exec(true, "success", rst);
-    }
-	
 }

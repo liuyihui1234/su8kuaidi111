@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -245,13 +246,16 @@ public class AppointmentDubboService {
                         record.setInsuredprice(appointment.getInsuredprice());
                         record.setIsmobilesend(appointment.getIsmobilesend());
                         record.setMobileprice(appointment.getMobileprice());
-                        record.setPrice(appointment.getPrice());
+                        if(appointment.getPrice() == null ) {
+                        	record.setPrice(new BigDecimal(18F));
+                        }else {
+                        	record.setPrice(appointment.getPrice());
+                        }
                         record.setSendmode(appointment.getSendmode());
                         record.setModeprice(appointment.getModeprice());
                         record.setSumprice(appointment.getSumprice());
                         record.setCreateuserid(appointment.getAcceptid());
                         record.setCreateusername(appointment.getAcceptname());
-
                         int data2=iEforcesOrderService.insertSelective(record);
                         if(data2>0){
                             return ResultUtil.exec(true,"收件成功",null);
