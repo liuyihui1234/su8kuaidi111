@@ -1,5 +1,6 @@
-/*package org.kuaidi.web.springboot.controller.weixin;
+package org.kuaidi.web.springboot.controller.weixin;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,17 +10,11 @@ import org.kuaidi.web.springboot.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.common.collect.Maps;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
@@ -27,11 +22,11 @@ import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import me.chanjar.weixin.common.error.WxErrorException;
 
-*//**
+/**
  * 微信小程序用户接口
  *
  * @author <a href="https://github.com/binarywang">Binary Wang</a>
- *//*
+ */
 @RestController
 @RequestMapping("/weixin/user/")
 public class WxMaUserController {
@@ -40,15 +35,15 @@ public class WxMaUserController {
     @Autowired
     private WxMaProperties properties;
     
-    *//**
+    /**
      *	 登陆接口
-     *//*	
-    @ResponseBody
-    @PostMapping("/login")
-    public String login(@RequestBody Map<String,Object> params) {
-    	String code=params.get("code")!=null?params.get("code").toString():"";
+     */	
+    @RequestMapping("login")
+    @CrossOrigin
+    public String login(String code) {
+    	System.out.println(">>>>>>>>>>>>start >>>>>>>>>>>>");
         if (StringUtils.isBlank(code)) {
-            return "empty jscode";
+        	return "";
         }
         final WxMaService wxService = WxMaConfiguration.getMaService(properties.getConfigs().get(0).getAppid());
 
@@ -65,11 +60,11 @@ public class WxMaUserController {
         }
     }
 
-    *//**
+    /**
      * <pre>
      * 获取用户信息接口
      * </pre>
-     *//*
+     */
     @GetMapping("/info")
     public String info(@PathVariable String appid, String sessionKey,
                        String signature, String rawData, String encryptedData, String iv) {
@@ -86,11 +81,11 @@ public class WxMaUserController {
         return JsonUtils.toJson(userInfo);
     }
 
-    *//**
+    /**
      * <pre>
      * 获取用户绑定手机号信息
      * </pre>
-     *//*
+     */
     @GetMapping("/phone")
     public String phone(@PathVariable String appid, String sessionKey, String signature,
                         String rawData, String encryptedData, String iv) {
@@ -108,4 +103,3 @@ public class WxMaUserController {
     }
 
 }
-*/
