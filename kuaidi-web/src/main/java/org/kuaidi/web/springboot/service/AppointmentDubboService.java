@@ -219,7 +219,11 @@ public class AppointmentDubboService {
                         record.setPaymentflag(appointment.getPaymentflag());
                         record.setPaymentforgoods(appointment.getPaymentforgoods());
                         record.setIsfile(appointment.getIsfile());
-                        record.setIsgoods(appointment.getIsgoods());
+                        if(appointment.getIsgoods() == null) {
+                        	record.setIsgoods("物品");
+                        }else {
+                        	record.setIsgoods(appointment.getIsgoods());
+                        }
                         record.setFilename(appointment.getFilename());
                         record.setNum(appointment.getNum());
                         record.setWeight(appointment.getWeight());
