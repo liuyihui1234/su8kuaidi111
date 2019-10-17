@@ -95,7 +95,7 @@ public class WeiXinUserController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultUtil.exec(true, "新用户授权失败", null);
+			return ResultUtil.exec(false, "新用户授权失败", null);
 		}
 		
 	}
