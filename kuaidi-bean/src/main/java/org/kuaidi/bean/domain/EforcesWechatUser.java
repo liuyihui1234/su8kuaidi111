@@ -1,9 +1,15 @@
 package org.kuaidi.bean.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class EforcesWechatUser {
-    private String openid;
+public class EforcesWechatUser implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8807370432076556173L;
+
+	private String openid;
 
     private Integer subscribe;
 
