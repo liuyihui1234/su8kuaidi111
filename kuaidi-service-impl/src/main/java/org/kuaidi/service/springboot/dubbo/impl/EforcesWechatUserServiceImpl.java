@@ -28,6 +28,7 @@ public class EforcesWechatUserServiceImpl implements EforcesWechatUserService{
 	@Override
 	public int insertSelective(EforcesWechatUser record) {
 		// TODO Auto-generated method stub
+		System.out.println("start insert >> ");
 		return eforcesWechatUserDao.insertSelective(record);
 	}
 

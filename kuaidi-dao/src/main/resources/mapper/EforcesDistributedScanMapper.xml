@@ -403,6 +403,7 @@
 				#{number}
 			</foreach>
 		</if>
+		order by d.id desc
 	</select>
 
 	<update id="deleteByid"
