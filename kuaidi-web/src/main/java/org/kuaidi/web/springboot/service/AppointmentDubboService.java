@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesAppointment;
+import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
@@ -178,7 +179,7 @@ public class AppointmentDubboService {
      * @param appointmentId
      * @return
      */
-    public ResultVo alterStatus2AddOrder(Integer appointmentId){
+    public ResultVo alterStatus2AddOrder(EforcesUser userInfo ,EforcesIncment incment , Integer appointmentId){
         try {
             EforcesAppointment appointment = appointmentService.selectAppointmentByPrimaryKey(appointmentId);
             if(appointment != null){
@@ -187,6 +188,12 @@ public class AppointmentDubboService {
                     if(data>0){
                         //数据传递
                         EforcesOrder record = new EforcesOrder();
+                        if(userInfo != null ) {
+                        	record.setCreateincname(incment.getName());
+                        	record.setCreateusername(userInfo.getName());
+                        	record.setCreateincnumber(userInfo.getIncid());
+                        	record.setCreateuserid(userInfo.getNumber());
+                        }
                         record.setNumber(appointment.getNumber());
                         record.setFromname(appointment.getFromname());
                         record.setFromcity(appointment.getFromcity());
