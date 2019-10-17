@@ -116,7 +116,7 @@ public interface EforcesOrderMapper {
 	/*
 	 * 根据多个订单id，查询订单信息 
 	 */
-	List<EforcesOrder> getOrderByNumbers(List<String> billsNumber);
+	List<EforcesOrder> getOrderByNumbers(@Param("list") List<String> list);
 
     /**
      * 查询详情信息

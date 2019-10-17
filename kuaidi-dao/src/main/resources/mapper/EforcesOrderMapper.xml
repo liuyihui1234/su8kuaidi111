@@ -271,7 +271,7 @@
   eforces_order
   WHERE  isDelete = 0  and
   Number in  
-	 <foreach collection="billsNumber" item="id" index="index" open="(" close=")" separator=",">
+	 <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
       #{id}
     </foreach>
   </select>

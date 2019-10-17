@@ -113,21 +113,26 @@ public class SentScanService {
                         }
                     }
                 }
-
-                EforcesIncment nextStop = incmentService.getByNextStopName(record.getNextstopname());
-                EforcesIncment nextStop1 = incmentService.getByNextStopName(record.getNextstopname1());
-                if(nextStop==null||nextStop1==null){
+//                EforcesIncment nextStop =  null;
+//                if(record.getNextstop() != null && record.getNextstop().matches("\\d+")) {
+//                	nextStop = incmentService.selectByNumber(record.getNextstop());//incmentService.getByNextStopName(record.getNextstopname());
+//                }
+//                
+//                EforcesIncment nextStop1 = null;
+//                if(record.getNextstop1() != null && record.getNextstop1().matches("\\d+")) {
+//                	nextStop = incmentService.selectByNumber(record.getNextstop1());//incmentService.getByNextStopName(record.getNextstopname1());
+//                }
+                if(StringUtils.equals(record.getNextstop(), "") ||StringUtils.equals(record.getNextstop1(), "")){
                     return  ResultUtil.exec(false,"发件扫描失败！请输入正确的目的地",null);
                 }
-                EforcesSentScan sentScan = createSentScanInfo(record,user, orderInfo, nextStop, incment, 0,nextStop1);
-
+                EforcesSentScan sentScan = createSentScanInfo(record,user, orderInfo, incment, 0);
             /*
              * 封装物流信息
              */
             String description = "快件在【%s】由【%s】扫描发往【%s】";
             String nextStopName = "";
-            if(nextStop != null ) {
-                nextStopName  = nextStop.getName();
+            if(StringUtils.equals(record.getNextstop(), "")) {
+                nextStopName  = record.getNextstopname();
             }
             description = String.format(description, incment.getName(), user.getName(), nextStopName);
             EforcesLogisticStracking stracking =  getLogisticstracking(billNumber,description,user.getName(), incment.getName(), user.getIncnumber() ,3);
@@ -146,28 +151,27 @@ public class SentScanService {
             return ResultUtil.exec(false,"发单扫描异常！",null);
         }
     }
-
-
-    private EforcesSentScan createSentScanInfo(EforcesSentScan record, EforcesUser userInfo, EforcesOrder orderInfo, EforcesIncment nextStop,
-                                               EforcesIncment currentStop, Integer isBagBill,EforcesIncment nextStop1) {
+    
+    private EforcesSentScan createSentScanInfo(EforcesSentScan record, EforcesUser userInfo, EforcesOrder orderInfo, 
+                                               EforcesIncment currentStop, Integer isBagBill) {
         EforcesSentScan sentScan = new EforcesSentScan();
         sentScan.setBillsnumber(orderInfo.getNumber());
         sentScan.setFlightsnumber(record.getFlightsnumber());  // 可能需要
         sentScan.setGoodstype(record.getGoodstype()); // 需要确定一下
         sentScan.setExpresstype(record.getExpresstype());  // 需要判断
         sentScan.setExpressid(1); //
-        sentScan.setNextstop(nextStop.getNumber());
-        sentScan.setNextstopname(nextStop.getName());
-
+//        sentScan.setNextstop(nextStop.getNumber());
+//        sentScan.setNextstopname(nextStop.getName());
+        
         sentScan.setScantype("发件扫描");
         sentScan.setScanners(userInfo.getName());
         sentScan.setScannerid(userInfo.getNumber());
         sentScan.setIncname(currentStop.getName());
         sentScan.setIncid(userInfo.getIncnumber());
         sentScan.setAmount(0);
-        sentScan.setBz("");
-        sentScan.setNextstop1(nextStop1.getNumber());
-        sentScan.setNextstopname1(nextStop1.getName());
+//        sentScan.setBz("");
+//        sentScan.setNextstop1(nextStop1.getNumber());
+//        sentScan.setNextstopname1(nextStop1.getName());
         sentScan.setTranname(record.getTranname());
         sentScan.setIsBagBill(isBagBill);
         return sentScan;

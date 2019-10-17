@@ -387,7 +387,7 @@ public class UserLoginService {
 	 */
 	public ResultVo updateMsg(int id,String Name,String Mobile, String portraitValue){
 		try {
-			EforcesUser userInfo =   userService.selectUserById(id);
+			EforcesUser userInfo = userService.selectUserById(id);
 			if(userInfo == null ) {
 				return ResultUtil.exec(true,"参数错误，用户不存在！",null);
 			}
@@ -397,14 +397,18 @@ public class UserLoginService {
 			if(StringUtils.isNotEmpty(Mobile)) {
 				userInfo.setMobile(Mobile);
 			}
-			if(StringUtils.isNotEmpty(portraitValue)) {
+			if(StringUtils.isNotEmpty(portraitValue) && 
+					! StringUtils.equals(portraitValue, userInfo.getPortraitpath())) {
 				String portraitPath = AppReplaceOSSUtil.string2Image(portraitValue);
 				if(StringUtils.isNotEmpty(portraitPath)) {
 					userInfo.setPortraitpath(Config.oosUrlPath + portraitPath);
 				}
 			}
-			int result = userService.updateUserInfo(userInfo);
-			return ResultUtil.exec(true,"修改信息成功",userInfo);
+			Integer result = userService.updateUserInfo(userInfo);
+			if(result != null && result > 0 ) {
+				return ResultUtil.exec(true,"修改信息成功",userInfo);
+			}
+			return ResultUtil.exec(false,"修改信息失败",null);
 		} catch (Exception e){
 			e.printStackTrace();
 			return ResultUtil.exec(false,"修改信息失败",null);
