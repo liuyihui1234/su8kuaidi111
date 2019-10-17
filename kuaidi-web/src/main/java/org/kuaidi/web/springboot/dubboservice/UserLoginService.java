@@ -89,27 +89,6 @@ public class UserLoginService {
 		}
 	}
 
-	/**
-	 * 根据手机号获取验证码登录
-	 * @param mobile
-	 * @return
-	 */
-	public ResultVo smsCodeLogin(String mobile) throws ClientException {
-
-		String s = redisUtil.get(Config.redisPhonelimt + mobile);
-		if(StringUtils.isNotEmpty(s)){
-			return ResultUtil.exec(false,"验证码一分钟之内只能发一次",null);
-		}
-		List<EforcesUser> listCDate = userService.selectUserByPhone(mobile);
-		if(listCDate  != null && listCDate.size()!=0 || !listCDate.isEmpty()){
-				String verifyCode = phoneCode.sendCode(mobile);
-				redisUtil.set(Config.redisPhonePrex+mobile,verifyCode,300);
-				redisUtil.set(Config.redisPhonelimt+mobile,1,60);
-				return ResultUtil.exec(true,"登录成功",verifyCode);
-		}
-		return ResultUtil.exec(false,"登录失败手机号或验证码有误",null);
-	}
-
 	/***
 	 * @param netSignId
 	 * @param userName
@@ -375,17 +354,20 @@ public class UserLoginService {
 	 * @param mobile
 	 * @return
 	 */
-	public int openTrumpetsmsCode(String mobile) throws ClientException {
+	public ResultVo openTrumpetsmsCode(String mobile) throws ClientException {
 		//获取短信验证码
-		String verifyCode = phoneCode.sendCode(mobile);
+		if(redisUtil.get(Config.redisPhonePrex+mobile) != null ) {
+			return ResultUtil.exec(false, "同一手机号十分钟之内不能重复的获得验证码！", "") ;
+		}
 		List<EforcesUser> listResult = userService.selectUserByPhone(mobile);
 		//如果用户输入的手机号在user表内没数据就说明这个手机号没开通过小号然后 执行业务
-		if(listResult.size()==0 || listResult.isEmpty()){
+		if(listResult == null || listResult.size() == 0){
 			//将验证码存Redis
-			redisUtil.set(Config.redisPhonePrex+mobile,verifyCode,2000);
-			return 1 ;
+			String verifyCode = phoneCode.sendCode(mobile);
+			redisUtil.set(Config.redisPhonePrex+mobile,verifyCode,10*60);
+			return ResultUtil.exec(true, "发送验证码成功！", verifyCode) ;
 		}
-		return 0;
+		return ResultUtil.exec(false, "手机号已经存在，请确定！", "");
 	}
 
 	public ResultVo findUserById(Integer id){
@@ -405,7 +387,7 @@ public class UserLoginService {
 	 */
 	public ResultVo updateMsg(int id,String Name,String Mobile, String portraitValue){
 		try {
-			EforcesUser userInfo =   userService.selectUserById(id);
+			EforcesUser userInfo = userService.selectUserById(id);
 			if(userInfo == null ) {
 				return ResultUtil.exec(true,"参数错误，用户不存在！",null);
 			}
@@ -415,14 +397,18 @@ public class UserLoginService {
 			if(StringUtils.isNotEmpty(Mobile)) {
 				userInfo.setMobile(Mobile);
 			}
-			if(StringUtils.isNotEmpty(portraitValue)) {
+			if(StringUtils.isNotEmpty(portraitValue) && 
+					! StringUtils.equals(portraitValue, userInfo.getPortraitpath())) {
 				String portraitPath = AppReplaceOSSUtil.string2Image(portraitValue);
 				if(StringUtils.isNotEmpty(portraitPath)) {
 					userInfo.setPortraitpath(Config.oosUrlPath + portraitPath);
 				}
 			}
-			int result = userService.updateUserInfo(userInfo);
-			return ResultUtil.exec(true,"修改信息成功",userInfo);
+			Integer result = userService.updateUserInfo(userInfo);
+			if(result != null && result > 0 ) {
+				return ResultUtil.exec(true,"修改信息成功",userInfo);
+			}
+			return ResultUtil.exec(false,"修改信息失败",null);
 		} catch (Exception e){
 			e.printStackTrace();
 			return ResultUtil.exec(false,"修改信息失败",null);

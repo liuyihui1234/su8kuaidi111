@@ -2,6 +2,7 @@ package org.kuaidi.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.vo.OrderInfoVO;
 
 import java.util.List;
 
@@ -45,7 +46,6 @@ public interface EforcesOrderMapper {
      * @return
      */
     List<EforcesOrder> notHadPostPackage(@Param("userNum")String userNum , @Param("incid") String incid);
-    
     
     /**
 	     * 未派件(街道的未派单)
@@ -99,7 +99,7 @@ public interface EforcesOrderMapper {
                * 寄/派件运单管理
      * @return
      */
-    List<EforcesOrder> getAllMsg(EforcesOrder order);
+    List<EforcesOrder> getAllMsg(OrderInfoVO order);
 
     /**
      * 删除寄/派件运单管理
@@ -116,7 +116,7 @@ public interface EforcesOrderMapper {
 	/*
 	 * 根据多个订单id，查询订单信息 
 	 */
-	List<EforcesOrder> getOrderByNumbers(List<String> billsNumber);
+	List<EforcesOrder> getOrderByNumbers(@Param("list") List<String> list);
 
     /**
      * 查询详情信息

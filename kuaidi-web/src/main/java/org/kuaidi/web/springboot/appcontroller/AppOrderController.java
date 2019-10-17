@@ -1,6 +1,7 @@
 package org.kuaidi.web.springboot.appcontroller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
-import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesOrderService;
@@ -329,7 +329,7 @@ public class AppOrderController {
 		return ResultUtil.exec(pageNum,pageSize,0,null);
 		}
 	}
-
+	
 	/**
 	 * 删除寄/派件运单管理
 	 * @param id
@@ -369,6 +369,9 @@ public class AppOrderController {
 	@CrossOrigin
 	public ResultVo insertOrder(EforcesOrder record){
 		try {
+			if(record.getPrice() == null) {
+				record.setPrice(new BigDecimal(20f));
+			}
 			record.setNumber(orderUtil.getOrderNumber(record.getFromareastreet()));
 			int result = orderService.insertSelective(record);
 			 if(result>0){

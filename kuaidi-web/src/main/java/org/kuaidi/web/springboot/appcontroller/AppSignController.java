@@ -247,7 +247,10 @@ public class AppSignController {
     		EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
     		Integer sunPoint = userPointService.getPointsByUserId(userInfo.getId());
     		JSONObject data = new JSONObject(); 
-    		data.put("sunPoint", sunPoint);
+    		data.put("sunPoint", 0);
+    		if(sunPoint != null ) {
+    			data.put("sunPoint", sunPoint);
+    		}
     		return ResultUtil.exec(true,"获取用户总积分成功！",data);
     	}catch (Exception e){
     		e.printStackTrace();

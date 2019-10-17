@@ -37,8 +37,15 @@ public class Md5HashController {
 	
 	public static void main(String [] args) {
 		
-		Object obj = new SimpleHash("MD5", "liuyihui123456");
-		System.out.println(obj.toString()); 
+//		Object obj = new SimpleHash("MD5", "liuyihui123456");
+//		System.out.println(obj.toString()); 
+		String date = " 440114000000060\r\n" +
+				"440114000000113";
+		String [] section = date.split("\r");
+		System.out.println(section.length);
+		
+		
+		
 	}
 	
 	public String enPwd1(String username, String pwd)

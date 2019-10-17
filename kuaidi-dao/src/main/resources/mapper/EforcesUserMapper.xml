@@ -60,6 +60,9 @@
     eforces_user
     where
     departname=#{departname}
+    <if test = "incNumber != null and incNumber != '' ">
+    	and incid = #{incNumber,jdbcType=VARCHAR}
+    </if>
     </select>
 
     <!-- 登录查询Sql -->

@@ -139,9 +139,9 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
                     set.add(str);
                 }
             }
-            EforcesIncment preStop = incmentService.selectNextSyopByName(scan.getLaststopname());
-            System.err.println(preStop);
-            if(preStop==null){
+//            EforcesIncment preStop = incmentService.selectNextSyopByName(scan.getLaststopname());
+//            System.err.println(preStop);
+            if(scan.getLaststop() == null ){
                 return  ResultUtil.exec(false,"到件扫描失败！请输入正确的目的地",null);
             }
             
@@ -187,7 +187,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
                 }
                 // 判断邮件发送地方是否错误。
                 EforcesOrder result = orderList.get(0);                
-                EforcesReceivedScan parameter = createReceiveScan(scan,userInfo, preStop, currentStop, result, 0);
+                EforcesReceivedScan parameter = createReceiveScan(scan,userInfo, currentStop, result, 0);
                 System.err.println("currentStop:"+currentStop);
                 String description = "快件到达【%s】，上一站是【%s】,扫描员是【%s】";
                 description = String.format(description, currentStop.getName(), "", userInfo.getName());
@@ -323,7 +323,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
         return sameZoneLeve;
     }
 
-    private EforcesReceivedScan createReceiveScan( EforcesReceivedScan parameter,EforcesUser userInfo,EforcesIncment preIncment, EforcesIncment currentStop,
+    private EforcesReceivedScan createReceiveScan( EforcesReceivedScan parameter,EforcesUser userInfo, EforcesIncment currentStop,
                                                   EforcesOrder result , Integer isBagBill) {
         EforcesReceivedScan scan = new EforcesReceivedScan();
         scan.setBillsnumber(result.getNumber());
@@ -334,7 +334,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
         scan.setFlightsnumber(parameter.getFlightsnumber());
         scan.setScanners(userInfo.getName());
         scan.setScannerid(userInfo.getNumber());
-        scan.setLaststop(preIncment.getNumber());
+        scan.setLaststop(parameter.getLaststop());
         scan.setLaststopname(parameter.getLaststopname());
         scan.setIncid(userInfo.getIncnumber());
         scan.setIncname(currentStop.getName());

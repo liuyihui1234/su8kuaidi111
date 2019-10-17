@@ -51,6 +51,6 @@ public interface EforcesStayedandtroubledscanMapper {
     /*
               * 根据订单号查找问题订单。
      */
-    List<EforcesStayedandtroubledscan> getScanInfoByBillsNumbers(List<String> billsNums);
+    List<EforcesStayedandtroubledscan> getScanInfoByBillsNumbers(List<String> list);
 
 }

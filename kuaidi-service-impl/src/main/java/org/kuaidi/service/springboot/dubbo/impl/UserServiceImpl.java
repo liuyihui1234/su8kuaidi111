@@ -112,8 +112,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<HashMap> getByDepartName(String departName) {
-		return UserDao.selectByDepartname(departName);
+	public List<HashMap> getByDepartName(String departName,String incNumber) {
+		return UserDao.selectByDepartname(departName, incNumber);
 	}
 
 	@Override

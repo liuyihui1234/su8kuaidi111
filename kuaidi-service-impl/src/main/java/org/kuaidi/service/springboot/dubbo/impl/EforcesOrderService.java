@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.vo.OrderInfoVO;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
@@ -188,7 +189,7 @@ public class EforcesOrderService implements IEforcesOrderService {
 	 * @return
 	 */
 	@Override
-	public PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size, EforcesOrder order) {
+	public PageInfo<EforcesOrder> getAllMsg(Integer page,Integer size, OrderInfoVO order) {
 		PageHelper.startPage(page,size);
 		List<EforcesOrder> list = orderDao.getAllMsg(order);
 		final PageInfo<EforcesOrder> pageInfo = new PageInfo<>(list);

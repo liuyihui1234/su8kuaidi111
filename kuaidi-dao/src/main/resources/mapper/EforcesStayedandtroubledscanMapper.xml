@@ -169,9 +169,9 @@
   
   <select id="getScanInfoByBillsNumbers"  resultMap="BaseResultMap">
   		select * from eforces_stayedandtroubledscan  where  1= 1 
-  		<if test="billsNums != null ">
+  		<if test="list != null ">
   			and  billsnumber in 
-  			<foreach collection="billsNums" item="billNum" index="index" open="(" close=")" separator=",">
+  			<foreach collection="list" item="billNum" index="index" open="(" close=")" separator=",">
 		      #{billNum}
 		    </foreach>
   		</if>

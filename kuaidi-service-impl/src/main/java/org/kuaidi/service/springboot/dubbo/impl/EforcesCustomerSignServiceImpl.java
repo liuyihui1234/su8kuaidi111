@@ -14,12 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service(version = "1.0.0",interfaceClass=IEforcesCustomerSignService.class)
+@Service(version = "1.0.0",interfaceClass=IEforcesCustomerSignService.class,timeout=12000)
 public class EforcesCustomerSignServiceImpl implements IEforcesCustomerSignService {
 
     @Autowired
     EforcesCustomerSignMapper customerSignMapper;
-    
     
     @Autowired
     EforcesLogisticStrackingMapper  strackingMapper; 

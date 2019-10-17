@@ -68,7 +68,7 @@ public interface UserService {
     List<EforcesUser> getByThree(EforcesUser record);
     
     
-    List<HashMap> getByDepartName(String departName);
+    List<HashMap> getByDepartName(String departName, String incNumber);
 
     /**
      * 新增用户

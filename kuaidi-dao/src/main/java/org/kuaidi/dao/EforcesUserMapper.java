@@ -59,8 +59,8 @@ public interface EforcesUserMapper {
 
     List<EforcesUser> selectByThree(EforcesUser record);
     
-    
-    List<HashMap> selectByDepartname(String departname);
+    List<HashMap> selectByDepartname(@Param("departname")String departname,
+    				@Param("incNumber")String incNumber);
 
     int deleteByid(List<Integer> array);
 
