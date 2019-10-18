@@ -6,11 +6,10 @@ import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
-import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.AppointmentService;
-import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
+import org.kuaidi.web.springboot.core.authorization.Authorization;
 import org.kuaidi.web.springboot.service.AppointmentDubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +60,7 @@ public class AppoinmentController {
 
     @RequestMapping("alterStatus2AddOrder")
     @CrossOrigin
-    @NeedUserInfo
+    @Authorization
     public ResultVo doAlterStatus2AddOrder(HttpServletRequest request, Integer id){
     	EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
     	EforcesIncment incment = (EforcesIncment)request.getAttribute("inc");

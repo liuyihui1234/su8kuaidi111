@@ -195,6 +195,7 @@ public class AppointmentDubboService {
                         	record.setCreateincnumber(userInfo.getIncid());
                         	record.setCreateuserid(userInfo.getNumber());
                         }
+                        System.out.println(record.getCreateuserid());
                         record.setNumber(appointment.getNumber());
                         record.setFromname(appointment.getFromname());
                         record.setFromcity(appointment.getFromcity());
@@ -254,8 +255,8 @@ public class AppointmentDubboService {
                         record.setSendmode(appointment.getSendmode());
                         record.setModeprice(appointment.getModeprice());
                         record.setSumprice(appointment.getSumprice());
-                        record.setCreateuserid(appointment.getAcceptid());
-                        record.setCreateusername(appointment.getAcceptname());
+//                        record.setCreateuserid(appointment.getAcceptid());
+//                        record.setCreateusername(appointment.getAcceptname());
                         int data2=iEforcesOrderService.insertSelective(record);
                         if(data2>0){
                             return ResultUtil.exec(true,"收件成功",null);

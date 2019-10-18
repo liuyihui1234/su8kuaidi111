@@ -1,15 +1,11 @@
 package org.kuaidi.web.springboot.controller.scan;
 
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesOrder;
-import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.OrderInfoVO;
 import org.kuaidi.bean.vo.PageVo;
-import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
