@@ -22,5 +22,5 @@ public interface EforcesUsersgroupMapper {
 
     int updateByPrimaryKey(EforcesUsersgroup record);
 
-
+    int deleteByid(List<Integer> array);
 }

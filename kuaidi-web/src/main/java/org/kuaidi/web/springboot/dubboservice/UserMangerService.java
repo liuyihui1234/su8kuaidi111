@@ -3,7 +3,6 @@ package org.kuaidi.web.springboot.dubboservice;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
-import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.domain.EforcesUsersgroup;
 import org.kuaidi.bean.domain.EforcesUsersgrouprele;
@@ -12,6 +11,7 @@ import org.kuaidi.iservice.IEforcesUserGroupService;
 import org.kuaidi.iservice.IEforcesUserGrouproleService;
 import org.kuaidi.iservice.UserService;
 import org.kuaidi.utils.Md5Util;
+import org.kuaidi.web.springboot.webcontroller.UserGroupManage;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -56,7 +56,48 @@ public class UserMangerService {
             return ResultUtil.exec(1, 10 ,0, null);
         }
     }
-
+    
+    public ResultVo updateUserGroup(EforcesUsersgroup  group) {
+    	EforcesUsersgroup  groupDb = null ; 
+    	try {
+    		if(group != null && group.getId() != null ) {
+        		groupDb = iEforcesUserGroupService.selectByPrimaryKey(group.getId());
+        	}
+        	if(groupDb == null ) {
+        		return ResultUtil.exec(false, "参数错误！", null);
+        	}
+        	if(group.getGroupname() != null ) {
+        		groupDb.setGroupname(group.getGroupname());
+        	}
+        	if(group.getGroupinfo() != null ) {
+        		groupDb.setGroupinfo(group.getGroupinfo());
+        	}
+        	if(group.getIssuperadmin() != null ) {
+        		groupDb.setIssuperadmin(group.getIssuperadmin());
+        	}
+        	Integer rst = iEforcesUserGroupService.updateUserGroup(groupDb);
+        	if(rst > 0 ) {
+        		return ResultUtil.exec(true, "编辑用户租成功！", groupDb);
+        	}
+        	return ResultUtil.exec(false, "编辑用户租失败！", null);
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return ResultUtil.exec(false, "编辑用户租失败！", null);
+    }
+    
+    public ResultVo addUserGroup(EforcesUsersgroup userGroup) {
+    	try {
+    		Integer rst = iEforcesUserGroupService.addUserGroup(userGroup);
+    		if(rst != null && rst > 0 ) {
+    			return ResultUtil.exec(true, "添加用户组成功！", null);
+    		}
+    		return ResultUtil.exec(false, "添加用户组失败！", null);
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		return ResultUtil.exec(false, "添加用户组异常！", null);
+    	}
+    }
 
     public ResultVo addSyetemUser(EforcesUser user) {
         try {
@@ -139,6 +180,20 @@ public class UserMangerService {
             return ResultUtil.exec(false, "查询失败！", null);
         }
     }
+
+	public ResultVo deleteUserGroupByID(List<Integer> array) {
+		// TODO Auto-generated method stub
+		try {
+            int i = iEforcesUserGroupService.deleteByid(array);
+            if(i>0){
+                return ResultUtil.exec(true, "删除成功", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "删除失败！", null);
+        }
+        return ResultUtil.exec(false, "删除失败！", null);
+	}
 
 
 

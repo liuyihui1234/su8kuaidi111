@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesUserAddressMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesUserAddress">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="provincecode" jdbcType="VARCHAR" property="provincecode" />
+    <result column="provincename" jdbcType="VARCHAR" property="provincename" />
+    <result column="citycode" jdbcType="VARCHAR" property="citycode" />
+    <result column="cityname" jdbcType="VARCHAR" property="cityname" />
+    <result column="areacode" jdbcType="VARCHAR" property="areacode" />
+    <result column="areaname" jdbcType="VARCHAR" property="areaname" />
+    <result column="areastreet" jdbcType="VARCHAR" property="areastreet"/>
+    <result column="areastreetcode" jdbcType="VARCHAR" property="areastreetcode"/>
+    <result column="customname" jdbcType="VARCHAR" property="customname" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="companyname" jdbcType="VARCHAR" property="companyname" />
+    <result column="ctrime" jdbcType="TIMESTAMP" property="ctrime" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="latitude" jdbcType="REAL" property="latitude" />
+    <result column="longitude" jdbcType="REAL" property="longitude" />
+    <result column="isDelete" jdbcType="INTEGER" property="isdelete" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, provincecode, provincename, citycode, cityname, areacode, areaname, areastreet,areastreetcode,customname, 
+    mobile, companyname, ctrime, address, latitude, longitude, isDelete, userId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_useraddress
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByNameOrPhone" resultMap="BaseResultMap">
+   select 
+   <include refid="Base_Column_List" />
+   from eforces_useraddress
+   where userId = ${userId}
+   <if test="param != null and param != ''">
+   		and (customname like CONCAT('%',#{param},'%') or mobile like  CONCAT('%',#{param},'%'))
+   </if> 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_useraddress
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesUserAddress">
+    insert into eforces_useraddress (id, provincecode, provincename, 
+      citycode, cityname, areacode, 
+      areaname, areastreet,areastreetcode,
+      customname, mobile, 
+      companyname, ctrime, address, 
+      latitude, longitude, isDelete, 
+      userId)
+    values (#{id,jdbcType=INTEGER}, #{provincecode,jdbcType=VARCHAR}, #{provincename,jdbcType=VARCHAR}, 
+      #{citycode,jdbcType=VARCHAR}, #{cityname,jdbcType=VARCHAR}, #{areacode,jdbcType=VARCHAR}, 
+      #{areaname,jdbcType=VARCHAR},#{areastreet,jdbcType=VARCHAR},#{areastreetcode,jdbcType=VARCHAR},
+      #{customname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{companyname,jdbcType=VARCHAR}, #{ctrime,jdbcType=TIMESTAMP}, #{address,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=REAL}, #{longitude,jdbcType=REAL}, #{isdelete,jdbcType=INTEGER}, 
+      #{userid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesUserAddress">
+    insert into eforces_useraddress
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="provincecode != null">
+        provincecode,
+      </if>
+      <if test="provincename != null">
+        provincename,
+      </if>
+      <if test="citycode != null">
+        citycode,
+      </if>
+      <if test="cityname != null">
+        cityname,
+      </if>
+      <if test="areacode != null">
+        areacode,
+      </if>
+      <if test="areaname != null">
+        areaname,
+      </if>
+      <if test="areastreet != null">
+        areastreet,
+      </if>
+      <if test="areastreetcode != null">
+        areastreetcode,
+      </if>      
+      <if test="customname != null">
+        customname,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="companyname != null">
+        companyname,
+      </if>
+      <if test="ctrime != null">
+        ctrime,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="isdelete != null">
+        isDelete,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="provincecode != null">
+        #{provincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="provincename != null">
+        #{provincename,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityname != null">
+        #{cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="areacode != null">
+        #{areacode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaname != null">
+        #{areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreet != null">
+        #{areastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreetcode != null">
+        #{areastreetcode,jdbcType=VARCHAR},
+      </if> 
+      <if test="customname != null">
+        #{customname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="ctrime != null">
+        #{ctrime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=REAL},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=REAL},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesUserAddress">
+    update eforces_useraddress
+    <set>
+      <if test="provincecode != null">
+        provincecode = #{provincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="provincename != null">
+        provincename = #{provincename,jdbcType=VARCHAR},
+      </if>
+      <if test="citycode != null">
+        citycode = #{citycode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityname != null">
+        cityname = #{cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="areacode != null">
+        areacode = #{areacode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaname != null">
+        areaname = #{areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreet != null">
+        areastreet = #{areastreet,jdbcType=VARCHAR},
+      </if>
+      <if test="areastreetcode != null">
+        areastreetcode = #{areastreetcode,jdbcType=VARCHAR},
+      </if> 
+      <if test="customname != null">
+        customname = #{customname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        companyname = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="ctrime != null">
+        ctrime = #{ctrime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=REAL},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=REAL},
+      </if>
+      <if test="isdelete != null">
+        isDelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesUserAddress">
+    update eforces_useraddress
+    set provincecode = #{provincecode,jdbcType=VARCHAR},
+      provincename = #{provincename,jdbcType=VARCHAR},
+      citycode = #{citycode,jdbcType=VARCHAR},
+      cityname = #{cityname,jdbcType=VARCHAR},
+      areacode = #{areacode,jdbcType=VARCHAR},
+      areaname = #{areaname,jdbcType=VARCHAR},
+      areastreet = #{areastreet,jdbcType=VARCHAR},
+      areastreetcode = #{areastreetcode,jdbcType=VARCHAR},
+      customname = #{customname,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      companyname = #{companyname,jdbcType=VARCHAR},
+      ctrime = #{ctrime,jdbcType=TIMESTAMP},
+      address = #{address,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=REAL},
+      longitude = #{longitude,jdbcType=REAL},
+      isDelete = #{isdelete,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER}
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

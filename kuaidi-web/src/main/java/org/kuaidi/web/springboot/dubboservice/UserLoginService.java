@@ -364,7 +364,7 @@ public class UserLoginService {
 		if(listResult == null || listResult.size() == 0){
 			//将验证码存Redis
 			String verifyCode = phoneCode.sendCode(mobile);
-			redisUtil.set(Config.redisPhonePrex+mobile,verifyCode,10*60);
+			redisUtil.set(Config.redisPhonePrex+mobile,verifyCode,Config.YZMVALIDATETIME*60);
 			return ResultUtil.exec(true, "发送验证码成功！", verifyCode) ;
 		}
 		return ResultUtil.exec(false, "手机号已经存在，请确定！", "");

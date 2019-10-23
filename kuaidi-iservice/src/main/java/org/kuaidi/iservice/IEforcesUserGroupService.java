@@ -16,7 +16,11 @@ public interface IEforcesUserGroupService {
     EforcesUsersgroup selectByPrimaryKey(Integer id);
 
 
+    Integer updateUserGroup(EforcesUsersgroup userGroup);
+    
+    Integer addUserGroup(EforcesUsersgroup userGroup);
 
+	int deleteByid(List<Integer> array);
 
 
 
