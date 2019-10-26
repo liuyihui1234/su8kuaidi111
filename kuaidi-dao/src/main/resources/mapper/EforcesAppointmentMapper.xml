@@ -1337,6 +1337,7 @@
     <include refid="Blob_Column_List" />
     from eforces_appointment
     where status = 1 and acceptid = #{acceptid,jdbcType=VARCHAR}
+    order by id desc 
   </select>
 
 </mapper>

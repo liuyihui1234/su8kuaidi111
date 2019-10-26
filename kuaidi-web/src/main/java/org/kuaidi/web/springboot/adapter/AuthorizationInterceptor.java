@@ -27,12 +27,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor  {
 	private String httpHeaderPrefix = "";
 
 	@Autowired
-	private TokenManager manager;
-	
-	@Autowired
 	private RedisUtil redisUtil;
-	
-	
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -41,18 +36,15 @@ public class AuthorizationInterceptor implements HandlerInterceptor  {
 		if (!(handler instanceof HandlerMethod)) {
 			return true;
 		}
-		String URI = request.getRequestURI();
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
 		Method method = handlerMethod.getMethod();
 		// 从header中得到token
-		
 		if (method.getAnnotation(Authorization.class) != null // 查看方法上是否有注解
 				|| handlerMethod.getBeanType().getAnnotation(Authorization.class) != null) {
 			String token = request.getHeader(httpHeaderName);
 			if (token != null && token.startsWith(httpHeaderPrefix) && token.length() > 0) {
 				token = token.substring(httpHeaderPrefix.length());
 				String userData = redisUtil.get(Config.REDISAPPLOGINPREX + token);
-//				String rst =  manager.checkKey(URI, token);
 				// 验证token
 				if(StringUtils.isEmpty(userData)) {
 					JSONObject  data = new JSONObject();
@@ -72,6 +64,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor  {
 					EforcesIncment eforcesIncment = (EforcesIncment)JSONObject.toBean(incInfo, EforcesIncment.class);
 					request.setAttribute("user", eforcesUser);
 					request.setAttribute("inc", eforcesIncment);
+					redisUtil.setExpire(Config.REDISAPPLOGINPREX + token, 20*60);
 				}
 				return true;
 			}
@@ -98,6 +91,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor  {
 					EforcesIncment eforcesIncment = (EforcesIncment)JSONObject.toBean(incInfo, EforcesIncment.class);
 					request.setAttribute("user", eforcesUser);
 					request.setAttribute("inc", eforcesIncment);
+					redisUtil.setExpire(Config.REDISAPPLOGINPREX + token, 20*60);
 					return true; 
 				}
 			}

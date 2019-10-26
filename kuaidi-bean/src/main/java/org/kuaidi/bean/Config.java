@@ -39,6 +39,8 @@ public class Config {
 	public static final String WEBCODE = "WEB:CODE:";
 
 	public static final int EXPIRETIME = 2*60*60;
+	
+	public static final int YZMVALIDATETIME = 3; 
 
 
 }

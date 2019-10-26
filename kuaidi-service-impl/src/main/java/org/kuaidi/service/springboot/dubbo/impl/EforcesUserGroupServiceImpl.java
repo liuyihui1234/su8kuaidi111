@@ -33,4 +33,22 @@ public class EforcesUserGroupServiceImpl implements IEforcesUserGroupService {
         return eforcesUsersgroupMapper.selectByPrimaryKey(id);
     }
 
+	@Override
+	public Integer updateUserGroup(EforcesUsersgroup userGroup) {
+		// TODO Auto-generated method stub
+		return eforcesUsersgroupMapper.updateByPrimaryKeySelective(userGroup);
+	}
+
+	@Override
+	public Integer addUserGroup(EforcesUsersgroup userGroup) {
+		// TODO Auto-generated method stub
+		return eforcesUsersgroupMapper.insertSelective(userGroup);
+	}
+
+	@Override
+	public int deleteByid(List<Integer> array) {
+		// TODO Auto-generated method stub
+		return eforcesUsersgroupMapper.deleteByid(array);
+	}
+
 }

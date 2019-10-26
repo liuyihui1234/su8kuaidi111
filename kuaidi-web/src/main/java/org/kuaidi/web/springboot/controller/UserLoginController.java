@@ -259,7 +259,7 @@ public class UserLoginController {
     		return ResultUtil.exec(false, "手机号错误，请确定！", "") ;
     	}
     	if(redisUtil.get(Config.redisPhonePrex+telephone) != null ) {
-			return ResultUtil.exec(false, "十分钟之内不能重复的获得验证码！", "") ;
+			return ResultUtil.exec(false, "三分钟之内不能重复的获得验证码！", "") ;
 		}
         // 根据userid  user  table 查询记录
         // 传的手机号和保存的手机号是否一致。
@@ -276,7 +276,7 @@ public class UserLoginController {
             }
             // 十分钟有效
             if (StringUtils.isNotEmpty(verCode)) {
-                redisUtil.set(Config.redisPhonePrex + telephone, verCode, 10 * 60);
+                redisUtil.set(Config.redisPhonePrex + telephone, verCode, Config.YZMVALIDATETIME * 60);
             }
             // 验证一下用户信息。
         } catch (com.aliyuncs.exceptions.ClientException e) {

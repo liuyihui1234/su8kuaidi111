@@ -10,27 +10,33 @@
     <sql id="Base_Column_List">
     id, groupname, groupinfo, issuperadmin
   </sql>
-
+  
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from eforces_usersgroup
         where id = #{id,jdbcType=INTEGER}
     </select>
-
-
     <select id="selectAllIGroup" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from eforces_usersgroup
+        from eforces_usersgroup  where isDelete = 0 
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from eforces_usersgroup
     where id = #{id,jdbcType=INTEGER}
   </delete>
-
-
-
+  
+  <update  id="deleteByid" >
+       update eforces_usersgroup set isDelete = 1
+        where id
+        in
+        <foreach collection="list" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    
     <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesUsersgroup">
     insert into eforces_usersgroup (id, groupname, groupinfo, 
       issuperadmin)

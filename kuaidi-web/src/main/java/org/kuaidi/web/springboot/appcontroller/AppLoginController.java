@@ -69,7 +69,7 @@ public class AppLoginController {
     			String validateCode = null;
 				try {
 					validateCode = sendPhone.sendCode(telephone);
-					redisUtil.set(Config.redisPhonePrex + telephone, validateCode, 10*60);
+					redisUtil.set(Config.redisPhonePrex + telephone, validateCode, Config.YZMVALIDATETIME*60);
 	    			return ResultUtil.exec(true, "发送验证码成功！", validateCode);
 				} catch (ClientException e) {
 					// TODO Auto-generated catch block
