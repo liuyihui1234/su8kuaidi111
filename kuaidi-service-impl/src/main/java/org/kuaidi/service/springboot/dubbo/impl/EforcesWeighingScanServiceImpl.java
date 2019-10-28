@@ -17,7 +17,7 @@ public class EforcesWeighingScanServiceImpl implements IEforcesWeighingScanServi
 	@Autowired
 	EforcesWeighingScanMapper scanDao;
 
-	public PageInfo<EforcesWeighingScan> getAll(Integer page, Integer size,Integer incid) {
+	public PageInfo<EforcesWeighingScan> getAll(Integer page, Integer size,String incid) {
 		// TODO Auto-generated method stub
 		PageHelper.startPage(page,size);
 		List<EforcesWeighingScan> sentScan = scanDao.selectAll(incid);

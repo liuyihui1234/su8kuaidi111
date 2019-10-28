@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.kuaidi.bean.domain.EforcesMenus;
-import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.domain.EforcesTreeMenus;
 import org.kuaidi.bean.domain.MenusUsersActionVo;
 
@@ -38,5 +37,7 @@ public interface IEforcesMenusService {
     List<HashMap> getAllMenuTree(String userid);
     
     int getMaxNumberByParentId(String parentId);
+    
+    List<EforcesMenus> getMenuByParentId(String parentId);
 
 }

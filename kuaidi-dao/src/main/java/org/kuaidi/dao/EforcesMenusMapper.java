@@ -2,7 +2,6 @@ package org.kuaidi.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
@@ -47,10 +46,14 @@ public interface EforcesMenusMapper {
     int  addPermis(List<MenusUsersActionVo> list);
 
     List<EforcesTreeMenus> getMenuTree();
+    
     @MapKey("id")
     List<HashMap> getAllMenuTree(String userid);
     
     Integer  selectMaxNumberByParentId(String parentId);
 
     List<EforcesTreeMenusGroup> getMenuTree_group(String userid);
+    
+    List<EforcesMenus> getMenuByParentId(@Param("parentId") String parentId);
+    
 }

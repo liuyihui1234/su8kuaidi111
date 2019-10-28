@@ -58,7 +58,7 @@ public class EforcesSentScanServiceImpl implements IEforcesSentscanService {
 	}
 
 	@Override
-	public PageInfo<EforcesSentScan> getAll(Integer page, Integer size,Integer incid) {
+	public PageInfo<EforcesSentScan> getAll(Integer page, Integer size,String incid) {
 		// TODO Auto-generated method stub
 		PageHelper.startPage(page,size);
 		List<EforcesSentScan> sentScan = sentscanMapper.selectAll(incid);

@@ -25,6 +25,10 @@ public class EforcesMenus implements Serializable{
     private Integer isDelete;
 
     private String component;
+    
+    private String path ;
+    
+    private boolean checked = true; 
 
     public String getComponent() {
         return component;
@@ -98,12 +102,27 @@ public class EforcesMenus implements Serializable{
         this.url = url == null ? null : url.trim();
     }
 
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path == null ? null : path.trim();
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
 	@Override
 	public String toString() {
 		return "EforcesMenus [id=" + id + ", parentid=" + parentid + ", text=" + text + ", leaf=" + leaf + ", iconcls="
-				+ iconcls + ", number=" + number + ", url=" + url + ", isDelete=" + isDelete + "]";
+				+ iconcls + ", number=" + number + ", url=" + url + ", isDelete=" + isDelete + ", component="
+				+ component + ", path=" + path + "]";
 	}
-
-	
     
 }

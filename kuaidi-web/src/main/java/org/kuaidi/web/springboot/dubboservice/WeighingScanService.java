@@ -16,9 +16,9 @@ import java.util.List;
 public class WeighingScanService {
 	@Reference(version = "1.0.0")
     IEforcesWeighingScanService  weighingScanService;
-	public PageVo<EforcesWeighingScan> getAll(QueryPageVo page) {
+	public PageVo<EforcesWeighingScan> getAll(QueryPageVo page, String incId) {
         try {
-            PageInfo<EforcesWeighingScan> eforcesUsers = weighingScanService.getAll(page.getPage(),page.getLimit(),page.getId());
+            PageInfo<EforcesWeighingScan> eforcesUsers = weighingScanService.getAll(page.getPage(),page.getLimit(),incId);
             
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {

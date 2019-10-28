@@ -8,15 +8,10 @@ import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesBiggingScanService;
 import org.kuaidi.iservice.IEforcesRemovingBagScanService;
-import org.kuaidi.iservice.IEforcesWeighingScanService;
 import org.springframework.stereotype.Component;
-
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component

@@ -57,7 +57,7 @@ public class SentScanService {
 
     public PageVo<EforcesSentScan> getAll(QueryPageVo page) {
         try {
-            PageInfo<EforcesSentScan> eforcesUsers = sentScanService.getAll(page.getPage(),page.getLimit(),page.getId());
+            PageInfo<EforcesSentScan> eforcesUsers = sentScanService.getAll(page.getPage(),page.getLimit(),null);
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();

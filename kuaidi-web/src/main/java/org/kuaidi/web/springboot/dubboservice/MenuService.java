@@ -22,6 +22,7 @@ public class MenuService {
 	  	public PageVo<EforcesMenus> getAllMenus(QueryPageVo page) {
 	        try {
 	            PageInfo<EforcesMenus> eforcesUsers = menusService.getAll(page.getPage(),page.getLimit());
+	            
 	            return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
 	        } catch (Exception e) {
 	            e.printStackTrace();

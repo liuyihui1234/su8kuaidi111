@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.controller;
+package org.kuaidi.web.springboot.webcontroller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @RestController
@@ -38,6 +37,24 @@ public class MenusController {
     @Autowired
     MenuService dubboService;
 	
+    
+    @RequestMapping("getMenuByParentId")
+	@CrossOrigin
+	public ResultVo getMenuByParentId(String parentId) {
+    	try {
+    		if(parentId == null || StringUtils.equals(parentId, "")) {
+    			parentId = "-1";
+    		}
+    		System.out.println(parentId);
+    		List<EforcesMenus> list = menusService.getMenuByParentId(parentId);
+    		if(list != null &&  list.size() > 0 ) {
+    			return ResultUtil.exec(true, "查询成功", list);
+    		}
+    	}catch(Exception e ) {
+    		e.printStackTrace();
+    	}
+    	return ResultUtil.exec(false, "查询失败！", null) ; 
+    }
 
 	
 	@RequestMapping("getById")
@@ -104,6 +121,8 @@ public class MenusController {
     @CrossOrigin
     public PageVo getAll(QueryPageVo page) {
 			PageVo rst = null;
+			page.setPage(1);
+			page.setLimit(1000);
 	        rst = dubboService.getAllMenus(page);
 	        return rst;
 	}

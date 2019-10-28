@@ -21,7 +21,7 @@ public interface IEforcesSentscanService {
      * */
     DubboMsgVO  addSentScan(EforcesSentScan sentScan, EforcesLogisticStracking stracking);
     
-    PageInfo<EforcesSentScan> getAll(Integer page,Integer size,Integer incid);
+    PageInfo<EforcesSentScan> getAll(Integer page,Integer size,String incid);
     
     Integer  deleteByIds(List<Integer>list);
 

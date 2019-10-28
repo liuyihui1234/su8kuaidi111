@@ -66,7 +66,7 @@ public interface EforcesReceivedScanMapper {
      * @param incid
      * @return
      */
-    List<EforcesReceivedScan> getAllOrderSelective(Integer incid);
+    List<EforcesReceivedScan> getAllOrderSelective(String incid);
 
     /**
      * 寄/派件运单管理

@@ -39,9 +39,11 @@ public class WeighingScanController {
 	
 	@GetMapping("scan")
 	@CrossOrigin
-	public PageVo getAll(QueryPageVo page) {
+	@NeedUserInfo
+	public PageVo getAll(HttpServletRequest request, QueryPageVo page) {
 		PageVo rst = null;
-		rst = dubboScanService.getAll(page);
+		EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
+		rst = dubboScanService.getAll(page, userInfo.getIncid());
 		return rst;
 	}
 	

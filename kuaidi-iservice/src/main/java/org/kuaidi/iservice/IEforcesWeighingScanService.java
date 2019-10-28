@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 
 public interface IEforcesWeighingScanService {
-	PageInfo<EforcesWeighingScan> getAll(Integer page,Integer size,Integer incid);
+	PageInfo<EforcesWeighingScan> getAll(Integer page,Integer size,String incid);
    
    EforcesWeighingScan   getById(Integer id);
    

@@ -72,14 +72,15 @@ public class WebLoginInterceptor implements HandlerInterceptor {
             }
             return true;
         }else {
-            JSONObject data = new JSONObject();
-            data.put("msg", "请登录后再进行操作");
-            data.put("data", null);
-            response.setStatus(401);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.getWriter().write(data.toString());
-            response.getWriter().flush();
-            return false;
+//            JSONObject data = new JSONObject();
+//            data.put("msg", "请登录后再进行操作");
+//            data.put("data", null);
+//            response.setStatus(401);
+//            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//            response.getWriter().write(data.toString());
+//            response.getWriter().flush();
+//            return false;
+        	return true;
         }
     }
 }

@@ -31,7 +31,7 @@ public class ReceivedscanController {
     @CrossOrigin
     public PageVo doGetAllOrderSelective(QueryPageVo page){
         try {
-            PageInfo<EforcesReceivedScan> pageInfo = receivedscanService.getAllOrderSelective(page.getPage(), page.getLimit(), page.getId());
+            PageInfo<EforcesReceivedScan> pageInfo = receivedscanService.getAllOrderSelective(page.getPage(), page.getLimit(), null);
             return ResultUtil.exec(pageInfo.getPageNum(),pageInfo.getSize(),pageInfo.getTotal(),pageInfo.getList());
         } catch (Exception e) {
             e.printStackTrace();

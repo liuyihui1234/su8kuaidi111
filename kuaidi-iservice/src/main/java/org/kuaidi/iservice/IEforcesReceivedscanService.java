@@ -48,7 +48,7 @@ public interface IEforcesReceivedscanService {
      * @param incid
      * @return
      */
-    PageInfo<EforcesReceivedScan> getAllOrderSelective(Integer pageNum, Integer pageSize, Integer incid);
+    PageInfo<EforcesReceivedScan> getAllOrderSelective(Integer pageNum, Integer pageSize, String incid);
 
     /**
      * 收件扫描信息动态修改

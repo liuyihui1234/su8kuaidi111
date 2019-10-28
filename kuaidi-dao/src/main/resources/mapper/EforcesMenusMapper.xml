@@ -13,9 +13,10 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="isDelete" jdbcType="INTEGER"
                 property="isDelete"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
     </resultMap>
     <sql id="Base_Column_List">
-		id, parentid, text, leaf, iconcls, number, url
+		id, parentid, text, leaf, iconcls, number, url, path,isDelete
 	</sql>
 
 
@@ -238,7 +239,7 @@
         update
         eforces_menus
         set
-        isDelete=0
+        isDelete= 1
         where
         id
         in
@@ -255,7 +256,7 @@
         update
         eforces_userspermis
         set
-        isDelete=0
+        isDelete= 1
         where
         id
         in
@@ -273,7 +274,8 @@
 		parentid=#{parentid},
 		text=#{text}, leaf=#{leaf},
 		iconcls=#{iconcls}, number=#{number},
-		url=#{url}
+		url=#{url},
+		path=#{path}
 		where
 		id=#{id}
 	</update>
@@ -313,7 +315,7 @@
 		WHERE
 		c.id&lt;=5
 		AND
-		b.isDelete=1
+		b.isDelete=0
 	</select>
 
     <select id="selectById" resultMap="BaseResultMap">
@@ -332,12 +334,20 @@
 		WHEN 'true' THEN '是'
 		WHEN 'false' THEN '否' end AS leaf
 		,
-		iconcls, number, url
+		iconcls, number, url , path
 		from
 		eforces_menus
 		where
-		isDelete=1
+		isDelete= 0 
+		order by number asc 
 	</select>
+	<select id="getMenuByParentId"  resultMap="BaseResultMap">
+		select  
+		<include refid="Base_Column_List"/>
+        from eforces_menus
+        where parentid = ${parentId}
+	</select>
+	
     <select id="selectByPrimaryKey"
             parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -356,12 +366,13 @@
 		insert into eforces_menus ( parentid, text,
 		leaf,
 		iconcls, number,
-		url)
+		url,path)
 		values ( #{parentid,jdbcType=VARCHAR},
 		#{text,jdbcType=VARCHAR},
 		#{leaf,jdbcType=VARCHAR},
 		#{iconcls,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER},
-		#{url,jdbcType=VARCHAR})
+		#{url,jdbcType=VARCHAR},
+		#{path,jdbcType=VARCHAR})
 	</insert>
     <insert id="insertSelective"
             parameterType="org.kuaidi.bean.domain.EforcesMenus">
@@ -388,6 +399,9 @@
             <if test="url != null">
                 url,
             </if>
+            <if test="path != null">
+                path,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -411,8 +425,12 @@
             <if test="url != null">
                 #{url,jdbcType=VARCHAR},
             </if>
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
+    
     <update id="updateByPrimaryKeySelective"
             parameterType="org.kuaidi.bean.domain.EforcesMenus">
         update eforces_menus
@@ -435,6 +453,9 @@
             <if test="url != null">
                 url = #{url,jdbcType=VARCHAR},
             </if>
+            <if test="path != null">
+                path = #{path,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -449,7 +470,8 @@
 		iconcls = #{iconcls,jdbcType=VARCHAR},
 		number
 		= #{number,jdbcType=INTEGER},
-		url = #{url,jdbcType=VARCHAR}
+		url = #{url,jdbcType=VARCHAR},
+		path = #{path,jdbcType=VARCHAR}
 		where id =
 		#{id,jdbcType=INTEGER}
 	</update>

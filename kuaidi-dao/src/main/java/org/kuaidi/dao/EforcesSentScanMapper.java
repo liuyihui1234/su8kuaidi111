@@ -27,7 +27,7 @@ public interface EforcesSentScanMapper {
      */
     int selectCount(String incid);
 
-    List<EforcesSentScan> selectAll(Integer paramter);
+    List<EforcesSentScan> selectAll(String paramter);
 
     int deleteByIds(List<Integer>ids);
 

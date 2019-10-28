@@ -82,7 +82,7 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
     }
 
     @Override
-    public PageInfo<EforcesReceivedScan> getAllOrderSelective(Integer pageNum, Integer pageSize, Integer incid) {
+    public PageInfo<EforcesReceivedScan> getAllOrderSelective(Integer pageNum, Integer pageSize, String incid) {
         PageHelper.startPage(pageNum,pageSize);
         List<EforcesReceivedScan> list = receivedscanMapper.getAllOrderSelective(incid);
         final PageInfo<EforcesReceivedScan> pageInfo = new PageInfo<>(list);

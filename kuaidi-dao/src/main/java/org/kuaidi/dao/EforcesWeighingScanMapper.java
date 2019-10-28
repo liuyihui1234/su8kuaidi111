@@ -20,7 +20,7 @@ public interface EforcesWeighingScanMapper {
 
     int updateByPrimaryKey(EforcesWeighingScan record);
     
-    List<EforcesWeighingScan> selectAll(Integer paramter);
+    List<EforcesWeighingScan> selectAll(String paramter);
     
     List<EforcesWeighingScan> getWeightScanByParam(@Param("incNum")String incNum, @Param("number") String number);
     
