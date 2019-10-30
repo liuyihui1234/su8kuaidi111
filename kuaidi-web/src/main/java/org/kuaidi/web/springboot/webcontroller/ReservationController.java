@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@RequestMapping("web/Reservation/Reservation")
+@RequestMapping("/web/Reservation/Reservation")
 public class ReservationController {
 
     @Autowired

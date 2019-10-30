@@ -13,6 +13,8 @@ import org.kuaidi.dao.EforcesTransportedscanMapper;
 import org.kuaidi.iservice.IEforcesTransportedscanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,10 +28,6 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
 
     @Autowired
     private EforcesLogisticStrackingMapper  logisticStrackingDao;
-    
-//    @Autowired
-//    private EforcesOrderMapper orderService; 
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -60,12 +58,28 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
     public List<EforcesTransportedscan> selectState0() {
         return transportedscan.selectState0();
     }
-
+    
+    /*
+     * 每选择一页数据，就讲数据的状态设置成1 。
+     * */
     @Override
     public PageInfo<EforcesTransportedscan> selectAllByState0(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<EforcesTransportedscan> list = transportedscan.selectState0();
         final PageInfo<EforcesTransportedscan> pageInfo = new PageInfo<>(list);
+        if(pageInfo != null && pageInfo.getList() != null && pageInfo.getList().size() > 0 ){
+        	List<String> billsNumber = new ArrayList<String>();
+        	List<EforcesTransportedscan> transportList = pageInfo.getList();
+        	for(int i = 0 ; i < transportList.size() ; i++) {
+        		EforcesTransportedscan  scan = transportList.get(i);
+        		if(scan != null && scan.getBillsnumber() != null ) {
+        			billsNumber.add(scan.getBillsnumber());
+        		}
+        	}
+        	if(billsNumber.size() > 0 ) {
+        		transportedscan.updateState1(billsNumber);
+        	}
+        }
         return pageInfo;
     }
 
@@ -98,5 +112,11 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
 	public int deleteByid(List<Integer> list) {
 		// TODO Auto-generated method stub
 		return transportedscan.deleteByid(list);
+	}
+
+	@Override
+	public int updateState0(List<String> billsNumber) {
+		// TODO Auto-generated method stub
+		return transportedscan.updateState0(billsNumber);
 	}
 }

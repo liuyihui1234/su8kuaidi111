@@ -41,6 +41,12 @@ public class Config {
 	public static final int EXPIRETIME = 2*60*60;
 	
 	public static final int YZMVALIDATETIME = 3; 
+	
+	//快递鸟企业编号和url。
+	//电商ID
+	public static String EBusinessID="1596164";
+	//电商加密私钥，快递鸟提供，注意保管，不要泄漏
+	public static String AppKey="d692a64c-908a-4635-8829-baff68f34e53";
 
 
 }

@@ -79,4 +79,11 @@ public interface EforcesTransportedscanMapper {
      * @return
      */
     int deleteByid(List<Integer> list);
+    
+    /**
+     * 把订单转态更改为（State=0）转运完成
+     * @param billsNumber
+     * @return
+     */
+	int updateState0(List<String> billsNumber);
 }

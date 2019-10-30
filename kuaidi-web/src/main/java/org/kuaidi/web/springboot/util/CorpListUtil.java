@@ -19,7 +19,6 @@ public class CorpListUtil {
 	@Reference(version = "1.0.0")
 	private IEforcesCorp corpService; 
 	
-	
 	public Map<Integer, String> getCorpMap(){
 		if(timeStamp == null || timeStamp.getTime() + 20*60*1000 < System.currentTimeMillis()) {
 			List <EforcesCorp>  corpList =  corpService.getAllEforcesCorp();
@@ -27,7 +26,7 @@ public class CorpListUtil {
 				corpMap = new HashMap<Integer, String>();
 				for(int i = 0 ; i < corpList.size() ; i++) {
 					EforcesCorp corpInfo  = corpList.get(i);
-					corpMap.put(corpInfo.getId(), corpInfo.getNumber());
+					corpMap.put(corpInfo.getId(), corpInfo.getCode());
 				}
 				timeStamp = new Date();
 			}

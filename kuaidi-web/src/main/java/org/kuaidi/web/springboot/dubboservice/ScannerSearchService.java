@@ -41,7 +41,7 @@ public class ScannerSearchService {
 	 * 3:派件
 	 * 4:签收
 	 * 5：称重
-	 * 取件先不管。
+	 *     取件先不管。
 	 */
 	public PageVo getAll(QueryPageVo page, String incId , Integer scanType) {
 		// TODO Auto-generated method stub

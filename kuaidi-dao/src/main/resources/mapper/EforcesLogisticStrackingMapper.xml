@@ -66,6 +66,20 @@
     from eforces_logisticstracking
     where BillsNumber = #{billsnumber,jdbcType=VARCHAR}
   </select>
+  
+  <select id="getListStrackingByNumber" resultType="BaseResultMap">
+  	select
+    BillsNumber , MAX(operationtime) operationtime
+    from eforces_logisticstracking
+    <if test="list != null and list.size() > 0">
+    	where BillsNumber in 
+    	<foreach collection="list" index="index" open="(" close=")"
+			item="id" separator=",">
+			#{id}
+		</foreach>
+    </if>
+    group by BillsNumber
+  </select>
 
   <select id="selectMaxMark" parameterType="java.lang.String" resultType="String">
     select

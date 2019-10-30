@@ -57,4 +57,10 @@ public interface IEforceslogisticstrackingService {
 	Date selectMaxTime(String billsNumber);
 
 	String  selectMaxMark(String billsNumber);
+	
+	/*
+	 * 根据订单号查询
+	 */
+	List<EforcesLogisticStracking> getStrackingMaxTimeByNumber(List<String> billsNumber);
+	
 }

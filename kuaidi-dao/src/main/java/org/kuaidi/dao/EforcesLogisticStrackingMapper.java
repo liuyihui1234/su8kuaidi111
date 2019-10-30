@@ -4,6 +4,7 @@ import org.kuaidi.bean.domain.EforcesLogisticStracking;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface EforcesLogisticStrackingMapper {
     int deleteByPrimaryKey(Integer id);
@@ -51,6 +52,11 @@ public interface EforcesLogisticStrackingMapper {
      * @return
      */
     List<EforcesLogisticStracking> getListBillsNumber(String[] billsNumber);
+    
+    /*
+     * 查询订单信息
+     */
+    List<EforcesLogisticStracking>  getListStrackingByNumber(List<String> billsNumber);
 
 
 }

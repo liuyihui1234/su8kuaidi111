@@ -65,6 +65,14 @@ public interface IEforcesTransportedscanService {
      * @return
      */
     int updateByPrimaryKeySelective(EforcesTransportedscan record);
+    
+    /**
+     * 把订单转态更改为（State=1）已添加到第三方平台
+     * @param billsNumber
+     * @return
+     */
+    int updateState0(List<String> billsNumber);
+
 
     /**
      * 把订单转态更改为（State=1）已添加到第三方平台

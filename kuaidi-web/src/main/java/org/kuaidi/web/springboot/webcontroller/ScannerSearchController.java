@@ -9,13 +9,16 @@ import org.kuaidi.web.springboot.dubboservice.ScannerSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("web/scansearch/")
+
+@RestController
+@RequestMapping("/web/scansearch/")
 public class ScannerSearchController {
 	
 	
 	@Autowired
-	private ScannerSearchService  scanSearchService; 
+	ScannerSearchService  scanSearchService; 
 	
 	@RequestMapping("search")
 	@CrossOrigin
@@ -29,7 +32,5 @@ public class ScannerSearchController {
 		PageVo rst =  scanSearchService.getAll(page, userInfo.getIncid(),  scanType);
 		return rst;
 	}
-
-	
 
 }

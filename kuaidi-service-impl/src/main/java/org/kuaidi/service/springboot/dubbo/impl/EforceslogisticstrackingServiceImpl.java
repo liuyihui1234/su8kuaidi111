@@ -76,4 +76,10 @@ public class EforceslogisticstrackingServiceImpl implements IEforceslogisticstra
 	public String selectMaxMark(String billsNumber) {
 		return strackingMapper.selectMaxMark(billsNumber);
 	}
+
+	@Override
+	public List<EforcesLogisticStracking> getStrackingMaxTimeByNumber(List<String> billsNumber) {
+		// TODO Auto-generated method stub
+		return strackingMapper.getListStrackingByNumber(billsNumber);
+	}
 }

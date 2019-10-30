@@ -260,6 +260,15 @@
       bz = #{bz,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <update id="updateState0">
+    update eforces_transportedscan
+    set state = 0
+    where billsnumber in
+    <foreach collection="list" item="billsnumber" index="index" open="(" close=")" separator="," >
+      #{billsnumber,jdbcType=VARCHAR}
+    </foreach>
+  </update>
 
   <update id="updateState1">
     update eforces_transportedscan

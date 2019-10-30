@@ -3,7 +3,6 @@ package org.kuaidi.web.springboot.util;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesTransportedscan;
@@ -14,7 +13,6 @@ import org.kuaidi.iservice.IEforceslogisticstrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -48,7 +46,7 @@ public class TransferUtil {
                 for (int k = 1; k < pageInfo.getPages()+1; k++) {
                     PageInfo<EforcesTransportedscan> pageInfo1 = transportedscanService.selectAllByState0(k, batchLimit);//获取第k页的数据
                     List<EforcesTransportedscan> pageList = pageInfo1.getList();//获取第k页中list里面的主要数据
-
+                    
                     List<String> list = new ArrayList();
                     for (int i = 0; i < pageList.size(); i++){
                         String number = corpMap.get(pageList.get(i).getNextcorpid());//获取快递公司对应的第三方编号
