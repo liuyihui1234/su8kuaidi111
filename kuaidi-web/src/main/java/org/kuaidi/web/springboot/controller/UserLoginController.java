@@ -1,7 +1,6 @@
 package org.kuaidi.web.springboot.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.aliyuncs.exceptions.ClientException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.Config;

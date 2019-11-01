@@ -56,4 +56,6 @@ public interface EforcesMenusMapper {
     
     List<EforcesMenus> getMenuByParentId(@Param("parentId") String parentId);
     
+    List<EforcesMenus>  getMenuByUserId(@Param("userId") Integer userId);
+    
 }

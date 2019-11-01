@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesGroupModuleMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesGroupModule">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="groupid" jdbcType="INTEGER" property="groupid" />
+    <result column="moduleid" jdbcType="INTEGER" property="moduleid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, groupid, moduleid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_groupmodule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByGroupId" parameterType= "java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_groupmodule
+    where groupid = #{groupId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_groupmodule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertList"  parameterType="java.util.List">
+  	 insert into eforces_groupmodule (groupid, moduleid
+      )
+      values 
+      <foreach collection="list" item="item" index="index" separator=",">
+      		(#{item.groupid},
+      		#{item.moduleid}
+      		)
+      </foreach>
+  </insert>
+  
+  <delete id="delByIds" parameterType="java.lang.Integer">
+  	delete eforces_groupmodule    where 
+  	 id in 
+  	<foreach collection="list" item="id"
+      index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </delete>
+  
+  <delete id="deleteByGroupId"  parameterType="java.lang.Integer">
+  		delete from eforces_groupmodule
+        where groupid = #{groupId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesGroupModule">
+    insert into eforces_groupmodule (id, groupid, moduleid
+      )
+    values (#{id,jdbcType=INTEGER}, #{groupid,jdbcType=INTEGER}, #{moduleid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesGroupModule">
+    insert into eforces_groupmodule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="groupid != null">
+        groupid,
+      </if>
+      <if test="moduleid != null">
+        moduleid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null">
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="moduleid != null">
+        #{moduleid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesGroupModule">
+    update eforces_groupmodule
+    <set>
+      <if test="groupid != null">
+        groupid = #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="moduleid != null">
+        moduleid = #{moduleid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesGroupModule">
+    update eforces_groupmodule
+    set groupid = #{groupid,jdbcType=INTEGER},
+      moduleid = #{moduleid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

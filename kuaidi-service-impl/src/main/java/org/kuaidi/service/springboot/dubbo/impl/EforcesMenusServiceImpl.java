@@ -105,5 +105,11 @@ public class EforcesMenusServiceImpl implements IEforcesMenusService {
 		return daoMapper.getMenuByParentId(parentId);
 	}
 
+	@Override
+	public List<EforcesMenus> getMenuByUserId(Integer userId) {
+		// TODO Auto-generated method stub
+		return daoMapper.getMenuByUserId(userId);
+	}
+
    
 }

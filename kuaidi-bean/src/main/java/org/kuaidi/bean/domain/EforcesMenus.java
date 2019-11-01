@@ -26,9 +26,11 @@ public class EforcesMenus implements Serializable{
 
     private String component;
     
-    private String path ;
+    private String path;
     
-    private boolean checked = true; 
+    private String auth;
+    
+    private boolean checked = false; 
 
     public String getComponent() {
         return component;
@@ -118,11 +120,19 @@ public class EforcesMenus implements Serializable{
 		this.checked = checked;
 	}
 
+	public String getAuth() {
+		return auth;
+	}
+
+	public void setAuth(String auth) {
+		this.auth = auth;
+	}
+
 	@Override
 	public String toString() {
 		return "EforcesMenus [id=" + id + ", parentid=" + parentid + ", text=" + text + ", leaf=" + leaf + ", iconcls="
 				+ iconcls + ", number=" + number + ", url=" + url + ", isDelete=" + isDelete + ", component="
-				+ component + ", path=" + path + "]";
+				+ component + ", path=" + path + ", auth=" + auth + ", checked=" + checked + "]";
 	}
     
 }

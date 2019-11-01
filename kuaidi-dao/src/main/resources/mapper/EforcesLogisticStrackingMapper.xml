@@ -67,7 +67,7 @@
     where BillsNumber = #{billsnumber,jdbcType=VARCHAR}
   </select>
   
-  <select id="getListStrackingByNumber" resultType="BaseResultMap">
+  <select id="getListStrackingByNumber" resultMap="BaseResultMap">
   	select
     BillsNumber , MAX(operationtime) operationtime
     from eforces_logisticstracking

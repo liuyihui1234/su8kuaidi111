@@ -14,9 +14,10 @@
         <result column="isDelete" jdbcType="INTEGER"
                 property="isDelete"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="auth" jdbcType="VARCHAR" property="auth"/>
     </resultMap>
     <sql id="Base_Column_List">
-		id, parentid, text, leaf, iconcls, number, url, path,isDelete
+		id, parentid, text, leaf, iconcls, number, url, path,isDelete,auth
 	</sql>
 
 
@@ -175,6 +176,17 @@
 				AND a.parentid != '-1'
 				ORDER BY
 					a.id
+	</select>
+	
+	<select id="getMenuByUserId" parameterType="java.lang.Integer" resultMap ="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"/>
+		from  eforces_menus
+		where isDelete = 0 
+		and  id in (
+		SELECT DISTINCT  gm.moduleid   from eforces_groupmodule   gm join eforces_usersgrouprele  gu 
+		on gm.groupid = gu.groupid  where  userid = #{userId,jdbcType=INTEGER} 
+		)
 	</select>
 
 
@@ -363,16 +375,17 @@
 	</delete>
     <insert id="insert"
             parameterType="org.kuaidi.bean.domain.EforcesMenus">
-		insert into eforces_menus ( parentid, text,
+		insert into eforces_menus(parentid, text,
 		leaf,
 		iconcls, number,
-		url,path)
+		url,path,auth)
 		values ( #{parentid,jdbcType=VARCHAR},
 		#{text,jdbcType=VARCHAR},
 		#{leaf,jdbcType=VARCHAR},
 		#{iconcls,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER},
 		#{url,jdbcType=VARCHAR},
-		#{path,jdbcType=VARCHAR})
+		#{path,jdbcType=VARCHAR},
+		#{auth,jdbcType=VARCHAR})
 	</insert>
     <insert id="insertSelective"
             parameterType="org.kuaidi.bean.domain.EforcesMenus">
@@ -402,6 +415,9 @@
             <if test="path != null">
                 path,
             </if>
+            <if test="auth != null">
+                auth,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -427,6 +443,9 @@
             </if>
             <if test="path != null">
                 #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="auth != null">
+                #{auth,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -456,6 +475,9 @@
             <if test="path != null">
                 path = #{path,jdbcType=VARCHAR},
             </if>
+            <if test="auth != null">
+               auth = #{auth,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -471,7 +493,8 @@
 		number
 		= #{number,jdbcType=INTEGER},
 		url = #{url,jdbcType=VARCHAR},
-		path = #{path,jdbcType=VARCHAR}
+		path = #{path,jdbcType=VARCHAR},
+		auth = #{auth,jdbcType=VARCHAR}		
 		where id =
 		#{id,jdbcType=INTEGER}
 	</update>

@@ -3,8 +3,10 @@ package org.kuaidi.web.springboot.webcontroller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuaidi.bean.domain.EforcesGroupModule;
 import org.kuaidi.bean.domain.EforcesMenus;
 import org.kuaidi.bean.domain.EforcesTreeMenus;
 import org.kuaidi.bean.domain.EforcesTreeMenus2;
@@ -13,6 +15,7 @@ import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
+import org.kuaidi.iservice.IEforcesGroupModuleService;
 import org.kuaidi.iservice.IEforcesMenusService;
 import org.kuaidi.web.springboot.dubboservice.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
+import com.alipay.api.domain.GroupMemberInfo;
+
+import net.sf.json.JSONArray;
 
 @RestController
 @RequestMapping("/web/Menus/")
@@ -36,6 +43,9 @@ public class MenusController {
 
     @Autowired
     MenuService dubboService;
+    
+    @Reference(version = "1.0.0")
+    IEforcesGroupModuleService  groupMenuService; 
 	
     
     @RequestMapping("getMenuByParentId")
@@ -55,7 +65,6 @@ public class MenusController {
     	}
     	return ResultUtil.exec(false, "查询失败！", null) ; 
     }
-
 	
 	@RequestMapping("getById")
 	@CrossOrigin
@@ -254,7 +263,7 @@ public class MenusController {
 
 	@RequestMapping("getActionIdByMenuId")
 	@CrossOrigin
-	public ResultVo getActionIdByMenuId(  Integer id){
+	public ResultVo getActionIdByMenuId(Integer id){
 		try {
 			System.err.println("id:"+id);
 			List<Integer> array=menusService.getActionIdByMenuId(id);
@@ -263,7 +272,31 @@ public class MenusController {
 			e.printStackTrace();
 			return ResultUtil.exec(false, "查询失败", null);
 		}
-
+	}
+	
+	@RequestMapping("groupmodule")
+    @CrossOrigin
+    public PageVo getGroupModule(QueryPageVo page,Integer groupId) {
+		PageVo rst = null;
+		page.setPage(1);
+		page.setLimit(1000);
+        rst = dubboService.getAllGroupMenus(page,groupId);
+        return rst;
+	}
+	
+	@RequestMapping("saveGroupModule")
+	@CrossOrigin
+	public ResultVo saveGroupModule(@RequestParam("jsonStr")String listJSON , Integer groupId) {
+		try {
+			List<Integer> array = JSONArray.fromObject(listJSON);
+			Integer rst = groupMenuService.insertListSelect(array, groupId);
+			if(rst > 0 ) {
+				return ResultUtil.exec(true, "保存组权限成功", null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResultUtil.exec(false,"保存组权限失败",null);
 	}
 
 

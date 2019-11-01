@@ -39,5 +39,7 @@ public interface IEforcesMenusService {
     int getMaxNumberByParentId(String parentId);
     
     List<EforcesMenus> getMenuByParentId(String parentId);
+    
+    List<EforcesMenus> getMenuByUserId(Integer userId);
 
 }
