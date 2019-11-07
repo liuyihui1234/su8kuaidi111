@@ -257,7 +257,7 @@ public class AppointmentDubboService {
                         record.setSumprice(appointment.getSumprice());
 //                        record.setCreateuserid(appointment.getAcceptid());
 //                        record.setCreateusername(appointment.getAcceptname());
-                        int data2=iEforcesOrderService.insertSelective(record);
+                        int data2=iEforcesOrderService.insertSelective(record, null);
                         if(data2>0){
                             return ResultUtil.exec(true,"收件成功",null);
                         }

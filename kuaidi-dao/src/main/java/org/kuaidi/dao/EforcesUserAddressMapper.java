@@ -19,6 +19,6 @@ public interface EforcesUserAddressMapper {
 
     int updateByPrimaryKey(EforcesUserAddress record);
 
-	List<EforcesUserAddress> findByNameOrPhone(@Param("userId")  Integer userId , @Param("param")  String param);
+	List<EforcesUserAddress> findByNameOrPhone(@Param("userId")  Integer userId , @Param("param")  String param, @Param("status") Integer status);
 	
 }

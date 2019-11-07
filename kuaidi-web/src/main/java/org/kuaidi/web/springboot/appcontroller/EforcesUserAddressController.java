@@ -1,6 +1,5 @@
 package org.kuaidi.web.springboot.appcontroller;
 
-
 import javax.servlet.http.HttpServletRequest;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.domain.EforcesUserAddress;
@@ -26,12 +25,15 @@ public class EforcesUserAddressController {
     @ResponseBody
     @Authorization
     public PageVo getUserAddressByParam(HttpServletRequest request,
-    					Integer pageNum, Integer pageSize ,String param){
+    					Integer pageNum, Integer pageSize ,String param, Integer status){
 		try {
+			if(status == null) {
+				status = 1; 
+			}
 			EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
 			Integer userId = userInfo.getId();
 			// 分页显示
-			PageInfo<EforcesUserAddress> page =  userAddressService.findByNameOrPhone(pageNum, pageSize , userId, param);
+			PageInfo<EforcesUserAddress> page =  userAddressService.findByNameOrPhone(pageNum, pageSize , userId, param,status);
 			return ResultUtil.exec(pageNum, pageSize, page.getTotal(), "查询成功", page.getList());
 		}catch(Exception e ) {
 			e.printStackTrace();
@@ -49,7 +51,6 @@ public class EforcesUserAddressController {
 			Integer userId = userInfo.getId();
 			userAddress.setUserid(userId);
 		}
-		System.out.println(userAddress.getCityname() + ">>>>>>>");
 		Integer rst = userAddressService.insertUserAddress(userAddress);
 		if(rst != null && rst > 0 ) {
 			return ResultUtil.exec(true,"添加地址成功",null);

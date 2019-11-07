@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.dubbo.config.annotation.Service;
 
-@Service(version = "1.0.0")
+@Service(version = "1.0.0", timeout = 12000)
 public class EforceslogisticstrackingServiceImpl implements IEforceslogisticstrackingService {
 
 	@Autowired

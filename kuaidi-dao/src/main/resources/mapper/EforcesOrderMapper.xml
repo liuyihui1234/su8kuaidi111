@@ -134,6 +134,23 @@
   <sql id="Blob_Column_List">
     Remark, fwyq
   </sql>
+  <sql id="Base_Column_other">
+  	Number, Formguestcode, formguestname, FromName, Fromcity, Fromcityname, Fromprovince, 
+    FromProvincename, fromarea, fromareaname, Fromareastreet, Fromareastreetname, Fromincname,
+    Fromaddress, Fromtel, Fromcode, Toguestname, Toguestcode, Toprovince, Toprovincename,
+    Tocity, Tocityname, ToArea, ToAreaname, Toareastreet, Toareastreetname, Toincname,
+    Toaddress, Toname, Tocode, Totel, Paymentflag, Paymentforgoods, Isfile, isgoods,
+    Filename, Num, Weight, Longs, Widths, Heights, Volume, begintime, Senduserid, Sendusername,
+    fromusersignature, sendusersignature, Iscollection, Paymode, Isinsured, Insuredsumprice,
+    Insuredprice, Ismobilesend, Mobileprice, Price, Sendmode, Modeprice, Tousersignature,
+    Collectionsignature, Signaturecode, Endtime, Sumprice, Deliveryuserid, Deliveryusername,
+    Createuserid, Createusername, Createincnumber, Createincname,
+    zqj, zjj, sfdshk, dshk, dsfy, qfhd, hdh, fdfy, tsps, ywfy, yyfy, bzjg, clfy, rgfy,
+    qtgxhfw, dzfy, iszf, isduanxin, sjrshouji, wupinnum, wupinprices, kahao, dsfwf,
+    tssp, isqdfh, zzfwqt, fyjs, fyzl, fyjfzl, yyfjf, fkfs, fkfsqt, yuejiezhanghu, openid,
+    sfz, zhCode, zhNumber, isGetTrace
+  </sql>
+  
 
   <!-- 收件、根据Number订单编号查询数据添加到扫描表 -->
   <select id="getOrderMsg" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -326,6 +343,91 @@
   
   <select id="selectByUserId"  parameterType="java.lang.String" resultType ="java.lang.Integer" >
   		select count(*)  from eforces_order  where  Createuserid =  #{userNumber,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getSendBillsByParam" parameterType = "org.kuaidi.bean.vo.ScanSearchVO"  resultType="java.util.Map">
+  		select <include refid="Base_Column_other" />, scan.createtime as scanTime , scan.incname  as scanIncName,
+  		scan.scanners, scan.scantype, scan.nextstopname as stopname, scan.flightsnumber
+  		from eforces_order  orderInfo join eforces_sentscan  scan  on orderInfo.Number =  scan.billsnumber 
+  		where  1 = 1
+  		<if test="billsNumber != null and billsNumber.size() > 0 ">
+  			and orderInfo.Number  in 
+  			<foreach collection="billsNumber"  item="numbers" index="index" open="(" close=")" separator=",">
+		      #{numbers}
+		    </foreach> 
+  		</if> 
+  		<!--  
+  		<if test="scanSearch.distributeNum != null and scanSearch.distributeNum != '' ">
+  			and 
+  		</if>
+  		-->
+  		<if test="goodsType != null and goodsType != ''">
+  			and  scan.goodstype =  #{goodsType}
+  		</if>
+  		<if test="incNumber != null and incNumber != ''">
+  			and  scan.nextstop = #{incNumber}
+  		</if>
+  		<if test="toName != null and toName != ''">
+  			and orderInfo.Toname = #{toName}
+  		</if>
+  		<if test="expresstype != null and expresstype != ''">
+  			and scan.expresstype = #{expresstype}
+  		</if>
+  		<if test="scanIncNumber != null and scanIncNumber != ''">
+  			and scan.incid = #{scanIncNumber}
+  		</if>
+  		<if test="scannerNumber != null and scannerNumber != ''">
+  			and scan.scannerid = #{scannerNumber}
+  		</if>
+  		<if test="flightsnumber != null and flightsnumber != ''">
+  			and scan.flightsnumber = #{flightsnumber}
+  		</if>
+  		<if test="scanStartTime != null and scanStartTime != ''">
+  			and scan.createtime &gt;= #{scanStartTime}
+  		</if>
+  		<if test="scanEndTime != null and scanEndTime != ''">
+  			and scan.createtime &lt;= #{scanEndTime}
+  		</if>
+  </select>
+  
+  <select id="getReceiveBillsByParam" parameterType = "org.kuaidi.bean.vo.ScanSearchVO"  resultType="java.util.Map">
+  		select <include refid="Base_Column_other" />, scan.createtime as scanTime , scan.incname  as scanIncName,
+  		scan.scanners, scan.scantype, scan.laststopname as  stopname , scan.flightsnumber
+  		from eforces_order  orderInfo join eforces_receivescan  scan  on orderInfo.Number =  scan.billsnumber 
+  		where  1 = 1
+  		<if test="billsNumber != null and billsNumber.size() > 0 ">
+  			and orderInfo.Number  in 
+  			<foreach collection="billsNumber"  item="numbers" index="index" open="(" close=")" separator=",">
+		      #{numbers}
+		    </foreach> 
+  		</if>
+  		<if test="goodsType != null and goodsType != ''">
+  			and  scan.goodstype =  #{goodsType}
+  		</if>
+  		<if test="incNumber != null and incNumber != ''">
+  			and  scan.nextstop = #{incNumber}
+  		</if>
+  		<if test="toName != null and toName != ''">
+  			and orderInfo.Toname = #{toName}
+  		</if>
+  		<if test="expresstype != null and expresstype != ''">
+  			and scan.expresstype = #{expresstype}
+  		</if>
+  		<if test="scanIncNumber != null and scanIncNumber != ''">
+  			and scan.incid = #{scanIncNumber}
+  		</if>
+  		<if test="scannerNumber != null and scannerNumber != ''">
+  			and scan.scannerid = #{scannerNumber}
+  		</if>
+  		<if test="flightsnumber != null and flightsnumber != ''">
+  			and scan.flightsnumber = #{flightsnumber}
+  		</if>
+  		<if test="scanStartTime != null and scanStartTime != ''">
+  			and scan.createtime &gt;= #{scanStartTime}
+  		</if>
+  		<if test="scanEndTime != null and scanEndTime != ''">
+  			and scan.createtime &lt;= #{scanEndTime}
+  		</if>
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

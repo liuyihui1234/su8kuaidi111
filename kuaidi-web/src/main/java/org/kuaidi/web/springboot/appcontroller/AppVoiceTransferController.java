@@ -59,7 +59,5 @@ public class AppVoiceTransferController {
         	rst.put("Text", "");
         	return ResultUtil.exec(false, "录音文件识别失败！", rst);
         }
-        
 	}
-
 }

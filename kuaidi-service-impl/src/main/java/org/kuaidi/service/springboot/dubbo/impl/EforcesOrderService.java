@@ -2,31 +2,29 @@ package org.kuaidi.service.springboot.dubbo.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-
-import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.domain.EforcesOrderIdentity;
 import org.kuaidi.bean.vo.OrderInfoVO;
-import org.kuaidi.bean.vo.QueryPageVo;
-import org.kuaidi.bean.vo.ResultUtil;
-import org.kuaidi.bean.vo.ResultVo;
+import org.kuaidi.bean.vo.ScanSearchVO;
+import org.kuaidi.dao.EforcesOrderIdentityMapper;
 import org.kuaidi.dao.EforcesOrderMapper;
 import org.kuaidi.iservice.IEforcesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-
-
-@Service(version = "1.0.0",timeout=120000)
+@Service(version = "1.0.0",interfaceClass=IEforcesOrderService.class,timeout=120000)
 public class EforcesOrderService implements IEforcesOrderService {
 
 	@Autowired
 	private EforcesOrderMapper  orderDao; 
+	
+	@Autowired
+	private EforcesOrderIdentityMapper identityDao; 
 
 	@Override
 	public int getUserOrderCount(String  userNum) {
@@ -77,18 +75,21 @@ public class EforcesOrderService implements IEforcesOrderService {
 	public List<EforcesOrder> getByNumber(String number) {
 		return orderDao.selectLikeByNumber(number);
 	}
-
-
-
-
 	/**
 	 * 动态添加一条数据
 	 * @param record
 	 * @return
 	 */
 	@Override
-	public int insertSelective(EforcesOrder record) {
-		return orderDao.insertSelective(record);
+	@Transactional(rollbackFor = Exception.class)
+	public int insertSelective(EforcesOrder record,  EforcesOrderIdentity orderIdentity) {
+		int rst = orderDao.insertSelective(record);
+		if(rst > 0 && orderIdentity != null && 
+				(StringUtils.isNotEmpty(orderIdentity.getIdentitypic1()) ||
+				 StringUtils.isNotEmpty(orderIdentity.getIdentitypic2()))) {
+			rst = identityDao.insertSelective(orderIdentity);
+		}
+		return rst ; 
 	}
 
 	@Override
@@ -276,5 +277,14 @@ public class EforcesOrderService implements IEforcesOrderService {
 	
 	public int updateByPrimaryKeySelective(EforcesOrder record) {
 		return orderDao.updateByPrimaryKeySelective(record);
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getSendBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,limit);
+		List<Map<String, Object>> list = orderDao.getSendBillsByParam(scanSearch);
+		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
 	}
 }

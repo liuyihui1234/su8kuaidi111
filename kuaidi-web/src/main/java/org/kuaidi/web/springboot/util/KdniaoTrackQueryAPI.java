@@ -32,7 +32,7 @@ public class KdniaoTrackQueryAPI {
 	public static void main(String[] args) {
 		KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
 		try {
-			String result = api.getOrderTracesByJson("HTKY", "51924812301509");
+			String result = api.getOrderTracesByJson("HTKY", "550000175134124");
 			System.out.print(result);
 			
 		} catch (Exception e) {

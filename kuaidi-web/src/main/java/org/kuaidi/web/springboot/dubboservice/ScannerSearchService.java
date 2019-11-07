@@ -1,5 +1,6 @@
 package org.kuaidi.web.springboot.dubboservice;
 
+import java.util.Map;
 import org.kuaidi.bean.domain.EforcesCustomerSign;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
@@ -8,8 +9,10 @@ import org.kuaidi.bean.domain.EforcesWeighingScan;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
+import org.kuaidi.bean.vo.ScanSearchVO;
 import org.kuaidi.iservice.IEforcesCustomerSignService;
 import org.kuaidi.iservice.IEforcesDistributedScanService;
+import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.iservice.IEforcesReceivedscanService;
 import org.kuaidi.iservice.IEforcesSentscanService;
 import org.kuaidi.iservice.IEforcesWeighingScanService;
@@ -35,6 +38,28 @@ public class ScannerSearchService {
 	@Reference(version = "1.0.0")
 	private IEforcesWeighingScanService weightScanService; 
 	
+	@Reference(version = "1.0.0")
+	private IEforcesOrderService  orderService ; 
+	
+	public PageVo getScanSeach(Integer page , Integer limit,  ScanSearchVO scanSearch) {
+		if("发件".equals(scanSearch.getScanType())) {
+			PageInfo<Map<String, Object>> pageInfo =  orderService.getSendBillsByParam(page, limit, scanSearch);
+			return ResultUtil.exec(page, limit, pageInfo.getSize(), "获得数据成功！", pageInfo.getList());
+		}else if("到件".equals(scanSearch.getScanType())) {
+			
+		}else if("取件".equals(scanSearch.getScanType())) {
+			
+		}else if("派件".equals(scanSearch.getScanType())) {
+			
+		}else if("签收".equals(scanSearch.getScanType())) {
+			
+		}else if("称重".equals(scanSearch.getScanType())) {
+			
+		}
+		
+		return null ; 
+	}
+	
 	/*
 	 * 1: 发件
 	 * 2: 到件
@@ -46,7 +71,6 @@ public class ScannerSearchService {
 	public PageVo getAll(QueryPageVo page, String incId , Integer scanType) {
 		// TODO Auto-generated method stub
 		//将查询到的结果封装到一个对象中。
-		
 		try {
 			if(scanType == 1) {
 				PageInfo<EforcesSentScan> pageInfo = sentScanService.getAll(page.getPage(), page.getLimit(), incId);
@@ -79,6 +103,8 @@ public class ScannerSearchService {
 		}
 		return ResultUtil.exec(page.getPage(), page.getLimit(), 0, null);
 	}
+	
+	
 	
 	
 }

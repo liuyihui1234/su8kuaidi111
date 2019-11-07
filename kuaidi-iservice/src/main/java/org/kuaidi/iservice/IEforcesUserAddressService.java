@@ -10,7 +10,7 @@ public interface IEforcesUserAddressService {
 	Integer insertUserAddress(EforcesUserAddress address);
 	
 	PageInfo<EforcesUserAddress>  findByNameOrPhone(Integer pageNum, Integer pageSize , 
-			Integer userId , String param);
+			Integer userId , String param,int status);
 	
 	Integer delUserAddress(Integer id);
 	

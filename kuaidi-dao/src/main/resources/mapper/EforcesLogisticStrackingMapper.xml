@@ -170,14 +170,22 @@
     (
       BillsNumber,
       OperationTime,
-      Description
+      Description,
+      Operators,
+      Incname,
+      Incid,
+      Mark
     )
     values
     <foreach collection="list" item="logisticStracking" index="index" separator=",">
       (
       #{logisticStracking.billsnumber},
       #{logisticStracking.operationtime},
-      #{logisticStracking.description}
+      #{logisticStracking.description},
+      #{logisticStracking.operators},
+      #{logisticStracking.incname},
+      #{logisticStracking.incid},
+      #{logisticStracking.mark}
       )
     </foreach>
   </insert>

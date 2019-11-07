@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.domain.EforcesOrderIdentity;
 import org.kuaidi.bean.domain.EforcesReceivedScan;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
@@ -24,6 +27,7 @@ import org.kuaidi.iservice.IEforcesSentscanService;
 import org.kuaidi.iservice.IEforceslogisticstrackingService;
 import org.kuaidi.utils.JBarCodeUtil;
 import org.kuaidi.web.springboot.core.authorization.Authorization;
+import org.kuaidi.web.springboot.util.AliyunOSS.AppReplaceOSSUtil;
 import org.kuaidi.web.springboot.util.redis.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -368,24 +372,55 @@ public class AppOrderController {
 	@RequestMapping("insertOrder")
 	@CrossOrigin
 	@Authorization
-	public ResultVo insertOrder(HttpServletRequest request, EforcesOrder record){
+	public ResultVo insertOrder(HttpServletRequest request, EforcesOrder record,
+				EforcesOrderIdentity orderIdentity){
 		try {
-			if(record.getPrice() == null) {
-				record.setPrice(new BigDecimal(20f));
+			EforcesIncment incmentInfo = (EforcesIncment)request.getAttribute("inc");
+			String areaStreet = record.getFromareastreet() ;
+			if(StringUtils.isEmpty(areaStreet)) {
+				areaStreet = incmentInfo.getAreastreet();
+			}
+			if(StringUtils.isEmpty(areaStreet)) {
+				return ResultUtil.exec(false, "请选择所属的街道", null);
+			}else {
+				if( incmentInfo.getLevel()  == 3 
+						&& !StringUtils.equals(areaStreet, incmentInfo.getAreastreet())) {
+					return ResultUtil.exec(false, "负责的区域和交单的区域不一致，请确定！", null);
+				}
+			}
+			if(orderIdentity!= null) {
+				if(StringUtils.isNotEmpty(orderIdentity.getIdentitypic1())) {
+					String portraitPath = AppReplaceOSSUtil.string2Image(orderIdentity.getIdentitypic1());
+					if(StringUtils.isNotEmpty(portraitPath) ) {
+						orderIdentity.setIdentitypic1(Config.oosUrlPath + portraitPath);
+					}else {
+						orderIdentity.setIdentitypic1(null);
+					}
+				}
+				if(StringUtils.isNotEmpty(orderIdentity.getIdentitypic2())) {
+					String portraitPath = AppReplaceOSSUtil.string2Image(orderIdentity.getIdentitypic2());
+					if(StringUtils.isNotEmpty(portraitPath) ) {
+						orderIdentity.setIdentitypic2( Config.oosUrlPath + portraitPath);
+					}else {
+						orderIdentity.setIdentitypic2(null);
+					}
+				}
 			}
 			EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
-			EforcesIncment incmentInfo = (EforcesIncment)request.getAttribute("inc");
 			if(userInfo != null ) {
 				record.setCreateuserid(userInfo.getNumber());
 				record.setCreateusername(userInfo.getName());
 				record.setCreateincnumber(userInfo.getIncid());
 				record.setCreateincname(incmentInfo.getName());
 			}
-			record.setNumber(orderUtil.getOrderNumber(record.getFromareastreet()));
-			int result = orderService.insertSelective(record);
-			 if(result>0){
-				 return ResultUtil.exec(true,"添加成功",result);
-			 }
+			//判断对应的街道和用户负责的街道是否相同
+			String billsNumber = orderUtil.getOrderNumber(areaStreet);
+			record.setNumber(billsNumber);
+			orderIdentity.setBillsnumber(billsNumber);
+			int result = orderService.insertSelective(record, orderIdentity);
+			if(result > 0){
+				return ResultUtil.exec(true,"添加成功",billsNumber);
+			}
 			return ResultUtil.exec(false,"添加失败",result);
 		}catch (Exception e){
 			e.printStackTrace();

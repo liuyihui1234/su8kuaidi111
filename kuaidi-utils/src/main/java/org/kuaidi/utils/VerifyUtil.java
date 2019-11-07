@@ -85,9 +85,12 @@ public class VerifyUtil {
 		 * 随机取色 
 		 */  
 		public static Color getRandomColor() {  
-			Random ran = new Random();  
-			Color color = new Color(ran.nextInt(256),   
-					ran.nextInt(256), ran.nextInt(256));  
+			Random ran = new Random(); 
+			int red = ran.nextInt(160);
+			int green = ran.nextInt(160);
+			int blue =  ran.nextInt(160);
+			Color color = new Color(red,   
+					green, blue);  
 			return color;  
 		}  
  

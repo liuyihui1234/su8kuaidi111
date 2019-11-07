@@ -76,6 +76,8 @@ public class EforcesUser implements Serializable {
     private String code;
     //页面传的验证码对应uuid
     private String access_token;
+    
+    private String sendReceiveZone; 
 
     public String getAccess_token() {
         return access_token;
@@ -331,6 +333,14 @@ public class EforcesUser implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getSendReceiveZone() {
+		return sendReceiveZone;
+	}
+
+	public void setSendReceiveZone(String sendReceiveZone) {
+		this.sendReceiveZone = sendReceiveZone;
 	}
 
 	@Override

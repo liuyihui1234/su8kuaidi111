@@ -32,7 +32,7 @@ public class TransferUtil {
     @Reference(version = "1.0.0")
     IEforcesTransportedscanService transportedscanService;
 
-    @Scheduled(cron = "0 * * * * ? ")
+//    @Scheduled(cron = "0 * * * * ? ")
     public void logistics() {
         Map<Integer, String> corpMap = corpListUtil.getCorpMap();//获取快递公司对应的第三方编号map
 

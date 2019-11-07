@@ -3,8 +3,10 @@ package org.kuaidi.dao;
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.vo.OrderInfoVO;
+import org.kuaidi.bean.vo.ScanSearchVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EforcesOrderMapper {
     int deleteByPrimaryKey(Integer id);
@@ -129,4 +131,9 @@ public interface EforcesOrderMapper {
 	 * 根据发单人的openId 查询他发送的订单信息。
 	 */
 	List<EforcesOrder> getNumbersByOpenId(String openid);
+
+	List<Map<String,Object>> getSendBillsByParam(ScanSearchVO scanSearch);
+	
+	List<Map<String,Object>> getReceiveBillsByParam(ScanSearchVO scanSearch);
+	
 }

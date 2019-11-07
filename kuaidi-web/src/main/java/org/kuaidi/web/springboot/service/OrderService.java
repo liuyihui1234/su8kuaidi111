@@ -88,18 +88,18 @@ public class OrderService {
 //		}
 //	}
 
-	public ResultVo addOrderSelective(EforcesOrder record){
-		try {
-			int data = orderService.insertSelective(record);
-			if(data > 0){
-				return ResultUtil.exec(true,"下单成功",null);
-			}
-			return ResultUtil.exec(false,"下单失败",null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResultUtil.exec(false, "下单操作异常！", null);
-		}
-	}
+//	public ResultVo addOrderSelective(EforcesOrder record){
+//		try {
+//			int data = orderService.insertSelective(record);
+//			if(data > 0){
+//				return ResultUtil.exec(true,"下单成功",null);
+//			}
+//			return ResultUtil.exec(false,"下单失败",null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return ResultUtil.exec(false, "下单操作异常！", null);
+//		}
+//	}
 	
 
 	

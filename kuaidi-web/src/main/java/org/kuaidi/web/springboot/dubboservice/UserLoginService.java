@@ -3,6 +3,8 @@ package org.kuaidi.web.springboot.dubboservice;
 import java.util.Date;
 import java.util.List;
 import com.aliyuncs.exceptions.ClientException;
+import com.github.pagehelper.StringUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.*;
@@ -70,14 +72,19 @@ public class UserLoginService {
 					user1.setToken(token);
 					JSONObject userInfo = JSONObject.fromObject(user1);
 					EforcesIncment incment =  incentService.selectByNumber(user1.getIncnumber());
-					if((type != null && type == 2) && (incment != null && incment.getLevel() != 4) ) {
+					if((type != null && type == 2) && (incment != null && incment.getLevel() < 3 ) ) {
 						return ResultUtil.exec(false, "不是快递员账号，请确定！", null);
 					}
 					JSONObject data = new JSONObject();
 					data.put("userInfo", userInfo);
 					JSONObject incInfo = JSONObject.fromObject(incment);
+					String sendReceiveZone = "";
+					if(StringUtil.isNotEmpty(incment.getAreastreet())) {
+						sendReceiveZone = incment.getAreastreet().trim();
+					}
+					user1.setSendReceiveZone(sendReceiveZone);					
 					data.put("incInfo", incInfo);
-					redisUtil.set(Config.REDISAPPLOGINPREX +  token, data.toString(), 20*60);
+					redisUtil.set(Config.REDISAPPLOGINPREX +  token, data.toString(), 24*60*60);
 					return ResultUtil.exec(true, "登录成功！", user1);
 				} else {
 					return ResultUtil.exec(false, "密码错误！", null);

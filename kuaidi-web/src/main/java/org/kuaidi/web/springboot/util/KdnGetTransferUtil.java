@@ -6,16 +6,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesTransportedscan;
 import org.kuaidi.iservice.IEforcesTransportedscanService;
 import org.kuaidi.iservice.IEforceslogisticstrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@Component
 public class KdnGetTransferUtil {
 	
 	@Autowired
@@ -27,6 +33,7 @@ public class KdnGetTransferUtil {
     @Reference(version = "1.0.0")
     IEforcesTransportedscanService transportedscanService;
     
+    @Scheduled(cron = "0 0 5 * * ? ")
     public void logistics() {
     	List<String>  finishTransfer = new ArrayList<String>();
 	    List<String>  unfinishTransfer = new ArrayList<String>();
@@ -58,11 +65,11 @@ public class KdnGetTransferUtil {
     				String rst = api.getOrderTracesByJson(expCode, expNo);
     				JSONObject data = JSONObject.fromObject(rst);
     				if(data.has("Success") && data.getBoolean("Success")) {
-    					if(data.has("State") && data.getInt("State") == 3){
+    					if(data.has("State") && StringUtils.equals(data.getString("State"),"3")){
     						finishTransfer.add(scan.getBillsnumber());
-    					}else if(data.has("State") && data.getInt("State") == 0) {
+    					}else if(data.has("State") && StringUtils.equals(data.getString("State"),"0")) {
     						unfinishTransfer.add(scan.getBillsnumber());
-    						break;
+    						continue;
     					}else {
     						unfinishTransfer.add(scan.getBillsnumber());
     					}
@@ -73,6 +80,8 @@ public class KdnGetTransferUtil {
     						//保存list
     						logisticstracking.insertLogList(list);
     					}
+    				}else {
+    					unfinishTransfer.add(scan.getBillsnumber());
     				}
 	    		}
 		    	pageInfo = transportedscanService.selectAllByState0(1, batchLimit);//分页获取运输中的订单
@@ -109,10 +118,25 @@ public class KdnGetTransferUtil {
 					}else {
 						EforcesLogisticStracking  logistic = new EforcesLogisticStracking();
 						logistic.setIncid("");
+						logistic.setIncname("");
+						logistic.setIncid("");
 						logistic.setBillsnumber(billsNumber);
 						logistic.setOperationtime(sdf.parse(acceptTime));
-						logistic.setDescription(trackInfo.getString("AcceptTime"));
-						logistic.setMark(2);
+						String description = trackInfo.getString("AcceptStation");
+						logistic.setDescription(description);
+						Integer mark = 0 ; 
+						if(StringUtils.isNotEmpty(description) && description.indexOf("揽收") > -1) {
+							mark = 2;
+						}else if(StringUtils.isNotEmpty(description) && description.startsWith("到")) {
+							mark = 3;
+						}else if(StringUtils.isNotEmpty(description) && description.indexOf("正发往") > -1) {
+							mark = 4;
+						}else if(StringUtils.isNotEmpty(description) && description.indexOf("派件") > -1) {
+							mark = 5;
+						}else if(StringUtils.isNotEmpty(description) && description.indexOf("签收") > -1) {
+							mark = 6;
+						}
+						logistic.setMark(mark);
 						logistic.setOperators("代理方");
 						addLogisticStracking.add(logistic);
 					}

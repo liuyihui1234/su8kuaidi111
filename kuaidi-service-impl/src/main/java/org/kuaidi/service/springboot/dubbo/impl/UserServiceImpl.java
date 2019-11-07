@@ -12,7 +12,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-@Service(version = "1.0.0")
+@Service(version = "1.0.0",timeout=12000)
 public class UserServiceImpl implements UserService {
     @Autowired
     private EforcesUserMapper UserDao;

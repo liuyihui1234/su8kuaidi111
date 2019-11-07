@@ -23,14 +23,10 @@ public class EforcesUserAddressServiceImpl implements IEforcesUserAddressService
 	}
 
 	@Override
-	public PageInfo<EforcesUserAddress> findByNameOrPhone(Integer pageNum, Integer pageSize ,Integer userId , String param) {
+	public PageInfo<EforcesUserAddress> findByNameOrPhone(Integer pageNum, Integer pageSize ,Integer userId , String param,int status) {
 		// TODO Auto-generated method stub
-		System.out.println(pageNum);
-		System.out.println(pageSize);
-		System.out.println(userId);
-		System.out.println(param);
 		PageHelper.startPage(pageNum,pageSize);
-		List <EforcesUserAddress>  list = userAddressDao.findByNameOrPhone(userId, param);
+		List <EforcesUserAddress>  list = userAddressDao.findByNameOrPhone(userId, param,status);
 		final PageInfo<EforcesUserAddress> info = new PageInfo<>(list);
 		return info; 
 	}

@@ -2,8 +2,12 @@ package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
 import java.util.List;
+import java.util.Map;
+
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.domain.EforcesOrderIdentity;
 import org.kuaidi.bean.vo.OrderInfoVO;
+import org.kuaidi.bean.vo.ScanSearchVO;
 
 
 public interface IEforcesOrderService {
@@ -59,7 +63,7 @@ public interface IEforcesOrderService {
      * @param record
      * @return
      */
-    int insertSelective(EforcesOrder record);
+    int insertSelective(EforcesOrder record, EforcesOrderIdentity orderIdentity);
 
 	PageInfo<EforcesOrder> getHadFinishPackage(Integer pageNum, Integer pageSize, String incNum);
     
@@ -154,6 +158,13 @@ public interface IEforcesOrderService {
 	 */
 	List<EforcesOrder> getNumberByOpenId(String openid);
 	
+	/*
+	 * 更新邮件信息。
+	 */
 	int updateByPrimaryKeySelective(EforcesOrder record);
 	
+	/*
+	 * 获得发件信息。
+	 */
+	PageInfo<Map<String,Object>> getSendBillsByParam(Integer page , Integer limit , ScanSearchVO  scanSearch);
 }
