@@ -322,22 +322,24 @@ public class ReceivePackageController {
     @RequestMapping("sendBagScan")
     @ResponseBody
     @NeedUserInfo
-    public ResultVo sendBagScan(HttpServletRequest request , String bagNumber) {
+    public ResultVo sendBagScan(HttpServletRequest request , String bagNumber,EforcesSentScan  sentScan) {
         Map<String,EforcesOrder> map = new HashMap<String, EforcesOrder>();
-        boolean flage = true;
         /**
          * * 根据token获得用户信息
          */
-        EforcesUser eforcesUser = (EforcesUser) request.getAttribute("user");
-        EforcesIncment eforcesIncment = (EforcesIncment)request.getAttribute("inc");
+        EforcesUser user = (EforcesUser) request.getAttribute("user");
+        EforcesIncment incment = (EforcesIncment)request.getAttribute("inc");
         try {
+        	if(StringUtils.isEmpty(bagNumber)) {
+        		return  ResultUtil.exec(false, "参数错误！", null);
+        	}
             // 根据包的编号查询出打包的订单
             List<EforcesBaggingScan> bagScanList =  biggingScanService.getBaggingScanByBagNum(bagNumber);
             if(bagScanList != null && bagScanList.size() > 0 ) {
                 List<EforcesSentScan>  sentScanList = new ArrayList<EforcesSentScan>();
 				/*
-			                 * 判断根据编号查询出打包的订单的订单编号判断不为空，根据此单号循环查询所有信息
-			                 * 多个单号，查询到放在map里面key是订单号valu是操磁订单号的信息
+                 * 判断根据编号查询出打包的订单的订单编号判断不为空，根据此单号循环查询所有信息
+                 * 多个单号，查询到放在map里面key是订单号valu是操磁订单号的信息
 				*/
                 List<String> stringList = new ArrayList<String>();
                 for (int i = 0; i < bagScanList.size(); i++){
@@ -369,15 +371,8 @@ public class ReceivePackageController {
                         if(orderMap == null || orderMap.getNumber() == null  || "".equals(orderMap.getNumber())) {
                             return ResultUtil.exec(false,"订单号错误，请确定！",null);
                         }
-                        EforcesOrder  orderInfo = orderMap;
-                        String nextIncNum = getNextIncNumber(eforcesUser, orderInfo);
-                        if(nextIncNum.length() == 0 ){
-                            return ResultUtil.exec(false,"没有找到下一站的编号，确定一下是否发错了！",null);
-                        }
-                        EforcesIncment nextStop =  incmentService.selectByNumber(nextIncNum);
-                        EforcesIncment currentStop = incmentService.selectByNumber(eforcesUser.getIncnumber());
-                        EforcesSentScan sentScan = createSentScanInfo(eforcesUser, orderInfo, nextStop, currentStop,1);
                         if(sentScan != null ) {
+                        	sentScan.setBillsnumber(billsNumber);
                             sentScanList.add(sentScan);
                         }
 						/** 其余的地址要发的 用户，订单信息，nextStop下一跳站点 ， 当前站点， 都一样
@@ -387,20 +382,35 @@ public class ReceivePackageController {
                             EforcesBaggingScan  bagScanInfo = bagScanList.get(i);
                             String billNumber = bagScanInfo.getNumberlist();
                             //此处不在去数据查 直接根据订单号从map里取
-                            //List<EforcesOrder> orderListTmp =  orderService.getByNumber(billNumber);
                             EforcesOrder orderMap1 = map.get(billNumber);
                             if(orderMap1 == null || "".equals(orderMap1.getNumber())) {
                                 continue;
                             }
                             //订单
-                            EforcesSentScan sentScanTmp = createSentScanInfo(eforcesUser, orderMap1, nextStop, currentStop,1);
+                            EforcesSentScan sentScanTmp = sentScan.clone();
+                            sentScanTmp.setBillsnumber(bagScanInfo.getNumberlist());
                             if(sentScanTmp != null ) {
                                 sentScanList.add(sentScanTmp);
                             }
                         }
                         if(sentScanList.size() > 0 ) {
+                        	List<EforcesLogisticStracking> strackingList = new ArrayList<EforcesLogisticStracking>();
+                        	for(int i = 0 ; i < sentScanList.size()  ; i++) {
+                        		EforcesSentScan sentScanItem = sentScanList.get(i);
+                        		String description = "快件在【%s】由【%s】扫描发往【%s】";
+                                String nextStopName = "";
+                                if(StringUtils.equals(sentScanItem.getNextstop(), "")) {
+                                    nextStopName  = sentScanItem.getNextstopname();
+                                }
+                                description = String.format(description, incment.getName(), user.getName(), nextStopName);
+                        		EforcesLogisticStracking logisticStracking = 
+                            			getLogisticstracking(sentScanItem.getBillsnumber(),description,user.getName(), incment.getName(), user.getIncnumber() ,3);
+                        		if(logisticStracking != null ) {
+                        			strackingList.add(logisticStracking);
+                        		}
+                        	}
                             // 批量的添加。
-                            sentScanService.listinsert(sentScanList);
+                            sentScanService.listinsert(sentScanList,strackingList);
                         }
                     }
                 }

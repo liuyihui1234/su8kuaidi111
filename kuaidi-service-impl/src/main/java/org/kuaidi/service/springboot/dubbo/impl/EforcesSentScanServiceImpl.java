@@ -99,8 +99,19 @@ public class EforcesSentScanServiceImpl implements IEforcesSentscanService {
 	 * @return
 	 */
 	@Override
-	public int listinsert(List<EforcesSentScan> list) {
-		return sentscanMapper.insertList(list);
+	@Transactional(rollbackFor = Exception.class)
+	public int listinsert(List<EforcesSentScan> list,List<EforcesLogisticStracking> strackingList) {
+		/*
+		 * 根据发送的订单信息，获得发送订单的物流信息。
+		 * */
+		Integer rst = 1 ;  
+		if(list != null && list.size() > 0 ) {
+			rst = sentscanMapper.insertList(list);
+		}
+		if(rst > 1 && strackingList != null && strackingList.size() > 0 ) {
+			rst = logisticStrackingMapper.insertSelectiveList(strackingList);
+		}
+		return rst; 
 	}
 
 

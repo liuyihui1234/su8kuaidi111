@@ -44,14 +44,14 @@ public class EforcesBagController {
 	/*
 	 * 发送包
 	 */
-	@RequestMapping("sentBagScan")
-    @ResponseBody
-	@CrossOrigin
-	@NeedUserInfo
-    public ResultVo sentBagScan(HttpServletRequest request, String bagNumber){
-		String token = request.getHeader("Authorization");
-		return orderService.sendBagScan(token , bagNumber);
-	}
+//	@RequestMapping("sentBagScan")
+//    @ResponseBody
+//	@CrossOrigin
+//	@NeedUserInfo
+//    public ResultVo sentBagScan(HttpServletRequest request, String bagNumber){
+//		String token = request.getHeader("Authorization");
+//		return orderService.sendBagScan(token , bagNumber);
+//	}
 	
 	
 	/*

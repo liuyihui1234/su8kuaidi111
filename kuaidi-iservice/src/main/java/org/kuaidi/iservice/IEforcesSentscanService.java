@@ -38,7 +38,7 @@ public interface IEforcesSentscanService {
      * @param list
      * @return
              */
-    int listinsert (List<EforcesSentScan> list);
+    int listinsert (List<EforcesSentScan> list,List<EforcesLogisticStracking> strackingList);
 
 
 }

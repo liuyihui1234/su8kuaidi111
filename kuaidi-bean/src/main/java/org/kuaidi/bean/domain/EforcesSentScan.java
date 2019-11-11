@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EforcesSentScan implements Serializable {
+public class EforcesSentScan implements Serializable ,Cloneable {
 
     private static final long serialVersionUID = -4225566549515028959L;
 
@@ -229,6 +229,12 @@ public class EforcesSentScan implements Serializable {
 
 	public void setGoodsCount(Integer goodsCount) {
 		this.goodsCount = goodsCount;
+	}
+	
+	@Override
+	public EforcesSentScan clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return (EforcesSentScan)super.clone();
 	}
 
     @Override
