@@ -62,13 +62,13 @@ public class DistributedScanController {
             EforcesUser user = (EforcesUser) request.getAttribute("user");
             EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
             //判断当前单号是否已经是到件后的状态
-            String s = logisticstrackingService.selectMaxMark(record.getBillsnumber());
-            //判断是否重复派单
-            if(StringUtils.isEmpty(s)){
-                return ResultUtil.exec(false, "单号错误", null);
-            }else if(Integer.parseInt(s)<4){
-                return ResultUtil.exec(false, "运单状态不正确", null);
-            }
+//            String s = logisticstrackingService.selectMaxMark(record.getBillsnumber());
+//            //判断是否重复派单
+//            if(StringUtils.isEmpty(s)){
+//                return ResultUtil.exec(false, "单号错误", null);
+//            }else if(Integer.parseInt(s)<4){
+//                return ResultUtil.exec(false, "运单状态不正确", null);
+//            }
             List<EforcesDistributedScan> list = scanService.selectByBillNumber(record.getBillsnumber());
             if(list != null && list.size() > 0 ) {
             	return ResultUtil.exec(false, "订单已经派过，请确定！", null);

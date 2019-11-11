@@ -1,7 +1,10 @@
 package org.kuaidi.web.springboot.webcontroller;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -89,18 +92,33 @@ public class RectoorderController {
 			if(billNum == null || StringUtils.equals(billNum, "") ) {
 				return ResultUtil.exec(false, "订单号不能为空！", null);
 			}
+			String[] billSection = billNum.split("\\s+");
 			
-			List <EforcesOrder> orderList = orderDetailOrder.getByNumber(billNum);
+			List<String> numberList = new ArrayList<String>();
+			Set<String> set = new HashSet<String>();
+			if(billSection.length > 0 ) {
+				for (String str : billSection) {
+		            if(StringUtils.isNotEmpty(str)){
+		                System.err.println(str);
+		                set.add(str);
+		            }
+		        }
+			}
+			
+			for (String str1 :
+                set) {
+				if(StringUtils.isNotEmpty(str1)) {
+					numberList.add(str1.trim());
+				}
+			}
+			List <EforcesOrder> orderList = orderDetailOrder.getAllNumberMsg(numberList);
 			if(orderList == null || orderList.size() == 0 ) {
 				return ResultUtil.exec(false, "订单号不正确，请确定！", null);
 			}
 			EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
-			
 			if(incment != null) {
 				record.setDepartname(incment.getName());
 			}
-			
-			System.out.println(record.getPostmanid() + ">>>>");
 			String incNum = null ; 
 			EforcesUser user = (EforcesUser) request.getAttribute("user");
 			if(user != null ) {
@@ -114,9 +132,20 @@ public class RectoorderController {
 			if(incNum == null ||  billNum == null ) {
 				return ResultUtil.exec(false, "参数错误，请确定！", null);
 			}
-			List <EforcesRectoOrder> list = orderService.getRectoOrderByNumber(incNum, billNum);
+			
+			List <EforcesRectoOrder> list = orderService.getRectoOrderByNumber(incNum, numberList);
+			
 			if(list != null && list.size() > 0  ) {
-				return ResultUtil.exec(false, "已经收件交单过了！", null);
+//				return ResultUtil.exec(false, "已经收件交单过了！", null);
+				for(int i = numberList.size()-1 ; i >= 0 ; i-- ) {
+					String numberItem = numberList.get(i);
+					for(int j = 0 ; j < list.size(); j++) {
+						EforcesRectoOrder  rectoOrder = list.get(j);
+						if(rectoOrder != null && StringUtils.equals(rectoOrder.getNumber(), numberItem) ) {
+							numberList.remove(i);
+						}
+					}
+				}
 			}
 			if(record.getNum() == null) {
 				record.setNum(1);
@@ -132,7 +161,9 @@ public class RectoorderController {
         	description = String.format(description, incment.getName(), user.getName());
 			EforcesLogisticStracking  logisticStracking = 
 					LogisticStracking.createStrackingInfo(user, incment, description, record.getNumber(), 1);
-			orderService.addRectoOrder(record,logisticStracking);
+			//生成多条记录进行插入。
+			
+			orderService.addRectoOrder(record,logisticStracking,numberList);
 			return ResultUtil.exec(true, "添加成功", null);
 		} catch (Exception e) {
 			e.printStackTrace();

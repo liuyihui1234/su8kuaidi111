@@ -155,6 +155,21 @@
 		from eforces_sentscan
 		where id = #{id,jdbcType=INTEGER}
 	</select>
+	
+	<select id="getAllBaggingScan" resultMap="BaseResultMap">
+		select
+		sentScan.*, bagging.code as code
+		from
+		eforces_baggingscan  bagging join eforces_sentscan  sentScan
+		on  bagging.Numberlist = sentScan.billsnumber
+		where
+		sentScan.isDelete = 0
+		<if test="_parameter!=null">
+			and sentScan.incid like CONCAT(#{_parameter},'%')
+		</if>
+		 ORDER BY createtime desc 
+	</select>
+	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
 		delete from eforces_sentscan

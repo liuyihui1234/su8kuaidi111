@@ -393,7 +393,7 @@
   <select id="getReceiveBillsByParam" parameterType = "org.kuaidi.bean.vo.ScanSearchVO"  resultType="java.util.Map">
   		select <include refid="Base_Column_other" />, scan.createtime as scanTime , scan.incname  as scanIncName,
   		scan.scanners, scan.scantype, scan.laststopname as  stopname , scan.flightsnumber
-  		from eforces_order  orderInfo join eforces_receivescan  scan  on orderInfo.Number =  scan.billsnumber 
+  		from eforces_order  orderInfo join eforces_receivedscan  scan  on orderInfo.Number =  scan.billsnumber 
   		where  1 = 1
   		<if test="billsNumber != null and billsNumber.size() > 0 ">
   			and orderInfo.Number  in 
@@ -404,8 +404,47 @@
   		<if test="goodsType != null and goodsType != ''">
   			and  scan.goodstype =  #{goodsType}
   		</if>
+  		<!-- 
   		<if test="incNumber != null and incNumber != ''">
   			and  scan.nextstop = #{incNumber}
+  		</if>
+  		 -->
+  		<if test="toName != null and toName != ''">
+  			and orderInfo.Toname = #{toName}
+  		</if>
+  		<if test="expresstype != null and expresstype != ''">
+  			and scan.expresstype = #{expresstype}
+  		</if>
+  		<if test="scanIncNumber != null and scanIncNumber != ''">
+  			and scan.incid = #{scanIncNumber}
+  		</if>
+  		<if test="scannerNumber != null and scannerNumber != ''">
+  			and scan.scannerid = #{scannerNumber}
+  		</if>
+  		<if test="flightsnumber != null and flightsnumber != ''">
+  			and scan.flightsnumber = #{flightsnumber}
+  		</if>
+  		<if test="scanStartTime != null and scanStartTime != ''">
+  			and scan.createtime &gt;= #{scanStartTime}
+  		</if>
+  		<if test="scanEndTime != null and scanEndTime != ''">
+  			and scan.createtime &lt;= #{scanEndTime}
+  		</if>
+  </select>
+  
+  <select id="getDistributedBillsByParam" parameterType = "org.kuaidi.bean.vo.ScanSearchVO"  resultType="java.util.Map">
+  		select <include refid="Base_Column_other" />,  scan.createtime as scanTime , scan.incname  as scanIncName,
+  		scan.scanners, scan.scantype, '' as  stopname , scan.flightsnumber
+  		from eforces_order  orderInfo join eforces_distributedscan  scan  on orderInfo.Number =  scan.billsnumber 
+  		where  1 = 1
+  		<if test="billsNumber != null and billsNumber.size() > 0 ">
+  			and orderInfo.Number  in 
+  			<foreach collection="billsNumber"  item="numbers" index="index" open="(" close=")" separator=",">
+		      #{numbers}
+		    </foreach> 
+  		</if>
+  		<if test="goodsType != null and goodsType != ''">
+  			and  scan.goodstype =  #{goodsType}
   		</if>
   		<if test="toName != null and toName != ''">
   			and orderInfo.Toname = #{toName}
@@ -429,6 +468,78 @@
   			and scan.createtime &lt;= #{scanEndTime}
   		</if>
   </select>
+  
+  <!-- 签收 -->
+  <select id="getCustomerSignBillsByParam" parameterType = "org.kuaidi.bean.vo.ScanSearchVO"  resultType="java.util.Map">
+  		select <include refid="Base_Column_other" />,  scan.SignTime as scanTime , scan.incname  as scanIncName,
+  		scan.deliveryUserName  as scanners , '客户签收' as scantype , '' as  stopname , ''  as flightsnumber
+  		from eforces_order  orderInfo join eforces_customersign  scan  on orderInfo.Number =  scan.Number 
+  		where  1 = 1
+  		<if test="billsNumber != null and billsNumber.size() > 0 ">
+  			and orderInfo.Number  in 
+  			<foreach collection="billsNumber"  item="numbers" index="index" open="(" close=")" separator=",">
+		      #{numbers}
+		    </foreach> 
+  		</if>
+  		<if test="toName != null and toName != ''">
+  			and orderInfo.Toname = #{toName}
+  		</if>
+  		<if test="scanIncNumber != null and scanIncNumber != ''">
+  			and scan.incid = #{scanIncNumber}
+  		</if>
+  		<if test="scannerNumber != null and scannerNumber != ''">
+  			and scan.DeliveryUserId = #{scannerNumber}
+  		</if>
+  		<if test="scanStartTime != null and scanStartTime != ''">
+  			and scan.createtime &gt;= #{scanStartTime}
+  		</if>
+  		<if test="scanEndTime != null and scanEndTime != ''">
+  			and scan.createtime &lt;= #{scanEndTime}
+  		</if>
+  </select>
+  
+  <select id="getWeightBillsByParam" parameterType = "org.kuaidi.bean.vo.ScanSearchVO"  resultType="java.util.Map">
+  		select <include refid="Base_Column_other" />, scan.createtime as scanTime , scan.incname  as scanIncName,
+  		scan.scanners, scan.scantype, '' as stopname, scan.flightsnumber
+  		from eforces_order  orderInfo join eforces_sentscan  scan  on orderInfo.Number =  scan.billsnumber 
+  		where  1 = 1
+  		<if test="billsNumber != null and billsNumber.size() > 0 ">
+  			and orderInfo.Number  in 
+  			<foreach collection="billsNumber"  item="numbers" index="index" open="(" close=")" separator=",">
+		      #{numbers}
+		    </foreach> 
+  		</if> 
+  		<!--  
+  		<if test="scanSearch.distributeNum != null and scanSearch.distributeNum != '' ">
+  			and 
+  		</if>
+  		-->
+  		<if test="goodsType != null and goodsType != ''">
+  			and  scan.goodstype =  #{goodsType}
+  		</if>
+  		<if test="toName != null and toName != ''">
+  			and orderInfo.Toname = #{toName}
+  		</if>
+  		<if test="expresstype != null and expresstype != ''">
+  			and scan.expresstype = #{expresstype}
+  		</if>
+  		<if test="scanIncNumber != null and scanIncNumber != ''">
+  			and scan.incid = #{scanIncNumber}
+  		</if>
+  		<if test="scannerNumber != null and scannerNumber != ''">
+  			and scan.scannerid = #{scannerNumber}
+  		</if>
+  		<if test="flightsnumber != null and flightsnumber != ''">
+  			and scan.flightsnumber = #{flightsnumber}
+  		</if>
+  		<if test="scanStartTime != null and scanStartTime != ''">
+  			and scan.createtime &gt;= #{scanStartTime}
+  		</if>
+  		<if test="scanEndTime != null and scanEndTime != ''">
+  			and scan.createtime &lt;= #{scanEndTime}
+  		</if>
+  </select>
+  
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from eforces_order
@@ -1171,6 +1282,13 @@
       </if>
     </trim>
   </insert>
+  <update id="updateStatusByNumberList" >
+  	update eforces_order  set status = #{status}
+  	where number in 
+  	<foreach collection="numberList" item="number" index="index" open="(" close=")" separator=",">
+  	 #{number}
+  	</foreach>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesOrder">
     update eforces_order
     <set>

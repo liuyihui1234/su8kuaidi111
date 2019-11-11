@@ -49,6 +49,22 @@ public class BaggingScanService {
         }
     }
 
+	/*
+	 * 发包扫描查询的数据。
+	 */
+	public PageVo<Map<String, Object>> getAllSentBagging(QueryPageVo page,String number) {
+        try {
+            PageInfo<Map<String,Object>> eforcesUsers = scanService.getAllBaggingScan(page.getPage(),page.getLimit(),number);
+            return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(1, 10 ,0, null);
+        }
+    }
+	
+	
+	
+
     public ResultVo webMakeBagScan(EforcesBaggingScan record , EforcesIncment eforcesIncment, EforcesUser eforcesUser ) {
 //        // 生成包号
         String bagNumber;

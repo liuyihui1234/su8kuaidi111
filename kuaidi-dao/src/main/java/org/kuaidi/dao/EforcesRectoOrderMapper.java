@@ -19,6 +19,11 @@ public interface EforcesRectoOrderMapper {
      * @return
      */
     int insertSelective(EforcesRectoOrder record);
+    
+    /*
+     * 批量插入
+     */
+    int insertSelectiveList(List<EforcesRectoOrder>list);
 
     EforcesRectoOrder selectByPrimaryKey(Integer id);
 
@@ -33,7 +38,7 @@ public interface EforcesRectoOrderMapper {
      */
     List<EforcesRectoOrder> selectAll(Integer paramter);
     
-    List <EforcesRectoOrder> getRectoOrderByNumber(@Param("incNum") String incNum , @Param("Number")String Number);
+    List <EforcesRectoOrder> getRectoOrderByNumber(@Param("incNum") String incNum , @Param("Numbers")List<String> Numbers);
 	
     
 }

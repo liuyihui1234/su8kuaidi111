@@ -34,7 +34,7 @@ public class StayedandtroubledscanController {
     public PageVo getAll(QueryPageVo page, HttpServletRequest request) {
         try {
             EforcesIncment inc = (EforcesIncment) request.getAttribute("inc");
-            PageInfo<EforcesStayedandtroubledscan> eforcesUsers = scanService.getAllIssue(page.getPage(), page.getLimit(), inc.getNumber());
+            PageInfo<EforcesStayedandtroubledscan> eforcesUsers = scanService.getAllIssue(page.getPage(), page.getLimit(), null);
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(), eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class StayedandtroubledscanController {
     }
 
     /**
-               * 添加
+     * 添加
      * @param record
      * @return
      */
@@ -84,7 +84,6 @@ public class StayedandtroubledscanController {
             for(String billNumber:set) {
             	billNumList.add(billNumber);
             }
-            
             List<EforcesOrder> billList = orderService.getAllNumberMsg(billNumList);
             Map<String , EforcesOrder> billMap = new HashMap<String , EforcesOrder>();
             for(EforcesOrder  billInfo : billList) {
@@ -101,7 +100,6 @@ public class StayedandtroubledscanController {
             	return ResultUtil.exec(false, "订单中有不正确的订单号，请确定！", null);
             }
             //判断是否有已经添加过的问题订单。
-            
             List<EforcesStayedandtroubledscan> scanList = scanService.getScanInfoByBillsNumbers(billNumList);
             if(scanList != null && scanList.size() > 0 ) {
             	return ResultUtil.exec(false, "问题件中包含录入的编号，请确定！", null);

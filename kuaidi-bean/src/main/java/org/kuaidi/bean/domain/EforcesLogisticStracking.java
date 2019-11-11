@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class EforcesLogisticStracking implements Serializable {
+public class EforcesLogisticStracking implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -6172060025201329469L;
 
@@ -88,6 +88,11 @@ public class EforcesLogisticStracking implements Serializable {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+    
+    @Override
+	public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override

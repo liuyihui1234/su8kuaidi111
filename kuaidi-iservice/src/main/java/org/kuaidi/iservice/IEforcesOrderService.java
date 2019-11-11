@@ -167,4 +167,28 @@ public interface IEforcesOrderService {
 	 * 获得发件信息。
 	 */
 	PageInfo<Map<String,Object>> getSendBillsByParam(Integer page , Integer limit , ScanSearchVO  scanSearch);
+
+	/*
+	 * 获得发件信息。
+	 */
+	public PageInfo<Map<String, Object>> getReceiveBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch);
+	
+	/*
+	 * 派件扫描
+	 */
+	public PageInfo<Map<String, Object>> getDistributedBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch);
+	
+	/*
+	 * 签收扫描
+	 * getCustomerSignBillsByParam
+	 */
+	public PageInfo<Map<String, Object>> getCustomerSignBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch);
+	
+	/*
+	 * 称重
+	 * getWeightBillsByParam
+	 */
+	public PageInfo<Map<String, Object>> getWeightBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch);
+	
+	
 }

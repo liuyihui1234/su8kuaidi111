@@ -1,6 +1,7 @@
 package org.kuaidi.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesSentScan;
@@ -40,5 +41,5 @@ public interface EforcesSentScanMapper {
      */
     int insertList (List<EforcesSentScan> list);
 
-
+    List<Map<String, Object>> getAllBaggingScan(String incid); 
 }

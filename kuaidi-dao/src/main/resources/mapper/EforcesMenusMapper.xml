@@ -357,15 +357,15 @@
 		select  
 		<include refid="Base_Column_List"/>
         from eforces_menus
-        where parentid = ${parentId}
+        where isDelete = 0  and parentid = ${parentId}
 	</select>
-	
     <select id="selectByPrimaryKey"
             parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from eforces_menus
         where id = #{id,jdbcType=INTEGER}
+        ORDER BY  number ASC 
     </select>
     <delete id="deleteByPrimaryKey"
             parameterType="java.lang.Integer">

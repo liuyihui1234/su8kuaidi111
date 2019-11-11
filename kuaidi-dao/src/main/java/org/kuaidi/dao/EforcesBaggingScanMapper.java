@@ -1,6 +1,7 @@
 package org.kuaidi.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuaidi.bean.domain.EforcesBaggingScan;
 
@@ -25,6 +26,7 @@ public interface EforcesBaggingScanMapper {
     
     int insertBatch(List<EforcesBaggingScan> list);
     
-    List<EforcesBaggingScan> selectByBagNumber(String baggingid); 
+    List<EforcesBaggingScan> selectByBagNumber(String baggingid);
+
     
 }

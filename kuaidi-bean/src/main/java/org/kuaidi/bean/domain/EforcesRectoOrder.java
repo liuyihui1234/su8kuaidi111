@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EforcesRectoOrder  implements Serializable {
+public class EforcesRectoOrder  implements Serializable, Cloneable {
     /**
 	 * 
 	 */
@@ -242,6 +242,11 @@ public class EforcesRectoOrder  implements Serializable {
 
     public void setJjrqmrq(Date jjrqmrq) {
         this.jjrqmrq = jjrqmrq;
+    }
+    
+    @Override
+	public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
     
 }

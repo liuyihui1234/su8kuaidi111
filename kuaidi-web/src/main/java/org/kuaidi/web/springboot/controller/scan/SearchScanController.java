@@ -5,11 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kuaidi.bean.vo.OrderInfoVO;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ScanSearchVO;
-import org.kuaidi.iservice.IEforcesOrderService;
 import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.dubboservice.ScannerSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class SearchScanController {
 	 * @param page
 	 * @return 
 	 */
-	@GetMapping("order")
+	@RequestMapping("search")
 	@ResponseBody
 	@CrossOrigin
 	@NeedUserInfo
@@ -76,7 +74,6 @@ public class SearchScanController {
 					}
 				}
 			}
-			System.out.println(scanSearch.toString());
 			return searchService.getScanSeach(page, limit, scanSearch);
 		}catch(Exception e) {
 			e.printStackTrace();

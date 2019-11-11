@@ -22,6 +22,10 @@ public interface EforcesOrderMapper {
     int updateByPrimaryKeySelective(EforcesOrder record);
 
     int updateByPrimaryKey(EforcesOrder record);
+    /*
+     * 批量的更新订单的状态。
+     */
+    int updateStatusByNumberList(Integer status , List<String> numberList);
     
     int selectByUserId(String userNumber);
     
@@ -43,7 +47,7 @@ public interface EforcesOrderMapper {
     List<EforcesOrder> getHadPostPackage(String incid);
 
     /**
-            * 未派件
+     * 未派件
      * @param incid
      * @return
      */
@@ -131,9 +135,25 @@ public interface EforcesOrderMapper {
 	 * 根据发单人的openId 查询他发送的订单信息。
 	 */
 	List<EforcesOrder> getNumbersByOpenId(String openid);
-
+	/*
+	 * 派件扫描
+	 */
 	List<Map<String,Object>> getSendBillsByParam(ScanSearchVO scanSearch);
-	
+	/*
+	 * 收件扫描
+	 */
 	List<Map<String,Object>> getReceiveBillsByParam(ScanSearchVO scanSearch);
+	/*
+	 * 派件查询
+	 */
+	List<Map<String,Object>> getDistributedBillsByParam(ScanSearchVO scanSearch);
+	/*
+	 * 签收
+	 */
+	List<Map<String,Object>> getCustomerSignBillsByParam(ScanSearchVO scanSearch);
+	/*
+	 * 称重
+	 */
+	List<Map<String,Object>> getWeightBillsByParam(ScanSearchVO scanSearch);	
 	
 }

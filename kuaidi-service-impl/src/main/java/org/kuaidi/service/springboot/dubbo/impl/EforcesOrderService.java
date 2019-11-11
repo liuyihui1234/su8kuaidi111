@@ -287,4 +287,43 @@ public class EforcesOrderService implements IEforcesOrderService {
 		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
+	
+	@Override
+	public PageInfo<Map<String, Object>> getReceiveBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,limit);
+		List<Map<String, Object>> list = orderDao.getReceiveBillsByParam(scanSearch);
+		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getDistributedBillsByParam(Integer page, Integer limit,
+			ScanSearchVO scanSearch) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,limit);
+		List<Map<String, Object>> list = orderDao.getDistributedBillsByParam(scanSearch);
+		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getCustomerSignBillsByParam(Integer page, Integer limit,
+			ScanSearchVO scanSearch) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,limit);
+		List<Map<String, Object>> list = orderDao.getCustomerSignBillsByParam(scanSearch);
+		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return null;
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getWeightBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,limit);
+		List<Map<String, Object>> list = orderDao.getWeightBillsByParam(scanSearch);
+		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+	
 }

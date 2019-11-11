@@ -1,5 +1,6 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
@@ -56,20 +57,44 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 	//添加收件交单信息。
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void addRectoOrder(EforcesRectoOrder record, EforcesLogisticStracking  logisticStracking) {
+	public void addRectoOrder(EforcesRectoOrder record, EforcesLogisticStracking  logisticStracking,List<String> numberList) {
 		/*
 		 * 修改订单状态
 		 * */
 		String billsNumber = record.getNumber();
-		if(billsNumber != null) {
-			EforcesOrder orderInfo = orderDao.getOrderMsg(billsNumber);
-			orderInfo.setStatus(1);
-			orderDao.updateByPrimaryKeySelective(orderInfo);
+		if(numberList != null && numberList.size() > 0 ) {
+			orderDao.updateStatusByNumberList(1, numberList);
+//			EforcesOrder orderInfo = orderDao.getOrderMsg(billsNumber);
+//			orderInfo.setStatus(1);
+//			orderDao.updateByPrimaryKeySelective(orderInfo);
+			List<EforcesLogisticStracking>  logisticList = new ArrayList<EforcesLogisticStracking>();
+			for(int i = 0 ; i < numberList.size(); i++) {
+				String numberItem = numberList.get(i);
+				try {
+					EforcesLogisticStracking  logistic = (EforcesLogisticStracking)logisticStracking.clone();
+					logistic.setBillsnumber(numberItem);
+					logisticList.add(logistic);
+				} catch (CloneNotSupportedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			logisticDao.insertSelectiveList(logisticList);
+			List<EforcesRectoOrder>  rectoOrderList = new ArrayList<EforcesRectoOrder>();
+			for(int i = 0 ; i < numberList.size(); i++) {
+				String numberItem = numberList.get(i);
+				try {
+					EforcesRectoOrder   rectoOrder = (EforcesRectoOrder)record.clone();
+					rectoOrder.setNumber(numberItem);
+					rectoOrderList.add(rectoOrder);
+				} catch (CloneNotSupportedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			rectoOrderDao.insertSelectiveList(rectoOrderList);
 		}
-		// 插入交单信息
-		rectoOrderDao.insertSelective(record);
-		// 添加物流信息
-		logisticDao.insert(logisticStracking);
+//		logisticDao.insert(logisticStracking);
 	}
 
 	@Override
@@ -79,9 +104,9 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 	}
 
 	@Override
-	public List<EforcesRectoOrder> getRectoOrderByNumber(String incNum, String Number) {
+	public List<EforcesRectoOrder> getRectoOrderByNumber(String incNum, List<String> Numbers) {
 		// TODO Auto-generated method stub
-		return rectoOrderDao.getRectoOrderByNumber(incNum, Number);
+		return rectoOrderDao.getRectoOrderByNumber(incNum, Numbers);
 	}
 
 }

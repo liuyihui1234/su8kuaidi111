@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuaidi.bean.domain.EforcesBaggingScan;
 import org.kuaidi.dao.EforcesBaggingScanMapper;
+import org.kuaidi.dao.EforcesSentScanMapper;
 import org.kuaidi.iservice.IEforcesBiggingScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +18,9 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
 
     @Autowired
     EforcesBaggingScanMapper scanMapper;
+    
+    @Autowired
+    EforcesSentScanMapper  sentScanMapper;
 
 	@Override
 	public PageInfo<EforcesBaggingScan> getAll(Integer page, Integer size,String incid) {
@@ -56,5 +61,14 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
 	public List<EforcesBaggingScan> getBaggingScanByBagNum(String bagNumber) {
 		// TODO Auto-generated method stub
 		return scanMapper.selectByBagNumber(bagNumber);
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getAllBaggingScan(Integer page, Integer size, String incid) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,size);
+		List<Map<String, Object>> sentScan = sentScanMapper.getAllBaggingScan(incid);
+		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(sentScan);
+		return pageInfo;
 	}
 }

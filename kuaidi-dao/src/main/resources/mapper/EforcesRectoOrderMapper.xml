@@ -99,8 +99,12 @@
 		<if test="incNum != null and  incNum.length() > 0 ">
 			and  Departid = ${incNum}
 		</if>
-		<if test="Number != null and  Number.length() > 0 ">
-			and number = ${Number}
+		<if test="Numbers != null and  Numbers.size() > 0 ">
+			and number in 
+			<foreach collection="Numbers" index="index" item="item"
+						open="(" close=")" separator=",">
+				${item}
+			</foreach>
 		</if>
 	</select>
 	
@@ -109,6 +113,44 @@
 		delete from eforces_rectoorder
 		where Id = #{id,jdbcType=INTEGER}
 	</delete>
+	
+	<insert id= "insertSelectiveList"  parameterType="java.util.List" >
+		insert into eforces_rectoorder 
+		(Number, OperationTime,
+		Num, ScanTime, Shift,
+		Images, PostmanId, PostmanName,
+		DeTypeId, DeTypeName, ScanTypeId,
+		ScanTypeName, GoodsType, GoodsId,
+		ScanMan, ScanManId, CreateId,
+		CreateName, DepartName, DepartId,
+		jjrqm, jjrqmrq)
+		values
+		<foreach collection="list" item="rectoOrder" index="index" separator=",">
+		(
+			  #{rectoOrder.number},
+			  now(),
+		      #{rectoOrder.num},
+		      now(),
+		      #{shift},
+			  #{images}, #{postmanid},
+			  #{postmanname},
+			 #{detypeid}, 
+			 #{detypename},
+			 #{scantypeid},
+			 #{scantypename}, 
+			 #{goodstype},
+			 #{goodsid},
+			 #{scanman}, 
+			 #{scanmanid}, 
+			 #{createid},
+			 #{createname}, 
+			 #{departname},
+			 #{departid},
+			 #{jjrqm}, 
+			 #{jjrqmrq}
+		)
+		</foreach>
+	</insert>
 	
 	<insert id="insert"
 		parameterType="org.kuaidi.bean.domain.EforcesRectoOrder">
