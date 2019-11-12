@@ -27,6 +27,11 @@ public interface IEforcesBiggingScanService {
 	/*
 	 * 查询派包数据
 	 */
-	PageInfo<Map<String, Object>> getAllBaggingScan(Integer page, Integer size,String incid);
+	PageInfo<Map<String, Object>> getAllSendBaggingScan(Integer page, Integer size,String incid);
+	
+	/*
+	 * 查询收包数据
+	 */
+	PageInfo<Map<String,Object>> getAllReceiveBaggingScan(Integer page , Integer size , String incid);
 
 }

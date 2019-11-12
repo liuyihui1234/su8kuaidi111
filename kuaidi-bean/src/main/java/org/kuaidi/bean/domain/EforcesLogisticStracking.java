@@ -91,8 +91,8 @@ public class EforcesLogisticStracking implements Serializable, Cloneable {
     }
     
     @Override
-	public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+	public EforcesLogisticStracking clone() throws CloneNotSupportedException {
+        return (EforcesLogisticStracking)super.clone();
     }
 
     @Override

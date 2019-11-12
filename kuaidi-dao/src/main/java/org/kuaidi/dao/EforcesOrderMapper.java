@@ -25,7 +25,7 @@ public interface EforcesOrderMapper {
     /*
      * 批量的更新订单的状态。
      */
-    int updateStatusByNumberList(Integer status , List<String> numberList);
+    int updateStatusByNumberList(@Param("status")Integer status , @Param("numberList")List<String> numberList);
     
     int selectByUserId(String userNumber);
     

@@ -40,7 +40,7 @@ public interface IEforcesDistributedScanService {
 	 */
 	EforcesDistributedScan selectById(Integer id);
 
-	int insertSelective(EforcesDistributedScan record,EforcesLogisticStracking  logisticStracking);
+	int insertSelective(List<EforcesDistributedScan> record,List<EforcesLogisticStracking>  logisticStracking);
 		
 	int updateByPrimaryKeySelective(EforcesDistributedScan record);
 

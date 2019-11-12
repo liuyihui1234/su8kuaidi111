@@ -17,6 +17,8 @@ public interface EforcesDistributedScanMapper {
     int insert(EforcesDistributedScan record);
 
     int insertSelective(EforcesDistributedScan record);
+    
+    int insertSelectiveList(List<EforcesDistributedScan> list);
 
     EforcesDistributedScan selectByPrimaryKey(Integer id);
 

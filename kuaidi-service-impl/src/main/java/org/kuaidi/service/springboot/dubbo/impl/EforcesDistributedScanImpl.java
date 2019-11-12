@@ -61,11 +61,10 @@ public class EforcesDistributedScanImpl implements IEforcesDistributedScanServic
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public int insertSelective(EforcesDistributedScan record,
-			EforcesLogisticStracking  logisticStracking) {
-		int rst = ScanMapper.insertSelective(record);
+	public int insertSelective(List<EforcesDistributedScan> record,List<EforcesLogisticStracking>  logisticStracking){
+		int rst = ScanMapper.insertSelectiveList(record);
 		if(rst > 0 ) {
-			rst = logisticMapper.insertSelective(logisticStracking);
+			rst = logisticMapper.insertSelectiveList(logisticStracking);
 		}
 		return rst; 
 	}

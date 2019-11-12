@@ -48,6 +48,7 @@
   <if test="_parameter!=null">
   and incid like CONCAT(#{_parameter},'%')
   </if>
+   ORDER BY scantime desc 
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 

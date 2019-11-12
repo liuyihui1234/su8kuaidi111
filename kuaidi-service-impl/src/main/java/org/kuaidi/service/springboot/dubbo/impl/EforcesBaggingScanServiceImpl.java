@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.kuaidi.bean.domain.EforcesBaggingScan;
 import org.kuaidi.dao.EforcesBaggingScanMapper;
+import org.kuaidi.dao.EforcesReceivedScanMapper;
 import org.kuaidi.dao.EforcesSentScanMapper;
 import org.kuaidi.iservice.IEforcesBiggingScanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
     
     @Autowired
     EforcesSentScanMapper  sentScanMapper;
+    
+    @Autowired
+    EforcesReceivedScanMapper  receiveScanMapper;
 
 	@Override
 	public PageInfo<EforcesBaggingScan> getAll(Integer page, Integer size,String incid) {
@@ -64,11 +68,20 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
 	}
 
 	@Override
-	public PageInfo<Map<String, Object>> getAllBaggingScan(Integer page, Integer size, String incid) {
+	public PageInfo<Map<String, Object>> getAllSendBaggingScan(Integer page, Integer size, String incid) {
 		// TODO Auto-generated method stub
 		PageHelper.startPage(page,size);
 		List<Map<String, Object>> sentScan = sentScanMapper.getAllBaggingScan(incid);
 		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(sentScan);
 		return pageInfo;
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getAllReceiveBaggingScan(Integer page, Integer size, String incid) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,size);
+		List<Map<String, Object>> receiveScan = receiveScanMapper.getAllBaggingScan(incid);
+		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(receiveScan);
+		return null;
 	}
 }

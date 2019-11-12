@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EforcesDistributedScan implements Serializable{
+public class EforcesDistributedScan implements Serializable, Cloneable{
     /**
 	 * 
 	 */
@@ -192,6 +192,11 @@ public class EforcesDistributedScan implements Serializable{
     public void setBz(String bz) {
         this.bz = bz == null ? null : bz.trim();
     }
+    
+    @Override
+   	public EforcesDistributedScan clone() throws CloneNotSupportedException {
+           return (EforcesDistributedScan)super.clone();
+       }
 
 	@Override
 	public String toString() {

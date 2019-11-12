@@ -369,4 +369,15 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
 		// TODO Auto-generated method stub
 		return receivedscanMapper.updateById(ids);
 	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Integer listinsert(List<EforcesReceivedScan> receiveScanList, List<EforcesLogisticStracking> strackingList) {
+		// TODO Auto-generated method stub
+		Integer rst = receivedscanMapper.insertList(receiveScanList);
+		if(rst > 0 ) {
+			rst = logisticStrackingMapper.insertSelectiveList(strackingList);
+		}
+		return rst; 
+	}
 }

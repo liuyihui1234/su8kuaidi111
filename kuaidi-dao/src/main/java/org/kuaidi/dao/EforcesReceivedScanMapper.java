@@ -5,6 +5,7 @@ import org.kuaidi.bean.domain.EforcesReceivedScan;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface EforcesReceivedScanMapper {
     int deleteByPrimaryKey(Integer id);
@@ -92,6 +93,11 @@ public interface EforcesReceivedScanMapper {
 	 * 查找已收的订单
 	 */
 	List<EforcesReceivedScan> getHadReceiveOrder(@Param("incNum")String incNum , @Param("billNumList")List<String>billNumList);
+	
+	/*
+	 * 查询收包记录
+	 */
+	List<Map<String, Object>> getAllBaggingScan(String incid);
     
     
 }

@@ -11,6 +11,7 @@ import org.kuaidi.bean.vo.ResultVo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface IEforcesReceivedscanService {
 
@@ -85,5 +86,7 @@ public interface IEforcesReceivedscanService {
 
     
     int deleteById(List<Integer> ids);
-    
+
+	Integer listinsert(List<EforcesReceivedScan> receiveScanList, List<EforcesLogisticStracking> strackingList);
+	
 }

@@ -104,6 +104,21 @@
     </where>
   </select>
   
+  <select id="getAllBaggingScan" resultType="java.util.Map">
+		select
+		sentScan.*, bagging.code as code
+		from
+		eforces_baggingscan  bagging join eforces_receivedscan  receivedScan
+		on  bagging.Numberlist = receivedScan.billsnumber
+		where
+		receivedScan.isDelete = 0
+		and receivedScan.isBagBill = 1
+		<if test="_parameter!=null">
+			and receivedScan.incid like CONCAT(#{_parameter},'%')
+		</if>
+		 ORDER BY createtime desc 
+  </select>
+  
   <update id="updateById">
 		update
 		eforces_receivedscan

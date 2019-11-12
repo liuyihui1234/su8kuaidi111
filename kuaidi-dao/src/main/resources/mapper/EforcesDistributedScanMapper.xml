@@ -170,6 +170,37 @@
 		#{amount,jdbcType=INTEGER},
 		#{billsnumber,jdbcType=LONGVARCHAR}, #{bz,jdbcType=LONGVARCHAR})
 	</insert>
+	
+	
+	<insert id="insertSelectiveList"
+		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
+		insert into eforces_distributedscan (
+		flightsnumber,
+		goodstype, expresstype, expressid,
+		postman, postmanid,
+		scantype,
+		scanners, scannerid, incname,
+		incid, amount,
+		billsnumber, bz)
+		values 
+		<foreach collection="list" item="distributedscan" index="index" separator=",">
+			(#{distributedscan.flightsnumber,jdbcType=VARCHAR},
+			#{distributedscan.goodstype,jdbcType=VARCHAR}, 
+			#{distributedscan.expresstype,jdbcType=VARCHAR},
+			#{distributedscan.expressid,jdbcType=INTEGER},
+			#{distributedscan.postman,jdbcType=VARCHAR},
+			#{distributedscan.postmanid,jdbcType=VARCHAR},
+			#{distributedscan.scantype,jdbcType=VARCHAR},
+			#{distributedscan.scanners,jdbcType=VARCHAR}, 
+			#{distributedscan.scannerid,jdbcType=VARCHAR},
+			#{distributedscan.incname,jdbcType=VARCHAR},
+			#{distributedscan.incid,jdbcType=VARCHAR},
+			#{distributedscan.amount,jdbcType=INTEGER},
+			#{distributedscan.billsnumber,jdbcType=LONGVARCHAR}, 
+			#{distributedscan.bz,jdbcType=LONGVARCHAR})
+		</foreach>
+	</insert>
+	
 	<insert id="insertSelective"
 		parameterType="org.kuaidi.bean.domain.EforcesDistributedScan">
 		insert into eforces_distributedscan

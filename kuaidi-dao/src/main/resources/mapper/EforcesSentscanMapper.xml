@@ -81,17 +81,17 @@
 			#{item.incname},
 			#{item.incid},
 			now(),
-			#{item.amout},
+			#{item.amount},
 			#{item.nextstop1},
 			#{item.nextstopname1},
 			#{item.tranname},
-			#{item.bz}
+			#{item.bz},
 			#{item.goodsCount},
-			#{item.isbagbill},
+			#{item.isBagBill}
 			)
 		</foreach>
 	</insert>
-
+	
 	<update id="deleteByIds">
 		update
 		eforces_sentscan
@@ -116,6 +116,7 @@
 		eforces_sentscan
 		where
 		isDelete=0
+		and sentScan.isBagBill = 0
 		<if test="_parameter!=null">
 			and incid like CONCAT(#{_parameter},'%')
 		</if>
@@ -156,7 +157,7 @@
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	
-	<select id="getAllBaggingScan" resultMap="BaseResultMap">
+	<select id="getAllBaggingScan" resultType="java.util.Map">
 		select
 		sentScan.*, bagging.code as code
 		from
@@ -164,6 +165,7 @@
 		on  bagging.Numberlist = sentScan.billsnumber
 		where
 		sentScan.isDelete = 0
+		and sentScan.isBagBill = 1
 		<if test="_parameter!=null">
 			and sentScan.incid like CONCAT(#{_parameter},'%')
 		</if>

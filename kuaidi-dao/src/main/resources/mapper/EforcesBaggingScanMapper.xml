@@ -65,7 +65,7 @@
 		<include refid="Blob_Column_List" />
 		from  eforces_baggingscan
 		where 
-		baggingid  = #{baggingid,jdbcType=VARCHAR}
+		code  = #{baggingid,jdbcType=VARCHAR}
 	</select>
 
 	<select id="selectByPrimaryKey"
