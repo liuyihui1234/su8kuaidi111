@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.webcontroller;
+package org.kuaidi.web.springboot.controller.scan;
 
 
 import java.util.ArrayList;
@@ -93,23 +93,14 @@ public class RectoorderController {
 				return ResultUtil.exec(false, "订单号不能为空！", null);
 			}
 			String[] billSection = billNum.split("\\s+");
-			
 			List<String> numberList = new ArrayList<String>();
-			Set<String> set = new HashSet<String>();
 			if(billSection.length > 0 ) {
 				for (String str : billSection) {
 		            if(StringUtils.isNotEmpty(str)){
 		                System.err.println(str);
-		                set.add(str);
+		                numberList.add(str.trim());
 		            }
 		        }
-			}
-			
-			for (String str1 :
-                set) {
-				if(StringUtils.isNotEmpty(str1)) {
-					numberList.add(str1.trim());
-				}
 			}
 			List <EforcesOrder> orderList = orderDetailOrder.getAllNumberMsg(numberList);
 			if(orderList == null || orderList.size() == 0 ) {

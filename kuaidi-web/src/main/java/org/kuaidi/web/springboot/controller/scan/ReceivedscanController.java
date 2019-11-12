@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.webcontroller;
+package org.kuaidi.web.springboot.controller.scan;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;

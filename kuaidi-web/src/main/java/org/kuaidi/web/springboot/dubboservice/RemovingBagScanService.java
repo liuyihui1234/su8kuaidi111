@@ -41,14 +41,14 @@ public class RemovingBagScanService {
          */
 
 
-        if(StringUtils.isEmpty(record.getBaggingid())) {
+        if(StringUtils.isEmpty(record.getCode())) {
             return ResultUtil.exec(false, "包的编号不能为空", null);
         }
         try {
-            List<EforcesBaggingScan> bagScanList =  biggingScanService.getBaggingScanByBagNum(record.getBaggingid());
-            /*             * 将打包的数据，放到手包中去。
+            List<EforcesBaggingScan> bagScanList =  biggingScanService.getBaggingScanByBagNum(record.getCode());
+            /* 
+             * * 将打包的数据，放到手包中去。
              **/
-
             if(bagScanList != null && bagScanList.size() > 0 ) {
                 List<EforcesRemovingBagScan>  removeBagScanList = new ArrayList<EforcesRemovingBagScan>();
                 for(int i = 0 ; i < bagScanList.size() ; i++) {

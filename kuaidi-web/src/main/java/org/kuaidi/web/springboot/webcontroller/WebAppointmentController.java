@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.controller.scan;
+package org.kuaidi.web.springboot.webcontroller;
 
 import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.bean.vo.PageVo;

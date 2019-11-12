@@ -54,7 +54,7 @@ public class BaggingScanService {
 	 */
 	public PageVo<Map<String, Object>> getAllSentBagging(QueryPageVo page,String number) {
         try {
-            PageInfo<Map<String,Object>> eforcesUsers = scanService.getAllBaggingScan(page.getPage(),page.getLimit(),number);
+            PageInfo<Map<String,Object>> eforcesUsers = scanService.getAllSendBaggingScan(page.getPage(),page.getLimit(),number);
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();

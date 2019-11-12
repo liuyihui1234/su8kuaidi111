@@ -1,12 +1,15 @@
 package org.kuaidi.web.springboot.appcontroller;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.kuaidi.bean.domain.EforcesRegion;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.domain.EforcesUserAddress;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesUserAddressService;
+import org.kuaidi.iservice.IRegionService;
 import org.kuaidi.web.springboot.core.authorization.Authorization;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +23,9 @@ public class EforcesUserAddressController {
 
 	@Reference(version = "1.0.0")
 	private IEforcesUserAddressService  userAddressService; 
+	
+	@Reference(version = "1.0.0")
+	private IRegionService  regionService; 
 	
 	@RequestMapping("getUserAddressByParam")
     @ResponseBody
@@ -51,6 +57,15 @@ public class EforcesUserAddressController {
 			Integer userId = userInfo.getId();
 			userAddress.setUserid(userId);
 		}
+		if(userAddress.getProvincecode() != null &&
+				userAddress.getProvincecode().indexOf(",") > -1) {
+			EforcesRegion  regionInfo = regionService.getBycode(userAddress.getCitycode());
+			if(regionInfo != null && regionInfo.getParentCode() != null){
+				userAddress.setProvincecode(regionInfo.getParentCode());
+			}
+		}
+		
+		
 		Integer rst = userAddressService.insertUserAddress(userAddress);
 		if(rst != null && rst > 0 ) {
 			return ResultUtil.exec(true,"添加地址成功",null);

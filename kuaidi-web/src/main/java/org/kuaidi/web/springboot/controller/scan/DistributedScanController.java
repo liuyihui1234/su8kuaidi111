@@ -18,6 +18,8 @@ import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.util.LogisticStracking;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -69,6 +71,11 @@ public class DistributedScanController {
 //            }else if(Integer.parseInt(s)<4){
 //                return ResultUtil.exec(false, "运单状态不正确", null);
 //            }
+            
+            
+            /*
+             * 是否已经派过单了。
+             * */
             List<EforcesDistributedScan> list = scanService.selectByBillNumber(record.getBillsnumber());
             if(list != null && list.size() > 0 ) {
             	return ResultUtil.exec(false, "订单已经派过，请确定！", null);
@@ -82,7 +89,6 @@ public class DistributedScanController {
             		postPhoneNum = postUserInfo.getMobile();
             	}
             }
-            
             record.setScantype("派件扫描");
             record.setIncname(inc.getName());
             record.setIncid(user.getIncid());
@@ -93,8 +99,38 @@ public class DistributedScanController {
         	description = String.format(description, inc.getName(), record.getPostman(), postPhoneNum ,user.getName());
 			EforcesLogisticStracking  logisticStracking = 
 					LogisticStracking.createStrackingInfo(user, inc, description, record.getBillsnumber(), 5);
-            int i = scanService.insertSelective(record, logisticStracking);
-            return ResultUtil.exec(true, "添加成功", i);
+            
+			String billsNumber = record.getBillsnumber();
+			List<String> billsNumList = new ArrayList<String>();
+			if(StringUtils.isNotEmpty(billsNumber)) {
+				String[] numSection = billsNumber.split("\\s+");
+				if(numSection.length > 0 ) {
+					for(String billNum : numSection) {
+						if(StringUtils.isNotEmpty(billNum)) {
+							billsNumList.add(billNum.trim());
+						}
+					}
+				}
+			}
+			if(billsNumList.size() > 0 ) {
+				List<EforcesDistributedScan>  distributedScanList = new ArrayList<EforcesDistributedScan>();
+				List<EforcesLogisticStracking>  logisticStrackingList = new ArrayList<EforcesLogisticStracking>();
+				for(int i = 0 ; i < billsNumList.size(); i++) {
+					String billNumberItem =  billsNumList.get(i);
+					if(StringUtils.isNotEmpty(billNumberItem)) {
+						EforcesDistributedScan  distributedItem = record.clone();
+						distributedItem.setBillsnumber(billNumberItem);
+						distributedScanList.add(distributedItem);
+						
+						EforcesLogisticStracking  logisticStrackingItem = logisticStracking.clone();
+						logisticStrackingItem.setBillsnumber(billNumberItem);
+						logisticStrackingList.add(logisticStrackingItem);
+					}
+				}
+				
+				int i = scanService.insertSelective(distributedScanList, logisticStrackingList);
+			}
+            return ResultUtil.exec(true, "添加成功", null);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(true, "添加失败", null);

@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.controller.scan;
+package org.kuaidi.web.springboot.webcontroller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;

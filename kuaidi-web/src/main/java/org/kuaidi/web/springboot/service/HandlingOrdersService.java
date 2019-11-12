@@ -473,6 +473,12 @@ public class HandlingOrdersService {
                         }
                         if(sentScan != null ) {
                         	sentScan.setBillsnumber(billsNumber);
+                        	sentScan.setIsBagBill(1);
+                        	sentScan.setIncid(user.getIncid());
+                        	sentScan.setIncname(incment.getName());
+                        	sentScan.setScannerid(user.getNumber());
+                        	sentScan.setScanners(user.getName());
+                        	sentScan.setGoodsCount(1);
                             sentScanList.add(sentScan);
                         }
 						/** 其余的地址要发的 用户，订单信息，nextStop下一跳站点 ， 当前站点， 都一样
@@ -527,115 +533,119 @@ public class HandlingOrdersService {
 	/*
 	 * 收包操作（）
 	 */
-	public ResultVo  receiveBag(String token,String bagNumber) {
-		Map<String,EforcesOrder> mapOrder = new HashMap<String,EforcesOrder>();
-		/*
-		从token中拿出数据
-		 */
-		String userData = redisUtil.get(Config.REDISAPPLOGINPREX + token);
-		JSONObject data = JSONObject.fromObject(userData);
-		JSONObject userInfo = data.getJSONObject("userInfo");
-		EforcesUser eforcesUser =   (EforcesUser) JSONObject.toBean(userInfo, EforcesUser.class);
-		JSONObject incInfo = data.getJSONObject("incInfo");
-		EforcesIncment eforcesIncment = (EforcesIncment)JSONObject.toBean(incInfo, EforcesIncment.class);
-		try {
-			// 根据包的编号查询出包中的订单记录
-			List<EforcesBaggingScan> bagScansList = biggingScanService.getBaggingScanByBagNum(bagNumber);
-			//判断根据包的编号查询的订单是否为空
-			if(bagScansList != null && bagScansList.size() > 0){
-				//创建收件表集合
-				List<EforcesReceivedScan> rceivedScanList = new ArrayList<EforcesReceivedScan>();
+	public ResultVo  receiveBag(HttpServletRequest request , String bagNumber,EforcesReceivedScan  receivedScan) {
 
-				List<String> billsNumList = new ArrayList<String>();
-				for(int i = 0 ; i < bagScansList.size() ; i++){
-					EforcesBaggingScan baggingScan = bagScansList.get(i);
-					if(baggingScan != null ){
-						billsNumList.add(baggingScan.getNumberlist());
-					}
-				}
-				if(billsNumList.size() > 0 ){
-					//  根据   billsNumList  查询订单
-					List<EforcesOrder> list = orderService.getAllNumberMsg(billsNumList);
-					// 封装成map    key  订单号， value  订单的对象
-
-                    for (int i = 0; i < list.size(); i++){
-                        EforcesOrder orderValue = list.get(i);
-						mapOrder.put(orderValue.getNumber(),orderValue);
+        Map<String,EforcesOrder> map = new HashMap<String, EforcesOrder>();
+        /**
+         * * 根据token获得用户信息
+         */
+        EforcesUser user = (EforcesUser) request.getAttribute("user");
+        EforcesIncment incment = (EforcesIncment)request.getAttribute("inc");
+        try {
+        	if(StringUtils.isEmpty(bagNumber)) {
+        		return  ResultUtil.exec(false, "参数错误！", null);
+        	}
+            // 根据包的编号查询出打包的订单
+            List<EforcesBaggingScan> bagScanList =  biggingScanService.getBaggingScanByBagNum(bagNumber);
+            if(bagScanList != null && bagScanList.size() > 0 ) {
+                List<EforcesReceivedScan>  receiveScanList = new ArrayList<EforcesReceivedScan>();
+				/*
+                 * 判断根据编号查询出打包的订单的订单编号判断不为空，根据此单号循环查询所有信息
+                 * 多个单号，查询到放在map里面key是订单号valu是操磁订单号的信息
+				*/
+                List<String> stringList = new ArrayList<String>();
+                for (int i = 0; i < bagScanList.size(); i++){
+                    EforcesBaggingScan bagList = bagScanList.get(i);
+                    if(bagList !=null ){
+                        stringList.add(bagList.getNumberlist());
                     }
-				}
-				// 拿出一张订单，查询上一跳的位置。
-				EforcesBaggingScan baggingScan = bagScansList.get(0);
-				//验证取出打包表里的数据是否空
-				if(baggingScan != null){
-					//如果打包表里查出数据 然后取到订单编号
-					String numberList = baggingScan.getNumberlist();
-					//验证订单编号不为空
-					if(StringUtils.isNotEmpty(numberList)){
-						//根据订单编号去订单表查询数据
-						//List<EforcesOrder> listOrder = orderService.getByNumber(numberList);
-						//根据订单号去map里面查询数据
-								EforcesOrder listOrder=mapOrder.get(numberList);
-
-						//如果查不到则订单号错误
-						if(listOrder == null || listOrder.getNumber() == null ||"".equals(listOrder.getNumber())){
-							return ResultUtil.exec(false,"订单号错误，请确定",null);
-						}
-						//如果不为空则在订单表里查到数据了 拿出第一条
-						EforcesOrder orderInfo = listOrder;
-						String preNumber = getPreIncNumber(eforcesUser,orderInfo);
-						//判断是否能找到上一站
-						if(preNumber==null || preNumber.length()==0){
-							return ResultUtil.exec(false,"没有找到上一站的编号，是否单号错误",0);
-						}
-						EforcesIncment preIncment = incmentService.selectByNumber(preNumber);
-						//EforcesIncment currentIncment = incmentService.selectByNumber(eforcesIncment.getNumber());
-						EforcesReceivedScan receivedScan = createReceiveScan(eforcesUser, preIncment,eforcesIncment ,orderInfo,1);
-						if(receivedScan!=null){
-							rceivedScanList.add(receivedScan);
-						}
-						/*
-						 * 其余的地址要收的 用户，订单信息，上一站点 ， 当前站点， 都一样
+                }
+                //判断stringList集合里面是否有值，里面只有订单编号
+                if(stringList.size() > 0 ||stringList != null){
+                    //多个订单编号查询
+                    List<EforcesOrder> eforcesOrders = orderService.getAllNumberMsg(stringList);
+                    //循环添加map
+                    for (int i = 0; i < eforcesOrders.size();i++){
+                        EforcesOrder orderValue = eforcesOrders.get(i);
+                        map.put(orderValue.getNumber(),orderValue);
+                    }
+                }
+				/*
+				  * 拿出一张订单，查询下一跳的位置。
+                 **/
+                EforcesBaggingScan  bagScannInfo = bagScanList.get(0);
+                if(bagScannInfo != null) {
+                    String billsNumber = bagScannInfo.getNumberlist();
+                    if(StringUtils.isNotEmpty(billsNumber)) {
+                        //此处不在去数据查 直接根据订单号从map里取
+                        //List<EforcesOrder> orderList =  orderService.getByNumber(billsNumber);
+                        EforcesOrder orderMap = map.get(billsNumber);
+                        if(orderMap == null || orderMap.getNumber() == null  || "".equals(orderMap.getNumber())) {
+                            return ResultUtil.exec(false,"订单号错误，请确定！",null);
+                        }
+                        if(receivedScan != null ) {
+                        	receivedScan.setBillsnumber(billsNumber);
+                        	receivedScan.setIsBagBill(1);
+                        	receivedScan.setIncid(user.getIncid());
+                        	receivedScan.setIncname(incment.getName());
+                        	receivedScan.setScannerid(user.getNumber());
+                        	receivedScan.setScanners(user.getName());
+                        	receivedScan.setGoodsCount(1);
+                        	receiveScanList.add(receivedScan);
+                        }
+						/** 其余的地址要发的 用户，订单信息，nextStop下一跳站点 ， 当前站点， 都一样
 						 * 需要批量的查询订单。（对订单进行封装）
-						 * */
-						for(int i = 1 ; i < bagScansList.size() ; i++) {
-							EforcesBaggingScan  bagScanInfo = bagScansList.get(i);
-							String billNumber = bagScanInfo.getNumberlist();
-
-							//List<EforcesOrder> orderListTmp =  orderService.getByNumber(billNumber);
-
-							//根据订单号去map里取值
-							EforcesOrder listOrder1 = mapOrder.get(billNumber);
-							if(listOrder == null) {
-								continue;
-							}
-							//订单
-							EforcesReceivedScan receivedScan1 = createReceiveScan(eforcesUser,preIncment,eforcesIncment,listOrder1, 1);
-							if(receivedScan1 != null ) {
-								rceivedScanList.add(receivedScan1);
-							}
-						}
-						if(rceivedScanList.size() > 0 ) {
-							// 批量的添加。
-							receivedscanService.insertList(rceivedScanList);
-						}
-					}
-				}
-				// 调用上面的方法，对订单进行接收处理， 并添加物流信息。
-			}
-			return ResultUtil.exec(true,"收件执行成功",0);
-		}catch (Exception e){
-			e.printStackTrace();
-			return ResultUtil.exec(false,"收件执行失败",null);
-		}
+                        **/
+                        for(int i = 1 ; i < bagScanList.size() ; i++) {
+                            EforcesBaggingScan  bagScanInfo = bagScanList.get(i);
+                            String billNumber = bagScanInfo.getNumberlist();
+                            //此处不在去数据查 直接根据订单号从map里取
+                            EforcesOrder orderMap1 = map.get(billNumber);
+                            if(orderMap1 == null || "".equals(orderMap1.getNumber())) {
+                                continue;
+                            }
+                            //订单
+                            EforcesReceivedScan sentScanTmp = receivedScan.clone();
+                            sentScanTmp.setBillsnumber(bagScanInfo.getNumberlist());
+                            if(sentScanTmp != null ) {
+                            	receiveScanList.add(sentScanTmp);
+                            }
+                        }
+                        if(receiveScanList.size() > 0 ) {
+                        	List<EforcesLogisticStracking> strackingList = new ArrayList<EforcesLogisticStracking>();
+                        	for(int i = 0 ; i < receiveScanList.size()  ; i++) {
+                        		EforcesReceivedScan sentReceivedItem = receiveScanList.get(i);
+                        		String description = "快件到达【%】，上一站是【%s】,扫描员是【%s】";
+                                String lastStopName = "";
+                                if(StringUtils.equals(sentReceivedItem.getLaststop(), "")) {
+                                	lastStopName  = sentReceivedItem.getLaststop();
+                                }
+                                description = String.format(description, incment.getName(), lastStopName, user.getName());
+                        		EforcesLogisticStracking logisticStracking = 
+                            			getLogisticstracking(sentReceivedItem.getBillsnumber(),description,user.getName(), incment.getName(), user.getIncnumber() ,4);
+                        		if(logisticStracking != null ) {
+                        			strackingList.add(logisticStracking);
+                        		}
+                        	}
+                            // 批量的添加。
+                        	receivedscanService.listinsert(receiveScanList,strackingList);
+                        }
+                    }
+                }
+            }
+            // 调用上面的方法，对订单进行发送， 并添加物流信息。
+            return ResultUtil.exec(true, "收包操作成功！", null);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ResultUtil.exec(false, "收包操作失败！", null);
+        }
 	}
-
 	
 	/*
 	 * 打包操作
 	 * @param  billsNum 订单编号， 多个订单用英文状态下半角的逗号隔开  .
 	 */
 	public ResultVo makeBagScan(String token , String billsNum, String  bagName) {
-		boolean flage = true;
 		if(StringUtils.isEmpty(billsNum)) {
 			return ResultUtil.exec(false, "订单不能为空", null);
 		}

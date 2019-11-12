@@ -57,11 +57,11 @@ public class EforcesBagController {
 	/*
 	 * 接收送包
 	 */
-	@RequestMapping("receiveBagScan")
-    @ResponseBody
-    public ResultVo receiveBagScan(HttpServletRequest request, String bagNumber){
-		String token = request.getHeader("token");
-		return orderService.receiveBag(token , bagNumber);
-		
-	}
+//	@RequestMapping("receiveBagScan")
+//    @ResponseBody
+//    public ResultVo receiveBagScan(HttpServletRequest request, String bagNumber){
+//		String token = request.getHeader("token");
+//		return orderService.receiveBag(token , bagNumber);
+//		
+//	}
 }

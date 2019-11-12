@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.webcontroller;
+package org.kuaidi.web.springboot.controller.scan;
 
 
 

@@ -154,25 +154,13 @@ public class SentScanService {
     
     private EforcesSentScan createSentScanInfo(EforcesSentScan record, EforcesUser userInfo, EforcesOrder orderInfo, 
                                                EforcesIncment currentStop, Integer isBagBill) {
-        EforcesSentScan sentScan = new EforcesSentScan();
-        sentScan.setBillsnumber(orderInfo.getNumber());
-        sentScan.setFlightsnumber(record.getFlightsnumber());  // 可能需要
-        sentScan.setGoodstype(record.getGoodstype()); // 需要确定一下
-        sentScan.setExpresstype(record.getExpresstype());  // 需要判断
-        sentScan.setExpressid(1); //
-//        sentScan.setNextstop(nextStop.getNumber());
-//        sentScan.setNextstopname(nextStop.getName());
-        
+        EforcesSentScan sentScan = record;
         sentScan.setScantype("发件扫描");
         sentScan.setScanners(userInfo.getName());
         sentScan.setScannerid(userInfo.getNumber());
         sentScan.setIncname(currentStop.getName());
         sentScan.setIncid(userInfo.getIncnumber());
         sentScan.setAmount(0);
-//        sentScan.setBz("");
-//        sentScan.setNextstop1(nextStop1.getNumber());
-//        sentScan.setNextstopname1(nextStop1.getName());
-        sentScan.setTranname(record.getTranname());
         sentScan.setIsBagBill(isBagBill);
         return sentScan;
     }
