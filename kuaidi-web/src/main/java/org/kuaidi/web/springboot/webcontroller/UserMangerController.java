@@ -1,10 +1,12 @@
 package org.kuaidi.web.springboot.webcontroller;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesUser;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultVo;
+import org.kuaidi.utils.Md5Util;
 import org.kuaidi.web.springboot.dubboservice.UserMangerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,6 @@ public class UserMangerController {
 
     @Autowired
     UserMangerService userMangerService;
-
-   
 
     @GetMapping("user")
     @CrossOrigin
@@ -46,6 +46,11 @@ public class UserMangerController {
     public ResultVo updateUserById(EforcesUser user) {
         ResultVo rst = null;
         System.out.println(user);
+        if(StringUtils.isNotEmpty(user.getPassword())) {
+        	String password = user.getPassword();
+        	password = Md5Util.encode(password);
+        	user.setPassword(password);
+        }
         rst = userMangerService.updateUserById(user);
         return rst;
     }
@@ -72,6 +77,12 @@ public class UserMangerController {
         ResultVo rst = null;
        rst = userMangerService.deleteUserByID(array);
         return rst;
+    }
+    
+    @RequestMapping("validatePhone")
+    @CrossOrigin
+    public ResultVo validataPhone(String phone , Integer type,Integer userId) {
+    	return  userMangerService.validataPhone(phone,type,userId);
     }
 
 

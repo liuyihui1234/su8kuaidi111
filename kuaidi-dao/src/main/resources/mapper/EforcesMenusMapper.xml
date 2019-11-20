@@ -55,7 +55,7 @@
 	from
 	eforces_menus
 	where
-	parentid=#{parentid}
+	parentid=#{parentId}
 	</select>
    <!--用户登录查询树形菜单-->
     <select id="getAllMenuTree" resultType="hashmap">

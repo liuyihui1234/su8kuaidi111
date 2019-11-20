@@ -54,7 +54,6 @@ public class NetsignController {
 		try {
 			String identityFont  = AppReplaceOSSUtil.string2Image(identityFontValue);
 			String identityBack = AppReplaceOSSUtil.string2Image(identityBackValue);
-
 			rst = netSignService.updateNetSignIdentityPic(netSignId, Config.oosUrlPath+identityFont, Config.oosUrlPath+identityBack);
 		} catch (Exception e) {
 			e.printStackTrace();

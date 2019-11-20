@@ -45,7 +45,6 @@ public class ReceiveBagScanController {
         	EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
             PageInfo<Map<String, Object>> pageInfo = bagScanService.getAllReceiveBaggingScan(page.getPage(), page.getLimit(), userInfo.getIncid());
             //修改时间。
-            
             return ResultUtil.exec(pageInfo.getPageNum(),pageInfo.getSize(),pageInfo.getTotal(),pageInfo.getList());
         } catch (Exception e) {
             e.printStackTrace();

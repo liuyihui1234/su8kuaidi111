@@ -58,6 +58,10 @@ public interface UserService {
      * @return
      */
     Integer updateUserInfo(EforcesUser userInfo);
+    /*
+     * 网签模块修改用户信息
+     * */
+    Integer updateUserBySign(EforcesUser userInfo, Integer level);
     
     List<EforcesUser> selectUserByIncId(String incId);
     

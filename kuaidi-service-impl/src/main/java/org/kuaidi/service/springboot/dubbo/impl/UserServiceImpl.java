@@ -1,22 +1,35 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesUser;
+import org.kuaidi.bean.domain.EforcesUsersgroup;
+import org.kuaidi.bean.domain.EforcesUsersgrouprele;
 import org.kuaidi.dao.EforcesUserMapper;
+import org.kuaidi.dao.EforcesUsersgroupMapper;
+import org.kuaidi.dao.EforcesUsersgroupreleMapper;
 import org.kuaidi.iservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-@Service(version = "1.0.0",timeout=12000)
+@Service(version = "1.0.0",interfaceClass= UserService.class,timeout=12000)
 public class UserServiceImpl implements UserService {
+	
     @Autowired
     private EforcesUserMapper UserDao;
+    
+    @Autowired
+    EforcesUsersgroupreleMapper eforcesUsersgroupDao;
 
+    @Autowired
+    EforcesUsersgroupMapper userGroupDao;
 
 	@Override
 	public PageInfo<EforcesUser> selectAllUser(Integer page,Integer size,EforcesUser record) {
@@ -117,12 +130,82 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int addUser(EforcesUser record) {
-		return UserDao.insertSelective(record);
+	@Transactional(rollbackFor = Exception.class)
+	public int addUser(EforcesUser user) {
+		Integer rst = UserDao.insertSelective(user);
+		List<EforcesUsersgrouprele> list = new ArrayList<EforcesUsersgrouprele>();
+		if (StringUtils.isNotEmpty(user.getGroupid())) {
+            String[] split = user.getGroupid().split(",");
+            for (int i = 0; i < split.length; i++) {
+                EforcesUsersgrouprele role = new EforcesUsersgrouprele();
+                role.setUsername(user.getNumber());
+                role.setGroupid(Integer.parseInt(split[i]));
+                role.setUserid(user.getId());
+                list.add(role);
+            }
+        }
+        int k = eforcesUsersgroupDao.insertForeach(list);
+		return rst;
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public int deleteByid(List<Integer> array) {
+		//批量删除用户分组信息。
+		eforcesUsersgroupDao.deleteByUserIdList(array);
 		return UserDao.deleteByid(array);
+	}
+	
+	/*
+	 *根据等级对用户进行修改权限
+	 *和分配部门
+	 *管理人员还没有设置。
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Integer updateUserBySign(EforcesUser userInfo, Integer level) {
+		// TODO Auto-generated method stub
+		/*
+		 * 给用户分配部门
+		 * 16	总经理室
+		 * 生成小号的时候，
+		 * */ 
+		userInfo.setDepartid(16);
+		userInfo.setDepartname("总经理室");
+		Integer rst = UserDao.updateByPrimaryKeySelective(userInfo);
+		/*
+		 * 设置用户权限
+		 */
+		List<EforcesUsersgroup> groupList = userGroupDao.selectAllIGroup();
+		Map<Integer, EforcesUsersgroup>  groupMap = new HashMap<Integer, EforcesUsersgroup>();
+		if(groupList != null && groupList.size() > 0){
+			for(int i = 0 ; i < groupList.size(); i++) {
+				EforcesUsersgroup  groupItem = groupList.get(i);
+				if(groupItem != null && groupItem.getGroupname() != null ) {
+					if(groupItem.getGroupname().indexOf("A") > -1) {
+						groupMap.put(1, groupItem);
+					}else if(groupItem.getGroupname().indexOf("B") > -1) {
+						groupMap.put(2, groupItem);
+					}else if(groupItem.getGroupname().indexOf("C") > -1) {
+						groupMap.put(3, groupItem);
+					}else if(groupItem.getGroupname().indexOf("D") > -1) {
+						groupMap.put(4, groupItem);
+					}
+				}
+			}
+		}
+		if(groupMap.containsKey(level)) {
+			EforcesUsersgroup groupItem = groupMap.get(level);
+			if(groupItem != null ) {
+				EforcesUsersgrouprele  userGroupRele = new EforcesUsersgrouprele();
+				userGroupRele.setUserid(userInfo.getId());
+				userGroupRele.setUsername(userInfo.getNumber());
+				userGroupRele.setGroupid(groupItem.getId());
+				eforcesUsersgroupDao.insert(userGroupRele);
+			}
+		}
+		
+		
+		return null;
 	}
 }

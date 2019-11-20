@@ -5,11 +5,13 @@ import org.kuaidi.bean.domain.EforcesUsersgrouprele;
 import java.util.List;
 
 public interface EforcesUsersgroupreleMapper {
+	
     int deleteByPrimaryKey(Integer id);
 
     int deleteByUserId(Integer id);
 
-
+    int deleteByUserIdList(List<Integer> array);
+    
     int insert(EforcesUsersgrouprele record);
 
     int insertForeach(List<EforcesUsersgrouprele> list);
@@ -21,4 +23,6 @@ public interface EforcesUsersgroupreleMapper {
     int updateByPrimaryKeySelective(EforcesUsersgrouprele record);
 
     int updateByPrimaryKey(EforcesUsersgrouprele record);
+    
+
 }

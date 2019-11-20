@@ -86,4 +86,9 @@ public interface EforcesTransportedscanMapper {
      * @return
      */
 	int updateState0(List<String> billsNumber);
+	
+	/*
+	 * 根据订单号查询订单
+	 */
+	List<EforcesTransportedscan> selectByBillsnumberList(Object billsNumber);
 }

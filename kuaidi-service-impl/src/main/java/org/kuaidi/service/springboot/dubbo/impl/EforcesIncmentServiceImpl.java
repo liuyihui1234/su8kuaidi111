@@ -4,8 +4,9 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesIncment;
-import org.kuaidi.bean.domain.EforcesSentScan;
+import org.kuaidi.bean.domain.EforcesRegion;
 import org.kuaidi.dao.EforcesIncmentMapper;
+import org.kuaidi.dao.EforcesRegionMapper;
 import org.kuaidi.iservice.IEforcesIncmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,11 +19,14 @@ public class EforcesIncmentServiceImpl implements IEforcesIncmentService {
 
     @Autowired
     EforcesIncmentMapper incmentMapper;
+    
+    @Autowired
+    EforcesRegionMapper regionDao; 
 
     @Override
     public int insetIncment(EforcesIncment eforcesIncment) {
         int rst = incmentMapper.insertSelective(eforcesIncment);
-        if(rst > 0 ) {
+        if(rst > 0) {
         	return eforcesIncment.getId();
         }
         return 0;

@@ -36,7 +36,7 @@ public interface IEforcesMenusService {
 
     List<HashMap> getAllMenuTree(String userid);
     
-    int getMaxNumberByParentId(String parentId);
+    Integer getMaxNumberByParentId(String parentId);
     
     List<EforcesMenus> getMenuByParentId(String parentId);
     

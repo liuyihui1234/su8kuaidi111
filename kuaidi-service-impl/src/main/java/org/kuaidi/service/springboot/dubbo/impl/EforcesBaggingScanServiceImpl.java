@@ -82,6 +82,6 @@ public class EforcesBaggingScanServiceImpl implements IEforcesBiggingScanService
 		PageHelper.startPage(page,size);
 		List<Map<String, Object>> receiveScan = receiveScanMapper.getAllBaggingScan(incid);
 		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(receiveScan);
-		return null;
+		return pageInfo;
 	}
 }

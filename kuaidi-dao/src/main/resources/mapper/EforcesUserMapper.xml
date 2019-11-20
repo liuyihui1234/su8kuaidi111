@@ -100,9 +100,9 @@
             and
             incname like CONCAT('%',#{incname},'%')
         </if>
-        <if test="departname !=null and departname != ''">
+        <if test="departid !=null and departid != ''">
             and
-            departname like CONCAT('%',#{departname},'%')
+            departid like CONCAT('%',#{departid},'%')
         </if>
     </select>
     

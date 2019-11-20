@@ -35,6 +35,8 @@ public class Config {
 	public static final String REDISWEBLOGINPREX = "WEB:LOGIN:";
 	// app端登录前缀
 	public static final String REDISAPPLOGINPREX = "APP_LOGIN:";
+	
+	public static final String REDISBILLSPREX = "FINISH_BILLSNUMBER";
 	// web图形验证码前缀
 	public static final String WEBCODE = "WEB:CODE:";
 

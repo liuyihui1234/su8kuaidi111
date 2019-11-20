@@ -32,8 +32,19 @@
   <select id="selectByBillsnumber" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from eforces_transportedscan
+    from eforces_transportedscan 
     where billsnumber = #{billsnumber,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByBillsnumberList" resultMap="BaseResultMap">
+  	select
+    <include refid="Base_Column_List" />
+    from eforces_transportedscan
+    where flag = 0  and
+    billsnumber in 
+    <foreach collection="list" item="billsnumber" index="index" open="(" close=")" separator="," >
+      	#{billsnumber,jdbcType=VARCHAR}
+    </foreach>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

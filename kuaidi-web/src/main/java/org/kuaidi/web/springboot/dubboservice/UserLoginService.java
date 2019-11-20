@@ -270,16 +270,8 @@ public class UserLoginService {
 	/*
 	 * 在选择省市县之前，保存用户的信息。
 	 */
-	public ResultVo crtUserNUmber(Integer userId) {
-		if (userId == null || userId < 0) {
-			return ResultUtil.exec(false, "参数错误！", null);
-		}
+	public JSONObject crtUserNumber(String incId) {
 		try {
-			EforcesUser userInfo = userService.selectUserById(userId);
-			if (userInfo == null) {
-				return ResultUtil.exec(false, "参数错误！", null);
-			}
-			String incId = userInfo.getIncid();
 			String nextUserNum = "";
 			if (incId != null && incId.length() > 0) {
 				String currentNum = userService.getNextNumber(incId);
@@ -291,21 +283,15 @@ public class UserLoginService {
 				}
 			}
 			//根据incId
-			
 			EforcesIncment incment =  incentService.selectByNumber(incId);
-			
 			String netName = incment.getMnemonic() == null ? "" : incment.getMnemonic().trim();
-			
 			JSONObject data = new JSONObject();
 			data.put("userNum", nextUserNum);
 			data.put("netName", netName);
-			if (userId == 0) {
-				return ResultUtil.exec(false, "保存用户信息失败！", null);
-			}
-			return ResultUtil.exec(true, "保存用户信息成功！", data);
+			return  data;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultUtil.exec(false, "保存用户信息失败！", null);
+			return null ;
 		}
 	}
 

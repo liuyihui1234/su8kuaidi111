@@ -51,7 +51,6 @@ public class RegionService {
 			return ResultUtil.exec(false, "查询失败", null);
 		}
 	}
-	
 	/*
 	 * 根据code查找对应的记录
 	 */
@@ -78,8 +77,7 @@ public class RegionService {
 			return ResultUtil.exec(false, "获得地区信息失败", null);
 		}
 	}
-	
-	/***
+	/*
 	 * * 查找省市县网点，
 	 * @param parentCode  父节点的id
 	 * @return
@@ -103,7 +101,6 @@ public class RegionService {
 					}
 				}
 			}
-			
 			return ResultUtil.exec(false, "查询结果为空", null);
 		} catch (Exception e) {
 			e.printStackTrace();

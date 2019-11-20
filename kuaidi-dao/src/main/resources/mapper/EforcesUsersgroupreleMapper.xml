@@ -24,7 +24,15 @@
     delete from eforces_usersgrouprele
     where userid = #{userid,jdbcType=INTEGER}
   </delete>
-
+  
+  <delete id="deleteByUserIdList" parameterType="java.lang.Integer">
+  delete from eforces_usersgrouprele
+  where userid in 
+	  <foreach collection="list" index="index" item="ids"
+			open="(" close=")" separator=",">
+			#{ids}
+		</foreach>
+  </delete>
 
   <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesUsersgrouprele">
     insert into eforces_usersgrouprele (id, userid, username, 

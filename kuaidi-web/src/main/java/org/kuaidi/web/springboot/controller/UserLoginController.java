@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/login/")
@@ -189,7 +187,22 @@ public class UserLoginController {
     @RequestMapping("crtUserNumber")
     @ResponseBody
     public ResultVo crtUserNumber(Integer userId) {
-        return userLoginService.crtUserNUmber(userId);
+    	if (userId == null || userId < 0) {
+			return ResultUtil.exec(false, "参数错误！", null);
+		}
+    	EforcesUser userInfo = userService.selectUserById(userId);
+		if (userInfo == null || StringUtils.isEmpty(userInfo.getIncid())) {
+			return ResultUtil.exec(false, "用户信息有误，请确定！", null);
+		}
+		JSONObject data = userLoginService.crtUserNumber(userInfo.getIncid());
+		if(data == null) {
+			return ResultUtil.exec(false, "生成用户编号失败！", null);
+		}
+		String userNum = data.getString("userNum");
+		if(userNum != null && !userNum.endsWith("001")) {
+			return ResultUtil.exec(false, "该账户已经有网签用户，请联系客服！", null);
+		}
+    	return ResultUtil.exec(true, "生成用户编号成功！", data);
     }
 
     /**
@@ -246,7 +259,7 @@ public class UserLoginController {
     }
 
     /**
-               * 短信验证码测试
+     * 短信验证码测试
      *(实名制认证的时候用)
      *
      * @param telephone
@@ -295,5 +308,4 @@ public class UserLoginController {
         redisUtil.del(Config.REDISAPPLOGINPREX+token);
         return ResultUtil.exec(true, "退出成功！", null);
     }
-
 }

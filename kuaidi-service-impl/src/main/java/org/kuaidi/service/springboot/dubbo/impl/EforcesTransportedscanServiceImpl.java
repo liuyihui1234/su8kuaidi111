@@ -119,4 +119,10 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
 		// TODO Auto-generated method stub
 		return transportedscan.updateState0(billsNumber);
 	}
+
+	@Override
+	public List<EforcesTransportedscan> selectByBillsnumberList(List<String> billsnumber) {
+		// TODO Auto-generated method stub
+		return transportedscan.selectByBillsnumberList(billsnumber);
+	}
 }

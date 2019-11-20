@@ -95,7 +95,7 @@ public class EforcesMenusServiceImpl implements IEforcesMenusService {
 	}
 
 	@Override
-	public int getMaxNumberByParentId(String parentId) {
+	public Integer getMaxNumberByParentId(String parentId) {
 		return daoMapper.selectMaxNumberByParentId(parentId);
 	}
 

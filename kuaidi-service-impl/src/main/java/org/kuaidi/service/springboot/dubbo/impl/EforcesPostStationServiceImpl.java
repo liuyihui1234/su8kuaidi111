@@ -46,11 +46,9 @@ public class EforcesPostStationServiceImpl implements  IEforcesPostStationServic
 	public List<EforcesPostStation> getPostStationByincNumbers(List<String> numbers, float longtitude, float latitude) throws RuntimeException {
 		// TODO Auto-generated method stub
 		Map<String , Object> map = new HashMap<String,Object>();
-		
 		map.put("list", numbers);
 		map.put("longtitude", longtitude);
 		map.put("latitude", latitude);
-		
 		List<EforcesPostStation> result = daoMapper.selectPostStationByincNumbers(map);
 		return result;
 	}

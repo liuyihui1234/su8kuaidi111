@@ -109,4 +109,10 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 		return rectoOrderDao.getRectoOrderByNumber(incNum, Numbers);
 	}
 
+	@Override
+	public EforcesRectoOrder getByOrderNumber(String orderNumber) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getRectoOrderByOrderNumber(orderNumber);
+	}
+
 }

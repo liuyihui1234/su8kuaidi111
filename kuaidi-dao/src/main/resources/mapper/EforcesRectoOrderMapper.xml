@@ -108,6 +108,13 @@
 		</if>
 	</select>
 	
+	<select id="getRectoOrderByOrderNumber" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from eforces_rectoorder
+		where  isDelete = 0  
+		and number = ${orderNumber}  ORDER BY  scanTime  limit 1 
+	</select>
+	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
 		delete from eforces_rectoorder

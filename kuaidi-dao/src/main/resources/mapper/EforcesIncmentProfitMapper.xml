@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesIncmentProfitMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesIncmentProfit">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="incid" jdbcType="VARCHAR" property="incid" />
+    <result column="incname" jdbcType="VARCHAR" property="incname" />
+    <result column="billsnumber" jdbcType="VARCHAR" property="billsnumber" />
+    <result column="profit" jdbcType="REAL" property="profit" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="billstime" jdbcType="TIMESTAMP" property="billstime" />
+    <result column="operateusernumber" jdbcType="VARCHAR" property="operateusernumber" />
+    <result column="profittype" jdbcType="INTEGER" property="profittype" />
+    <result column="bigZoneName" jdbcType="VARCHAR" property="bigzonename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, incid, incname, billsnumber, profit, createtime, billstime, operateusernumber, 
+    profittype, bigZoneName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_incmentprofit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getIncmentProfitByParam" resultType="java.util.HashMap">
+	  	SELECT profit.incid , min(profit.incname) as incname , min(profit.bigZoneName) as bigZoneName, 
+		count(*)as totalRecord , sum(profit.profit) as totalProfit from eforces_incmentprofit  profit 
+		join eforces_incment inc on profit.incId = inc.number  
+		where 1 = 1  
+	    <if test="parentIncNumber != null and parentIncNumber != ''">
+	    	and  inc.parentid = #{parentIncNumber} 
+	    </if>
+	    <if test="incName != null and incName != ''">
+	    	and  profit.incname like  CONCAT('%', #{incName} ,'%')
+	    </if>
+	    group by   profit.incid 
+  </select>
+  
+  <select id="getIncmentProfitByIncName" resultType="java.util.HashMap">
+	  	SELECT profit.incid , min(profit.incname) as incname , min(profit.bigZoneName) as bigZoneName, 
+		count(*)as totalRecord , sum(profit.profit) as totalProfit from eforces_incmentprofit  profit 
+		where 1 = 1  
+	    <if test="incName != null and incName != ''">
+	    	and  profit.incname like CONCAT('%', #{incName} ,'%')
+	    </if>
+	    group by   profit.incid 
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_incmentprofit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesIncmentProfit">
+    insert into eforces_incmentprofit (id, incid, incname, 
+      billsnumber, profit, createtime, 
+      billstime, operateusernumber, profittype, 
+      bigZoneName)
+    values (#{id,jdbcType=INTEGER}, #{incid,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR}, 
+      #{billsnumber,jdbcType=VARCHAR}, #{profit,jdbcType=REAL}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{billstime,jdbcType=TIMESTAMP}, #{operateusernumber,jdbcType=VARCHAR}, #{profittype,jdbcType=INTEGER}, 
+      #{bigzonename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertList" parameterType="org.kuaidi.bean.domain.EforcesIncmentProfit">
+    insert into eforces_incmentprofit (incid, incname, 
+      billsnumber, profit, createtime, 
+      billstime, operateusernumber, profittype, 
+      bigZoneName)
+    values 
+    <foreach collection="list" item="incmentProfit" index="index" separator=",">
+      (#{incmentProfit.incid,jdbcType=VARCHAR}, #{incmentProfit.incname,jdbcType=VARCHAR}, 
+      #{incmentProfit.billsnumber,jdbcType=VARCHAR}, #{incmentProfit.profit,jdbcType=REAL}, NOW(), 
+      #{incmentProfit.billstime,jdbcType=TIMESTAMP}, #{incmentProfit.operateusernumber,jdbcType=VARCHAR}, 
+      #{incmentProfit.profittype,jdbcType=INTEGER},#{incmentProfit.bigzonename,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesIncmentProfit">
+    insert into eforces_incmentprofit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="incid != null">
+        incid,
+      </if>
+      <if test="incname != null">
+        incname,
+      </if>
+      <if test="billsnumber != null">
+        billsnumber,
+      </if>
+      <if test="profit != null">
+        profit,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="billstime != null">
+        billstime,
+      </if>
+      <if test="operateusernumber != null">
+        operateusernumber,
+      </if>
+      <if test="profittype != null">
+        profittype,
+      </if>
+      <if test="bigzonename != null">
+        bigZoneName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="incid != null">
+        #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="billsnumber != null">
+        #{billsnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null">
+        #{profit,jdbcType=REAL},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billstime != null">
+        #{billstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateusernumber != null">
+        #{operateusernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="profittype != null">
+        #{profittype,jdbcType=INTEGER},
+      </if>
+      <if test="bigzonename != null">
+        #{bigzonename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesIncmentProfit">
+    update eforces_incmentprofit
+    <set>
+      <if test="incid != null">
+        incid = #{incid,jdbcType=VARCHAR},
+      </if>
+      <if test="incname != null">
+        incname = #{incname,jdbcType=VARCHAR},
+      </if>
+      <if test="billsnumber != null">
+        billsnumber = #{billsnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null">
+        profit = #{profit,jdbcType=REAL},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billstime != null">
+        billstime = #{billstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateusernumber != null">
+        operateusernumber = #{operateusernumber,jdbcType=VARCHAR},
+      </if>
+      <if test="profittype != null">
+        profittype = #{profittype,jdbcType=INTEGER},
+      </if>
+      <if test="bigzonename != null">
+        bigZoneName = #{bigzonename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesIncmentProfit">
+    update eforces_incmentprofit
+    set incid = #{incid,jdbcType=VARCHAR},
+      incname = #{incname,jdbcType=VARCHAR},
+      billsnumber = #{billsnumber,jdbcType=VARCHAR},
+      profit = #{profit,jdbcType=REAL},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      billstime = #{billstime,jdbcType=TIMESTAMP},
+      operateusernumber = #{operateusernumber,jdbcType=VARCHAR},
+      profittype = #{profittype,jdbcType=INTEGER},
+      bigZoneName = #{bigzonename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

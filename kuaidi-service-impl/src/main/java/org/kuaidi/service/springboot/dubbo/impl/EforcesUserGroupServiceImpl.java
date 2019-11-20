@@ -15,7 +15,8 @@ import java.util.List;
 
 @Service(version = "1.0.0")
 public class EforcesUserGroupServiceImpl implements IEforcesUserGroupService {
-    @Autowired
+    
+	@Autowired
     EforcesUsersgroupMapper eforcesUsersgroupMapper;
 
 
@@ -49,6 +50,12 @@ public class EforcesUserGroupServiceImpl implements IEforcesUserGroupService {
 	public int deleteByid(List<Integer> array) {
 		// TODO Auto-generated method stub
 		return eforcesUsersgroupMapper.deleteByid(array);
+	}
+
+	@Override
+	public List<EforcesUsersgroup> selectAllUserGroup() {
+		// TODO Auto-generated method stub
+		return eforcesUsersgroupMapper.selectAllIGroup();
 	}
 
 }

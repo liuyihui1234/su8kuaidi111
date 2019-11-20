@@ -44,7 +44,7 @@ public interface EforcesUserMapper {
      * @return
      */
     int updateMsg(int id,String Name,String Mobile);
-
+    
     int insertSelective(EforcesUser record);
     
     int updateByPrimaryKeySelective(EforcesUser record);

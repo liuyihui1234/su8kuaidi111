@@ -120,8 +120,12 @@ public class MenuService {
   	public ResultVo addMenu(EforcesMenus record) {
         try {
         	Integer number=menusService.getMaxNumberByParentId(record.getParentid());
-        	System.err.println(number);
-        	record.setNumber(number+1);
+        	if(number == null ) {
+        		record.setNumber(1);
+        	}else {
+	        	System.err.println(number);
+	        	record.setNumber(number+1);
+        	}
         	menusService.newMenu(record);
         	return ResultUtil.exec(false, "添加成功！", null);
         } catch (Exception e) {

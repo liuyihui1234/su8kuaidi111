@@ -2,8 +2,6 @@ package org.kuaidi.iservice;
 
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesUsersgroup;
-import org.kuaidi.bean.domain.EforcesVersioninfo;
-
 import java.util.List;
 
 public interface IEforcesUserGroupService {
@@ -12,6 +10,8 @@ public interface IEforcesUserGroupService {
      * @return
      */
     PageInfo<EforcesUsersgroup> selectAllIGroup(Integer page, Integer limit);
+    
+    List<EforcesUsersgroup> selectAllUserGroup();
 
     EforcesUsersgroup selectByPrimaryKey(Integer id);
 
@@ -21,7 +21,5 @@ public interface IEforcesUserGroupService {
     Integer addUserGroup(EforcesUsersgroup userGroup);
 
 	int deleteByid(List<Integer> array);
-
-
 
 }

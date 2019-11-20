@@ -36,7 +36,7 @@
   insert into eforces_receivedscan
   ( billsnumber,createtime,flightsnumber,goodstype,expresstype,
   expressid,laststop,laststopname,scantype,scanners,
-  scannerid,incname,incid,scantime,amount,tranname,bz)
+  scannerid,incname,incid,scantime,amount,tranname,bz,isBagBill)
   values
   <foreach collection="list" item="item" index="index" separator=",">
     (
@@ -56,7 +56,8 @@
     now(),
       #{item.amount},
     #{item.tranname},
-    #{item.bz}
+    #{item.bz},
+    #{item.isBagBill}
     )
   </foreach>
 </insert>
@@ -106,7 +107,7 @@
   
   <select id="getAllBaggingScan" resultType="java.util.Map">
 		select
-		sentScan.*, bagging.code as code
+		receivedScan.*, bagging.code as code
 		from
 		eforces_baggingscan  bagging join eforces_receivedscan  receivedScan
 		on  bagging.Numberlist = receivedScan.billsnumber

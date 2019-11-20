@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesShareProfitMapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesShareProfit">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="total" jdbcType="REAL" property="total" />
+    <result column="province" jdbcType="REAL" property="province" />
+    <result column="city" jdbcType="REAL" property="city" />
+    <result column="area" jdbcType="REAL" property="area" />
+    <result column="areastreet" jdbcType="REAL" property="areastreet" />
+    <result column="company" jdbcType="REAL" property="company" />
+    <result column="fromprovinceid" jdbcType="VARCHAR" property="fromprovinceid" />
+    <result column="toprovinceid" jdbcType="VARCHAR" property="toprovinceid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, total, province, city, area, areastreet, company, fromprovinceid, toprovinceid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_shareprofit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAllShareProfit" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from eforces_shareprofit
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_shareprofit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
+    insert into eforces_shareprofit (id, type, total, 
+      province, city, area, areastreet, 
+      company, fromprovinceid, toprovinceid
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{total,jdbcType=REAL}, 
+      #{province,jdbcType=REAL}, #{city,jdbcType=REAL}, #{area,jdbcType=REAL}, #{areastreet,jdbcType=REAL}, 
+      #{company,jdbcType=REAL}, #{fromprovinceid,jdbcType=VARCHAR}, #{toprovinceid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
+    insert into eforces_shareprofit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="areastreet != null">
+        areastreet,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="fromprovinceid != null">
+        fromprovinceid,
+      </if>
+      <if test="toprovinceid != null">
+        toprovinceid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=REAL},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=REAL},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=REAL},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=REAL},
+      </if>
+      <if test="areastreet != null">
+        #{areastreet,jdbcType=REAL},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=REAL},
+      </if>
+      <if test="fromprovinceid != null">
+        #{fromprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovinceid != null">
+        #{toprovinceid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
+    update eforces_shareprofit
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=REAL},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=REAL},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=REAL},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=REAL},
+      </if>
+      <if test="areastreet != null">
+        areastreet = #{areastreet,jdbcType=REAL},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=REAL},
+      </if>
+      <if test="fromprovinceid != null">
+        fromprovinceid = #{fromprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="toprovinceid != null">
+        toprovinceid = #{toprovinceid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
+    update eforces_shareprofit
+    set type = #{type,jdbcType=INTEGER},
+      total = #{total,jdbcType=REAL},
+      province = #{province,jdbcType=REAL},
+      city = #{city,jdbcType=REAL},
+      area = #{area,jdbcType=REAL},
+      areastreet = #{areastreet,jdbcType=REAL},
+      company = #{company,jdbcType=REAL},
+      fromprovinceid = #{fromprovinceid,jdbcType=VARCHAR},
+      toprovinceid = #{toprovinceid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

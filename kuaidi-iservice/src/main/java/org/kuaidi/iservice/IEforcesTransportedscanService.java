@@ -4,8 +4,6 @@ import com.github.pagehelper.PageInfo;
 
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesTransportedscan;
-
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -57,6 +55,11 @@ public interface IEforcesTransportedscanService {
      * @return
      */
     EforcesTransportedscan selectByBillsnumber(String billsnumber);
+    
+    /*
+             * 根据订单查询转运信息
+     */
+    List<EforcesTransportedscan> selectByBillsnumberList(List<String> billsnumber);
 
     /**
      * 根据主键 动态修改对应的转运记录详情

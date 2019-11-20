@@ -11,14 +11,14 @@ import org.kuaidi.iservice.IEforcesUserGroupService;
 import org.kuaidi.iservice.IEforcesUserGrouproleService;
 import org.kuaidi.iservice.UserService;
 import org.kuaidi.utils.Md5Util;
-import org.kuaidi.web.springboot.webcontroller.UserGroupManage;
+import org.kuaidi.utils.SubStrUtil;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class UserMangerService {
+	
     @Reference(version = "1.0.0")
     IEforcesUserGroupService iEforcesUserGroupService;
     @Reference(version = "1.0.0")
@@ -77,7 +77,7 @@ public class UserMangerService {
         	}
         	Integer rst = iEforcesUserGroupService.updateUserGroup(groupDb);
         	if(rst > 0 ) {
-        		return ResultUtil.exec(true, "编辑用户租成功！", groupDb);
+        		return ResultUtil.exec(true, "编辑用户组成功！", groupDb);
         	}
         	return ResultUtil.exec(false, "编辑用户租失败！", null);
     	}catch(Exception e) {
@@ -101,14 +101,23 @@ public class UserMangerService {
 
     public ResultVo addSyetemUser(EforcesUser user) {
         try {
-
             if(StringUtils.isEmpty(user.getPassword())){
                 user.setPassword(Md5Util.encode("123456"));
             }else {
                 user.setPassword(Md5Util.encode(user.getPassword()));
             }
+            String incNumber = user.getIncid();
+    		if(StringUtils.isNotEmpty(incNumber)) {
+    			user.setIncnumber(incNumber);
+    			String maxNumber = userService.getNextNumber(incNumber);
+    			String currentNumber = "001";
+    			if(StringUtils.isNotEmpty(maxNumber)) {
+    				currentNumber = SubStrUtil.getSubStrNext(maxNumber,incNumber,3);
+    			}
+    			user.setNumber(incNumber + currentNumber);
+    		}
             int i = userService.addUser(user);
-            if(i>0){
+            if(i > 0){
                 return ResultUtil.exec(true, "添加成功", null);
             }
         } catch (Exception e) {
@@ -118,7 +127,7 @@ public class UserMangerService {
         return ResultUtil.exec(false, "添加失败！", null);
     }
 
-
+    
     public ResultVo deleteUserByID(List<Integer> list) {
         try {
             int i = userService.deleteByid(list);
@@ -194,8 +203,29 @@ public class UserMangerService {
         }
         return ResultUtil.exec(false, "删除失败！", null);
 	}
-
-
-
-
+	
+	/*
+	 *对手机号进行校验
+	 **/
+	public ResultVo  validataPhone(String phone , Integer type, Integer userId) {
+		List<EforcesUser> userList = userService.selectUserByPhone(phone);
+		if(userList == null || userList.size() == 0 ) {
+			return ResultUtil.exec(true, "校验成功！", null);
+		}
+		boolean flage = true; 
+		for(int i = 0 ; i < userList.size(); i++) {
+			EforcesUser userInfo = userList.get(i);
+			if(userInfo != null && StringUtils.equals(userInfo.getMobile(), phone)) {
+				if(type == 1 && userInfo.getId().equals(userId)) {
+					continue;
+				}
+				flage = false;	
+				break;
+			}
+		}
+		if(flage) {
+			return ResultUtil.exec(flage, "校验成功！", null); 
+		}
+		return ResultUtil.exec(false, "手机号已存在，请确定！", null); 
+	}
 }

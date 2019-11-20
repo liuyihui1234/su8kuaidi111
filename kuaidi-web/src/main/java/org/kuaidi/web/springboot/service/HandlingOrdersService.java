@@ -615,7 +615,7 @@ public class HandlingOrdersService {
                         	List<EforcesLogisticStracking> strackingList = new ArrayList<EforcesLogisticStracking>();
                         	for(int i = 0 ; i < receiveScanList.size()  ; i++) {
                         		EforcesReceivedScan sentReceivedItem = receiveScanList.get(i);
-                        		String description = "快件到达【%】，上一站是【%s】,扫描员是【%s】";
+                        		String description = "快件到达【%s】，上一站是【%s】,扫描员是【%s】";
                                 String lastStopName = "";
                                 if(StringUtils.equals(sentReceivedItem.getLaststop(), "")) {
                                 	lastStopName  = sentReceivedItem.getLaststop();

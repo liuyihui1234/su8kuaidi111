@@ -40,5 +40,7 @@ public interface EforcesRectoOrderMapper {
     
     List <EforcesRectoOrder> getRectoOrderByNumber(@Param("incNum") String incNum , @Param("Numbers")List<String> Numbers);
 	
+    EforcesRectoOrder getRectoOrderByOrderNumber(String orderNumber);
+    
     
 }

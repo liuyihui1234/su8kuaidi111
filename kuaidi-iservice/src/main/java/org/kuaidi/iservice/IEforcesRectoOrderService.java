@@ -11,6 +11,8 @@ public interface IEforcesRectoOrderService {
 	
 	EforcesRectoOrder getById(Integer id);
 	
+	EforcesRectoOrder getByOrderNumber(String  orderNumber);
+	
 	PageInfo<EforcesRectoOrder> getAll(Integer page,Integer size,Integer incid);
 	
 	Integer deleteById(List<Integer> id);
