@@ -27,6 +27,7 @@ import org.kuaidi.iservice.IEforcesSentscanService;
 import org.kuaidi.iservice.IEforceslogisticstrackingService;
 import org.kuaidi.utils.JBarCodeUtil;
 import org.kuaidi.web.springboot.core.authorization.Authorization;
+import org.kuaidi.web.springboot.core.authorization.NeedUserInfo;
 import org.kuaidi.web.springboot.util.AliyunOSS.AppReplaceOSSUtil;
 import org.kuaidi.web.springboot.util.redis.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -372,6 +373,7 @@ public class AppOrderController {
 	@RequestMapping("insertOrder")
 	@CrossOrigin
 	@Authorization
+	@NeedUserInfo
 	public ResultVo insertOrder(HttpServletRequest request, EforcesOrder record,
 				EforcesOrderIdentity orderIdentity){
 		try {

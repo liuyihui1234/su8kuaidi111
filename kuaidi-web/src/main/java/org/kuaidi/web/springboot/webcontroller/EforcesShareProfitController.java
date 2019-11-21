@@ -7,6 +7,8 @@ import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.iservice.IEforcesIncmentProfitService;
+import org.kuaidi.web.springboot.util.ProfitShare;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +22,9 @@ public class EforcesShareProfitController {
 	
 	@Reference(version = "1.0.0")
 	private IEforcesIncmentProfitService  profitService; 
+	
+	@Autowired
+	private ProfitShare profitShare; 
 	
 	
 	@ResponseBody
@@ -44,5 +49,13 @@ public class EforcesShareProfitController {
             return ResultUtil.exec(1,10,0,null);
         }
     }
+	
+	@ResponseBody
+    @RequestMapping("shareProfitDetail")
+    @CrossOrigin
+    public PageVo shareProfitDetail(String  billsNums){
+		profitShare.shareProfit(billsNums);
+		return null; 
+	}
 
 }
