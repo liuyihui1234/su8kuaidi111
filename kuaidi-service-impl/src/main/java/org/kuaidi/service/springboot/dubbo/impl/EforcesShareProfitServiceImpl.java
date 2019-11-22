@@ -7,6 +7,9 @@ import org.kuaidi.dao.EforcesShareProfitMapper;
 import org.kuaidi.iservice.IEforcesShareProfitService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.dubbo.config.annotation.Service;
+
+@Service(version = "1.0.0")
 public class EforcesShareProfitServiceImpl implements IEforcesShareProfitService {
 	
 	@Autowired

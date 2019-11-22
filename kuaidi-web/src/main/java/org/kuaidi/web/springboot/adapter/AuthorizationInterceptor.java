@@ -64,7 +64,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor  {
 					EforcesIncment eforcesIncment = (EforcesIncment)JSONObject.toBean(incInfo, EforcesIncment.class);
 					request.setAttribute("user", eforcesUser);
 					request.setAttribute("inc", eforcesIncment);
-					redisUtil.setExpire(Config.REDISAPPLOGINPREX + token, 20*60);
+					redisUtil.setExpire(Config.REDISAPPLOGINPREX + token, 24*60*60);
 				}
 				return true;
 			}
@@ -91,7 +91,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor  {
 					EforcesIncment eforcesIncment = (EforcesIncment)JSONObject.toBean(incInfo, EforcesIncment.class);
 					request.setAttribute("user", eforcesUser);
 					request.setAttribute("inc", eforcesIncment);
-					redisUtil.setExpire(Config.REDISAPPLOGINPREX + token, 20*60);
+					redisUtil.setExpire(Config.REDISAPPLOGINPREX + token, 24*60*60);
 					return true; 
 				}
 			}

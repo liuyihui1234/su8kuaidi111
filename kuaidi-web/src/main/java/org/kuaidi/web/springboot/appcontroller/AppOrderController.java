@@ -373,7 +373,6 @@ public class AppOrderController {
 	@RequestMapping("insertOrder")
 	@CrossOrigin
 	@Authorization
-	@NeedUserInfo
 	public ResultVo insertOrder(HttpServletRequest request, EforcesOrder record,
 				EforcesOrderIdentity orderIdentity){
 		try {

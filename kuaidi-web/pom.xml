@@ -277,6 +277,13 @@
 	  <artifactId>weixin-java-miniapp</artifactId>
 	  <version>3.5.0</version>
 	</dependency>
+	
+	<!-- excel 文件导出 -->
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi</artifactId>
+	    <version>3.17</version>
+	</dependency>
 
   </dependencies>
     <build>

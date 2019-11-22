@@ -2,6 +2,8 @@ package org.kuaidi.web.springboot.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+
+import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesAppointment;
 import org.kuaidi.bean.domain.EforcesIncment;
@@ -49,9 +51,21 @@ public class AppointmentDubboService {
      */
     public ResultVo addAppointment(EforcesAppointment eforcesAppointment){
         try {
+        	if(StringUtils.isEmpty(eforcesAppointment.getFromprovince())) {
+        		return ResultUtil.exec(false,"下单失败","请选择订单的发送省份！");
+        	}
+        	if(StringUtils.isEmpty(eforcesAppointment.getFromcity())) {
+        		return ResultUtil.exec(false,"下单失败","请选择订单的发送城市！");
+        	}
+        	if(StringUtils.isEmpty(eforcesAppointment.getFromarea())) {
+        		return ResultUtil.exec(false,"下单失败","请选择订单的发送区县！");
+        	}
+        	if(StringUtils.isEmpty(eforcesAppointment.getFromareastreet())) {
+        		return ResultUtil.exec(false,"下单失败","请选择订单的发送街道！");
+        	}
             eforcesAppointment.setNumber(orderUtil.getOrderNumber(eforcesAppointment.getFromareastreet()));
             int a = appointmentService.insertAppointment(eforcesAppointment);
-            if(a>0){
+            if(a > 0){
                 return ResultUtil.exec(true,"下单成功",null);
             }
             return ResultUtil.exec(false,"下单失败",null);
@@ -195,7 +209,6 @@ public class AppointmentDubboService {
                         	record.setCreateincnumber(userInfo.getIncid());
                         	record.setCreateuserid(userInfo.getNumber());
                         }
-                        System.out.println(record.getCreateuserid());
                         record.setNumber(appointment.getNumber());
                         record.setFromname(appointment.getFromname());
                         record.setFromcity(appointment.getFromcity());
@@ -235,7 +248,6 @@ public class AppointmentDubboService {
                         }
                         record.setFilename(appointment.getFilename());
                         record.setNum(appointment.getNum());
-                        record.setWeight(appointment.getWeight());
                         record.setLongs(appointment.getLongs());
                         record.setWidths(appointment.getWidths());
                         record.setHeights(appointment.getHeights());
@@ -251,6 +263,11 @@ public class AppointmentDubboService {
                         	record.setPrice(new BigDecimal(18F));
                         }else {
                         	record.setPrice(appointment.getPrice());
+                        }
+                        if(appointment.getWeight() != null) {
+                        	record.setWeight(appointment.getWeight());
+                        }else {
+                        	record.setWeight(new BigDecimal(1));
                         }
                         record.setSendmode(appointment.getSendmode());
                         record.setModeprice(appointment.getModeprice());

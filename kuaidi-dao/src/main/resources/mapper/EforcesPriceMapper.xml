@@ -47,8 +47,33 @@
     select 
     <include refid="Base_Column_List"/>
     from eforces_price
-    where  type = #{status,jdbcType=VARCHAR}  and fromProvinceId  = #{fromProvinceId,jdbcType=VARCHAR}  and 
-    toProvinceId  = #{toProvinceId,jdbcType=VARCHAR} 
+    where  isDelete = 0  
+    <if test="status != null and status != ''">
+    	and type = #{status,jdbcType=VARCHAR} 
+    </if>
+     <if test="fromProvinceId != null and fromProvinceId != ''">
+    	 and fromProvinceId  = #{fromProvinceId,jdbcType=VARCHAR} 
+    </if>
+    <if test="toProvinceId != null and toProvinceId != '' ">
+     	and toProvinceId  = #{toProvinceId,jdbcType=VARCHAR} 
+    </if>
+  </select>
+  
+  <select id="selectByParam"  resultType="java.util.Map">
+    select 
+    price.id, price.fromprovinceid, price.toprovinceid, price.firstweight, price.firstprice, price.continueweight, price.continueprice, 
+    price.type, region1.`name` as fromProvinceName , region2.`name` as toProvinceName    from  eforces_price  price  left    JOIN eforces_region   region1  on  price.fromProvinceId = region1.code
+ 	left  JOIN eforces_region   region2  on  price.toProvinceId = region2.code
+    where  price.isDelete = 0  
+    <if test="status != null and status != ''">
+    	and price.type = #{status,jdbcType=VARCHAR} 
+    </if>
+    <if test="fromProvinceId != null and fromProvinceId != ''">
+    	 and price.fromProvinceId  = #{fromProvinceId,jdbcType=VARCHAR} 
+    </if>
+    <if test="toProvinceId != null and toProvinceId != '' ">
+     	and price.toProvinceId  = #{toProvinceId,jdbcType=VARCHAR} 
+    </if>
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

@@ -10,6 +10,8 @@ public class ShareMoney {
 	private float  baseWeightReceiveMoney = 0 ; 
 	
 	private float addWeightReceiveMoney = 0 ;
+	
+	private Integer addWeight = 0 ; 
 
 	public float getBaseWeightSendMoney() {
 		return baseWeightSendMoney;
@@ -41,6 +43,14 @@ public class ShareMoney {
 
 	public void setAddWeightReceiveMoney(float addWeightReceiveMoney) {
 		this.addWeightReceiveMoney = addWeightReceiveMoney;
+	}
+
+	public Integer getAddWeight() {
+		return addWeight;
+	}
+
+	public void setAddWeight(Integer addWeight) {
+		this.addWeight = addWeight;
 	} 
 
 }

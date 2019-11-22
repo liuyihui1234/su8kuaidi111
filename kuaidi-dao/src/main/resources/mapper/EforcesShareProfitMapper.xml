@@ -12,9 +12,10 @@
     <result column="company" jdbcType="REAL" property="company" />
     <result column="fromprovinceid" jdbcType="VARCHAR" property="fromprovinceid" />
     <result column="toprovinceid" jdbcType="VARCHAR" property="toprovinceid" />
+    <result column="weight" jdbcType="VARCHAR" property="weight" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, type, total, province, city, area, areastreet, company, fromprovinceid, toprovinceid
+    id, type, total, province, city, area, areastreet, company, fromprovinceid, toprovinceid,weight
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -34,11 +35,11 @@
   <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
     insert into eforces_shareprofit (id, type, total, 
       province, city, area, areastreet, 
-      company, fromprovinceid, toprovinceid
+      company, fromprovinceid, toprovinceid,weight
       )
     values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{total,jdbcType=REAL}, 
       #{province,jdbcType=REAL}, #{city,jdbcType=REAL}, #{area,jdbcType=REAL}, #{areastreet,jdbcType=REAL}, 
-      #{company,jdbcType=REAL}, #{fromprovinceid,jdbcType=VARCHAR}, #{toprovinceid,jdbcType=VARCHAR}
+      #{company,jdbcType=REAL}, #{fromprovinceid,jdbcType=VARCHAR}, #{toprovinceid,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
@@ -74,6 +75,9 @@
       <if test="toprovinceid != null">
         toprovinceid,
       </if>
+      <if test="weight != null">
+        weight,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -105,6 +109,9 @@
       </if>
       <if test="toprovinceid != null">
         #{toprovinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -138,6 +145,9 @@
       <if test="toprovinceid != null">
         toprovinceid = #{toprovinceid,jdbcType=VARCHAR},
       </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -151,7 +161,8 @@
       areastreet = #{areastreet,jdbcType=REAL},
       company = #{company,jdbcType=REAL},
       fromprovinceid = #{fromprovinceid,jdbcType=VARCHAR},
-      toprovinceid = #{toprovinceid,jdbcType=VARCHAR}
+      toprovinceid = #{toprovinceid,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,17 +1,16 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
 import java.util.List;
-
+import java.util.Map;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesPrice;
 import org.kuaidi.dao.EforcesPriceMapper;
 import org.kuaidi.iservice.IEforcesPrice;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.alibaba.dubbo.config.annotation.Service;
 
-@Service(version = "1.0.0")
+@Service(version = "1.0.0", interfaceClass=IEforcesPrice.class,timeout=12000)
 public class EforcesPriceImpl implements IEforcesPrice {
 	
 	@Autowired
@@ -30,10 +29,10 @@ public class EforcesPriceImpl implements IEforcesPrice {
 	 * @return
 	 */
 	@Override
-	public PageInfo<EforcesPrice> getByPrice(Integer pageNum, Integer pageSize) {
+	public PageInfo<Map<String,Object>> getByPrice(Integer pageNum, Integer pageSize, String fromProvince , String toProvince, String status) {
 		PageHelper.startPage(pageNum,pageSize);
-		List<EforcesPrice> list = eforcesPriceDao.getByPrice();
-		final PageInfo<EforcesPrice> pageInfo = new PageInfo<>(list);
+		List<Map<String,Object>> list = eforcesPriceDao.selectByParam(fromProvince, toProvince, status);
+		final PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
 
@@ -65,6 +64,12 @@ public class EforcesPriceImpl implements IEforcesPrice {
 	@Override
 	public int insertSelective(EforcesPrice record) {
 		return eforcesPriceDao.insertSelective(record);
+	}
+
+	@Override
+	public List<Map<String, Object>> getPriceByParam(String fromProvince, String toProvince, String status) {
+		// TODO Auto-generated method stub
+		return eforcesPriceDao.selectByParam(fromProvince, toProvince, status);
 	}
 
 }
