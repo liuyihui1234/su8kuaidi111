@@ -1,14 +1,11 @@
 package org.kuaidi.web.springboot.webcontroller;
 
-import java.util.Date;
 
-import org.kuaidi.bean.domain.EforcesBaggingScan;
 import org.kuaidi.bean.domain.EforcesCusinformation;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
 import org.kuaidi.bean.vo.ResultVo;
-import org.kuaidi.iservice.IEforcesBiggingScanService;
 import org.kuaidi.iservice.IEforcesCusinformationService;
 import org.kuaidi.web.springboot.dubboservice.CusinformationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @RestController

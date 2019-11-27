@@ -105,7 +105,7 @@
         #{forceUpdateFlage,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},,
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

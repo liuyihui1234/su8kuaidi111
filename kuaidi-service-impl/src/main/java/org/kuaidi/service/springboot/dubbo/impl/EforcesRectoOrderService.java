@@ -2,9 +2,8 @@ package org.kuaidi.service.springboot.dubbo.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
-import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
 import org.kuaidi.dao.EforcesOrderMapper;
@@ -12,7 +11,6 @@ import org.kuaidi.dao.EforcesRectoOrderMapper;
 import org.kuaidi.iservice.IEforcesRectoOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -114,5 +112,24 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 		// TODO Auto-generated method stub
 		return rectoOrderDao.getRectoOrderByOrderNumber(orderNumber);
 	}
+
+	@Override
+	public List<Map<String, Object>> getRecToListByInc(String province, String city, String incNum, String startTime,
+			String endTime) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getRecToListByInc(province, city, incNum , startTime ,endTime);
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getRecToListByPage(Integer pageNum, Integer pageSize, String province,
+			String city, String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> list =rectoOrderDao.getRecToListByInc(province, city, incNum , startTime ,endTime);;
+		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+	
+	
 
 }

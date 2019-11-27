@@ -42,18 +42,21 @@ public class AppoinmentController {
 
     @RequestMapping("findAppointmentByStreet")
     @CrossOrigin
+    @Authorization
     public PageVo doFindAppointmentByStreet(Integer pageNum, Integer pageSize, String fromareastreet){
         return appointmentDubboService.findAppointmentByStreet(pageNum,pageSize,fromareastreet);
     }
 
     @RequestMapping("alterStatus1ById")
     @CrossOrigin
+    @Authorization
     public ResultVo doAlterStatus1ById(Integer id,String acceptid,String acceptname){
         return appointmentDubboService.alterStatus1ById(id,acceptid,acceptname);
     }
 
     @RequestMapping("findAppointment1ByAcceptid")
     @CrossOrigin
+    @Authorization
     public PageVo doFindAppointment1ByAcceptid(Integer pageNum, Integer pageSize, String acceptid)throws IOException{
         return appointmentDubboService.findAppointment1ByAcceptid(pageNum,pageSize,acceptid);
     }

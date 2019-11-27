@@ -18,7 +18,7 @@ public class EforcesVersionInfoController {
     IEforcesVersioninfoService versioninfoService;
 
     /**
-     * 查询版本控制信息
+             * 查询版本控制信息
      * @return
      */
     @GetMapping("Version")
@@ -34,7 +34,7 @@ public class EforcesVersionInfoController {
     }
 
     /**
-     * 修改版本控制信息
+            * 修改版本控制信息
      * @param versioninfo
      * @return
      */
@@ -87,4 +87,5 @@ public class EforcesVersionInfoController {
             return ResultUtil.exec(false,"删除失败",0);
         }
     }
+    
 }

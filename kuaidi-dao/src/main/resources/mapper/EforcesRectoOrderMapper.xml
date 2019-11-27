@@ -91,6 +91,39 @@
 		#{userNumber,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="getRecToListByInc" resultType="java.util.Map">
+		 select r.departid,r.departname as incname,sum(case when r.number is null then 0 else 1 end) sjps,
+			sum(case when r.number is not null and r.incname is null then 1 else 0 end) sjwcz, sum(case when r.number is not null and r.onumber is null then 1 else 0 end) sjwld,
+			sum(case when r.number is not null and r.billsnumber is null then 1 else 0 end) sjwfj from (select 
+			r.number,r.scanman,r.postmanname,r.postmanid,r.departname,r.departid,r.scanmanid,w.incname,o.number as onumber,s.billsnumber from  eforces_rectoorder r  left join 
+			eforces_weighingscan   w on r.number=w.billsnumber and r.departid=w.incid left join eforces_order o on r.number=o.number  left join eforces_sentscan s on r.number=s.billsnumber and r.departid=s.incid
+   			 where r.isDelete = 0 
+		<if test="incNum != null and incNum != ''">
+			 and r.departid  = CONCAT(#{incNum},'%') 
+		</if>
+		<if test="startTime != null and startTime != ''">
+			and r.scantime  &gt;= #{startTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and r.scantime  &lt;= #{endTime,jdbcType=VARCHAR}
+		</if>
+		<choose>
+		 <when test="province != null or city != null">
+			) r left join eforces_incment i on r.departid=i.number where i.istransfer=0
+			<if test="city != null and city != ''">
+				and i.province =  #{province,jdbcType=VARCHAR}
+			</if>
+			<if test="city != null and city != ''">
+				and i.city =  #{city,jdbcType=VARCHAR}
+			</if>
+		</when>
+		<otherwise>
+		)  r 
+    	</otherwise>
+    	</choose>
+		group by r.departname,r.departid
+	</select>
+	
 	<select id="getRectoOrderByNumber" resultMap="BaseResultMap">
 		select
 			<include refid="Base_Column_List" />
@@ -101,8 +134,7 @@
 		</if>
 		<if test="Numbers != null and  Numbers.size() > 0 ">
 			and number in 
-			<foreach collection="Numbers" index="index" item="item"
-						open="(" close=")" separator=",">
+			<foreach collection="Numbers" index="index" item="item" open="(" close=")" separator=",">
 				${item}
 			</foreach>
 		</if>

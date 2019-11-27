@@ -47,7 +47,6 @@ public class EforcesUserAddressController {
 		return ResultUtil.exec(pageNum, pageSize, 0,null);
 	}
 	
-	
 	@RequestMapping("addUserAddress")
     @ResponseBody
     @Authorization

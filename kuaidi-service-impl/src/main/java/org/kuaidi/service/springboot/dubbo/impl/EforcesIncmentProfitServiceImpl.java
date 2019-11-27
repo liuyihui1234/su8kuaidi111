@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesIncmentProfit;
+import org.kuaidi.bean.domain.EforcesShareProfit;
 import org.kuaidi.dao.EforcesIncmentMapper;
 import org.kuaidi.dao.EforcesIncmentProfitMapper;
+import org.kuaidi.dao.EforcesShareProfitMapper;
 import org.kuaidi.iservice.IEforcesIncmentProfitService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,6 +28,9 @@ public class EforcesIncmentProfitServiceImpl implements IEforcesIncmentProfitSer
 	
 	@Autowired
 	private EforcesIncmentMapper  incmentDao;
+	
+	@Autowired
+	private EforcesShareProfitMapper  shareProfitDao; 
 
 	@Override
 	public Integer saveAllList(List<EforcesIncmentProfit> incprofit) {
@@ -80,7 +86,7 @@ public class EforcesIncmentProfitServiceImpl implements IEforcesIncmentProfitSer
 	public PageInfo<Map<String, Object>> getIncmentProfitByPage(int page, int pageSize, String parentId, String incName) {
 		// TODO Auto-generated method stub
 		PageHelper.startPage(page,pageSize);
-		List<Map<String,Object>>  list = incmentProfitDao.getIncmentProfitByIncName(incName);
+		List<Map<String,Object>>  list = null;
 		if(StringUtils.isEmpty(parentId)) {
 			 list = incmentProfitDao.getIncmentProfitByIncName(incName);
 		}else {
@@ -90,5 +96,8 @@ public class EforcesIncmentProfitServiceImpl implements IEforcesIncmentProfitSer
 		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
+
+	
+	
 
 }

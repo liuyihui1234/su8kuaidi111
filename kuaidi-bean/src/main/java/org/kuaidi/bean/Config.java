@@ -11,12 +11,13 @@ public class Config {
 	//默认的分页每页显示记录的条数。
 	public static final int pageSize = 15 ;
 
-
 	public static final  int  signDays = 7 ;
 	public static final int   signPoint = 10 ;
 
 	//订单号自增部分的长度
 	public static final int ORDER_SIZE = 3;
+	
+	public static final long APP_LOGIN_TIMEOUT = 24 * 60 * 60;
 
 	//OSS存储加前缀路径
 	public static final  String oosUrlPath = "http://kuaibasuyun.oss-cn-beijing.aliyuncs.com/";

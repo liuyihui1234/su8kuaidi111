@@ -112,6 +112,7 @@ public class UserLoginController {
                 user1 = userList.get(0);
             }
         }
+        
         if (user1 == null) {
             return ResultUtil.exec(false, "账户不存在！", null);
         } else {
@@ -122,8 +123,15 @@ public class UserLoginController {
                 JSONObject data = new JSONObject();
                 data.put("userInfo", userInfo);
                 EforcesIncment incment = incentService.selectByNumber(user1.getIncnumber());
-                if (StringUtils.isNotEmpty(incment.getLevel() + "")) {
-                    incment.setNumber(incment.getNumber().substring(0, incment.getLevel() * 2));
+                if (StringUtils.isNotEmpty(incment.getLevel() + "")  && incment.getLevel() > 0 ) {
+                	String incNumber = incment.getNumber().substring(0, incment.getLevel() * 2);
+                	if(StringUtils.equals(incNumber, "00")) {
+                		incNumber = "";
+                	}
+                    incment.setNumber(incNumber);
+                }else {
+                	String incNumber = "";
+                	incment.setNumber(incNumber);
                 }
                 JSONObject incInfo = JSONObject.fromObject(incment);
                 data.put("incInfo", incInfo);

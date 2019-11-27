@@ -1,6 +1,8 @@
 package org.kuaidi.iservice;
 
 import java.util.List;
+import java.util.Map;
+
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesRectoOrder;
 import com.github.pagehelper.PageInfo;
@@ -22,5 +24,10 @@ public interface IEforcesRectoOrderService {
 	void setById(EforcesRectoOrder record);
 	
 	List <EforcesRectoOrder> getRectoOrderByNumber(String incNum ,List<String> Numbers);
+	
+	List<Map<String, Object>> getRecToListByInc(String province , String city, String incNum , String startTime , String endTime);
+	
+	PageInfo<Map<String, Object>> getRecToListByPage(Integer pageNum , Integer pageSize , 
+			String province , String city, String incNum , String startTime , String endTime);
 	
 }

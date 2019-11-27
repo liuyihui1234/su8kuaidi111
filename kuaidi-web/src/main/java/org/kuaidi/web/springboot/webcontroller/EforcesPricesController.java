@@ -35,8 +35,6 @@ public class EforcesPricesController {
     @CrossOrigin
     public void getPriceExcelByParam(HttpServletResponse response ,String fromProvince , String toProvince, String status){
         try {
-        	System.out.println(fromProvince);
-        	System.out.println(toProvince);
             List<Map<String,Object>> result = price.getPriceByParam( fromProvince, toProvince, status);
             // 对数据进行封装。
             String[] header = {"ID", "发件省份", "目的地省份", "首重", "首重价格", "续重","续重价格", "类型"};
@@ -142,7 +140,6 @@ public class EforcesPricesController {
             			}
             			text = new HSSFRichTextString(continuepriceInt);
                         cell.setCellValue(text);
-                        
                         cell = row.createCell(7);
                         String  type = (String)priceItem.get("type");
                         String typeStr = "";
@@ -156,11 +153,11 @@ public class EforcesPricesController {
             		}
                 }
             }
-          //准备将Excel的输出流通过response输出到页面下载
+            //准备将Excel的输出流通过response输出到页面下载
             //八进制输出流
             response.setContentType("application/octet-stream");
             //这后面可以设置导出Excel的名称，此例中名为student.xls
-            response.setHeader("Content-disposition", "attachment;filename=student.xls");
+            response.setHeader("Content-disposition", "attachment;filename=kuaidiprice.xls");
             //刷新缓冲
             response.flushBuffer();
             //workbook将Excel写入到response的输出流中，供页面下载
@@ -169,7 +166,7 @@ public class EforcesPricesController {
             e.printStackTrace();
         }
     }
-
+    
     /**
      * 获取所有地区所有价格信息
      * @param page

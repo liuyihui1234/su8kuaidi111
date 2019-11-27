@@ -21,10 +21,8 @@ import com.alibaba.dubbo.config.annotation.Reference;
 @RequestMapping("/web/user/")
 public class UserController {
 
-
 	@Reference(version = "1.0.0")
 	UserService userService;
-	
 	
 	@RequestMapping("getByDepartName")
 	@CrossOrigin

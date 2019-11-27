@@ -102,4 +102,9 @@ public class TimeDayUtil {
         System.out.println("明天："+year);
         return year;
     }
+    
+    public static String getCurrentDate() {
+    	SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+    	return format.format(new Date());
+    }
 }

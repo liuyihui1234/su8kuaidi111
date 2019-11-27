@@ -28,10 +28,39 @@
     <include refid="Base_Column_List" />
     from eforces_shareprofit
   </select>
+  
+  <select id="getShareProfitByParam" resultType="java.util.Map">
+  		SELECT profit.*,  region1.name as fromprovincename , region2.name as toprovincename    from eforces_shareprofit   profit 
+		left join  eforces_region region1 on profit.fromprovinceid = region1.`code`  
+		LEFT JOIN eforces_region region2 on  profit.toprovinceid = region2.`code`  where  1 = 1 
+		<if test="fromProvince != null and fromProvince != ''">
+			 and profit.fromprovinceid = #{fromProvince,jdbcType=VARCHAR}
+		</if>
+		<if test="toProvince != null and toProvince != ''">
+			and profit.toprovinceid = #{toProvince,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null and status != ''">
+			and type = #{status,jdbcType=INTEGER}
+		</if>
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from eforces_shareprofit
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+  <!-- 直接删除 -->
+  <delete id="deleteByIds">
+    delete from eforces_shareprofit
+    where
+    id
+    in
+    <foreach collection="array" item="id"
+		     index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </delete>
+  
   <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesShareProfit">
     insert into eforces_shareprofit (id, type, total, 
       province, city, area, areastreet, 
