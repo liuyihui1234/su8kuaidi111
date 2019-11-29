@@ -4,6 +4,8 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
+import java.util.Map;
+
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesSentScan;
 import org.kuaidi.bean.vo.DubboMsgVO;
@@ -114,5 +116,21 @@ public class EforcesSentScanServiceImpl implements IEforcesSentscanService {
 		return rst; 
 	}
 
+	@Override
+	public List<Map<String, Object>> getSentOrderStatisticListByParam(String province, String city, String area, String incNum,
+			String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return sentscanMapper.getSentOrderListByParam(province, city, area, incNum, startTime, endTime);
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getSentOrderStatisticListByPage(Integer pageNum, Integer pageSize, String province,
+			String city, String area, String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> sentScan = sentscanMapper.getSentOrderListByParam(province, city, area, incNum, startTime, endTime);
+		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(sentScan);
+		return pageInfo;
+	}
 
 }

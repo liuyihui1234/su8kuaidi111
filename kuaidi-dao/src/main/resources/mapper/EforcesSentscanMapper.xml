@@ -54,10 +54,6 @@
 		billsnumber, bz
 	</sql>
 
-
-
-
-
 	<!-- 批量将发件信息插入数据库 -->
 	<insert id="insertList" parameterType="java.util.List">
 		insert into eforces_sentscan
@@ -145,6 +141,40 @@
 	<select id="selectCount" resultType="java.lang.Integer">
 		SELECT count(*) from eforces_order bill join eforces_sentscan scan on
 		bill.Number = scan.billsnumber where scan.incid = #{incid}
+	</select>
+	
+	<select id="getSentOrderListByParam"  resultType= "java.util.Map">
+			select incid,incname,count(*) fjps,sum(case when rid is null then 1 else 0 end) wsj
+			from (select s.incid,s.incname,r.id as rid 
+			from eforces_sentscan  s left join eforces_rectoorder  r on s.billsnumber=r.number and r.departid=s.incid where 
+			s.isDelete = 0  
+			<if test="incNum != null and incNum != ''">
+				 and s.incid  = CONCAT(#{incNum},'%') 
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and s.scantime  &gt;= #{startTime,jdbcType=VARCHAR}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and s.scantime  &lt;= #{endTime,jdbcType=VARCHAR}
+			</if>
+			 <choose>
+			 <when test="province != null or city != null">
+				)s left join eforces_incment i on i.number=s.incid where i.istransfer=0
+				<if test="province != null and province != ''">
+					and i.province =  #{province,jdbcType=VARCHAR}
+				</if>
+				<if test="city != null and city != ''">
+					and i.city =  #{city,jdbcType=VARCHAR}
+				</if>
+				<if test="area != null  and  area != ''">
+					and i.area = #{area,jdbcType=VARCHAR}
+				</if>
+			</when>
+			<otherwise>
+			)  s 
+	    	</otherwise>
+	    	</choose>
+			group by s.incid ,s.incname
 	</select>
 
 	<select id="selectByPrimaryKey"

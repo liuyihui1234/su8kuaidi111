@@ -25,9 +25,9 @@ public interface IEforcesRectoOrderService {
 	
 	List <EforcesRectoOrder> getRectoOrderByNumber(String incNum ,List<String> Numbers);
 	
-	List<Map<String, Object>> getRecToListByInc(String province , String city, String incNum , String startTime , String endTime);
+	List<Map<String, Object>> getRecToListByInc(String province , String city, String area,String incNum , String startTime , String endTime);
 	
 	PageInfo<Map<String, Object>> getRecToListByPage(Integer pageNum , Integer pageSize , 
-			String province , String city, String incNum , String startTime , String endTime);
+			String province , String city, String area , String incNum , String startTime , String endTime);
 	
 }

@@ -98,6 +98,14 @@ public interface EforcesReceivedScanMapper {
 	 * 查询收包记录
 	 */
 	List<Map<String, Object>> getAllBaggingScan(String incid);
-    
+	
+	
+	/*
+	 * 收件统计
+	 */
+	List<Map<String, Object>> getReceiveStatistics(@Param("SstartTime") String SstartTime,@Param("SendTime") String SendTime, 
+			@Param("RstartTime")  String RstartTime,@Param("RendTime")  String RendTime, 
+			@Param("incNum") String incNum, @Param("province") String province, 
+			@Param("city") String city,@Param("area") String area);
     
 }

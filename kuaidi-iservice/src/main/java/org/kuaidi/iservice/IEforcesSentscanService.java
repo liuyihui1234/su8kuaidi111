@@ -1,6 +1,7 @@
 package org.kuaidi.iservice;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesSentScan;
@@ -39,6 +40,12 @@ public interface IEforcesSentscanService {
      * @return
              */
     int listinsert (List<EforcesSentScan> list,List<EforcesLogisticStracking> strackingList);
+    
+    
+    List<Map<String, Object>> getSentOrderStatisticListByParam(String province , String city, String area,String incNum , String startTime , String endTime);
+	
+	PageInfo<Map<String, Object>> getSentOrderStatisticListByPage(Integer pageNum , Integer pageSize , 
+			String province , String city, String area , String incNum , String startTime , String endTime);
 
 
 }

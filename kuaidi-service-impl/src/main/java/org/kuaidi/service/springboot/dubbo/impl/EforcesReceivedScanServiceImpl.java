@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
-@Service(version = "1.0.0",interfaceClass=IEforcesReceivedscanService.class)
+@Service(version = "1.0.0",interfaceClass=IEforcesReceivedscanService.class,timeout=12000)
 public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanService {
     
     @Autowired
@@ -379,5 +379,23 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
 			rst = logisticStrackingMapper.insertSelectiveList(strackingList);
 		}
 		return rst; 
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getReceiveStatisticsByPage(Integer pageNum, Integer pageSize,
+			String SstartTime, String SendTime, String RstartTime, String RendTime, String incNum, String province,
+			String city, String area) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum,pageSize);
+        List<Map<String, Object>> list = receivedscanMapper.getReceiveStatistics(SstartTime, SendTime, RstartTime, RendTime, incNum, province, city, area);
+        final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+	}
+
+	@Override
+	public List<Map<String, Object>> getReceiveStatisticsByList(String SstartTime, String SendTime, String RstartTime,
+			String RendTime, String incNum, String province, String city, String area) {
+		// TODO Auto-generated method stub
+		return receivedscanMapper.getReceiveStatistics(SstartTime, SendTime, RstartTime, RendTime, incNum, province, city, area);
 	}
 }

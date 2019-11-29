@@ -41,4 +41,8 @@ public interface EforcesSentScanMapper {
     int insertList (List<EforcesSentScan> list);
 
     List<Map<String, Object>> getAllBaggingScan(String incid); 
+    
+    List<Map<String, Object>> getSentOrderListByParam(@Param("province")String province, @Param("city") String city,
+    		@Param("area") String area ,  @Param("incNum")String incNum, @Param("startTime")String startTime,
+			@Param ("endTime") String endTime);
 }

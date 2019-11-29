@@ -1,6 +1,7 @@
 package org.kuaidi.iservice;
 
 import java.util.List;
+import java.util.Map;
 
 import com.github.pagehelper.PageInfo;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
@@ -47,5 +48,13 @@ public interface IEforcesDistributedScanService {
 	int deleteByid(List<Integer> list);
 	
 	List<EforcesDistributedScan>  selectByBillNumber(String billsNum);
+	
+	PageInfo<Map<String,Object>> getDistributedStatisticsByPage(Integer pageNum , Integer pageSize,  String province , String city,
+	   		 String area , String incNum,  String startTime , String endTime);
+	
+	List<Map<String, Object>> getDistributedStatisticsByList( String province , String city,
+	   		 String area , String incNum,String startTime , String endTime);
+	
+	
 
 }

@@ -20,7 +20,7 @@ public interface IEforcesIncmentService {
      int deleteByid(List<Integer> array);
 
     PageInfo<EforcesIncment> selectAllIcrment(Integer curr, Integer nums,String parameter, String parentId);
-
+    
     EforcesIncment selectByPrimaryKey(Integer id);
 
     int insert(EforcesIncment record);

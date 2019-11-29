@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.webcontroller;
+package org.kuaidi.web.springboot.stasticscontroller;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,7 +17,6 @@ import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.vo.PageVo;
 import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
-import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesIncmentService;
 import org.kuaidi.iservice.IEforcesRectoOrderService;
 import org.kuaidi.utils.TimeDayUtil;
@@ -30,7 +29,7 @@ import com.github.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/web/rectoOrderStatics/")
-public class OrderStatisticsController {
+public class RectoOrderStatisticsController {
 	
 	 @Reference(version = "1.0.0")
 	 IEforcesRectoOrderService  rectoOrderService; 
@@ -42,7 +41,7 @@ public class OrderStatisticsController {
      @CrossOrigin
 	 @NeedUserInfo
      public PageVo getOrderShow(HttpServletRequest request , QueryPageVo page, String province , String city,
-    		 String startTime , String endTime){
+    		 String area , String startTime , String endTime){
     	 Integer pageNum = page.getPage();
     	 if(page.getPage() == null  ) {
     		 pageNum = 1;
@@ -53,7 +52,7 @@ public class OrderStatisticsController {
     	 }
     	 try {
     		 EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
-    		 PageInfo<Map<String, Object>> pageInfo = rectoOrderService.getRecToListByPage(pageNum, pageSize, province, city, incment.getNumber() , startTime, endTime);
+    		 PageInfo<Map<String, Object>> pageInfo = rectoOrderService.getRecToListByPage(pageNum, pageSize, province, city,area ,  incment.getNumber() , startTime, endTime);
         	 if(pageInfo != null && pageInfo.getTotal() > 0 ) {
         		 return ResultUtil.exec(pageNum, pageSize, pageInfo.getSize(), pageInfo.getList());
         	 }
@@ -67,11 +66,10 @@ public class OrderStatisticsController {
      @CrossOrigin
 	 @NeedUserInfo
      public void outExcelOrderShow(HttpServletResponse response, String incId,
-    		 String province , String city,
+    		 String province , String city, String area,
     		 String startTime , String endTime){
     	 try {
     		 EforcesIncment  incment =  incmentService.selectByNumber(incId);
-    		 
     		 /*
     		  * 将incNum 转化成前缀的形式。
     		  * */
@@ -86,7 +84,7 @@ public class OrderStatisticsController {
                 	 incNum = "";
                  }
     		 }
-    		 List<Map<String, Object>> list = rectoOrderService.getRecToListByInc(province, city, incNum , startTime, endTime);
+    		 List<Map<String, Object>> list = rectoOrderService.getRecToListByInc(province, city, area,incNum , startTime, endTime);
     		 String[] header = {"收件网点", "票数", "无称重", "无发件", "无录单"};
              //声明一个工作簿
              HSSFWorkbook workbook = new HSSFWorkbook();

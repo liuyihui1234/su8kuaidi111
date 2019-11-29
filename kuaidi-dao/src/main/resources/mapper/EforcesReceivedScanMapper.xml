@@ -119,6 +119,70 @@
 		</if>
 		 ORDER BY createtime desc 
   </select>
+  <select id="getReceiveStatistics"  resultType="java.util.Map">
+	  	select r.incid,r.incname,sum(case  when r.type=0 then 1 else 0 end) ygd,
+		sum(case  when r.type=2 then 1 else 0 end) wd,
+		sum(case when r.type=1 then 1 else 0 end) yjd from (
+	  		select 0 as type,s.scannerid,s.billsnumber,nextstop as incid,nextstopname as incname,s.id as sid 
+	 		from eforces_sentscan s  where s.isDelete = 0 
+	 		<if test="SstartTime != null and SstartTime != ''">
+	 			and s.scantime  &gt;= #{SstartTime}
+	 		</if>
+	 		<if test="SendTime != null and SendTime != '' ">
+	 			and s.scantime  &lt;= #{SendTime}
+	 		</if>
+	 		union all
+	 		 select 1 as type,r.scannerid,r.billsnumber,r.incid,r.incname,r.id as rid
+	     from eforces_receivedscan  r
+		  where exists
+				(select billsnumber from eforces_sentscan  s
+	     where r.billsnumber=s.billsnumber and r.incid=s.nextstop
+	     <if test="SstartTime != null and SstartTime != ''">
+			and s.scantime  &gt;= #{SstartTime}
+		</if>
+		<if test="SendTime != null and SendTime != '' ">
+			and s.scantime  &lt;= #{SendTime}
+		</if>
+		)
+		<if test="RstartTime != null and RstartTime != '' ">
+			and r.scantime  &gt;= #{RstartTime}
+		</if>
+		<if test="RendTime != null and RendTime != '' ">
+			and r.scantime  &lt;= #{RendTime}
+		</if>
+		union all
+		select 2 as type,s.scannerid,s.billsnumber,nextstop as incid,nextstopname as incname,s.id as sid from eforces_sentscan s
+			 where not exists (select billsnumber from eforces_receivedscan r where
+			 r.billsnumber=s.billsnumber and r.incid=s.nextstop 
+			 <if test="RstartTime != null and RstartTime != '' ">
+				and r.scantime  &gt;= #{RstartTime}
+			</if>
+			<if test="RendTime != null and RendTime != '' ">
+				and r.scantime  &lt;= #{RendTime}
+			</if>
+			)
+			<if test="SstartTime != null and SstartTime != ''">
+				and s.scantime  &gt;= #{SstartTime}
+			</if>
+			<if test="SendTime != null and SendTime != '' ">
+				and s.scantime  &lt;= #{SendTime}
+			</if>
+			)r left join eforces_incment i on i.number=r.incid
+			where  i.istransfer=0 
+			<if test="incNum != null and incNum != ''">
+				and r.incid like CONCAT(#{incNum},'%')
+			</if> 
+			<if test="province != null and province != '' ">
+				and i.province = #{province}
+			</if>
+			<if test="city != null and city != ''">
+				and i.city = #{city}
+			</if>
+			<if test="area != null and area != ''">
+				and i.area = #{area}
+			</if>
+			group by r.incid , r.incname
+  </select>
   
   <update id="updateById">
 		update

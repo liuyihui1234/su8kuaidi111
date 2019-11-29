@@ -138,6 +138,43 @@
 		</if>
 		ORDER BY createtime desc 
 	</select>
+	
+	<select id="getDistributedStatistics" resultType="java.util.Map">
+		select d.incname,d.incid,count(*) Pjnum, sum(case when cid is null then 0 else 1 end) Qsnum,sum(case when d.cid is null and sid is null then 1 else 0 end) wqs,
+		sum(case when d.sid is not null then 1 else 0 end) Lcnum  from 
+		(select d.postman,d.postmanid,d.incname,d.incid,c.id as cid,s.id as sid
+		 from  eforces_distributedscan d left join eforces_customersign c on d.billsnumber=c.number  
+		 left join eforces_stayedandtroubledscan  s on d.billsnumber=s.billsnumber
+		 where d.isDelete = 0 
+		<if test="incNum != null and incNum != ''">
+			 and d.incid   = CONCAT(#{incNum},'%') 
+		</if>
+		<if test="startTime != null and startTime != ''">
+			and d.createtime  &gt;= #{startTime,jdbcType=VARCHAR}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and d.createtime  &lt;= #{endTime,jdbcType=VARCHAR}
+		</if>
+		<choose>
+		 <when test="province != null or city != null">
+			) d left join eforces_incment i on d.incid =i.number where i.istransfer=0
+			<if test="province != null and province != ''">
+				and i.province =  #{province,jdbcType=VARCHAR}
+			</if>
+			<if test="city != null and city != ''">
+				and i.city =  #{city,jdbcType=VARCHAR}
+			</if>
+			<if test="area != null  and  area != ''">
+				and i.area = #{area,jdbcType=VARCHAR}
+			</if>
+		</when>
+		<otherwise>
+		)  d 
+    	</otherwise>
+    	</choose>
+		group by d.incid,d.incname
+	</select>
+	
 
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">

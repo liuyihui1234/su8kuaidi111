@@ -114,22 +114,25 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getRecToListByInc(String province, String city, String incNum, String startTime,
+	public List<Map<String, Object>> getRecToListByInc(String province, String city, String area,String incNum, String startTime,
 			String endTime) {
 		// TODO Auto-generated method stub
-		return rectoOrderDao.getRecToListByInc(province, city, incNum , startTime ,endTime);
+		return rectoOrderDao.getRecToListByInc(province, city, area,incNum , startTime ,endTime);
 	}
 
 	@Override
 	public PageInfo<Map<String, Object>> getRecToListByPage(Integer pageNum, Integer pageSize, String province,
-			String city, String incNum, String startTime, String endTime) {
+			String city,String area, String incNum, String startTime, String endTime) {
 		// TODO Auto-generated method stub
 		PageHelper.startPage(pageNum,pageSize);
-		List<Map<String, Object>> list =rectoOrderDao.getRecToListByInc(province, city, incNum , startTime ,endTime);;
+		List<Map<String, Object>> list =rectoOrderDao.getRecToListByInc(province, city, area, incNum , startTime ,endTime);;
 		final  PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
+
 	
+
+
 	
 
 }

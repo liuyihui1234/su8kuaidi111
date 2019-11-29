@@ -1,6 +1,8 @@
 package org.kuaidi.service.springboot.dubbo.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -8,7 +10,6 @@ import org.kuaidi.bean.domain.EforcesDistributedScan;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.dao.EforcesDistributedScanMapper;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
-import org.kuaidi.iservice.IEforcesCustomerSignService;
 import org.kuaidi.iservice.IEforcesDistributedScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +85,25 @@ public class EforcesDistributedScanImpl implements IEforcesDistributedScanServic
 	public List<EforcesDistributedScan> selectByBillNumber(String billsNum) {
 		// TODO Auto-generated method stub
 		return ScanMapper.selectByBillNumber(billsNum);
+	}
+
+
+	@Override
+	public PageInfo<Map<String, Object>> getDistributedStatisticsByPage(Integer pageNum, Integer pageSize,
+			String province, String city, String area,String incNum,  String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum,pageSize);
+		List<Map<String, Object>> list = ScanMapper.getDistributedStatistics(province, city, area,incNum,  startTime, endTime) ; 			
+		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getDistributedStatisticsByList(String province, String city, String area,
+			String incNum,  String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return ScanMapper.getDistributedStatistics(province, city, area,incNum, startTime, endTime);
 	}
 
 

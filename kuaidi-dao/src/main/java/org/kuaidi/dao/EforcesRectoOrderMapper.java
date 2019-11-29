@@ -44,7 +44,7 @@ public interface EforcesRectoOrderMapper {
     EforcesRectoOrder getRectoOrderByOrderNumber(String orderNumber);
 
 	List<Map<String, Object>> getRecToListByInc(@Param("province")String province, 
-			@Param("city") String city, @Param("incNum")String incNum, @Param("startTime")String startTime,
+			@Param("city") String city,@Param("area") String area ,  @Param("incNum")String incNum, @Param("startTime")String startTime,
 			@Param ("endTime") String endTime);
     
     

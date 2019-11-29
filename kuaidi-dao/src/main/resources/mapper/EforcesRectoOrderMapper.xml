@@ -110,11 +110,14 @@
 		<choose>
 		 <when test="province != null or city != null">
 			) r left join eforces_incment i on r.departid=i.number where i.istransfer=0
-			<if test="city != null and city != ''">
+			<if test="province != null and province != ''">
 				and i.province =  #{province,jdbcType=VARCHAR}
 			</if>
 			<if test="city != null and city != ''">
 				and i.city =  #{city,jdbcType=VARCHAR}
+			</if>
+			<if test="area != null  and  area != ''">
+				and i.area = #{area,jdbcType=VARCHAR}
 			</if>
 		</when>
 		<otherwise>

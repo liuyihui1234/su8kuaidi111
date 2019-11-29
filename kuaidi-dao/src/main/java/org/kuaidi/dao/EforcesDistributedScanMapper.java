@@ -1,6 +1,7 @@
 package org.kuaidi.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesDistributedScan;
@@ -42,5 +43,12 @@ public interface EforcesDistributedScanMapper {
                * 根据订单号查询该订单是否派送
      */
 	List<EforcesDistributedScan> selectByBillNumber(String billsNum);
+	
+	/*
+	 *查询派件统计信息。 
+	 */
+	List<Map<String, Object>> getDistributedStatistics(@Param("province") String province , @Param("city") String city,
+			@Param("area") String area ,@Param("incNum") String incNum, @Param("startTime")  String startTime , @Param("endTime") String endTime);
+	
 	
 }
