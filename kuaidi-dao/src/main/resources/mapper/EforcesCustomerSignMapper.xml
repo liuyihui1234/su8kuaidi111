@@ -49,6 +49,43 @@
     where Id = #{id,jdbcType=INTEGER}
     and isdelete = 0
   </select>
+  
+  <select id="webSitCustomSignByParam"  resultType="java.util.Map">
+  		select i.number , i.name , #{time,jdbcType=VARCHAR}  as time , sum(case when d.type=2 then 1 end) wtjnum,sum(case when d.type=1 then 1 end) num,
+		sum(case when d.type=0 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&lt;=10 and TIMESTAMPDIFF(MINUTE,#{time,jdbcType=VARCHAR},d.signtime) &lt; 630 then 1 end)num1,
+		sum(case when d.type=0 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&gt;=10 and TIMESTAMPDIFF(MINUTE,#{time,jdbcType=VARCHAR},d.signtime)&gt;=630 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&lt;12 then 1 end)num2,
+		sum(case when d.type=0 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&gt;=12 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&lt;15 then 1 end)num3,
+		sum(case when d.type=0 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&gt;=15 then 1 end)num4,
+		sum(case when d.type=1 and cid is null then 1 end)num5
+		from (
+			select 0 as type,c.number,d.id as did,c.incid,c.id as cid,c.signtime from eforces_customersign c
+			 left join(select d.billsnumber,d.id,d.incid from eforces_distributedscan  d    where TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},d.scantime)= 0
+			)d on d.billsnumber=c.number   where TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},c.signtime)= 0
+		  union all
+		     select 1 as type,d.billsnumber,d.id as did,d.incid,c.id as cid,c.signtime
+			from eforces_distributedscan  d 
+			 left join (select c.number,c.id,c.incid,c.signtime from eforces_customersign  c  where  TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},c.signtime)=0
+			)c on c.number=d.billsnumber  where  TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},d.scantime)=0
+		  union all
+			 select 2 as type,w.billsnumber,0,w.incid,0,w.scantime from
+			 eforces_stayedandtroubledscan  w   where   TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},w.scantime)=0 
+			  and 
+			 not exists(select billsnumber from eforces_distributedscan d where w.billsnumber=d.billsnumber )  and TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},w.scantime)=0
+		)d left join eforces_incment i on i.number = d.incid where i.istransfer=0 		    
+		<if test="incNum != null and incNum != ''">
+			and and i.number= #{incNum,jdbcType=VARCHAR}
+		</if>
+		<if test="province != null and province != ''">
+			and i.province =  #{province,jdbcType=VARCHAR}
+		</if>
+		<if test="city != null and city != ''">
+			and i.city =  #{city,jdbcType=VARCHAR}
+		</if>
+		<if test="area != null  and  area != ''">
+			and i.area = #{area,jdbcType=VARCHAR}
+		</if>
+		GROUP BY i.number , i.name
+  </select>
 
   <select id="selectByNumber" resultMap="BaseResultMap">
     select

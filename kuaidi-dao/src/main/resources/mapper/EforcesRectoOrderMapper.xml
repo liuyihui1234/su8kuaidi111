@@ -99,7 +99,7 @@
 			eforces_weighingscan   w on r.number=w.billsnumber and r.departid=w.incid left join eforces_order o on r.number=o.number  left join eforces_sentscan s on r.number=s.billsnumber and r.departid=s.incid
    			 where r.isDelete = 0 
 		<if test="incNum != null and incNum != ''">
-			 and r.departid  = CONCAT(#{incNum},'%') 
+			 and r.departid  like CONCAT(#{incNum},'%') 
 		</if>
 		<if test="startTime != null and startTime != ''">
 			and r.scantime  &gt;= #{startTime,jdbcType=VARCHAR}
@@ -127,6 +127,40 @@
 		group by r.departname,r.departid
 	</select>
 	
+	<select id="getRecToByRegion" resultType = "java.util.Map">
+		select c.code,c.name,sum(case when r.id is not null and o.paymode=2 then 1 else 0 end)qjs,sum(case when o.paymode=2 then o.price else 0 end)price,
+		sum(case when o.paymode=2 then o.sumprice else 0 end) sumprice,sum(case  when ISNULL(o.dshk)  = 1 then 0 else  o.dshk end)dshk from eforces_incment i
+		 left join eforces_region c on c.code=i.city  and c.level = 2 left join eforces_rectoorder r on i.number=r.departid left join eforces_order o on o.number=r.number 
+		 where o.paymode=2
+		 <if test="incNum != null and incNum != ''">
+				i.number like CONCAT(#{incNum},'%') 	 	
+		 </if>
+		 <if test="startTime != null and startTime != ''">
+		 	and r.scantime &gt;= #{startTime,jdbcType=VARCHAR}
+		 </if>
+		 <if test="endTime != null and endTime != ''">
+		 	and r.scantime  &lt;= #{endTime,jdbcType=VARCHAR}
+		 </if>	
+		 group by c.name,c.code
+	</select>
+	
+	<select id="getDeliveryByRegion" resultType = "java.util.Map">
+		select c.code,c.name,sum(case when d.id is not null and o.paymode=1 then 1 else 0 end )pjnum,sum(case when o.paymode=1 then o.price else 0 end)price,
+		sum(case when o.paymode=1 then o.sumprice else 0 end) sumprice,sum(case when ISNULL(o.dshk) = 1 then 0 else o.dshk end )dshk from  eforces_incment i
+		left join  eforces_distributedscan d on d.incid=i.number left join eforces_region c on c.code=i.city  and c.level = 2  left join eforces_order o on o.number=d.billsnumber
+		where o.paymode=1
+		 <if test="incNum != null and incNum != ''">
+				i.number like CONCAT(#{incNum},'%') 	 	
+		 </if>
+		 <if test="startTime != null and startTime != ''">
+		 	and r.scantime &gt;= #{startTime,jdbcType=VARCHAR}
+		 </if>
+		 <if test="endTime != null and endTime != ''">
+		 	and r.scantime  &lt;= #{endTime,jdbcType=VARCHAR}
+		 </if>	
+		 group by c.name,c.code
+	</select>
+	
 	<select id="getRectoOrderByNumber" resultMap="BaseResultMap">
 		select
 			<include refid="Base_Column_List" />
@@ -138,7 +172,7 @@
 		<if test="Numbers != null and  Numbers.size() > 0 ">
 			and number in 
 			<foreach collection="Numbers" index="index" item="item" open="(" close=")" separator=",">
-				${item}
+				${item} 
 			</foreach>
 		</if>
 	</select>

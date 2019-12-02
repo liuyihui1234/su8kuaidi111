@@ -1,7 +1,9 @@
 package org.kuaidi.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesCustomerSign;
 import org.omg.PortableInterceptor.INACTIVE;
 
@@ -41,5 +43,8 @@ public interface EforcesCustomerSignMapper {
     List<EforcesCustomerSign> getAllSign(String incid);
 
     int DeleteById(List<Integer> list);
+    
+    List<Map<String, Object>> webSitCustomSignByParam(@Param("incNum")String incNum, @Param("province")String province, @Param("city")String city,
+    		@Param("area") String area, @Param("time") String time);
 
 }

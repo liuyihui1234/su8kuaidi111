@@ -94,6 +94,26 @@
 	  ORDER BY  code asc 
   </select>
   
+  <select id="selectRegionByCodes1"  resultType="java.util.Map">
+   		select 
+	  <include refid="Base_Column_List" />,
+	  case when 
+			netsign.id is NULL 
+		THEN
+			FALSE
+		ELSE 
+		  TRUE
+		end
+		flag
+	    from eforces_region
+	    LEFT JOIN eforces_netsign netsign ON region.CODE = netsign.networkareacode
+	    where code  in   
+	  <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+		  #{id}
+	  </foreach>
+	  ORDER BY  code asc 
+  </select>
+  
   <select id="selectByParentCode" resultType="java.util.HashMap">
   	SELECT
 	region.*,

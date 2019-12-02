@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service(version = "1.0.0",interfaceClass=IEforcesCustomerSignService.class,timeout=12000)
 public class EforcesCustomerSignServiceImpl implements IEforcesCustomerSignService {
@@ -79,4 +80,21 @@ public class EforcesCustomerSignServiceImpl implements IEforcesCustomerSignServi
     public EforcesCustomerSign selectByNumber(String number) {
         return customerSignMapper.selectByNumber(number);
     }
+
+	@Override
+	public PageInfo<Map<String, Object>> webSitCustomSignByPage(Integer pageNum, Integer pageSize, String incNum,
+			String province, String city, String area, String time) {
+		// TODO Auto-generated method stub
+		 PageHelper.startPage(pageNum, pageSize);
+         List<Map<String, Object>> allSign = customerSignMapper.webSitCustomSignByParam(incNum, province, city, area, time);
+         final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(allSign);
+		 return pageInfo;
+	}
+
+	@Override
+	public List<Map<String, Object>> webSitCustomSignByParam(String incNum, String province, String city,
+			String area, String time) {
+		// TODO Auto-generated method stub
+		return customerSignMapper.webSitCustomSignByParam(incNum, province, city, area, time);
+	}
 }

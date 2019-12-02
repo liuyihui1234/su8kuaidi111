@@ -340,21 +340,24 @@ public class NetSignInfoService {
 		return rst;
 	}  
 	
-	public ResultVo selectProvinces(EforcesNetsign eforcesNetsign, Map<String,Object>map){
-        ResultVo rst ; 
+	public ResultVo selectProvinces(String netWorkCode){
+        ResultVo rst = null ; 
         try{
-            EforcesNetsign eforcesNetsign1 =  netSignService.selectProvinces(eforcesNetsign);
-            JSONObject data = new JSONObject();
-            if(eforcesNetsign1==null){
-                data.put("hasSigned",false);
-            }else{
-                data.put("hasSigned",true);
-            }
-            rst = ResultUtil.exec(true, "检查是否已经网签过成功", data);
-       
+        	if(StringUtils.isNotEmpty(netWorkCode)) {
+        		EforcesNetsign eforcesNetsign1 =  netSignService.selectByWebsitCode(netWorkCode);
+        		JSONObject data = new JSONObject();
+                if(eforcesNetsign1==null){
+                    data.put("hasSigned",false);
+                }else{
+                    data.put("hasSigned",true);
+                }
+                rst = ResultUtil.exec(true, "检查是否已经网签过成功", data);
+                return rst; 
+        	}
+        	return ResultUtil.exec(false, "检查是否已经网签过失败", null);
         }catch(Exception e){
             rst = ResultUtil.exec(false, "检查是否已经网签过失败", null);
-	}
+        }
         return rst;
     }
 

@@ -24,7 +24,9 @@ public interface IRegionService {
 	 * 
 	 */
 	List <EforcesRegion>   selectByRegionIds(List<String> regionIds);
-
+	
+	List <Map<String,Object>>   selectByRegionIds1(List<String> regionIds);
+	
     int saveRegion(EforcesRegion region);
 
     void updateRegionAll();

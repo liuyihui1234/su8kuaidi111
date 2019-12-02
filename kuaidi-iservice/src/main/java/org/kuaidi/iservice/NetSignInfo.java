@@ -15,7 +15,7 @@ public interface NetSignInfo {
 
 	Integer updateNetSignIdentityPics(Integer  netSignId, String identityFontPic , String identityBackPic);
 
-	EforcesNetsign selectProvinces(EforcesNetsign eforcesNetsign);
+	EforcesNetsign selectByWebsitCode(String  webSitCode);
 
 	 PageInfo<EforcesNetsign> selectNetsignSort(Integer pageNum , Integer rows , EforcesNetsign record);
 

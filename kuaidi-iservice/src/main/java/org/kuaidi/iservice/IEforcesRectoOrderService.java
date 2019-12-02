@@ -30,4 +30,14 @@ public interface IEforcesRectoOrderService {
 	PageInfo<Map<String, Object>> getRecToListByPage(Integer pageNum , Integer pageSize , 
 			String province , String city, String area , String incNum , String startTime , String endTime);
 	
+	/*
+	 * 始发地取件统计
+	 */
+	List<Map<String, Object>> getRecToByRegion(String incNum , String startTime ,String endTime);
+	
+	/*
+	 * 派件地派件统计
+	 */
+	List<Map<String, Object>> getDiliveryByRegion(String incNum , String startTime , String endTime);
+	
 }

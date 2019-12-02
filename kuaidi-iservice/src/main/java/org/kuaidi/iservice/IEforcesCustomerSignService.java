@@ -1,6 +1,7 @@
 package org.kuaidi.iservice;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuaidi.bean.domain.EforcesCustomerSign;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
@@ -64,4 +65,10 @@ public interface IEforcesCustomerSignService {
     int updateByPrimaryKeySelective(EforcesCustomerSign record);
 
     int DeleteById(List<Integer> id);
+    
+    PageInfo<Map<String,Object>>  webSitCustomSignByPage(Integer pageNum , Integer pageSize ,
+    		String  incNum , String province , String city , String area, String time);
+    
+    List<Map<String,Object>>  webSitCustomSignByParam(String  incNum , String province , 
+    		String city , String area, String time);
 }

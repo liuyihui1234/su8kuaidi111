@@ -126,4 +126,10 @@ public class RegionServiceImpl implements IRegionService {
 		return eforcesRegionDao.getRegionListByName(name);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectByRegionIds1(List<String> regionIds) {
+		// TODO Auto-generated method stub
+		return eforcesRegionDao.selectRegionByCodes1(regionIds);
+	}
+
 }

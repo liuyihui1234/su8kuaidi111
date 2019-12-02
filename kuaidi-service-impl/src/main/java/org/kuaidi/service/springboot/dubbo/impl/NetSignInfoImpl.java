@@ -57,8 +57,8 @@ public class NetSignInfoImpl implements NetSignInfo {
 		return netSignDao.selectByPrimaryKey(netSignId);
 	}
 
-	public EforcesNetsign selectProvinces(EforcesNetsign eforcesNetsign) {
-        return netSignDao.selectProvinces(eforcesNetsign);
+	public EforcesNetsign selectByWebsitCode(String  webSitCode){
+        return netSignDao.selectProvinces(webSitCode);
     }
 	
 	public PageInfo<EforcesNetsign> selectNetsignSort(Integer pageNum , Integer rows, EforcesNetsign record) {

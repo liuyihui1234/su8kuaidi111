@@ -1,7 +1,9 @@
 package org.kuaidi.web.springboot.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesNetsign;
+import org.kuaidi.bean.vo.ProvinceVo;
 import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.web.springboot.dubboservice.NetSignInfoService;
 import org.kuaidi.web.springboot.util.AliyunOSS.AppReplaceOSSUtil;
@@ -21,17 +23,15 @@ public class NetsignController {
 
 	@RequestMapping("checkRegionNetSign")
 	@ResponseBody
-	public ResultVo checkRegionNetSign(EforcesNetsign eforcesNetsign) {
+	public ResultVo checkRegionNetSign(String netWorkCode) {
 		ResultVo rst = null;
 		try {
-			Map<String, Object> map = new HashMap<String,Object>();
-			rst = netSignService.selectProvinces(eforcesNetsign,map);
+			rst = netSignService.selectProvinces(netWorkCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return rst;
 	}
-
 
 	@RequestMapping("saveNetSignInfo1")
 	public ResultVo saveNetSignInfo1(int userId,String province, String city, String area, String areaStreet,

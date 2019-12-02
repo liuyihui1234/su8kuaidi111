@@ -107,6 +107,35 @@ public class RegionService {
 			return ResultUtil.exec(false, "查询失败", null);
 		}
 	}
+	/*
+	 * * 查找省市县网点，
+	 * @param parentCode  父节点的id
+	 * @return
+	 */
+	public ResultVo selectReginByCodes1(String codes) {
+		try {
+			if(StringUtils.isNotEmpty(codes)) {
+				List <String> codeList = new ArrayList<String>();
+				String [] sections = codes.split(",");
+				if(sections.length > 0 ) {
+					for(int i = 0 ; i < sections.length ; i++) {
+						codeList.add(sections[i]);
+					}
+				}
+				if(codeList.size() > 0 ) {
+					List<Map<String,Object>>  regionList =  regionService.selectByRegionIds1(codeList);
+					if(regionList != null && regionList.size() > 0 ) {
+						return ResultUtil.exec(true, "获得地区信息成功", regionList);
+					}
+				}
+			}
+			return ResultUtil.exec(false, "获得地区信息失败", null);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResultUtil.exec(false, "获得地区信息失败", null);
+		}
+	}
+	
 	
 	public List<Map<String,Object>> convertRegionList(List<Map<String,Object>>  isSucc){
 		Map<String ,Map<String,Object>> map = new HashMap<String ,Map<String,Object>>();

@@ -69,7 +69,6 @@ public class DistributedOrderStasticsController {
     							distributeItem.put("percent", "0%");
     						}
     					}
-    					System.out.println(distributeItem.get("percent"));
     				}
     			}
     			return ResultUtil.exec(pageInfo.getPages(), pageInfo.getPageSize(), pageInfo.getTotal(), pageInfo.getList());

@@ -130,9 +130,17 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 		return pageInfo;
 	}
 
-	
+	@Override
+	public List<Map<String, Object>> getRecToByRegion(String incNum , String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getRecToByRegion(incNum , startTime, endTime);
+	}
 
-
+	@Override
+	public List<Map<String, Object>> getDiliveryByRegion(String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getDeliveryByRegion(incNum, startTime, endTime);
+	}
 	
 
 }

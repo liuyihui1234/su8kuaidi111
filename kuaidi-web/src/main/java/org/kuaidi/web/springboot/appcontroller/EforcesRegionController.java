@@ -58,4 +58,17 @@ public class EforcesRegionController {
 			return ResultUtil.exec(false, "地址解析异常！", null);
 		}
 	}
+	
+	@ResponseBody
+	@RequestMapping("selectRegionByCodes")
+	public ResultVo selectRegionByCodes(String codes) {
+		ResultVo vo = null;
+		try {
+			vo = regionService.selectReginByCodes1(codes);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	
 }

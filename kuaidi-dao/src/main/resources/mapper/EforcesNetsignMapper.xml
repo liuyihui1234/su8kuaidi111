@@ -70,8 +70,12 @@
 
 
   <!-- 查询省、市、县、网点 -->
-  <select id="selectProvinces"  parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT * from eforces_netsign WHERE province=#{province} AND city=#{city} AND network=#{network} AND county=#{county}
+  <select id="selectProvinces"   resultMap="BaseResultMap">
+    	SELECT * from eforces_netsign WHERE  status  = 1 
+    	<if test="webSitCode != null and webSitCode != ''">
+    	 AND networkareacode = #{webSitCode}
+    	</if>
+    	limit 1 
   </select>
 
   <!-- 查询我的合同 -->

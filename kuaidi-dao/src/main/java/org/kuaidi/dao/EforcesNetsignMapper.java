@@ -1,6 +1,7 @@
 package org.kuaidi.dao;
 
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesNetsign;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public interface EforcesNetsignMapper {
      * @param
      * @return
      */
-    EforcesNetsign selectProvinces(EforcesNetsign eforcesNetsign);
+    EforcesNetsign selectProvinces(@Param("webSitCode") String  webSitCode);
 
     /**
      *根据数据的各种条件动态查询信息列表

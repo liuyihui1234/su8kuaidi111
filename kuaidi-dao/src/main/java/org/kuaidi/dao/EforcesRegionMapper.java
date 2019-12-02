@@ -21,6 +21,8 @@ public interface EforcesRegionMapper {
     List<Map<String, Object>> selectByParentCode(List<String>  parentCode);
     
     List<EforcesRegion> selectRegionByCodes(List<String> codeList);
+    
+    List<Map<String, Object>> selectRegionByCodes1(List<String> codeList);
 
     /**
      * 查询 省 做处理
@@ -33,7 +35,7 @@ public interface EforcesRegionMapper {
      * @return
      */
     List<EforcesRegion> selectRegionByParent(String code);
-
+    
     /**
      * 省市区管理
      * @return
