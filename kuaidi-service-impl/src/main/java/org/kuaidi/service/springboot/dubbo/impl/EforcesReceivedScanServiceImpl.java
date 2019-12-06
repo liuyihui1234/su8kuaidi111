@@ -12,6 +12,7 @@ import org.kuaidi.dao.EforcesIncmentMapper;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
 import org.kuaidi.dao.EforcesOrderMapper;
 import org.kuaidi.dao.EforcesReceivedScanMapper;
+import org.kuaidi.dao.EforcesRectoOrderMapper;
 import org.kuaidi.iservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,18 +29,28 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
 
     @Autowired
     EforcesReceivedScanMapper receivedscanMapper;
+    
+    @Autowired
+    EforcesRectoOrderMapper  rectoOrderscanMapper;
 
     @Autowired
     private EforcesLogisticStrackingMapper  logisticStrackingMapper;
 
     /**
-     * 查询派收件总数量
+            * 查询派收件总数量
      * @param incid
      * @return
      */
     @Override
     public int getReceicedscanCount(String incid) {
-        return receivedscanMapper.selectCount(incid);
+    	Integer total = receivedscanMapper.selectCount(incid);
+    	if(incid != null && incid.length() > 8) {
+    		Integer rectoOrderCount = rectoOrderscanMapper.selectCount(incid);
+    		if(total != null && rectoOrderCount != null ) {
+    			total += rectoOrderCount;
+    		}
+    	}
+        return total;
     }
 
     /**
@@ -397,5 +408,12 @@ public class EforcesReceivedScanServiceImpl implements IEforcesReceivedscanServi
 			String RendTime, String incNum, String province, String city, String area) {
 		// TODO Auto-generated method stub
 		return receivedscanMapper.getReceiveStatistics(SstartTime, SendTime, RstartTime, RendTime, incNum, province, city, area);
+	}
+
+	@Override
+	public List<Map<String, Object>> getToSendStatisticsByList(String incNum, String fstime, String feTime, String dstime,
+			String detime) {
+		// TODO Auto-generated method stub
+		return receivedscanMapper.getToSendStatisticsByList(incNum, fstime,feTime, dstime, detime);
 	}
 }

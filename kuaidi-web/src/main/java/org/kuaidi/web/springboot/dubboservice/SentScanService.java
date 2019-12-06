@@ -55,9 +55,9 @@ public class SentScanService {
     @Reference(version= "1.0.0")
     private IEforcesRemovingBagScanService  removeBageService;
 
-    public PageVo<EforcesSentScan> getAll(QueryPageVo page) {
+    public PageVo<EforcesSentScan> getAll(QueryPageVo page, String incNum) {
         try {
-            PageInfo<EforcesSentScan> eforcesUsers = sentScanService.getAll(page.getPage(),page.getLimit(),null);
+            PageInfo<EforcesSentScan> eforcesUsers = sentScanService.getAll(page.getPage(),page.getLimit(),incNum);
             return ResultUtil.exec(eforcesUsers.getPageNum(), eforcesUsers.getSize(),eforcesUsers.getTotal(), eforcesUsers.getList());
         } catch (Exception e) {
             e.printStackTrace();

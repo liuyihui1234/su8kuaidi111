@@ -64,7 +64,7 @@
 
   <!-- 查询派件收件总数量 -->
   <select id="selectCount" resultType ="java.lang.Integer">
-    	SELECT COUNT(*) from  eforces_order bill join  eforces_receivedscan   scan on bill.Number = scan.billsnumber where scan.incid = #{incid,jdbcType=VARCHAR}
+    	SELECT COUNT(*) from  eforces_order bill join  eforces_receivedscan   scan on bill.Number = scan.billsnumber and scan.isDelete = 0  where  bill.isDelete = 0 and scan.incid = #{incid,jdbcType=VARCHAR}
   </select>
 
   <!-- 获得网点下的所有订单信息 -->
@@ -73,7 +73,7 @@
   </select>
   
   <select id="getHadReceiveOrder" resultMap="BaseResultMap">
-  		select * from eforces_receivedscan  where  1 = 1 
+  		select * from eforces_receivedscan  where  isDelete = 0
   		<if test="incNum != null" >
   			and incid = #{incNum}
   		</if>
@@ -103,6 +103,7 @@
         and incId like CONCAT(#{_parameter},'%')
       </if>
     </where>
+    order by id desc 
   </select>
   
   <select id="getAllBaggingScan" resultType="java.util.Map">
@@ -182,6 +183,82 @@
 				and i.area = #{area}
 			</if>
 			group by r.incid , r.incname
+  </select>
+  
+  
+  <select id="getToSendStatisticsByList"  resultType="java.util.Map">
+  	select i.number,i.name,
+	case when ISNULL(b.yfwd) = 1 then 0 else b.yfwd end yfwd  ,
+	case when ISNULL(c.ydwf) = 1 then 0 else c.ydwf end ydwf  ,
+	a.* from  eforces_incment  i
+	left join (
+	select a.incid,a.incname,sum(case when a.type=1 then 1 else 0 end)djnum,sum(case when a.type=2 then 1 else 0 end)fjnum from(
+		 select 1 as type,id,billsnumber,incid,incname  from eforces_receivedscan 
+		 where 1 = 1 
+			 <if test="fstime != null and fstime != ''">
+			 	and scantime &gt;= #{fstime}
+			 </if>
+			 <if test="fetime != null and fetime != ''">
+			 	and scantime &lt;= #{fetime}
+			 </if>
+		 union all
+		   select 2 as type,id,billsnumber,incid,incname  row from eforces_sentscan 
+		   where  1 = 1 
+		   <if test="dstime != null and dstime != ''">
+		    	and scantime  &gt;= #{dstime}
+		   </if>
+		   <if test="detime != null and detime != ''">
+			 	and scantime &lt;= #{detime}
+			 </if>
+			) a  group by a.incid,a.incname
+	
+	) a on i.number=a.incid 
+	left join (
+	select s.incid,s.incname,count(*) yfwd from
+				(select s.billsnumber,s.incid,s.incname
+				from eforces_sentscan s where not exists(select billsnumber,incid,incname,laststop,laststopname from eforces_receivedscan 
+				where s.billsnumber=eforces_receivedscan.billsnumber and eforces_receivedscan.incid=s.nextstop and eforces_receivedscan.laststop=s.incid 
+				<if test="dstime != null and dstime != '' ">
+					and eforces_receivedscan.scantime &gt;= #{dstime}
+				</if>
+				<if test="detime != null and detime != '' ">
+					and eforces_receivedscan.scantime &lt;= #{detime}
+				</if>
+				)
+				<if test="fstime != null and fstime != '' ">
+						and s.scantime &gt;= #{fstime}
+				</if>
+				<if test="fetime != null and fetime != '' ">
+						and s.scantime &lt;= #{fetime}
+				</if>
+			)s  group by s.incid,s.incname
+	)b on i.number=b.incid 
+	left join 
+	(
+	 select incid,incname,count(*)ydwf from (select r.billsnumber,r.incname,r.incid 
+					from  eforces_receivedscan  r where  not exists(select billsnumber,nextstop,nextstopname,incid,incname from  eforces_sentscan 
+					where r.billsnumber=eforces_sentscan.billsnumber and eforces_sentscan.nextstop=r.incid and eforces_sentscan.incid=r.laststop			
+					<if test="fstime != null and fstime != '' ">
+						and eforces_sentscan.scantime &gt;= #{fstime}
+					</if>
+					<if test="fetime != null and fetime != '' ">
+							and eforces_sentscan.scantime &lt;= #{fetime}
+					</if>
+					)
+					<if test="dstime != null and dstime != '' ">
+						and r.scantime &gt;= #{dstime}
+					</if>
+					<if test="detime != null and detime != '' ">
+						and r.scantime &lt;= #{detime}
+					</if>
+					
+				) r  group by incname,incid 
+	)c on i.number=c.incid
+	 where i.istransfer=1 
+	 <if test="incNum != null and incNum != ''">
+	 	and i.number like CONCAT(#{incNum},'%')
+	 </if>
+	 order by i.number
   </select>
   
   <update id="updateById">

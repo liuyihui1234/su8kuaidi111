@@ -168,7 +168,7 @@
   </select>
   
   <select id="getScanInfoByBillsNumbers"  resultMap="BaseResultMap">
-  		select * from eforces_stayedandtroubledscan  where  1= 1 
+  		select * from eforces_stayedandtroubledscan  where  isDelete = 0 
   		<if test="list != null ">
   			and  billsnumber in 
   			<foreach collection="list" item="billNum" index="index" open="(" close=")" separator=",">

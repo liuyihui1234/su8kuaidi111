@@ -107,4 +107,12 @@ public class TimeDayUtil {
     	SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
     	return format.format(new Date());
     }
+    
+    public static String convertDateToStr(Date date) {
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	if(date == null ) {
+    		return null ; 
+    	}
+    	return format.format(date);
+    }
 }

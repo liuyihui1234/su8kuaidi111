@@ -97,6 +97,7 @@
         <if test = 'parentId != null  and parentId != "" '>
         	and parentid = ${parentId}
         </if>
+        order by id desc 
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

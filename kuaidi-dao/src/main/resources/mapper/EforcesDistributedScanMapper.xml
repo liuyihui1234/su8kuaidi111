@@ -94,7 +94,7 @@
 		,
 		<include refid="Blob_Column_List" />
 		from eforces_distributedscan
-		where billsnumber = #{billsNum,jdbcType=INTEGER}
+		where billsnumber = #{billsNum,jdbcType=VARCHAR}
 		and isdelete = 0
 	</select>
 	
@@ -465,7 +465,7 @@
 		INNER JOIN eforces_order o
 		on d.billsnumber = o.number
 		where postmanid = #{postmanid,jdbcType=VARCHAR}
-		<if test="number.size() > 0"> 
+		<if test="number != null and number.size() > 0"> 
 			and billsnumber not in
 			<foreach collection="number" item="number" index="index" open="(" close=")" separator=",">
 				#{number}

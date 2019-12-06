@@ -72,9 +72,8 @@ public class DistributedScanController {
 //                return ResultUtil.exec(false, "运单状态不正确", null);
 //            }
             
-            
             /*
-             * 是否已经派过单了。
+                                *    是否已经派过单了。
              * */
             List<EforcesDistributedScan> list = scanService.selectByBillNumber(record.getBillsnumber());
             if(list != null && list.size() > 0 ) {

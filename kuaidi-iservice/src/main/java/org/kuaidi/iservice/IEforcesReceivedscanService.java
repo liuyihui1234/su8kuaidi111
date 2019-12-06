@@ -94,5 +94,9 @@ public interface IEforcesReceivedscanService {
 	
 	List<Map<String, Object>>getReceiveStatisticsByList(String SstartTime , String SendTime, 
 			String RstartTime , String RendTime, String incNum , String province , String city , String area);
+	/*
+	  *   中转站到/发统计。
+	 */
+	List<Map<String, Object>> getToSendStatisticsByList(String incNum,String fstime , String feTime , String dstime , String detime);
 	
 }

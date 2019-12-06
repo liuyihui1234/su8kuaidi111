@@ -112,7 +112,7 @@
 		eforces_sentscan
 		where
 		isDelete=0
-		and sentScan.isBagBill = 0
+		and  isBagBill = 0
 		<if test="_parameter!=null">
 			and incid like CONCAT(#{_parameter},'%')
 		</if>

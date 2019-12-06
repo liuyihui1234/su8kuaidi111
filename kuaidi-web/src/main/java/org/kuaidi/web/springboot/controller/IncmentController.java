@@ -29,10 +29,8 @@ public class IncmentController {
 	@ResponseBody
 	public PageVo getAllIncment(QueryPageVo page){
 		return incmentDubboService.getAllIncment(page);
-				
 	}
-
-
+	
     @RequestMapping("getincmentById")
     @CrossOrigin
     @ResponseBody
@@ -52,7 +50,6 @@ public class IncmentController {
      * @param incment
      * @return
      */
-
     @PostMapping("incment")
     @CrossOrigin
     public ResultVo saveincment(EforcesIncment incment) {
@@ -60,34 +57,42 @@ public class IncmentController {
         try {
         	//默认不能添加总分区和四大分区
         	String regionCode = null;
+        	Integer level = 1 ;
         	if(StringUtils.isNotEmpty(incment.getAreastreet())) {
         		regionCode = incment.getAreastreet();
+        		level = 4; 
         	}else if(StringUtils.isNotEmpty(incment.getArea())) {
         		regionCode = incment.getArea();
+        		level = 3;
         	}else if(StringUtils.isNotEmpty(incment.getCity())) {
         		regionCode = incment.getCity();
+        		level = 2;
         	}else if(StringUtils.isNotEmpty(incment.getProvince())) {
         		regionCode = incment.getProvince();
+        		level = 1;
         	}
+        	incment.setLevel(level);
         	if(StringUtils.isNotEmpty(regionCode)) {
         		//判断网点是否存在。
         		EforcesIncment incmentInfo =  iEforcesIncmentService.selectByNumber(regionCode);
             	if(incmentInfo != null) {
             		return ResultUtil.exec(false, "对应分区的网点已经存在，请确定", "");
             	}
-        		if(StringUtils.equals(regionCode, incment.getProvince())) {
-        			String parentCode = getAreaInfo(incment.getLagearea());
-        			if(StringUtils.isEmpty(parentCode)) {
-        				return ResultUtil.exec(false, "请选择对应的大区", "");
-        			}
-        			incment.setParentid(parentCode);
-        		}else if(StringUtils.equals(regionCode, incment.getCity())) {
-        			incment.setParentid(incment.getProvince());
-        		}else if(StringUtils.equals(regionCode, incment.getArea())) {
-        			incment.setParentid(incment.getCity());
-        		}else if(StringUtils.equals(regionCode, incment.getAreastreet())) {
-        			incment.setParentid(incment.getArea());
-        		}
+            	if(StringUtils.isEmpty(incment.getParentid())) {
+            		if(StringUtils.equals(regionCode, incment.getProvince())) {
+            			String parentCode = getAreaInfo(incment.getLagearea());
+            			if(StringUtils.isEmpty(parentCode)) {
+            				return ResultUtil.exec(false, "请选择对应的大区", "");
+            			}
+            			incment.setParentid(parentCode + "00");
+            		}else if(StringUtils.equals(regionCode, incment.getCity())) {
+            			incment.setParentid(incment.getProvince() + "00");
+            		}else if(StringUtils.equals(regionCode, incment.getArea())) {
+            			incment.setParentid(incment.getCity() + "00");
+            		}else if(StringUtils.equals(regionCode, incment.getAreastreet())) {
+            			incment.setParentid(incment.getArea() + "00");
+            		}
+            	}
         		if(StringUtils.isEmpty(incment.getParentid())) {
         			return ResultUtil.exec(false, "没有找到对应的上级节点！", "");
         		}

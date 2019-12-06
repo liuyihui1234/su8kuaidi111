@@ -153,7 +153,7 @@ import org.jbarcode.util.ImageUtil;
 //	            list.add("KJ4.1-0130-0001");  
 	            if(list!=null && list.size()>0){  
 	                for(String message:list){  
-	                	String rstPath =  JBarCodeUtil.createBarcode(message, "D:\\codeImg\\","");  
+	                	String rstPath =  JBarCodeUtil.createBarcode(message, "E:\\codeImg\\","");  
 	                	System.out.println(rstPath);
 	                }  
 	            }     

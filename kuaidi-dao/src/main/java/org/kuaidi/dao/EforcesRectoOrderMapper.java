@@ -54,5 +54,22 @@ public interface EforcesRectoOrderMapper {
 	 */
 	List<Map<String,Object>> getDeliveryByRegion(@Param("incNum") String incNum ,  @Param("startTime") String startTime, @Param("endTime")String endTime);
 
+	/**
+              * 派件 收件总数量
+     * @param incid
+     * @return
+     */
+    int selectCount(String incid);
+    
+    /*
+            * 统计用户收件
+     */
+	List<Map<String, Object>> getRecToListByUser(@Param("province")String province,@Param("city") String city, @Param("area") String area,@Param("incNum")  String incNum,
+			@Param("startTime")  String startTime, @Param("endTime")  String endTime);
 	
+	/*
+	  * 未录单统计
+	 */
+	List<Map<String, Object>> RecToOrderByWld(@Param("province")String province,@Param("city") String city, @Param("area") String area,@Param("incNum")  String incNum,
+			@Param("startTime")  String startTime, @Param("endTime")  String endTime);
 }

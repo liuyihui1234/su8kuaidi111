@@ -49,21 +49,20 @@ public class DistributedScanDubboService {
     public PageVo<EforcesDistributedScan> findDisByPostmanId(Integer pageNum, Integer pageSize, String postmanid){
         try {
             List<EforcesCustomerSign> customerSigns = customerSignService.selectByOperatorId(postmanid);
+            List<String> number = new ArrayList();
             if(customerSigns != null && customerSigns.size() > 0){
-                List<String> number = new ArrayList();
                 for(int i =0;i < customerSigns.size();i++){
                     number.add(customerSigns.get(i).getNumber());
                 }
-                if(pageSize == null ||  pageSize <= 0 ){
-                    pageSize = Config.pageSize;
-                }
-                if(pageNum == null || pageNum <= 0 ){
-                    pageNum = 1;
-                }
-                PageInfo<EforcesDistributedScan> pageInfo = distributedScanService.selectDisByPostmanId(pageNum,pageSize,postmanid,number);
-                return ResultUtil.exec(pageNum,pageSize,pageInfo.getTotal(), pageInfo.getList());
             }
-            return ResultUtil.exec(pageNum, pageSize, 0,null);
+            if(pageSize == null ||  pageSize <= 0 ){
+                pageSize = Config.pageSize;
+            }
+            if(pageNum == null || pageNum <= 0 ){
+                pageNum = 1;
+            }
+            PageInfo<EforcesDistributedScan> pageInfo = distributedScanService.selectDisByPostmanId(pageNum,pageSize,postmanid,number);
+            return ResultUtil.exec(pageNum,pageSize,pageInfo.getTotal(), pageInfo.getList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.exec(pageNum, pageSize, 0,null);

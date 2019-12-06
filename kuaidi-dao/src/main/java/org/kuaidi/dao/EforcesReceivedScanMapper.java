@@ -107,5 +107,11 @@ public interface EforcesReceivedScanMapper {
 			@Param("RstartTime")  String RstartTime,@Param("RendTime")  String RendTime, 
 			@Param("incNum") String incNum, @Param("province") String province, 
 			@Param("city") String city,@Param("area") String area);
+
+	/*
+	  * 中转站到发统计
+	 */
+	List<Map<String, Object>> getToSendStatisticsByList(@Param("incNum")String incNum , @Param("fstime")String fstime,@Param("fetime") String fetime,
+				@Param("dstime")String dstime,@Param("detime") String detime);
     
 }

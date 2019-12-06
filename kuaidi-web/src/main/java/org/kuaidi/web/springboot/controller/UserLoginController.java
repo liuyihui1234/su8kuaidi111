@@ -47,8 +47,21 @@ public class UserLoginController {
     public ResultVo doLogin(EforcesUser user, Integer type) {
         return userLoginService.UserdoLogin(user, type );
     }
-
-
+    
+    /**
+     * app端页面首页首次打开判断token是否有效
+     * @return
+     */
+    @RequestMapping("appchecktoken")
+    @CrossOrigin
+    @ResponseBody
+    public ResultVo appCheckToken(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        boolean exist = redisUtil.isExist(Config.REDISAPPLOGINPREX + token);
+        String str = exist ? "验证通过" : "登录过期,请重新登录";
+        return ResultUtil.exec(exist, str, null);
+    }
+    
     /**
      * web端页面首页首次打开判断token是否有效
      * @return

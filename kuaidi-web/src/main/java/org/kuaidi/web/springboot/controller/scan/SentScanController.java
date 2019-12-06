@@ -1,6 +1,7 @@
 package org.kuaidi.web.springboot.controller.scan;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesSentScan;
 import org.kuaidi.bean.domain.EforcesUser;
@@ -29,10 +30,15 @@ public class SentScanController {
 	
 	@GetMapping("scan")
 	@CrossOrigin
-	public PageVo getAll(QueryPageVo page) {
+	@NeedUserInfo
+	public PageVo getAll(HttpServletRequest  request, QueryPageVo page) {
 		System.err.println("page:"+page);
 		PageVo rst = null;
-		rst = dubboSentscanService.getAll(page);
+		EforcesIncment  inc = (EforcesIncment)request.getAttribute("inc");
+		if(inc != null ) {
+			rst = dubboSentscanService.getAll(page, inc.getNumber());
+		}
+		
 		return rst;
 	}
 

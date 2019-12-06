@@ -29,6 +29,15 @@ public interface IEforcesRectoOrderService {
 	
 	PageInfo<Map<String, Object>> getRecToListByPage(Integer pageNum , Integer pageSize , 
 			String province , String city, String area , String incNum , String startTime , String endTime);
+
+	/*
+	 * 用户收件统计。
+	 */
+	List<Map<String,Object>> getRecToListByUser(String province , String city, String area , String incNum , String startTime , String endTime);
+	/*
+	 * 未录单统计
+	 */
+	List<Map<String,Object>> RecToOrderByWld(String province , String city, String area , String incNum , String startTime , String endTime);
 	
 	/*
 	 * 始发地取件统计

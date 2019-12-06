@@ -181,6 +181,8 @@
   <!-- 收件详情信息 -->
   <select id="getListAddressee" resultMap="BaseResultMap">
     SELECT bill.* from eforces_order bill  JOIN eforces_receivedscan  receive ON receive.billsnumber=bill.number WHERE incid=#{incid}
+  	UNION ALL
+  	SELECT bill.* FROM eforces_order bill JOIN eforces_rectoorder recto ON recto.Number = bill.number WHERE recto.DepartId =#{incid} 
   </select>
   
   <select id="getDestoryBill" resultMap="BaseResultMap">

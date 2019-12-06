@@ -104,6 +104,7 @@
             and
             departid like CONCAT('%',#{departid},'%')
         </if>
+         ORDER BY id desc 
     </select>
     
     <select id="selectCurrentMaxNumber" parameterType="java.lang.String" resultType="java.lang.String">

@@ -30,8 +30,6 @@ public class UserController {
 	public ResultVo getByDepartName(HttpServletRequest request, @RequestBody String departName) {
 		try {
 			EforcesUser userInfo = (EforcesUser)request.getAttribute("user");
-			
-			System.err.println(departName);
 			List<HashMap> list = userService.getByDepartName(departName.replaceAll("\"", ""), userInfo.getIncid());
 			return ResultUtil.exec(true, "查询成功", list);
 		} catch (Exception e) {

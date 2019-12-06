@@ -141,6 +141,20 @@ public class EforcesRectoOrderService implements IEforcesRectoOrderService {
 		// TODO Auto-generated method stub
 		return rectoOrderDao.getDeliveryByRegion(incNum, startTime, endTime);
 	}
+
+	@Override
+	public List<Map<String, Object>> getRecToListByUser(String province, String city, String area, String incNum,
+			String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.getRecToListByUser(province,city, area, incNum , startTime , endTime);
+	}
+
+	@Override
+	public List<Map<String, Object>> RecToOrderByWld(String province, String city, String area, String incNum,
+			String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return rectoOrderDao.RecToOrderByWld(province,city,area,incNum, startTime, endTime);
+	}
 	
 
 }
