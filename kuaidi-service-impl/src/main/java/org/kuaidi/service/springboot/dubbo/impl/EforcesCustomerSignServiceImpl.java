@@ -97,4 +97,11 @@ public class EforcesCustomerSignServiceImpl implements IEforcesCustomerSignServi
 		// TODO Auto-generated method stub
 		return customerSignMapper.webSitCustomSignByParam(incNum, province, city, area, time);
 	}
+
+	@Override
+	public List<Map<String, Object>> customSignByUser(String incNum, String province, String city, String area,
+			Integer userId, String time) {
+		// TODO Auto-generated method stub
+		return customerSignMapper.customSignByUser(incNum, province, city, area , userId, time);
+	}
 }

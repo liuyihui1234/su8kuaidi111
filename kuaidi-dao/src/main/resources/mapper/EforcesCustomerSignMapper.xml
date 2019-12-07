@@ -86,6 +86,65 @@
 		</if>
 		GROUP BY i.number , i.name
   </select>
+  
+  <select id="customSignByUser" resultType="java.util.Map">
+ 		select d.postman,d.postmanid,i.name,i.number, #{time,jdbcType=VARCHAR}  as time, sum(case when sid is not null then 1 end)wtjnum,sum(case when did is not null then 1 end)num,
+		sum(case when cid is not null and did is not null and   TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime) &lt;=10 and TIMESTAMPDIFF(MINUTE,#{time,jdbcType=VARCHAR},d.signtime) &lt; 630  then 1 end)num1,
+		sum(case when cid is not null and did is not null and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&gt;=10 and TIMESTAMPDIFF(MINUTE,#{time,jdbcType=VARCHAR},d.signtime)&gt;=630  and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime) &lt;12 then 1 end)num2,
+		sum(case when cid is not null and did is not null and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&gt;= 12 and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&lt;15  then 1 end)num3,
+		sum(case when cid is not null and did is not null and TIMESTAMPDIFF(HOUR,#{time,jdbcType=VARCHAR},d.signtime)&gt;=15  then 1 end)num4,
+		sum(case when cid is null and did is not null and sid is null then 1 end)num5
+		 from (
+					select d.billsnumber,d.id as did,d.incid,c.id as cid,s.id as sid,d.postman,d.postmanid,c.signtime		
+					 from  eforces_distributedscan  d 
+							left join
+				(select c.deliveryuserid,c.number,c.id,c.incid,c.signtime from eforces_customersign c 
+				where  c.isdelete  = 0 
+				<if test="time != null and time != ''">
+					and  TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},c.signtime)=0
+				</if>
+				<if test="incNum != null and incNum != '' ">
+					and c.incid = #{incNum,jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null and userId != '' ">
+					and c.deliveryuserid= #{userId,jdbcType=INTEGER}
+				</if>
+				) c on d.billsnumber=c.number and d.postmanid=c.deliveryuserid 
+				left join 
+				(    select * from(select billsnumber,id,sacnnerid,incid  from  eforces_stayedandtroubledscan    where  isDelete = 0 
+					<if test="time != null and time != '' ">
+						and  TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},scantime)=0
+					</if>
+				) a  where   1 = 1  
+				<if test="incNum != null and incNum != '' ">
+					and a.incid = #{incNum,jdbcType=VARCHAR}
+				</if>
+				<if test="userId != null  ">
+					and a.sacnnerid = #{userId,jdbcType=INTEGER}
+				</if>
+						 ) s on s.billsnumber=d.billsnumber and s.sacnnerid=d.postmanid
+						 where  1 = 1 
+						 <if test="time != null and time != '' ">
+						 		and TIMESTAMPDIFF(DAY,#{time,jdbcType=VARCHAR},d.scantime)=0
+						 </if>
+						 <if test="incNum != null and incNum != ''">
+						 		and c.incid = #{incNum,jdbcType=VARCHAR}
+						 </if>
+						  <if test="userId != null">
+						  		and d.postmanid = #{userId,jdbcType=INTEGER}
+						  </if>
+						)d left join eforces_incment  i on i.number=d.incid where i.istransfer=0 
+						<if test="province != null and province != ''">
+							 and i.province = #{province,jdbcType=VARCHAR}
+						</if>
+						<if test="city != null and city != ''">
+							 and i.city = #{city,jdbcType=VARCHAR}
+						</if>
+						<if test="area != null and area != ''">
+							 and i.area = #{area,jdbcType=VARCHAR}
+						</if>
+		group by d.postman,d.postmanid,i.name,i.number order by i.number,d.postmanid
+  </select>
 
   <select id="selectByNumber" resultMap="BaseResultMap">
     select

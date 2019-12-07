@@ -71,4 +71,10 @@ public interface IEforcesCustomerSignService {
     
     List<Map<String,Object>>  webSitCustomSignByParam(String  incNum , String province , 
     		String city , String area, String time);
+    
+    /*
+             * 业务员签收监控
+     */
+    List<Map<String,Object>> customSignByUser(String incNum ,String province , 
+    		String city , String area, Integer userId , String time);
 }

@@ -47,4 +47,10 @@ public interface EforcesCustomerSignMapper {
     List<Map<String, Object>> webSitCustomSignByParam(@Param("incNum")String incNum, @Param("province")String province, @Param("city")String city,
     		@Param("area") String area, @Param("time") String time);
 
+    /*
+             *  业务员签收监控
+     */
+	List<Map<String, Object>> customSignByUser(@Param("incNum")String incNum, @Param("province")String province, @Param("city")String city,
+    		@Param("area") String area, @Param("userId")  Integer userId, @Param("time")  String time);
+
 }
