@@ -30,6 +30,7 @@ public class RegionController {
 	
 	@ResponseBody
 	@RequestMapping("selectRegionList")
+	@CrossOrigin
 	public ResultVo selectReginList(String parentCode) {
 		ResultVo vo = null;
 		try {

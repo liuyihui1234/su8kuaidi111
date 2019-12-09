@@ -157,10 +157,10 @@
 				i.number like CONCAT(#{incNum},'%') 	 	
 		 </if>
 		 <if test="startTime != null and startTime != ''">
-		 	and r.scantime &gt;= #{startTime,jdbcType=VARCHAR}
+		 	and d.scantime &gt;= #{startTime,jdbcType=VARCHAR}
 		 </if>
 		 <if test="endTime != null and endTime != ''">
-		 	and r.scantime  &lt;= #{endTime,jdbcType=VARCHAR}
+		 	and d.scantime  &lt;= #{endTime,jdbcType=VARCHAR}
 		 </if>	
 		 group by c.name,c.code
 	</select>

@@ -464,7 +464,7 @@
 		select * from eforces_distributedscan d
 		INNER JOIN eforces_order o
 		on d.billsnumber = o.number
-		where postmanid = #{postmanid,jdbcType=VARCHAR}
+		where  d.isDelete = 0   and  postmanid = #{postmanid,jdbcType=VARCHAR}
 		<if test="number != null and number.size() > 0"> 
 			and billsnumber not in
 			<foreach collection="number" item="number" index="index" open="(" close=")" separator=",">

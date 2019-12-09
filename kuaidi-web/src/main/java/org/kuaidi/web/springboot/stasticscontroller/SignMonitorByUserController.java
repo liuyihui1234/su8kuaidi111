@@ -45,6 +45,9 @@ public class SignMonitorByUserController {
     		 String area , String incNum , Integer userId ,String time){
     	 try {
     		 EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
+    		 if(time == null) {
+        		 time = TimeDayUtil.getCurrentDate1();
+        	 }
     		 List<Map<String, Object>> list = customerSignService.customSignByUser(incment.getNumber(), province, city, area, userId, time);
     		 if(list != null && list.size() > 0 ) {
 
@@ -162,6 +165,9 @@ public class SignMonitorByUserController {
                 	 incNum = "";
                  }
     		 }
+    		 if(time == null) {
+        		 time = TimeDayUtil.getCurrentDate1();
+        	 }
     		 List<Map<String, Object>> list = customerSignService.customSignByUser(incNum, province, city, area,userId, time);
     		 String[] header = {"业务员编号","业务员名字", "签收网点编号", "签收网点名字", "签收日期", "派件票数","10:30前","百分比","12:00前","百分比","15:00前","百分比",
     				 		"15:00后","百分比","未签收15:00后","未签收百分比","问题件票数"};

@@ -74,6 +74,36 @@
 		</if>	
 	</select>
 	
+	<select id="getWeightStatisticByParam"  resultType="java.util.Map">
+		 select w.billsnumber,max(w.weight) weight, max(w.scanners) scanners,max(c.name) name,max(r.scanman) scanman from  eforces_weighingscan  w 
+		 left join  eforces_rectoorder  r on w.billsnumber=r.number left join eforces_incment i on r.departid=i.number 
+		 left join eforces_region c on i.city=c.code  and c.level = 2  where w.isDelete= 0 
+		 <if test="incNum != null and incNum != ''">
+			 and w.incid  like CONCAT(#{incNum},'%') 
+		</if>
+		 <if test="startTime != null and startTime != '' ">
+		 	and  w.scantime &gt;= #{startTime,jdbcType=VARCHAR}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	and  w.scantime &lt;= #{endTime,jdbcType=VARCHAR}
+		 </if>
+		 <if test="billsNumList != null and billsNumList.size() > 0 ">
+		 	 and w.billsnumber  in
+		 	 <foreach collection="billsNumList"   index="index" item="billsNum"
+				open="(" close=")" separator=",">
+				#{billsNum}
+			 </foreach>
+		 </if>
+		 <if test="sendCityList != null and sendCityList.size() > 0 ">
+		 	and c.code in 
+		 	<foreach collection="sendCityList"  index="index" item="city"
+				open="(" close=")" separator="," >
+				#{city}
+			</foreach>
+		 </if>
+		 group by billsnumber order by max(c.name)
+	</select>
+	
 	<select id="selectByPrimaryKey"
 		parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select

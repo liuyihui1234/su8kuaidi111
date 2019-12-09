@@ -50,6 +50,9 @@ public class SignMonitorByIncController {
     	 if(pageSize == null ) {
     		pageSize = Config.pageSize;
     	 }
+    	 if(time == null) {
+    		 time = TimeDayUtil.getCurrentDate1();
+    	 }
     	 try {
     		 EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
     		 PageInfo<Map<String, Object>> pageInfo = customerSignService.webSitCustomSignByPage(pageNum, pageSize, incment.getNumber(), province, city, area, time);
@@ -171,6 +174,9 @@ public class SignMonitorByIncController {
                 	 incNum = "";
                  }
     		 }
+    		 if(time == null) {
+        		 time = TimeDayUtil.getCurrentDate1();
+        	 }
     		 List<Map<String, Object>> list = customerSignService.webSitCustomSignByParam(incNum, province, city, area, time);
     		 String[] header = {"签收网点编号", "收件网点名字", "签收日期", "派件票数","10:30前","百分比","12:00前","百分比","15:00前","百分比",
     				 		"15:00后","百分比","未签收15:00后","未签收百分比","问题件票数"};

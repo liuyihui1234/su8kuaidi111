@@ -108,6 +108,11 @@ public class TimeDayUtil {
     	return format.format(new Date());
     }
     
+    public static String getCurrentDate1() {
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	return format.format(new Date());
+    }
+    
     public static String convertDateToStr(Date date) {
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	if(date == null ) {

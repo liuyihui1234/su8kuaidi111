@@ -1,7 +1,7 @@
 package org.kuaidi.dao;
 
 import java.util.List;
-
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesWeighingScan;
 
@@ -23,5 +23,8 @@ public interface EforcesWeighingScanMapper {
     List<EforcesWeighingScan> selectAll(String paramter);
     
     List<EforcesWeighingScan> getWeightScanByParam(@Param("incNum")String incNum, @Param("number") String number);
+
+	List<Map<String , Object>> getWeightStatisticByParam(@Param("incNum") String incNum, @Param("billsNumList") List<String> billsNumList, 
+			@Param("sendCityList") List<String> sendCityList,@Param("startTime") String startTime, @Param("endTime") String endTime);
     
 }
