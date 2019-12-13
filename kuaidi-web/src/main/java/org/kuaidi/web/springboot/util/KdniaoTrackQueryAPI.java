@@ -32,7 +32,7 @@ public class KdniaoTrackQueryAPI {
 	public static void main(String[] args) {
 		KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
 		try {
-			String result = api.getOrderTracesByJson("HTKY", "550000175134124");
+			String result = api.getOrderTracesByJson("HTKY", "71747666711875");
 			System.out.print(result);
 			
 		} catch (Exception e) {
@@ -40,13 +40,27 @@ public class KdniaoTrackQueryAPI {
 		}
 	}
 	
-	//电商ID
-	private String EBusinessID="1596164";
-	//电商加密私钥，快递鸟提供，注意保管，不要泄漏
-	private String AppKey="d692a64c-908a-4635-8829-baff68f34e53";
-	//请求url
-	private String ReqURL="http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";	
+//	电商ID
+//	private String EBusinessID="1596164";
+//	//电商加密私钥，快递鸟提供，注意保管，不要泄漏
+//	private String AppKey="d692a64c-908a-4635-8829-baff68f34e53";
+//	//请求url
+//	private String ReqURL="http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";	
+	
+	private String EBusinessID = "1394469";
+    //电商加密私钥，快递鸟提供，注意保管，不要泄漏
+    private String AppKey = "bab30020-3ffa-47c8-9bd9-fc081976c8e1";
+    //请求url
+    private String ReqURL = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
  
+	
+	
+//	  private String EBusinessID = "1596156";
+//	  //电商加密私钥，快递鸟提供，注意保管，不要泄漏
+//	  private String AppKey = "c8d1a471-1ba3-4a5d-ae7e-61af941784df";
+//	  //请求url
+//	  private String ReqURL = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
+
 	/**
      * Json方式 查询订单物流轨迹
 	 * @throws Exception 

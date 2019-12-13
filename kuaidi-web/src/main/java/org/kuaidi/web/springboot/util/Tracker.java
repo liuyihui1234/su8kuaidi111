@@ -233,15 +233,19 @@ public class Tracker {
         return result;
     }
 
+    /*
+     * tracker  追踪业务流
+     */
     public static void main(String [] args) {
-    	String  urlStr ="?page=1&limit=3";
-    	String requestData=null;
+    	String  urlStr ="";
+    	String requestData="{\"tracking_number\":\"550000314986365\",\"carrier_code\":\"bestex\"}";
     	try {
-            String result = new Tracker().orderOnlineByJson(requestData,urlStr,"get");
+            String result = new Tracker().orderOnlineByJson(requestData,urlStr,"realtime");
 			System.out.println(result);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
+    
 }

@@ -1,5 +1,7 @@
 package org.kuaidi.web.springboot.util;
 
+import java.util.Date;
+
 import org.kuaidi.bean.domain.EforcesIncment;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesUser;
@@ -26,6 +28,7 @@ public class LogisticStracking {
 		strackingInfo.setIncname(incment.getName());
 		strackingInfo.setIncid(userInfo.getIncid());
 		strackingInfo.setMark(3); // 转运标识
+		strackingInfo.setOperationtime(new Date());
 		return strackingInfo;
 	} 
 }

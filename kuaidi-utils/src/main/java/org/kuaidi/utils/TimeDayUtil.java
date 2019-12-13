@@ -113,11 +113,24 @@ public class TimeDayUtil {
     	return format.format(new Date());
     }
     
+    public static String getCurrentDate2() {
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+    	return format.format(new Date());
+    }
+    
     public static String convertDateToStr(Date date) {
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	if(date == null ) {
-    		return null ; 
+    		return "" ; 
     	}
     	return format.format(date);
     }
+    public static String convertDateToStr2(Date date) {
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+    	if(date == null ) {
+    		return "" ; 
+    	}
+    	return format.format(date);
+    }
+    
 }

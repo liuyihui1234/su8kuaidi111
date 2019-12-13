@@ -325,5 +325,76 @@ public class EforcesOrderService implements IEforcesOrderService {
 		final PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
 		return pageInfo;
 	}
+
+	@Override
+	public List<Map<String, Object>> getDayStatisticByUser(String province, String city, String area, String incNum,
+			Integer userId, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.getDayStatisticByUser(province, city,area, incNum, userId,startTime , endTime);
+	}
+
+	@Override
+	public List<Map<String, Object>> getDayStatisticByCity(String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return  orderDao.getDayStatisticByCity(incNum,startTime ,endTime);
+	}
+
+	@Override
+	public List<Map<String, Object>> GetPriceByDayToUser(String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> GetPriceByDayToCity(String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDayToPriceByInc(String incName, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.getDayToPriceByInc(incName , startTime , endTime);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getDayToPriceByCity(String incName, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.getDayToPriceByCity(incName , startTime , endTime);
+	}
+
+	@Override
+	public List<Map<String, Object>> getDayToPriceByUser(String incName, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.getDayToPriceByUser(incName, startTime, endTime);
+	}
+
+	@Override
+	public List<Map<String, Object>> getMonStaColl(String incName, String time) {
+		// TODO Auto-generated method stub
+		return orderDao.getMonStaColl(incName, time);
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> getCusMonthBillByPage(Integer pageNum, Integer pageSize, Integer guestId,
+			String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		List<Map<String , Object>> list =  orderDao.getCusMonthBill(guestId, startTime, endTime);
+		final PageInfo<Map<String , Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getCusMonthBillByList(Integer guestId, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.getCusMonthBill(guestId, startTime, endTime);
+	}
+
+	@Override
+	public List<Map<String, Object>> getYwyMonthBill(String ywy, String szy, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.getYwyMonthBill(ywy, szy, startTime, endTime);
+	}
 	
 }

@@ -150,7 +150,7 @@
     select
     <include refid="Base_Column_List" />
     from eforces_customersign
-    where number = #{number,jdbcType=VARCHAR}
+    where isDelete = 0   and  number = #{number,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from eforces_customersign

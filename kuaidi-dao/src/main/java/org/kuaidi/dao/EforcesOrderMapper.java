@@ -154,6 +154,56 @@ public interface EforcesOrderMapper {
 	/*
 	 * 称重
 	 */
-	List<Map<String,Object>> getWeightBillsByParam(ScanSearchVO scanSearch);	
+	List<Map<String,Object>> getWeightBillsByParam(ScanSearchVO scanSearch);
+	
+	/*
+	 *营业收入统计， 按照营业员 
+	 */
+	List<Map<String, Object>> getDayStatisticByUser(@Param("province")String province,@Param("city") String city,@Param("area")  String area, 
+			@Param("incNum") String incNum, @Param("userId")  Integer userId, 
+			@Param("startTime") String startTime,@Param("endTime") String endTime);
+
+	/*
+	 * 营业收入统计， 按照城市
+	 */
+	List<Map<String, Object>> getDayStatisticByCity(@Param("incNum") String incNum,
+							@Param("startTime") String startTime, @Param("endTime") String endTime);
+	
+	/*
+	 *  第三个 每日营业统计(按业务员统计) 
+	 */
+	List<Map<String, Object>> getDayToPriceByUser(@Param("incNum") String incName,
+				 @Param("startTime") String startTime,@Param("endTime") String endTime);	
+	
+	/*
+	 *  第四个 每日营业统计(按网点) 
+	 */
+	List<Map<String, Object>> getDayToPriceByCity(@Param("incNum") String incName,
+				 @Param("startTime") String startTime,@Param("endTime") String endTime);
+	
+	/*
+	 *  第四个 每日营业统计(按网点) 
+	 */
+	List<Map<String, Object>> getDayToPriceByInc(@Param("incNum") String incName,
+				 @Param("startTime") String startTime,@Param("endTime") String endTime);
+	
+	/*
+	 * 网点月结统计
+	 */
+	List<Map<String, Object>> getMonStaColl(@Param("incNum")String incName, 
+				@Param("time")String time);	
+	
+	/*
+	 * 客户月结收款统计
+	 */
+	List<Map<String, Object>>getCusMonthBill(@Param("guestId") Integer guestId, @Param("startTime") String startTime,
+			@Param("endTime")String endTime);
+	
+	/*
+	 * 业务员月账单
+	 */
+	List<Map<String , Object>> getYwyMonthBill(@Param("ywy") String ywy, @Param("szy") String szy,
+			@Param("startTime") String startTime, @Param("endTime") String endTime);
+	
 	
 }

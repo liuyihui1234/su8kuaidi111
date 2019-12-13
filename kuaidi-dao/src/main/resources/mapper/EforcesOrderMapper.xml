@@ -542,11 +542,323 @@
   		</if>
   </select>
   
+  <select id="getDayStatisticByUser" resultType= "java.util.Map">
+  		select a.*,
+			   case  when isnull(a.sjje)  = 1 then 0 else a.sjje end 
+			 +  case   when isnull(a.pjje)  = 1 then 0 else a.pjje end 
+			 +  case when isnull(a.yj) = 1 then 0 else a.yj end   hj  ,
+			zps+  case when isnull(r.sjjs) = 1 then 0 else r.sjjs end +
+						case when isnull(d.pjjs) = 1 then 0 else d.pjjs end    zjs  from(
+			select createincname,createincnumber,senduserid,sendusername,
+				sum(case when paymode=2 then 1 else 0 end)
+			  +sum(case when paymode=1 then 1 else 0 end)
+			   +sum(case when paymode=3 or paymode=5 then 1 else 0 end) as  zps, 
+			sum(case paymode when 2 then price else 0 end)sjje,sum(case paymode when 1 then price else 0 end)pjje,
+			sum(case paymode when 3 then price else 0 end)yj,
+			sum(CASE  WHEN ISNULL(dshk)  = 1 THEN 0 ELSE dshk END) dshk
+			from eforces_order  where  isDelete = 0 
+			<if test="startTime != null and  startTime != '' ">
+				 and createTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				 and createTime &lt;= #{endTime}
+			</if>
+			<if test="incNum != null and incNum != ''">
+				and  createincnumber like  CONCAT(#{incNum},'%')
+			</if>
+			<if test="userId != null and userId != '' ">
+				and senduserid = #{userId}
+			</if>
+			 group by createincname,createincnumber,senduserid,sendusername) a
+			 left join eforces_incment i on a.createincnumber=i.number
+			 left join (
+					select postmanid,departid,count(*) sjjs from (
+						select number,postmanid,departid 
+							from eforces_rectoorder   where 
+							isDelete = 0  
+							<if test="startTime != null and  startTime != '' ">
+								 and scantime &gt;= #{startTime}
+							</if>
+							<if test="endTime != null and endTime != '' ">
+								 and scantime &lt;= #{endTime}
+							</if>
+							<if test="incNum != null and incNum != ''">
+								and  departid like  CONCAT(#{incNum},'%')
+							</if>
+							<if test="userId != null and userId != '' ">
+								and postmanid = #{userId}
+							</if>
+							GROUP BY number,postmanid,departid   
+			)r group by postmanid,departid )r on a.senduserid=r.postmanid and a.createincnumber=r.departid
+			 left join (select postmanid,incid,count(*) pjjs from 
+				(
+				select billsnumber,postmanid,incid  from  eforces_distributedscan
+			 	where isDelete = 0   
+			 	<if test="startTime != null and  startTime != '' ">
+					 and scantime &gt;= #{startTime}
+				</if>
+				<if test="endTime != null and endTime != '' ">
+					 and scantime &lt;= #{endTime}
+				</if>
+				<if test="incNum != null and incNum != ''">
+					and  incid like  CONCAT(#{incNum},'%')
+				</if>
+				<if test="userId != null and userId != '' ">
+					and postmanid = #{userId}
+				</if>
+			 GROUP BY  billsnumber,postmanid,incid
+			)d group by postmanid,incid) d on a.senduserid=d.postmanid and a.createincnumber=d.incid
+			where  1 = 1 
+			<if test="province != null and province != '' ">
+				and i.province = #{province}
+			</if>
+			<if test="city != null and city != '' ">
+				and i.city = #{city}
+			</if>
+			<if test="area != null and area != '' ">
+				and i.area = #{area}
+			</if>
+  </select>
+  
+  <select id="getDayStatisticByCity"  resultType= "java.util.Map">
+  		select a.*,
+		 case  when isnull(a.sjje)  = 1 then 0 else a.sjje end 
+		 +  case   when isnull(a.pjje)  = 1 then 0 else a.pjje end 
+		 +  case when isnull(a.yj) = 1 then 0 else  a.yj end   hj  ,
+		zps +  case when isnull(r.sjjs) = 1 then 0 else r.sjjs end +
+		case when isnull(d.pjjs) = 1 then 0 else d.pjjs end    zjs  
+		 from(
+			select fromcityname,fromcity,
+			sum(case when paymode=2 then 1 else 0 end)
+			  +sum(case when paymode=1 then 1 else 0 end)
+			   +sum(case when paymode=3 or paymode=5 then 1 else 0 end) as  zps, 
+			sum(case paymode when 2 then price else 0 end)sjje,sum(case paymode when 1 then price else 0 end)pjje,
+			sum(case paymode when 3 then price else 0 end)yj,
+			sum(CASE  WHEN ISNULL(dshk)  = 1 THEN 0 ELSE dshk END) dshk from eforces_order 
+			 where  senduserid  &lt;&gt; '' and createincnumber &lt;&gt; ''
+			 <if test="startTime != null and startTime != ''">
+			 	and createTime &gt;= #{startTime}
+			 </if>
+			 <if test="endTime != null and endTime != '' ">
+			 	and  createTime &lt;= #{endTime}
+			 </if>
+			 group by fromcityname,fromcity
+		)a
+		left join(
+			select city,count(*)sjjs from (
+					select r.number,i.city
+					from  eforces_rectoorder    r left join  eforces_incment  i on r.departid=i.number where left(r.number,3)!='024'
+					<if test="startTime != null and startTime != '' ">
+						 and r.scantime &gt;=  #{startTime}
+					</if>
+					<if test="endTime != null and endTime != '' ">
+						 and r.scantime &lt;=  #{endTime}
+					</if>
+					<if test="incNum != null and incNum != '' ">
+						and  i.number like  CONCAT('%',#{incNum},'%')
+					</if>
+					group by  r.number,i.city 
+			)r group by city 
+		)r on a.fromcity=r.city left join 
+		 (
+		 select city,count(*) pjjs from(
+		select d.billsnumber,i.city  from  eforces_distributedscan d
+		 left join  eforces_incment  i on i.number=d.incid where left(d.billsnumber,3)!='024'
+		 <if test="startTime != null and startTime != '' ">
+			 and d.scantime &gt;=  #{startTime}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			 and d.scantime &lt;=  #{endTime}
+		</if>
+		<if test="incNum != null and incNum != '' ">
+			and  i.number like  CONCAT('%',#{incNum},'%')
+		</if>
+		group by d.billsnumber,i.city
+		)d group by city)d on a.fromcity=d.city
+  </select>
+  
+  <select id="getDayToPriceByCity"  resultType="java.util.Map">
+  		select cityname,cityid, 
+		 case when isnull(sum(case when paymode=1 then price end)) = 1 then 0 else sum(case when paymode=1 then price end) end   daof ,
+		 case when isnull(sum(case when paymode=3 then price else 0 end))  = 1 then  0 else sum(case when paymode=3 then price else 0 end)  end yj,
+		 case when  isnull(sum(case when paymode=2 then price end)) = 1 then 0 else sum(case when paymode=2 then price end) end  jif,sum(Dshk) Dshk from ( 
+		 select number,paymode,Begintime times,Sendusername username,Senduserid userid,Fromcityname cityname,0 as dshk, 
+		 Fromcity cityid,price from eforces_order where isdelete = 0 and  paymode &gt;=2 and paymode &lt;=3
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and createTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and createTime &lt;= #{endTime}
+		 </if>
+		 union all 
+		 select number,paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,0 as dshk, 
+		 Tocity cityid,price  from eforces_order where isdelete = 0 and  paymode=1
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and endTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and endTime &lt;= #{endTime}
+		 </if>
+		 union all 
+		 select number,0 as paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,
+		 Dshk, Tocity cityid,price  from eforces_order where isdelete = 0 
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and endTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and endTime &lt;= #{endTime}
+		 </if>
+		) a   where cityname is not null group by cityname, cityid
+  </select>
+  
+  <!-- getDayToPriceByInc -->
+  
+  <select id="getDayToPriceByInc"   resultType="java.util.Map">
+  		select Createincname as incname, 
+		Createincnumber as incnumber,  case when isnull(sum(case when paymode=1 then price end)) = 1 then 0 else sum(case when paymode=1 then price end) end   daof ,
+		 case when isnull(sum(case when paymode=3 then price else 0 end))  = 1 then  0 else sum(case when paymode=3 then price else 0 end)  end yj,
+		 case when  isnull(sum(case when paymode=2 then price end)) = 1 then 0 else sum(case when paymode=2 then price end) end  jif,
+		sum(Dshk) Dshk from ( 
+		select Createincname, Createincnumber, number,paymode,Begintime times,Sendusername username,Senduserid userid,Fromcityname cityname,0 as dshk, 
+		 Fromcity cityid,price from eforces_order where isdelete = 0 and  paymode &gt;=2 and paymode &lt;=3 
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and createTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and createTime &lt;= #{endTime}
+		 </if>
+		 union all
+		select Createincname, Createincnumber, number,paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,0 as dshk, 
+		 Tocity cityid,price  from eforces_order where isdelete = 0 and  paymode=1 
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and endTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and endTime &lt;= #{endTime}
+		 </if>
+		union all select Createincname, Createincnumber, number,0 as paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,
+		 Dshk, Tocity cityid,price  from eforces_order where isdelete = 0
+		  
+		 ) a  WHERE Createincnumber is not null and Createincnumber &lt;&gt; ''  group by Createincnumber,Createincname
+  		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and endTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and endTime &lt;= #{endTime}
+		 </if>
+  </select>
+  
+  <select id="getDayToPriceByUser"  resultType="java.util.Map">
+		  select username,userid,case when ISNULL(sum(case when paymode=1 then price end)) = 1 then 0 else  sum(case when paymode=1 then price end) end daof ,
+		case when isnull(sum(case when paymode =3 then price else 0 end)) = 1 then 0 else sum(case when paymode =3 then price else 0 end) end  yj,
+		case when isnull(sum(case when paymode=2 then price end)) = 1 then 0 else sum(case when paymode=2 then price end) end  jif,sum(Dshk) Dshk from ( 
+		 select number,paymode,Begintime times,Sendusername username,Senduserid userid,Fromcityname cityname,0 as Dshk, 
+		 Fromcity cityid,price from eforces_order where isdelete = 0 and   paymode &gt;=2 and paymode &lt;=3 
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and createTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and createTime &lt;= #{endTime}
+		 </if>
+		 
+		union all
+		select number,paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,0 as Dshk, 
+		 Tocity cityid,price  from eforces_order where  isdelete = 0 and  paymode=1
+		 <if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and endTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and endTime &lt;= #{endTime}
+		 </if>
+		union all select number,0 as paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,";
+		            sql += " Dshk, Tocity cityid,price  from eforces_order where  isdelete = 0 
+		<if test="incNum != null and incNum != '' ">
+		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 </if>
+		 <if test="startTime != null and startTime != '' ">
+		 	 and endTime &gt;= #{startTime}
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and endTime &lt;= #{endTime}
+		 </if>
+		) a  where username is not null  and  username &lt;&gt; ''   group by username,userid
+  </select>
+  
+  <select id="getMonStaColl" resultType = "java.util.Map">
+		SELECT i.id,i.number,i.name,zd.zdfs,zd.zddate,zd.zdje,zd.ysje,zd.zsje,zd.wsje FROM  eforces_incment  i left join 
+		(select count(*) as zdfs,zddate,sum(ZdPrices) as zdje,sum(ysprices) as ysje,sum(zsprices) as zsje,sum(wsprices) as wsje,incid from eforces_monthzd where  Shenhe=1 
+		 <if test="time != null and time != '' ">
+		 	and date_format( zddate , '%Y-%m' ) = #{time}
+		 </if>
+		 <if test="incNum != null and incNum != '' ">
+		 	 i.number like CONCAT('%',#{incNum},'%')
+		 </if>
+		 group by incid ,zddate) AS zd on i.number=zd.incid order by i.id  
+  </select>
+  
+  <select id="getCusMonthBill" resultType="java.util.Map">
+  		select * from Eforces_MonthZd  where shenhe=1 
+        <if test="guestId != null and guestId  > 0 ">
+        	 and GuestId = #{guestId}
+        </if>
+       	<if test="startTime != null and startTime  != '' ">
+       		and  date_format(zddate,'%Y-%m-%d')  &gt;= ${startTime}
+       	</if>
+       	<if test="endTime != null and endTime != ''">
+       		and  date_format(zddate,'%Y-%m-%d')  &lt;= ${endTime}
+       	</if>
+		order by Id desc
+  </select>
+  
+  <select id="getYwyMonthBill" resultType="java.util.Map">
+  		select u.number,u.name,u.departname,u.departid,a.xjsk,a.zpsk,a.hksk,a.hj,a.skman,a.skid from eforces_user u inner join 
+		 (select sum(case SkType when '现金' then  bcprices else 0 end) xjsk,sum(case SkType when '支票' then  bcprices else 0 end) zpsk,sum(case SkType when '汇款' then  bcprices else 0 end) hksk,sum(bcprices) as hj,
+		 m.userid,skman,skid from Eforces_MonthSk s left join Eforces_MonthZd m on s.monthzdid=m.id 
+		<if test="startTime != null and startTime != ''">
+			and  createtime &gt;= ${startTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and  createtime &lt;= ${endTime}
+		</if>
+		group by m.userid, skman,zddate,skid) a on u.number=a.userid where 1=1
+		<if test="ywy != null and ywy != '' ">
+			and  a.userid  = ${ywy}
+		</if>
+		<if test="szy != null  and szy != ''">
+			and a.skid = ${szy}
+		</if>
+		order by u.Id desc
+  </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from eforces_order
     where Id = #{id,jdbcType=INTEGER}
   </delete>
+  
   <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesOrder">
     insert into eforces_order (Id, Number, Formguestcode, 
       formguestname, FromName, Fromcity, 

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesOrderIdentity;
 import org.kuaidi.bean.vo.OrderInfoVO;
@@ -189,6 +190,63 @@ public interface IEforcesOrderService {
 	 * getWeightBillsByParam
 	 */
 	public PageInfo<Map<String, Object>> getWeightBillsByParam(Integer page, Integer limit, ScanSearchVO scanSearch);
+	
+	/*
+	 * 查询业务员收入统计
+	 */
+	public List<Map<String, Object>>  getDayStatisticByUser( String province , String city,
+   		 					String area , String incNum , Integer userId ,String startTime , String endTime);
+	
+	/*
+	 * 查询城市收入信息
+	 */
+	public List<Map<String, Object>>  getDayStatisticByCity( String incNum ,String startTime , String endTime);
+	
+	/*
+	 *每日营业统计（按业务员） 
+	 */
+	public List<Map<String,Object>> GetPriceByDayToUser(String incNum ,String startTime , String endTime);
+	
+	/*
+	 * 每日营业统计（按用户）
+	 */
+	public List<Map<String,Object>> GetPriceByDayToCity(String incNum ,String startTime , String endTime);
+ 	
+	/*
+ 	 * 每日营业统计按照城市
+ 	 */
+	public List<Map<String, Object>> getDayToPriceByCity(String incName, String startTime , String endTime);
+	/*
+	 *第十个  每日营业统计(按网点)  
+	 */
+	public List<Map<String, Object>> getDayToPriceByInc(String incName, String startTime , String endTime);
+	
+	/*
+	 *每日营业统计(按业务员)
+	 */
+	public List<Map<String, Object>> getDayToPriceByUser(String incName, String startTime , String endTime);
+	
+	/*
+	 * 网点月结统计
+	 */
+	public List<Map<String,Object>> getMonStaColl(String incName , String time);
+	
+	/*
+	 * 客户月结收款统计， 按照页进行查询
+	 */
+	public PageInfo<Map<String , Object>> getCusMonthBillByPage(Integer pageNum , Integer pageSize , Integer guestId ,String startTime , String endTime);
+	
+	/*
+	 *  客户月结收款统计， 查询全部数据，为了Excel 导出用
+	 */
+	public List<Map<String , Object>> getCusMonthBillByList(Integer guestId ,String startTime , String endTime);
+	
+	/*
+	 * 业务员月帐统计
+	 */
+	List<Map<String , Object>> getYwyMonthBill(String ywy, String szy, String startTime,String endTime);
+	
+	
 	
 	
 }

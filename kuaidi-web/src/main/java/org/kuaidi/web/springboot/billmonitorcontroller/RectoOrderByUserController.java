@@ -1,22 +1,19 @@
-package org.kuaidi.web.springboot.stasticscontroller;
+package org.kuaidi.web.springboot.billmonitorcontroller;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.kuaidi.bean.Config;
 import org.kuaidi.bean.domain.EforcesIncment;
-import org.kuaidi.bean.vo.PageVo;
-import org.kuaidi.bean.vo.QueryPageVo;
 import org.kuaidi.bean.vo.ResultUtil;
+import org.kuaidi.bean.vo.ResultVo;
 import org.kuaidi.iservice.IEforcesIncmentService;
 import org.kuaidi.iservice.IEforcesRectoOrderService;
 import org.kuaidi.utils.TimeDayUtil;
@@ -25,11 +22,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.github.pagehelper.PageInfo;
+
 
 @RestController
-@RequestMapping("/web/rectoOrderStatics/")
-public class RectoOrderStatisticsController {
+@RequestMapping("/web/rectoOrderByUser/")
+public class RectoOrderByUserController {
 	
 	 @Reference(version = "1.0.0")
 	 IEforcesRectoOrderService  rectoOrderService; 
@@ -40,26 +37,18 @@ public class RectoOrderStatisticsController {
      @RequestMapping("getOrderShow")
      @CrossOrigin
 	 @NeedUserInfo
-     public PageVo getOrderShow(HttpServletRequest request , QueryPageVo page, String province , String city,
+     public ResultVo getOrderShow(HttpServletRequest request , String province , String city,
     		 String area , String startTime , String endTime){
-    	 Integer pageNum = page.getPage();
-    	 if(page.getPage() == null  ) {
-    		 pageNum = 1;
-    	 }
-    	 Integer pageSize = page.getLimit();
-    	 if(pageSize == null ) {
-    		pageSize = Config.pageSize;
-    	 }
     	 try {
     		 EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
-    		 PageInfo<Map<String, Object>> pageInfo = rectoOrderService.getRecToListByPage(pageNum, pageSize, province, city,area ,  incment.getNumber() , startTime, endTime);
-        	 if(pageInfo != null && pageInfo.getTotal() > 0 ) {
-        		 return ResultUtil.exec(pageNum, pageSize, pageInfo.getSize(), pageInfo.getList());
+    		 List<Map<String, Object>> list = rectoOrderService.getRecToListByUser(province, city, area, incment.getNumber(), startTime, endTime);
+        	 if(list != null && list.size() > 0 ) {
+        		 return ResultUtil.exec(true, "查询用户收件信息成功！", list);
         	 }
     	 }catch(Exception e ) {
     		 e.printStackTrace();
     	 }
-		 return  ResultUtil.exec(pageNum, pageSize,0, null); 
+		 return  ResultUtil.exec(false,"查询用户信息失败", null); 
 	 }
      
      @RequestMapping("outExcelOrderShow")
@@ -84,12 +73,12 @@ public class RectoOrderStatisticsController {
                 	 incNum = "";
                  }
     		 }
-    		 List<Map<String, Object>> list = rectoOrderService.getRecToListByInc(province, city, area,incNum , startTime, endTime);
-    		 String[] header = {"收件网点", "票数", "无称重", "无发件", "无录单"};
+    		 List<Map<String, Object>> list = rectoOrderService.getRecToListByUser(province, city, area,incNum , startTime, endTime);
+    		 String[] header = { "收件人编号","收件员", "收件网点编号","收件网点", "票数","无称重", "无发件", "无录单"};
              //声明一个工作簿
              HSSFWorkbook workbook = new HSSFWorkbook();
              //生成一个表格，设置表格名称为"学生表"
-             HSSFSheet sheet = workbook.createSheet("网点收件监控");
+             HSSFSheet sheet = workbook.createSheet("业务员收件监控");
              //设置表格列宽度为10个字节
              sheet.setDefaultColumnWidth(10);
              //创建第一行表头
@@ -109,14 +98,30 @@ public class RectoOrderStatisticsController {
             		 if(rectoOrderItem != null ) {
             			 HSSFRow row = sheet.createRow(i + 1);
             			 HSSFCell cell = row.createCell(0);
+            			 String  postmanid = (String)rectoOrderItem.get("postmanid");
+     	      			 if(postmanid == null ) {
+     	      				postmanid =  "";
+     	      			 }
+     	      			 HSSFRichTextString text = new HSSFRichTextString(postmanid);
+     	                 cell.setCellValue(text);
+     	                 
+     	                 cell = row.createCell(1);
+           			     String  ywy = (String)rectoOrderItem.get("ywy");
+    	      			 if(ywy == null ) {
+    	      				ywy =  "";
+    	      			 }
+    	      			 text = new HSSFRichTextString(ywy);
+    	                 cell.setCellValue(text);
+            			 
+     	                 cell = row.createCell(2);
             			 String  departid = (String)rectoOrderItem.get("departid");
      	      			 if(departid == null ) {
      	      				departid =  "";
      	      			 }
-     	      			 HSSFRichTextString text = new HSSFRichTextString(departid);
+     	      			 text = new HSSFRichTextString(departid);
      	                 cell.setCellValue(text);
      	                 
-     	                cell = row.createCell(1);
+     	                cell = row.createCell(3);
             			String  incname = (String)rectoOrderItem.get("incname");
             			if(incname == null ) {
             				incname = "";
@@ -124,7 +129,7 @@ public class RectoOrderStatisticsController {
             			text = new HSSFRichTextString(incname);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(2);
+                        cell = row.createCell(4);
                         BigDecimal  sjps = (BigDecimal)rectoOrderItem.get("sjps");
                         Integer sjpsNum = 0;
             			if(sjps != null ) {
@@ -133,7 +138,7 @@ public class RectoOrderStatisticsController {
             			text = new HSSFRichTextString(sjpsNum + "");
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(3);
+                        cell = row.createCell(5);
                         BigDecimal  sjwcz = (BigDecimal)rectoOrderItem.get("sjwcz");
                         Integer sjwczNum = 0;
             			if(sjwcz != null ) {
@@ -142,7 +147,7 @@ public class RectoOrderStatisticsController {
             			text = new HSSFRichTextString(sjwczNum + "");
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(4);
+                        cell = row.createCell(6);
                         BigDecimal  sjwld = (BigDecimal)rectoOrderItem.get("sjwld");
                         Integer sjwldNum = 0;
             			if(sjwld != null ) {
@@ -151,7 +156,7 @@ public class RectoOrderStatisticsController {
             			text = new HSSFRichTextString(sjwldNum + "");
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(5);
+                        cell = row.createCell(7);
                         BigDecimal  sjwfj = (BigDecimal)rectoOrderItem.get("sjwfj");
             			Integer sjwfjNum = 0 ; 
             			if(sjwfj != null ) {
@@ -166,7 +171,7 @@ public class RectoOrderStatisticsController {
              //八进制输出流
              response.setContentType("application/octet-stream");
              //这后面可以设置导出Excel的名称，
-             String fileName = "RecToOrderByMonitor" +  TimeDayUtil.getCurrentDate() + ".xls";
+             String fileName = "RecToOrderByUser" +  TimeDayUtil.getCurrentDate() + ".xls";
              response.setHeader("Content-disposition", "attachment;filename=" + fileName);
              //刷新缓冲
              response.flushBuffer();

@@ -96,7 +96,7 @@
     insert into eforces_logisticstracking (Id, BillsNumber, OperationTime, 
       Operators, Incname, Incid, 
       Mark, Description)
-    values (#{id,jdbcType=INTEGER}, #{billsnumber,jdbcType=VARCHAR}, #{operationtime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{billsnumber,jdbcType=VARCHAR}, NOW(), 
       #{operators,jdbcType=VARCHAR}, #{incname,jdbcType=VARCHAR}, #{incid,jdbcType=VARCHAR}, 
       #{mark,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
   </insert>

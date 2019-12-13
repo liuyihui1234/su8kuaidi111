@@ -1,4 +1,4 @@
-package org.kuaidi.web.springboot.stasticscontroller;
+package org.kuaidi.web.springboot.billmonitorcontroller;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

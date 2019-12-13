@@ -27,7 +27,8 @@ public class AppUpLoadUtil {
 			
 			 if (imgVal == null){
 				return "err";
-				}
+			 }
+			 
 			try {
 				// Base64瑙ｇ爜 
 				byte[] b = new BASE64Decoder().decodeBuffer(imgVal);
