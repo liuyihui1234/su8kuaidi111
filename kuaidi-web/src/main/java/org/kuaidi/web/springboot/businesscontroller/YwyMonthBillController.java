@@ -104,16 +104,15 @@ public class YwyMonthBillController {
         				 createincnumber = "";
         			 }
         			 HSSFRichTextString text = new HSSFRichTextString(createincnumber);
-                    cell.setCellValue(text);
+                     cell.setCellValue(text);
        			 
-                    cell = row.createCell(1);
+                     cell = row.createCell(1);
         			 String  createincname = (String)rectoOrderItem.get("name");
         			 if(createincname == null ) {
         				 createincname = "";
         			 }
-        			text = new HSSFRichTextString(createincname);
-                    cell.setCellValue(text);
-                    
+        			 text = new HSSFRichTextString(createincname);
+                     cell.setCellValue(text);
                     
                      cell = row.createCell(2);
            			 String  zddate = (String)rectoOrderItem.get("zddate");
@@ -122,7 +121,6 @@ public class YwyMonthBillController {
            			 }
            			 text = new HSSFRichTextString(zddate);
                      cell.setCellValue(text);
-                     
                      
                     cell = row.createCell(3);
 	                BigDecimal  zdfs = (BigDecimal)rectoOrderItem.get("zdfs");
