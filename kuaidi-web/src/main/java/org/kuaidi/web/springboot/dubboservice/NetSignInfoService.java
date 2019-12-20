@@ -118,6 +118,12 @@ public class NetSignInfoService {
 			netSignInfo.setSigntype(regionLevel);
 		}
 		
+		boolean hadSign = checkHadSignRegion(regionLevel, netWorkAreaCode);
+		
+		if(hadSign) {
+			return  ResultUtil.exec(false, "该网点已经签过，请确定！", null);
+		}
+		
 		if(StringUtils.isNotEmpty(signPic)) {
 			netSignInfo.setSignpic(signPic);
 		}
@@ -149,7 +155,7 @@ public class NetSignInfoService {
 		saveHeTongToFiles(companyName, identityNum, legalPerson, areaNameIds, srcPath, contractPath, zoneName);
 		EforcesUser userInfo = userService.selectUserById(userId);
 		if(userInfo != null ) {
-			String icmNum = saveIncmentInfo(province, city, area, areaStreet, netWorkAreaCode, regionLevel, userInfo.getAddress());
+			String icmNum = saveIncmentInfo(province, city, area, areaStreet, netWorkAreaCode, regionLevel, userInfo.getAddress(),userInfo.getMobile());
 			userInfo.setIncid(icmNum);
 			userInfo.setIncnumber(icmNum);
 			userService.updateUserBySign(userInfo,regionLevel);
@@ -171,12 +177,27 @@ public class NetSignInfoService {
 		}
 		return rst;
 	}
+	
+	private boolean  checkHadSignRegion(Integer level , String regionCode) {
+		String Provinces="";
+		if(level == 4 ) {
+			Provinces = regionCode;
+		}else {
+			Provinces = regionCode + "00";
+		}
+		EforcesIncment incment = incmentService.selectByNumber(Provinces);
+		boolean flage = false;  
+		if(incment != null) {
+			flage = true;
+		}
+		return flage;
+	}
 
 	/*
 	 * 保存网点信息。
 	 */
 	private String saveIncmentInfo(String province, String city, String area, String areaStreet, String netWorkAreaCode,
-			int regionLevel, String address) {
+			int regionLevel, String address, String mobile) {
 		String name = "" ;
 		String mnemonic =  "";
 		int  bigZoneId =  0 ;
@@ -203,7 +224,7 @@ public class NetSignInfoService {
 			}
 		}
 		String icmNum = saveIncInfo(province,city,area,areaStreet,bigZoneId, name ,mnemonic, regionLevel,
-				address,parentId , parentName);
+				address,parentId , parentName,mobile);
 		return icmNum;
 	}
 
@@ -255,7 +276,7 @@ public class NetSignInfoService {
 	 * @return  返回对应的number
 	 */
 	public String  saveIncInfo(String province , String city , String area, String areaStreet ,int bigZoneId , 
-			String Name, String mnemonic, int regionLevel,String address,String parentId, String parentName){
+			String Name, String mnemonic, int regionLevel,String address,String parentId, String parentName, String mobile){
 		EforcesIncment incment = new EforcesIncment();
 		String lagearea="";
 		if(bigZoneId==55){
@@ -312,6 +333,8 @@ public class NetSignInfoService {
 		incment.setAddress(address);
 		incment.setParentid(parentId);
 		incment.setParentname(parentName);
+		incment.setRegional(bigZoneId + "");
+		incment.setMobile(mobile);
 		int  icmId = incmentService.insetIncment(incment);
 		if(icmId <= 0 ) {
 			return "";

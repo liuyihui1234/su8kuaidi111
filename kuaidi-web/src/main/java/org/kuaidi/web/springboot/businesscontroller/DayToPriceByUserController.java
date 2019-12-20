@@ -124,7 +124,7 @@ public class DayToPriceByUserController {
        	                cell = row.createCell(3);
        	                BigDecimal  daof = (BigDecimal)rectoOrderItem.get("daof");
        	                String daofStr = "";
-   	           			if(daof == null ) {
+   	           			if(daof != null ) {
    	           				daofStr = daof.floatValue()  + "";
    	           			}
    	           			text = new HSSFRichTextString(daofStr);
@@ -140,7 +140,7 @@ public class DayToPriceByUserController {
                         cell.setCellValue(text);
                           
                         cell = row.createCell(5);
-                        BigDecimal  Dshk = (BigDecimal)rectoOrderItem.get("Dshk");
+                        Double  Dshk = (Double)rectoOrderItem.get("Dshk");
                         String DshkStr = "0";
    	           		    if(Dshk != null ) {
    	           		    	DshkStr = Dshk.floatValue() + "";

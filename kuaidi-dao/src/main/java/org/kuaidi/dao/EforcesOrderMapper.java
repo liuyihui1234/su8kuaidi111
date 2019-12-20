@@ -205,5 +205,16 @@ public interface EforcesOrderMapper {
 	List<Map<String , Object>> getYwyMonthBill(@Param("ywy") String ywy, @Param("szy") String szy,
 			@Param("startTime") String startTime, @Param("endTime") String endTime);
 	
+	/*
+	 * 折损统计
+	 */
+	List<Map<String, Object>> getLossStaColl(@Param("incNum") String incNum, 
+			@Param("time")String time);
+
+	/*
+	  * 业务员面单发放对比。
+	 */
+	List<Map<String, Object>> contrastEmployee(@Param("province")String province, @Param("city")String city,@Param("area") String area,
+			@Param("incNum") String incNum,	@Param("startTime") String startTime, @Param("endTime")  String endTime);
 	
 }

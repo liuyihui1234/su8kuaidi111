@@ -136,7 +136,7 @@ public class AliPayUtil {
         model.setTotalAmount(totalAmount);
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl("www.k8yz.com/returnPay/appaliReturnPay");
+        request.setNotifyUrl("sd.kuai8.com.cn/returnPay/appaliReturnPay");
         try {
             //这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);

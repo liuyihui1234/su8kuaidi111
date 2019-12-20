@@ -45,7 +45,7 @@ public class LossStaCollController {
    		 if(time == null ) {
    			 time = TimeDayUtil.getCurrentDate2();
    		 }
-   		 List<Map<String, Object>> list = orderService.getMonStaColl(incment.getNumber(), time);
+   		 List<Map<String, Object>> list = orderService.getLossStaColl(incment.getNumber(), time);
    		 if(list != null && list.size() > 0 ) {
        		 return ResultUtil.exec(true,"查询成功",list);
        	 }
@@ -79,12 +79,12 @@ public class LossStaCollController {
    		if(time == null ) {
   			 time = TimeDayUtil.getCurrentDate2();
   		 }
-   		 List<Map<String, Object>> list = orderService.getMonStaColl(incNum, time);
-   		 String[] header = {"网点编号", "网点名字", "账单月份", "账单份数","应收金额","已收金额",  "折损金额", "未收金额"};
+   		 List<Map<String, Object>> list = orderService.getLossStaColl(incNum, time);
+   		 String[] header = {"账单日期", "网点编号", "网点名称", "账单份数","应收金额","已收金额",  "折损金额", "未收金额"};
             //声明一个工作簿
             HSSFWorkbook workbook = new HSSFWorkbook();
-            //生成一个表格，设置表格名称为"学生表"
-            HSSFSheet sheet = workbook.createSheet("网点月结收款统计");
+            //生成一个表格，
+            HSSFSheet sheet = workbook.createSheet("折损统计");
             //设置表格列宽度为10个字节
             sheet.setDefaultColumnWidth(10);
             //创建第一行表头
@@ -104,75 +104,73 @@ public class LossStaCollController {
            		 if(rectoOrderItem != null ) {
            			 HSSFRow row = sheet.createRow(i + 1);
            			 HSSFCell cell = row.createCell(0);
-           			 String  createincnumber = (String)rectoOrderItem.get("number");
-            			 if(createincnumber == null ) {
-            				 createincnumber = "";
-            			 }
-            			 HSSFRichTextString text = new HSSFRichTextString(createincnumber);
-                        cell.setCellValue(text);
+          			 String  zddate = (String)rectoOrderItem.get("zddate");
+          			 if(zddate == null ) {
+          				zddate = "";
+          			 }
+          			 HSSFRichTextString text = new HSSFRichTextString(zddate);
+                     cell.setCellValue(text);
            			 
-                        cell = row.createCell(1);
-            			 String  createincname = (String)rectoOrderItem.get("name");
-            			 if(createincname == null ) {
-            				 createincname = "";
-            			 }
-            			text = new HSSFRichTextString(createincname);
-                        cell.setCellValue(text);
-                        
-                        
-                         cell = row.createCell(2);
-	           			 String  zddate = (String)rectoOrderItem.get("zddate");
-	           			 if(zddate == null ) {
-	           				zddate = "";
-	           			 }
-	           			 text = new HSSFRichTextString(zddate);
-	                     cell.setCellValue(text);
-	                     
-	                     
-	                    cell = row.createCell(3);
-    	                BigDecimal  zdfs = (BigDecimal)rectoOrderItem.get("zdfs");
-    	                String zdfsStr = "";
-	           			if(zdfs == null ) {
-	           				zdfsStr = zdfs.floatValue()  + "";
-	           			}
-	           			text = new HSSFRichTextString(zdfsStr);
-                        cell.setCellValue(text);
-                        
-                        cell = row.createCell(4);
-                        BigDecimal zdje   = (BigDecimal)rectoOrderItem.get("zdje");
-                        String zdjeStr = "0";
-	           			if(zdje != null ) {
-	           				zdjeStr = zdje.floatValue() + "";
-	           			}
-	           			text = new HSSFRichTextString(zdjeStr);
-                        cell.setCellValue(text);
-    	                 
-    	                cell = row.createCell(5);
-    	                BigDecimal  ysje = (BigDecimal)rectoOrderItem.get("ysje");
-    	                String ysjeStr = "";
-	           			if(ysje == null ) {
-	           				ysjeStr = ysje.floatValue()  + "";
-	           			}
-	           			text = new HSSFRichTextString(ysjeStr);
-                        cell.setCellValue(text);
-                        
-                       cell = row.createCell(6);
-                       BigDecimal  zsje = (BigDecimal)rectoOrderItem.get("zsje");
-                       String zsjeStr = "0";
-	           		   if(zsje != null ) {
-	           			zsjeStr = zsje.floatValue() + "";
-	           		    }
-	           		   text = new HSSFRichTextString(zsjeStr);
-                       cell.setCellValue(text);
-                       
-                       cell = row.createCell(7);
-                       BigDecimal  wsje = (BigDecimal)rectoOrderItem.get("wsje");
-                       String wsjeStr = "0";
-	           		   if(wsje != null ) {
-	           			   wsjeStr = wsje.floatValue() + "";
-	           		   }
-	           		   text = new HSSFRichTextString(wsjeStr);
-                       cell.setCellValue(text);
+                     cell = row.createCell(1);
+           			 String  createincnumber = (String)rectoOrderItem.get("number");
+        			 if(createincnumber == null ) {
+        				 createincnumber = "";
+        			 }
+        			 text = new HSSFRichTextString(createincnumber);
+                    cell.setCellValue(text);
+       			 
+                    cell = row.createCell(2);
+        			 String  createincname = (String)rectoOrderItem.get("name");
+        			 if(createincname == null ) {
+        				 createincname = "";
+        			 }
+        			text = new HSSFRichTextString(createincname);
+                    cell.setCellValue(text);
+                    
+                    cell = row.createCell(3);
+	                BigDecimal  zdfs = (BigDecimal)rectoOrderItem.get("zdfs");
+	                String zdfsStr = "";
+           			if(zdfs == null ) {
+           				zdfsStr = zdfs.floatValue()  + "";
+           			}
+           			text = new HSSFRichTextString(zdfsStr);
+                    cell.setCellValue(text);
+                    
+                    cell = row.createCell(4);
+                    BigDecimal zdje   = (BigDecimal)rectoOrderItem.get("zdje");
+                    String zdjeStr = "0";
+           			if(zdje != null ) {
+           				zdjeStr = zdje.floatValue() + "";
+           			}
+           			text = new HSSFRichTextString(zdjeStr);
+                    cell.setCellValue(text);
+	                 
+	                cell = row.createCell(5);
+	                BigDecimal  ysje = (BigDecimal)rectoOrderItem.get("ysje");
+	                String ysjeStr = "";
+           			if(ysje == null ) {
+           				ysjeStr = ysje.floatValue()  + "";
+           			}
+           			text = new HSSFRichTextString(ysjeStr);
+                    cell.setCellValue(text);
+                    
+                   cell = row.createCell(6);
+                   BigDecimal  zsje = (BigDecimal)rectoOrderItem.get("zsje");
+                   String zsjeStr = "0";
+           		   if(zsje != null ) {
+           			zsjeStr = zsje.floatValue() + "";
+           		    }
+           		   text = new HSSFRichTextString(zsjeStr);
+                   cell.setCellValue(text);
+                   
+                   cell = row.createCell(7);
+                   BigDecimal  wsje = (BigDecimal)rectoOrderItem.get("wsje");
+                   String wsjeStr = "0";
+           		   if(wsje != null ) {
+           			   wsjeStr = wsje.floatValue() + "";
+           		   }
+           		   text = new HSSFRichTextString(wsjeStr);
+                   cell.setCellValue(text);
            		 }
            	 }
             }
@@ -180,7 +178,7 @@ public class LossStaCollController {
             //八进制输出流
             response.setContentType("application/octet-stream");
             //这后面可以设置导出Excel的名称，
-            String fileName = "monStaColl" +  TimeDayUtil.getCurrentDate() + ".xls";
+            String fileName = "lossStaColl" +  TimeDayUtil.getCurrentDate() + ".xls";
             response.setHeader("Content-disposition", "attachment;filename=" + fileName);
             //刷新缓冲
             response.flushBuffer();

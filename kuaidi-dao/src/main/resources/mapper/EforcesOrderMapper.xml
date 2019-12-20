@@ -655,7 +655,7 @@
 						 and r.scantime &lt;=  #{endTime}
 					</if>
 					<if test="incNum != null and incNum != '' ">
-						and  i.number like  CONCAT('%',#{incNum},'%')
+						and  i.number like  CONCAT(#{incNum},'%')
 					</if>
 					group by  r.number,i.city 
 			)r group by city 
@@ -671,7 +671,7 @@
 			 and d.scantime &lt;=  #{endTime}
 		</if>
 		<if test="incNum != null and incNum != '' ">
-			and  i.number like  CONCAT('%',#{incNum},'%')
+			and  i.number like  CONCAT(#{incNum},'%')
 		</if>
 		group by d.billsnumber,i.city
 		)d group by city)d on a.fromcity=d.city
@@ -685,7 +685,7 @@
 		 select number,paymode,Begintime times,Sendusername username,Senduserid userid,Fromcityname cityname,0 as dshk, 
 		 Fromcity cityid,price from eforces_order where isdelete = 0 and  paymode &gt;=2 and paymode &lt;=3
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and createTime &gt;= #{startTime}
@@ -697,7 +697,7 @@
 		 select number,paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,0 as dshk, 
 		 Tocity cityid,price  from eforces_order where isdelete = 0 and  paymode=1
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and endTime &gt;= #{startTime}
@@ -709,7 +709,7 @@
 		 select number,0 as paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,
 		 Dshk, Tocity cityid,price  from eforces_order where isdelete = 0 
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and endTime &gt;= #{startTime}
@@ -731,7 +731,7 @@
 		select Createincname, Createincnumber, number,paymode,Begintime times,Sendusername username,Senduserid userid,Fromcityname cityname,0 as dshk, 
 		 Fromcity cityid,price from eforces_order where isdelete = 0 and  paymode &gt;=2 and paymode &lt;=3 
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and createTime &gt;= #{startTime}
@@ -743,7 +743,7 @@
 		select Createincname, Createincnumber, number,paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,0 as dshk, 
 		 Tocity cityid,price  from eforces_order where isdelete = 0 and  paymode=1 
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and endTime &gt;= #{startTime}
@@ -756,7 +756,7 @@
 		  
 		 ) a  WHERE Createincnumber is not null and Createincnumber &lt;&gt; ''  group by Createincnumber,Createincname
   		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and endTime &gt;= #{startTime}
@@ -773,7 +773,7 @@
 		 select number,paymode,Begintime times,Sendusername username,Senduserid userid,Fromcityname cityname,0 as Dshk, 
 		 Fromcity cityid,price from eforces_order where isdelete = 0 and   paymode &gt;=2 and paymode &lt;=3 
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and createTime &gt;= #{startTime}
@@ -786,7 +786,7 @@
 		select number,paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,0 as Dshk, 
 		 Tocity cityid,price  from eforces_order where  isdelete = 0 and  paymode=1
 		 <if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and endTime &gt;= #{startTime}
@@ -797,7 +797,7 @@
 		union all select number,0 as paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,";
 		            sql += " Dshk, Tocity cityid,price  from eforces_order where  isdelete = 0 
 		<if test="incNum != null and incNum != '' ">
-		 	and createincnumber like CONCAT('%',#{incNum},'%')
+		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
 		 	 and endTime &gt;= #{startTime}
@@ -815,13 +815,13 @@
 		 	and date_format( zddate , '%Y-%m' ) = #{time}
 		 </if>
 		 <if test="incNum != null and incNum != '' ">
-		 	 i.number like CONCAT('%',#{incNum},'%')
+		 	 i.number like CONCAT(#{incNum},'%')
 		 </if>
 		 group by incid ,zddate) AS zd on i.number=zd.incid order by i.id  
   </select>
   
   <select id="getCusMonthBill" resultType="java.util.Map">
-  		select * from Eforces_MonthZd  where shenhe=1 
+  		select * from eforces_monthzd  where shenhe=1 
         <if test="guestId != null and guestId  > 0 ">
         	 and GuestId = #{guestId}
         </if>
@@ -837,7 +837,7 @@
   <select id="getYwyMonthBill" resultType="java.util.Map">
   		select u.number,u.name,u.departname,u.departid,a.xjsk,a.zpsk,a.hksk,a.hj,a.skman,a.skid from eforces_user u inner join 
 		 (select sum(case SkType when '现金' then  bcprices else 0 end) xjsk,sum(case SkType when '支票' then  bcprices else 0 end) zpsk,sum(case SkType when '汇款' then  bcprices else 0 end) hksk,sum(bcprices) as hj,
-		 m.userid,skman,skid from Eforces_MonthSk s left join Eforces_MonthZd m on s.monthzdid=m.id 
+		 m.userid,skman,skid from eforces_monthsk s left join eforces_monthzd m on s.monthzdid=m.id 
 		<if test="startTime != null and startTime != ''">
 			and  createtime &gt;= ${startTime}
 		</if>
@@ -852,6 +852,45 @@
 			and a.skid = ${szy}
 		</if>
 		order by u.Id desc
+  </select>
+  
+  <select id="getLossStaColl" resultType="java.util.Map">
+  		SELECT i.id,i.number,i.name,zd.zdfs,zd.zddate,zd.zstype,zd.zsje FROM  eforces_incment  i left join
+		(select count(*) as zdfs,zddate,zstype,sum(zsprices) as zsje,incid from eforces_monthzd  where shenhe=1 and zstype &lt;&gt;''
+ 		<if test="time != null and time != '' ">
+ 			 and  date_format(zddate,'%Y-%m')  = ${time}
+ 		</if>
+ 		<if test = "incNum != null and incNum != '' " >
+ 			and  incid   like CONCAT(#{incNum},'%')
+ 		</if>
+ 		group by incid,zstype,zddate) AS zd on i.number=zd.incid order by i.id
+  </select>
+  
+  <select id="contrastEmployee" resultType="java.util.Map">
+		 select r.number,i.name,r.scantime,r.scanman,e.username,e.issuedtime,e.incname,e.bz from  eforces_rectoorder  r
+		 left join  eforces_employeeissuedbill  e on case (r.number REGEXP '[^0-9.]')=1 when 1 then cast(r.number as SIGNED  )
+		 else -1 end between cast(e.startnumber as SIGNED  ) and cast(e.endnumber as SIGNED  ) left join eforces_incment  i on i.number=r.departid
+		 where r.isDelete = 0 
+		 <if test="startTime != null and startTime != '' ">
+		 	 and r.scantime  &gt;= #{startTime}
+	
+		 </if>
+		 <if test="endTime != null and endTime != '' ">
+		 	 and r.scantime  &lt;= #{endTime}
+		 </if>
+		 <if test = "incNum != null and incNum != '' " >
+ 			and  i.number   like CONCAT(#{incNum},'%')
+ 		</if>
+ 		<if test = "province != null and province != '' " >
+ 			and  i.province   = ${province}
+ 		</if>
+ 		<if test = "city != null and city != '' " >
+ 			and  i.city   = #{city}
+ 		</if>
+ 		<if test = "area != null and area != '' " >
+ 			and  i.area   = #{area}
+ 		</if>
+		 order by r.scantime desc 				
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

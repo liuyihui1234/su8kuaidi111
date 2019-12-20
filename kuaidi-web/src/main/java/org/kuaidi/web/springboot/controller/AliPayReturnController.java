@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
@@ -43,8 +41,7 @@ public class AliPayReturnController {
    NetSignInfo  netSignInfo;
 
     /**
-     * 支付宝回调的接口 电脑网站
-     *
+               *    支付宝回调的接口 电脑网站
      * @param
      * @return
      * @throws IOException
@@ -153,10 +150,19 @@ public class AliPayReturnController {
             if(list != null && list.size() > 0 ) {
             	EforcesPaydetai  payDetail = list.get(0);
             	int netSignId = payDetail.getNetsignid() ;
+            	float totalMoney = 0f;
+            	String amount = payDetail.getTotalAmount();
+            	try {
+            		totalMoney = Float.parseFloat(amount);
+            	}catch(Exception e) {
+            		e.printStackTrace();
+            	}
             	if(netSignId > 0 ) {
             		EforcesNetsign netSign = new EforcesNetsign();
             		netSign.setId(netSignId);		
             		netSign.setStatus(1);
+            		netSign.setPaytype(1);
+            		netSign.setPaymoney(totalMoney);
             		netSignInfo.updateNetsignSort(netSign);
             	}
             }

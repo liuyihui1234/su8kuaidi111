@@ -37,14 +37,10 @@ public class DayStatisticByCityController {
      @RequestMapping("getOrderShow")
      @CrossOrigin
 	 @NeedUserInfo
-     public ResultVo getOrderShow(HttpServletRequest request , String province , String city,
-    		 			String area , String incNum , Integer userId ,String startTime , String endTime){
+     public ResultVo getOrderShow(HttpServletRequest request,String startTime , String endTime){
     	 try {
     		 EforcesIncment  incment = (EforcesIncment)request.getAttribute("inc");
-    		 if(incNum == null ) {
-    			 incNum = incment.getNumber();
-    		 }    		 
-    		 List<Map<String, Object>> list = orderService.getDayStatisticByUser(province, city, area, incNum, userId, startTime, endTime);
+    		 List<Map<String, Object>> list = orderService.getDayStatisticByCity(incment.getNumber(), startTime, endTime);
     		 if(list != null && list.size() > 0 ) {
     			 for(int i = 0 ; i < list.size(); i++) {
     				 Map<String, Object> item = list.get(i);
@@ -71,7 +67,7 @@ public class DayStatisticByCityController {
      @CrossOrigin
 	 @NeedUserInfo
      public void outExcelOrderShow(HttpServletResponse response, String incId,
-    		 String province , String city, String area,Integer userId, String startTime, String endTime ){
+    		  String startTime, String endTime ){
     	 try {
     		 EforcesIncment  incment =  incmentService.selectByNumber(incId);
     		 /*
@@ -88,12 +84,12 @@ public class DayStatisticByCityController {
                 	 incNum = "";
                  }
     		 }
-    		 List<Map<String, Object>> list = orderService.getDayStatisticByUser(province, city, area, incNum, userId, startTime, endTime);
-    		 String[] header = {"所属网点编号", "所属网点名字","业务员编号","业务员名字",  "收件金额", "派件金额","月结","合计","代收货款","总票数","总件数"};
+    		 List<Map<String, Object>> list = orderService.getDayStatisticByCity( incNum, startTime, endTime);
+    		 String[] header = {"所属城市编号", "所属城市名字","收件金额", "派件金额","月结","合计","代收货款","总票数","总件数","单位价格"};
              //声明一个工作簿
              HSSFWorkbook workbook = new HSSFWorkbook();
              //生成一个表格，设置表格名称为"学生表"
-             HSSFSheet sheet = workbook.createSheet("营业收入统计（按照业务员统计）");
+             HSSFSheet sheet = workbook.createSheet("营业收入统计（按照城市统计）");
              //设置表格列宽度为10个字节
              sheet.setDefaultColumnWidth(10);
              //创建第一行表头
@@ -113,39 +109,22 @@ public class DayStatisticByCityController {
             		 if(rectoOrderItem != null ) {
             			 HSSFRow row = sheet.createRow(i + 1);
             			 HSSFCell cell = row.createCell(0);
-            			 String  createincnumber = (String)rectoOrderItem.get("createincnumber");
-             			 if(createincnumber == null ) {
-             				 createincnumber = "";
+            			 String  fromcity = (String)rectoOrderItem.get("fromcity");
+             			 if(fromcity == null ) {
+             				fromcity = "";
              			 }
-             			 HSSFRichTextString text = new HSSFRichTextString(createincnumber);
+             			 HSSFRichTextString text = new HSSFRichTextString(fromcity);
                          cell.setCellValue(text);
             			 
                          cell = row.createCell(1);
-             			 String  createincname = (String)rectoOrderItem.get("createincname");
-             			 if(createincname == null ) {
-             				 createincname = "";
+             			 String  fromcityname = (String)rectoOrderItem.get("fromcityname");
+             			 if(fromcityname == null ) {
+             				fromcityname = "";
              			 }
-             			text = new HSSFRichTextString(createincname);
+             			text = new HSSFRichTextString(fromcityname);
                         cell.setCellValue(text);
             			 
-                         cell = row.createCell(2);
-            			 String  senduserid = (String)rectoOrderItem.get("senduserid");
-     	      			 if(senduserid == null ) {
-     	      				senduserid =  "";
-     	      			 }
-     	      			 text = new HSSFRichTextString(senduserid);
-     	                 cell.setCellValue(text);
-     	                 
-     	                 
-     	                cell = row.createCell(3);
-            			String  sendusername = (String)rectoOrderItem.get("sendusername");
-            			if(sendusername == null ) {
-            				sendusername = "";
-            			}
-            			text = new HSSFRichTextString(sendusername);
-                        cell.setCellValue(text);
-                        
-                        cell = row.createCell(4);
+                        cell = row.createCell(2);
                         BigDecimal sjje   = (BigDecimal)rectoOrderItem.get("sjje");
                         String sjjeStr = "0";
             			if(sjje != null ) {
@@ -154,7 +133,7 @@ public class DayStatisticByCityController {
             			text = new HSSFRichTextString(sjjeStr);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(5);
+                        cell = row.createCell(3);
                         BigDecimal  pjje = (BigDecimal)rectoOrderItem.get("pjje");
                         String pjjeStr = "0";
             			if(pjje != null ) {
@@ -163,7 +142,7 @@ public class DayStatisticByCityController {
             			text = new HSSFRichTextString(pjjeStr);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(6);
+                        cell = row.createCell(4);
                         BigDecimal  yj = (BigDecimal)rectoOrderItem.get("yj");
                         String yjStr = "0";
             			if(yj != null ) {
@@ -172,7 +151,7 @@ public class DayStatisticByCityController {
             			text = new HSSFRichTextString(yjStr);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(7);
+                        cell = row.createCell(5);
                         BigDecimal  hj = (BigDecimal)rectoOrderItem.get("hj");
                         String hjStr = "0";
             			if(hj != null ) {
@@ -181,7 +160,7 @@ public class DayStatisticByCityController {
             			text = new HSSFRichTextString(hjStr);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(8);
+                        cell = row.createCell(6);
                         BigDecimal  dshk = (BigDecimal)rectoOrderItem.get("dshk");
                         String dshkStr = "0";
             			if(dshk != null ) {
@@ -190,7 +169,7 @@ public class DayStatisticByCityController {
             			text = new HSSFRichTextString(dshkStr);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(9);
+                        cell = row.createCell(7);
                         BigDecimal  zps = (BigDecimal)rectoOrderItem.get("zps");
                         String zpsStr = "0";
             			if(zps != null ) {
@@ -199,13 +178,24 @@ public class DayStatisticByCityController {
             			text = new HSSFRichTextString(zpsStr);
                         cell.setCellValue(text);
                         
-                        cell = row.createCell(10);
+                        cell = row.createCell(8);
                         BigDecimal  zjs = (BigDecimal)rectoOrderItem.get("zjs");
                         String zjsStr = "0";
             			if(zjs != null ) {
             				zjsStr = zjs.floatValue() + "";
             			}
             			text = new HSSFRichTextString(zjsStr);
+                        cell.setCellValue(text);
+                        
+                        String price = "0";
+                        if(zjs != null && zjs.floatValue() > 0 ) {
+	       					 Float Djprice =  hj.floatValue() / zjs.floatValue();
+	       					 if(Djprice != null ) {
+	       						 price = new DecimalFormat("###,###,###.##").format(Djprice); 
+	       					 }
+	       				}
+                        cell = row.createCell(9);
+            			text = new HSSFRichTextString(price);
                         cell.setCellValue(text);
             		 }
             	 }

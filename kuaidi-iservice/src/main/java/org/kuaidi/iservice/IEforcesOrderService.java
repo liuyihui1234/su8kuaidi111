@@ -246,7 +246,23 @@ public interface IEforcesOrderService {
 	 */
 	List<Map<String , Object>> getYwyMonthBill(String ywy, String szy, String startTime,String endTime);
 	
+	/*
+	  * 折损统计
+	 */
+	List<Map<String , Object>> getLossStaColl(String incNum , String time );
 	
+	/*
+	  * 业务员面单发放统计。
+	  *分页查询
+	 */
+	PageInfo<Map<String, Object>> contrastEmployee(Integer pageNum , Integer pageSize, String province , String city, String area ,String incNum
+			, String startTime , String endTime );
 	
-	
+	/*
+	 *  业务员面单发放统计。
+	 *  查询全部数据
+	 */
+	List<Map<String, Object>> contrastEmployeeList(String province , String city, String area ,String incNum
+			, String startTime , String endTime );
+		
 }

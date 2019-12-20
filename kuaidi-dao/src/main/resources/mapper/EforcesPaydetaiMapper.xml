@@ -10,17 +10,11 @@
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
 
-
-<!--  <insert id="orderinfo" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
-
-  </insert>-->
-
   <!-- 支付后回调的时候修改表里状态 并添加流水交易号 -->
-  <update id="" >
+  <update id="upderinfo" >
     UPDATE eforces_paydetai SET `status` = 2 ,trade_no = #{tradeNo,jdbcType=VARCHAR} WHERE out_trade_no=#{outTradeNo,jdbcType=VARCHAR}
   </update>
-
-
+  
   <sql id="Base_Column_List" >
     id, out_trade_no, trade_no, total_amount, netSignId, status
   </sql>
@@ -113,6 +107,7 @@
       </if>
     </trim>
   </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesPaydetai">
     update eforces_paydetai
     <set>

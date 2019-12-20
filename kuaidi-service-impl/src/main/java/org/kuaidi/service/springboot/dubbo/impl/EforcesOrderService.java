@@ -396,5 +396,28 @@ public class EforcesOrderService implements IEforcesOrderService {
 		// TODO Auto-generated method stub
 		return orderDao.getYwyMonthBill(ywy, szy, startTime, endTime);
 	}
+
+	@Override
+	public List<Map<String, Object>> getLossStaColl(String incNum, String time) {
+		// TODO Auto-generated method stub
+		return orderDao.getLossStaColl(incNum , time);
+	}
+
+	@Override
+	public PageInfo<Map<String, Object>> contrastEmployee(Integer pageNum , Integer pageSize, String province, String city, String area, String incNum,
+			String startTime, String endTime) {
+		// TODO Auto-generated method stub、
+		PageHelper.startPage(pageNum, pageSize);
+		List<Map<String, Object>> list  = orderDao.contrastEmployee(province, city, area, incNum, startTime , endTime);
+		final PageInfo<Map<String , Object>> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+	@Override
+	public List<Map<String, Object>> contrastEmployeeList(String province,
+			String city, String area, String incNum, String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return orderDao.contrastEmployee(province, city, area, incNum, startTime , endTime);
+	}
 	
 }
