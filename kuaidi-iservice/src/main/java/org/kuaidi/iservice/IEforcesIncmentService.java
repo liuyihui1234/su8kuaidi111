@@ -47,7 +47,6 @@ public interface IEforcesIncmentService {
      */
     List<EforcesIncment> selectByNumber(List<String> numberList);
     
-    
     EforcesIncment selectByNumber(String number);
     
     /*
