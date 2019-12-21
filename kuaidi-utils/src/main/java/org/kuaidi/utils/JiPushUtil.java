@@ -37,7 +37,7 @@ public class JiPushUtil {
  
  
     /**
-     * 推送给设备标识参数的用户
+               * 推送给设备标识参数的用户
      * @param aliasList 别名或别名组
      * @param notification_title 通知内容标题
      * @param msg_title 消息内容标题

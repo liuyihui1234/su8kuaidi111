@@ -34,6 +34,7 @@ public class ApiTrackController {
 	@RequestMapping("queryorder8")
 	@ResponseBody
 	public JSONObject queryorder8(String param , String sign, String customer) {
+		
 		JSONObject  data = new JSONObject();
 		if(StringUtils.isEmpty(param) || StringUtils.isEmpty(sign)||
 				StringUtils.isEmpty(customer)) {
@@ -72,7 +73,6 @@ public class ApiTrackController {
 				String zhcode = orderInfo.getZhcode();
 				String zhnumber = orderInfo.getZhnumber();
 				KdApiSearchEntity searchEntity = Comm.KdApiSearch(zhcode, zhnumber);
-				
 				// 将rst 转化成实体对象。
 				if(searchEntity != null && searchEntity.isSuccess() && searchEntity.getTraces().size() > 0 ) {
 					for(int i = 0 ; i < searchEntity.getTraces().size(); i++ ) {

@@ -53,8 +53,6 @@ public class KdniaoTrackQueryAPI {
     //请求url
     private String ReqURL = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
  
-	
-	
 //	  private String EBusinessID = "1596156";
 //	  //电商加密私钥，快递鸟提供，注意保管，不要泄漏
 //	  private String AppKey = "c8d1a471-1ba3-4a5d-ae7e-61af941784df";
