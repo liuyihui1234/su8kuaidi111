@@ -88,7 +88,11 @@ public class TransportedscanController {
             	// 添加物流信息。
             	EforcesLogisticStracking strackingInfo = 
             			LogisticStracking.createStrackingInfo(userInfo, incment, description, record.getBillsnumber(), 3);
-                int a = transportedscanService.insertSelective(record,strackingInfo);
+                
+            	
+            	
+            	
+            	int a = transportedscanService.insertSelective(record,strackingInfo);
                 if (a > 0){
                     return ResultUtil.exec(true,"添加转运记录成功",null);
                 }

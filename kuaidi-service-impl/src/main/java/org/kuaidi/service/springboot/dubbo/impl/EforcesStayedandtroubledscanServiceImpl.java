@@ -3,24 +3,19 @@ package org.kuaidi.service.springboot.dubbo.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesStayedandtroubledscan;
 import org.kuaidi.dao.EforcesStayedandtroubledscanMapper;
 import org.kuaidi.iservice.IEforcesStayedandtroubledscanService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service(version = "1.0.0")
 public class EforcesStayedandtroubledscanServiceImpl implements IEforcesStayedandtroubledscanService {
 
     @Autowired
     EforcesStayedandtroubledscanMapper stayedandtroubledscanMapper;
-
     /**
-     * 获取问题件详细信息
+               *    获取问题件详细信息
      * @param incid 网店编号 incment中的number
      * @return
      */

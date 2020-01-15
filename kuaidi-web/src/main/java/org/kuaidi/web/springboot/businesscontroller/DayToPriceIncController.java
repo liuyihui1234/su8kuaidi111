@@ -103,7 +103,7 @@ public class DayToPriceIncController {
             				 createincnumber = "";
             			 }
             			 HSSFRichTextString text = new HSSFRichTextString(createincnumber);
-                        cell.setCellValue(text);
+                         cell.setCellValue(text);
            			 
                         cell = row.createCell(1);
             			 String  createincname = (String)rectoOrderItem.get("incname");
@@ -126,7 +126,7 @@ public class DayToPriceIncController {
     	                cell = row.createCell(3);
     	                BigDecimal  daof = (BigDecimal)rectoOrderItem.get("daof");
     	                String daofStr = "";
-	           			if(daof == null ) {
+	           			if(daof != null ) {
 	           				daofStr = daof.floatValue()  + "";
 	           			}
 	           			text = new HSSFRichTextString(daofStr);

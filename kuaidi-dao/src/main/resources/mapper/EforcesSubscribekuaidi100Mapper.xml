@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kuaidi.dao.EforcesSubscribekuaidi100Mapper">
+  <resultMap id="BaseResultMap" type="org.kuaidi.bean.domain.EforcesSubscribekuaidi100">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="Number" jdbcType="VARCHAR" property="number" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="callback" jdbcType="VARCHAR" property="callback" />
+    <result column="Createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, Number, company, callback, Createtime, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from eforces_subscribekuaidi100
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByBillNumber"  resultMap="BaseResultMap" >
+  		select 
+	    <include refid="Base_Column_List" />
+	    from eforces_subscribekuaidi100
+	    where Number = #{billNumber , jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from eforces_subscribekuaidi100
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.kuaidi.bean.domain.EforcesSubscribekuaidi100">
+    insert into eforces_subscribekuaidi100 (id, Number, company, 
+      callback, Createtime, type
+      )
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
+      #{callback,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.kuaidi.bean.domain.EforcesSubscribekuaidi100">
+    insert into eforces_subscribekuaidi100
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="callback != null">
+        callback,
+      </if>
+      <if test="createtime != null">
+        Createtime,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="callback != null">
+        #{callback,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.kuaidi.bean.domain.EforcesSubscribekuaidi100">
+    update eforces_subscribekuaidi100
+    <set>
+      <if test="number != null">
+        Number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="callback != null">
+        callback = #{callback,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        Createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.kuaidi.bean.domain.EforcesSubscribekuaidi100">
+    update eforces_subscribekuaidi100
+    set Number = #{number,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      callback = #{callback,jdbcType=VARCHAR},
+      Createtime = #{createtime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

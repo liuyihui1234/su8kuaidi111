@@ -753,9 +753,8 @@
 		 </if>
 		union all select Createincname, Createincnumber, number,0 as paymode,Endtime times,Deliveryusername username,Deliveryuserid userid,Tocityname cityname,
 		 Dshk, Tocity cityid,price  from eforces_order where isdelete = 0
-		  
-		 ) a  WHERE Createincnumber is not null and Createincnumber &lt;&gt; ''  group by Createincnumber,Createincname
-  		 <if test="incNum != null and incNum != '' ">
+		 ) a  WHERE Createincnumber is not null and Createincnumber &lt;&gt; '' 
+		 <if test="incNum != null and incNum != '' ">
 		 	and createincnumber like CONCAT(#{incNum},'%')
 		 </if>
 		 <if test="startTime != null and startTime != '' ">
@@ -764,6 +763,8 @@
 		 <if test="endTime != null and endTime != '' ">
 		 	 and endTime &lt;= #{endTime}
 		 </if>
+		 group by Createincnumber,Createincname
+  		 
   </select>
   
   <select id="getDayToPriceByUser"  resultType="java.util.Map">

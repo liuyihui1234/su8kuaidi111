@@ -15,7 +15,7 @@ public class Config {
 	public static final int   signPoint = 10 ;
 
 	//订单号自增部分的长度
-	public static final int ORDER_SIZE = 3;
+	public static final int ORDER_SIZE = 7;
 	
 	public static final long APP_LOGIN_TIMEOUT = 24 * 60 * 60;
 

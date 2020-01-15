@@ -31,7 +31,6 @@ public class SendPhoneCode {
 		request.setTemplateCode("SMS_171851426"); //模板code
 		request.setTemplateParam("{\"code\":" + verCode + "}");
 		SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
-
 		if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
 			System.out.println("发送成功~"+sendSmsResponse);
 			return verCode;

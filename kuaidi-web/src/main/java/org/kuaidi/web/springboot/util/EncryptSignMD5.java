@@ -16,20 +16,23 @@ public class EncryptSignMD5 {
 
     /// <summary>
     /// 快递100合作秘钥key
-    /// </summary>
+    /// </summary>							   
     public static String kuaidi100SecretKey = "VPbTy9Vtl2BprtNH";
 
     /// <summary>
     /// 快8速运合作秘钥key
-    /// </summary>
+    /// </summary>						   
     public static String kuai8SecretKey = "GYGDcwh7LXwDv8FI";
-    
     
     public static String GetSignMD5(String str)
     {
     	return Md5Util.encode(str);
     }
     
-    
+    public static void main(String [] args) {
+    	String rst = "{\"com\":\"kuai8\",\"num\":\"440114000000112\",\"from\":\"\",\"phone\":\"\",\"to\":\"\",\"resultv2\":0,\"show\":\"0\",\"order\":\"desc\"}";
+    	String rst1 = EncryptSignMD5.GetSignMD5(rst + EncryptSignMD5.kuaidi100SecretKey + "85B891C769D8A20748A7D35A2E389D40");
+    	System.out.println(rst1);
+    }
     
 }

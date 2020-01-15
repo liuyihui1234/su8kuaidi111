@@ -3,17 +3,18 @@ package org.kuaidi.service.springboot.dubbo.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
+import org.apache.commons.lang.StringUtils;
+import org.kuaidi.bean.domain.EforcesCorp;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
 import org.kuaidi.bean.domain.EforcesTransportedscan;
+import org.kuaidi.dao.EforcesCorpMapper;
 import org.kuaidi.dao.EforcesLogisticStrackingMapper;
 import org.kuaidi.dao.EforcesOrderMapper;
 import org.kuaidi.dao.EforcesTransportedscanMapper;
 import org.kuaidi.iservice.IEforcesTransportedscanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,12 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
 
     @Autowired
     private EforcesLogisticStrackingMapper  logisticStrackingDao;
+    
+    @Autowired
+    private EforcesOrderMapper orderDao;
+    
+    @Autowired
+    private EforcesCorpMapper  corpDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -36,6 +43,24 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
     	rst = transportedscan.insertSelective(record);
     	if(rst > 0 ) {
     		rst = logisticStrackingDao.insertSelective(strackingInfo);
+    		/*
+    		 * 	修改订单信息
+    		 */
+    		String billsNumber = record.getBillsnumber();
+    		if(billsNumber != null ) {
+    			 EforcesOrder orderInfo = orderDao.getOrderMsg(billsNumber);
+    			 if(orderInfo != null ) {
+    				 EforcesCorp eforceCorp =  corpDao.selectByPrimaryKey(record.getNextcorpid());
+					 if(orderInfo != null && StringUtils.equals(orderInfo.getNumber(), record.getBillsnumber())) {
+						 orderInfo.setIsgettrace((byte)1);
+						 if(eforceCorp != null ) {
+							 orderInfo.setZhcode(eforceCorp.getCode());
+						 }
+						 orderInfo.setZhnumber(record.getNextnumber());
+					 }
+					 orderDao.updateByPrimaryKey(orderInfo);
+    			 }
+    		}
     	}
     	return rst ;
     }
@@ -60,7 +85,7 @@ public class EforcesTransportedscanServiceImpl implements IEforcesTransportedsca
     }
     
     /*
-     * 每选择一页数据，就讲数据的状态设置成1 。
+               * 每选择一页数据，就讲数据的状态设置成1 。
      * */
     @Override
     public PageInfo<EforcesTransportedscan> selectAllByState0(Integer pageNum, Integer pageSize) {

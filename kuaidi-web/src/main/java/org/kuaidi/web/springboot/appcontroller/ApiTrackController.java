@@ -1,13 +1,16 @@
 package org.kuaidi.web.springboot.appcontroller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuaidi.bean.domain.EforcesLogisticStracking;
 import org.kuaidi.bean.domain.EforcesOrder;
+import org.kuaidi.bean.domain.EforcesSubscribekuaidi100;
 import org.kuaidi.bean.trackingmore.KdApiSearchEntity;
 import org.kuaidi.bean.trackingmore.TraceEntity;
 import org.kuaidi.iservice.IEforcesOrderService;
+import org.kuaidi.iservice.IEforcesSubscribeService;
 import org.kuaidi.iservice.IEforceslogisticstrackingService;
 import org.kuaidi.utils.TimeDayUtil;
 import org.kuaidi.web.springboot.util.Comm;
@@ -31,27 +34,31 @@ public class ApiTrackController {
 	@Reference(version = "1.0.0")
 	IEforcesOrderService  orderService ; 
 	
-	@RequestMapping("queryorder8")
+	@Reference(version = "1.0.0")
+	IEforcesSubscribeService  subscribeService; 
+	
+	@RequestMapping("queryorder")
 	@ResponseBody
-	public JSONObject queryorder8(String param , String sign, String customer) {
-		
+	public JSONObject queryorder8(String Param , String Sign, String Customer) {
 		JSONObject  data = new JSONObject();
-		if(StringUtils.isEmpty(param) || StringUtils.isEmpty(sign)||
-				StringUtils.isEmpty(customer)) {
+		if(StringUtils.isEmpty(Param) || StringUtils.isEmpty(Sign)||
+				StringUtils.isEmpty(Customer)) {
 			data.put("result", false);
 			data.put("returnCode", 400);
 			data.put("message", "数据不完整");
 			return data;
 		}
-		String signCreated = EncryptSignMD5.GetSignMD5(param +  EncryptSignMD5.kuai8SecretKey + customer);
-		if(!StringUtils.equals(signCreated, sign)) {
+		String signCreated = EncryptSignMD5.GetSignMD5(Param +  EncryptSignMD5.kuai8SecretKey + Customer);
+		System.out.println("sign : " + Sign + ">>>>>>>>>>>>>>");
+		System.out.println("signCreated : " + signCreated + ">>>>>>>>>>>>>>");
+		if(!StringUtils.equals(signCreated, Sign)) {
 			data.put("result", false);
 			data.put("returnCode", 503);
 			data.put("message", "验证签名失败");
 			return data;
 		}
 		try {
-			JSONObject reqParam = JSONObject.fromObject(param);
+			JSONObject reqParam = JSONObject.fromObject(Param);
 			if(!reqParam.containsKey("num") || StringUtils.isEmpty(reqParam.getString("num"))) {
 				data.put("result", false);
 				data.put("returnCode", 504);
@@ -117,6 +124,88 @@ public class ApiTrackController {
 			data.put("result", false);
 			data.put("returnCode", "507");
 			data.put("message", "");
+			return data;
+		}
+	}
+	
+	
+	@RequestMapping("order")
+	@ResponseBody
+	public JSONObject SubscribeOrder(String param , String sign, String customer) {
+		JSONObject  data = new JSONObject();
+		if(StringUtils.isEmpty(param) || StringUtils.isEmpty(sign)||
+				StringUtils.isEmpty(customer)) {
+			data.put("result", false);
+			data.put("returnCode", 400);
+			data.put("message", "数据不完整");
+			return data;
+		}
+		
+		String signCreated = EncryptSignMD5.GetSignMD5(param +  EncryptSignMD5.kuai8SecretKey + customer);
+		if(!StringUtils.equals(signCreated, sign)) {
+			data.put("result", false);
+			data.put("returnCode", 503);
+			data.put("message", "验证签名失败");
+			return data;
+		}
+		try {
+			JSONObject reqParam = JSONObject.fromObject(param);
+			
+			String operator = "" ;
+			if(reqParam.containsKey("operator")) {
+				operator = reqParam.getString("operator");
+			}
+			if(StringUtils.isEmpty(operator)) {
+				operator = "order";
+			}
+			
+			String number = "";
+			if(reqParam.containsKey("code")) {
+				number = reqParam.getString("code");
+			}
+			if(StringUtils.isEmpty(number)) {
+				data.put("result", false);
+				data.put("returnCode", "504");
+				data.put("message", "单号错误");
+				return data;
+			}
+			/*
+			  *   判断是否有订阅
+			  *   如果订阅过了就回复，重复订阅
+			 **/
+			EforcesSubscribekuaidi100  kuaidi100 = subscribeService.getSubscribeByBillNUm(number);
+			if(kuaidi100 != null ) {
+				data.put("result", false);
+				data.put("returnCode", "502");
+				data.put("message", "重复订阅");
+				return data;
+			}
+			/*
+			 * 插入订阅记录，返回订阅成功。
+			 */
+			kuaidi100 = new EforcesSubscribekuaidi100();
+			kuaidi100.setNumber(number);
+			kuaidi100.setCompany(number);
+			kuaidi100.setCallback(number);
+			kuaidi100.setCreatetime(new Date());
+			
+			Integer rst = subscribeService.addSubscribe(kuaidi100);
+			if(rst  == 1  ) {
+				data.put("result", "true");
+				data.put("returnCode","200"); 
+				data.put("message","成功"); 
+				return data;
+			}else {
+				data.put("result", "false");
+				data.put("returnCode","501"); 
+				data.put("message","服务器错误"); 
+				return data;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			data.put("result", "false");
+			data.put("returnCode","507"); 
+			data.put("message","查询异常"); 
 			return data;
 		}
 	}
